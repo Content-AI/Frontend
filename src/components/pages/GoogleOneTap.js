@@ -5,7 +5,7 @@ function GoogleOneTap() {
 
   useGoogleOneTapLogin({
     onSuccess: (response) => {
-        console.log(response)
+      console.log(response);
     },
     onError: (error) => console.log(error),
     googleAccountConfigs: {
@@ -15,6 +15,7 @@ function GoogleOneTap() {
   });
   return (
     <>
+      
     </>
   );
 }
