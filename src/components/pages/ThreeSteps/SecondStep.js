@@ -39,18 +39,14 @@ const SecondStep = () => {
 
 {showModal ? (
         <>
-          <div
+        <div
             className="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             {/* <div className="relative w-auto my-6 mx-auto max-w-3xl"> */}
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  {/* <h3 className="text-3xl font-semibold">
-                    Survey
-                  </h3> */}
-                  <div className="p-6 mb-6 w-[80%] m-auto bg-white rounded-md shadow-2xl">
+                <div className="flex  items-center justify-center p-3 border-b border-solid border-slate-200 rounded-t">
+                <div className="font-sans p-3 w-[70%] rounded-md shadow-2xl">
               <TopBar />
               <Dots steps="second"/>
               <h1 className="text-1xl p-3 font-semibold space-x-0 mt-10">
@@ -64,7 +60,7 @@ const SecondStep = () => {
                     <div onClick={()=>{
                       setdata("Paid Ads")
                     }} 
-                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                         <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                         <span className="text-blue-800 font-semibold text-[13px]">Paid Ads</span>
                     </div>
@@ -72,7 +68,7 @@ const SecondStep = () => {
                     <div onClick={()=>{
                       setdata("Paid Ads")
                     }} 
-                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                         <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                         <span className="text-blue-800 font-semibold text-[13px]">Paid Ads</span>
                     </div>
@@ -85,7 +81,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Social Media Content")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Social Media Content</span>
                   </div>
@@ -93,7 +89,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Social Media Content")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Social Media Content</span>
                   </div>
@@ -109,7 +105,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Website copy")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Website copy</span>
                   </div>
@@ -117,7 +113,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Website copy")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Website copy</span>
                   </div>
@@ -129,7 +125,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Email")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Email</span>
                   </div>
@@ -137,7 +133,7 @@ const SecondStep = () => {
                   <div onClick={()=>{
                     setdata("Email")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Email</span>
                   </div>
@@ -150,14 +146,14 @@ const SecondStep = () => {
                   ?
                 <div onClick={()=>{
                     setdata("Video")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Video</span>
                 </div>
                 :
                 <div onClick={()=>{
                     setdata("Video")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Video</span>
                 </div>
@@ -168,7 +164,7 @@ const SecondStep = () => {
                 <div onClick={()=>{
                     setdata("Blog")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Blog</span>
                 </div>
@@ -176,7 +172,7 @@ const SecondStep = () => {
                 <div onClick={()=>{
                     setdata("Blog")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Blog</span>
                 </div>
@@ -189,14 +185,14 @@ const SecondStep = () => {
                   ?
                 <div onClick={()=>{
                     setdata("Case Study or Testimonial")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Case Study or Testimonial</span>
                 </div>
                 :
                 <div onClick={()=>{
                     setdata("Case Study or Testimonial")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Case Study or Testimonial</span>
                 </div>
@@ -208,7 +204,7 @@ const SecondStep = () => {
                 <div onClick={()=>{
                     setdata("Other")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Other</span>
                     <input
@@ -225,7 +221,7 @@ const SecondStep = () => {
                 <div onClick={()=>{
                     setdata("Other")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Other</span>
                     <input
@@ -279,9 +275,7 @@ const SecondStep = () => {
               </div> 
                 </div>
               </div>
-            </div>
-          {/* </div> */}
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="fixed inset-0 z-40 bg-white"></div>
         </>
       ) : null}
            

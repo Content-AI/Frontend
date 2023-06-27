@@ -3,10 +3,10 @@ import React from 'react'
 const Home = () => {
   return (
     <div
-      className="ml-[256px] bg-white"
+      className="w-full sm:w-auto ml-0 sm:ml-[256px] bg-white"
     >
         <h1 className='text-[20px] text-black'>
-            coming soon ...
+        coming soon
         </h1>
     </div>
   )

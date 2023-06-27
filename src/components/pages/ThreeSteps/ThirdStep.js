@@ -71,18 +71,14 @@ const ThirdStep = () => {
      
 {showModal ? (
         <>
-          <div
+        <div
             className="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
             {/* <div className="relative w-auto my-6 mx-auto max-w-3xl"> */}
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  {/* <h3 className="text-3xl font-semibold">
-                    Survey
-                  </h3> */}
-                  <div className="p-6 mb-6 w-[80%] m-auto bg-white rounded-md shadow-2xl">
+                <div className="flex  items-center justify-center p-3 border-b border-solid border-slate-200 rounded-t">
+                <div className="font-sans p-3 w-[70%] rounded-md shadow-2xl">
               <TopBar />
               <Dots steps="third"/>
               <h1 className="text-1xl p-3 font-semibold space-x-0 mt-10">
@@ -96,7 +92,7 @@ const ThirdStep = () => {
                     <div onClick={()=>{
                       setdata("Online Article")
                     }} 
-                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                         <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                         <span className="text-blue-800 font-semibold text-[13px]">Online Article</span>
                     </div>
@@ -104,7 +100,7 @@ const ThirdStep = () => {
                     <div onClick={()=>{
                       setdata("Online Article")
                     }} 
-                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                         <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                         <span className="text-blue-800 font-semibold text-[13px]">Online Article</span>
                     </div>
@@ -117,7 +113,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("Facebook")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Facebook</span>
                   </div>
@@ -125,7 +121,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("Facebook")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Facebook</span>
                   </div>
@@ -141,7 +137,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("Google")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Google</span>
                   </div>
@@ -149,7 +145,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("Google")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">Google</span>
                   </div>
@@ -161,7 +157,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("LinkedIn")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">LinkedIn</span>
                   </div>
@@ -169,7 +165,7 @@ const ThirdStep = () => {
                   <div onClick={()=>{
                     setdata("LinkedIn")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                       <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                       <span className="text-blue-800 font-semibold text-[13px]">LinkedIn</span>
                   </div>
@@ -182,14 +178,14 @@ const ThirdStep = () => {
                   ?
                 <div onClick={()=>{
                     setdata("Twitter")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Twitter</span>
                 </div>
                 :
                 <div onClick={()=>{
                     setdata("Twitter")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Twitter</span>
                 </div>
@@ -200,7 +196,7 @@ const ThirdStep = () => {
                 <div onClick={()=>{
                     setdata("Tiktok")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Tiktok</span>
                 </div>
@@ -208,7 +204,7 @@ const ThirdStep = () => {
                 <div onClick={()=>{
                     setdata("Tiktok")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Tiktok</span>
                 </div>
@@ -221,14 +217,14 @@ const ThirdStep = () => {
                   ?
                 <div onClick={()=>{
                     setdata("Word of mouth")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Word of mouth</span>
                 </div>
                 :
                 <div onClick={()=>{
                     setdata("Word of mouth")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Word of mouth</span>
                 </div>
@@ -240,7 +236,7 @@ const ThirdStep = () => {
                 <div onClick={()=>{
                     setdata("Other")
                   }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Other</span>
                     <input
@@ -257,7 +253,7 @@ const ThirdStep = () => {
                 <div onClick={()=>{
                     setdata("Other")
                   }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x">
+                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
                     <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
                     <span className="text-blue-800 font-semibold text-[13px]">Other</span>
                     <input
@@ -298,9 +294,7 @@ const ThirdStep = () => {
                  
                 </div>
               </div>
-            </div>
-          {/* </div> */}
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          <div className="fixed inset-0 z-40 bg-white"></div>
         </>
       ) : null}
         <Toaster />
