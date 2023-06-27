@@ -104,7 +104,7 @@ const Navbar = () => {
 
 
       <div className='hidden sm:block'>
-        <div className="mt-[67px] fixed left-0 top-0 h-full w-64 shadow-2xl bg-white">
+        <div className="mt-[67px] fixed left-0 top-0 h-full w-64  bg-white">
             <div className="flex flex-col">
 
                 <div className='flex items-center justify-center mt-1'>

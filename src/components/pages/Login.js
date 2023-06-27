@@ -207,14 +207,14 @@ export default function Login() {
 
 
         <div className="flex mt-4 items-center">
-            <hr className="flex-grow border-t border-gray-300 ml-20" />
+            <hr className="flex-grow border-t border-gray-300 lg:ml-[30%] md:ml-[10%] sm:ml-[10%]" />
             <span className="px-4 text-slate-600 text-[15px] ">or continue with</span>
-            <hr className="flex-grow border-t border-gray-300 mr-20" />
+            <hr className="flex-grow border-t border-gray-300 lg:mr-[30%] md:mr-[10%] sm:mr-[10%]" />
         </div>
 
 
         <form className="p-6" onSubmit={handleSubmit}>
-        <div className='flex  lg:w-[60%] md:w-[100%] sm:w-[60%] m-auto flex-col  p-3'>
+        <div className='flex  lg:w-[40%] md:w-[100%] sm:w-[60%] m-auto flex-col  p-3'>
                             <div className="mb-2">
                                 <label
                                     htmlFor="email"
