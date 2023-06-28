@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { _delete_token_ } from '../../features/AuthenticationToken';
 import { _save_survey_ } from '../../features/ThreeSteps';
 import { _delete_user_profile } from '../../features/Fullprofile';
+import { _hide_nav_,_show_nav_ } from '../../features/HideShowNavBarGlobalState';
 import { _make_blur_ } from '../../features/BlurBg';
 import {MdCircle,MdClose,MdHome,MdOutlineHome,MdPeopleAlt,MdPhotoCameraFront,MdLogout, MdArtTrack, MdDocumentScanner, MdSettings, MdSettingsAccessibility, MdSettingsApplications, MdSettingsBackupRestore, MdHelp, MdSearch } from 'react-icons/md';
 
@@ -18,14 +19,11 @@ import { Button } from '@mui/material';
 import Select from 'react-select'
 import { BsChat, BsCheckCircle, BsReceipt, BsRecordCircleFill } from 'react-icons/bs';
 
-import WebFont from 'webfontloader';
 
 const Navbar = () => {
 
   const [activeLink, setActiveLink] = useState('');
   const dispatch = useDispatch();
-
-  const [HideShowNavBar,setHideShowNavBar] = useState(false);
 
   const [isHovered, setHovered] = useState(false);
 
@@ -34,7 +32,9 @@ const Navbar = () => {
     (state) =>state.SetFullProfile.Fullprofile
   );
 
-  // console.log(PROFILE_DATA)
+  let NAV_BAR_CONDITION = useSelector(
+    (state) =>state.SetHideShowNavBarGlobalState.HideShowNavBarGlobalState    
+  );
 
 
   const language = [
@@ -62,19 +62,19 @@ const Navbar = () => {
       <div
           className="flex items-center justify-between">
       <div className='p-2 sm:hidden'>
-      {HideShowNavBar
+      {NAV_BAR_CONDITION
       ?
         <>
           <FaTimes size={24} onClick={()=>{
               dispatch(_make_blur_(false))
-              setHideShowNavBar(!HideShowNavBar)
+              dispatch(_hide_nav_(!NAV_BAR_CONDITION))
               }}/>
           </>
       :
         <>
           <FaBars size={24} onClick={()=>{
             dispatch(_make_blur_(true))
-            setHideShowNavBar(!HideShowNavBar)
+              dispatch(_show_nav_(!NAV_BAR_CONDITION))
             }}/>
         </>
       }
@@ -345,13 +345,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {HideShowNavBar
+      {NAV_BAR_CONDITION
       ?
         <>
-          {/* <div className={`${HideShowNavBar?"flex justify-center":"-translate-x-full"} transform absolute z-[100] w-[100%] h-[100%] flex justify-center duration-500 bg-gray-700`}> */}
-          
           <div 
-            className={`${HideShowNavBar?"":"-translate-x-full"} absolute left-0 w-[50%] h-full shadow-2xl bg-white  transform  z-[100]  duration-500 `}
+            className={`${NAV_BAR_CONDITION?"":"-translate-x-full"} absolute left-0 w-64 h-full shadow-2xl bg-white  transform  z-[100]  duration-500 `}
             // className="mt-[67px] fixed left-0 top-0 h-full w-[100%] shadow-2xl bg-white"
           >
 
@@ -391,7 +389,10 @@ const Navbar = () => {
 
                   <div className="mt-[1vh] h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
 
-                    <Link to="/" onClick={() => handleLinkClick('dashboard')}>
+                    <Link to="/" onClick={() => {
+                      handleLinkClick('dashboard')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                    }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'dashboard' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
 
                         {/* <MdOutlineHome size={25}/> */}
@@ -403,7 +404,10 @@ const Navbar = () => {
                       </div>
                     </Link>
                     
-                    <Link to="/template" onClick={() => handleLinkClick('template')}>
+                    <Link to="/template" onClick={() => {
+                      handleLinkClick('template')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                      }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'template' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
                         {/* <CgTemplate size={25}/> */}
                         <svg width="18" height="26" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -413,7 +417,10 @@ const Navbar = () => {
                         <p className="text-[15px]  ml-[10px] font-helv">Template</p>
                       </div>
                     </Link>
-                    <Link to="/chat" onClick={() => handleLinkClick('chat')}>
+                    <Link to="/chat" onClick={() => {
+                      handleLinkClick('chat')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                    }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'chat' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
                         {/* <BsChat size={25}/> */}
                         <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -423,7 +430,10 @@ const Navbar = () => {
                         <p className="text-[15px]  ml-[10px] font-helv">Chat</p>
                       </div>
                     </Link>
-                    <Link to="/documents" onClick={() => handleLinkClick('documents')}>
+                    <Link to="/documents" onClick={() => {
+                      handleLinkClick('documents')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                    }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'documents' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
                         {/* <CgFileDocument size={25}/> */}
                         <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -433,7 +443,10 @@ const Navbar = () => {
                         <p className="text-[15px]  ml-[10px] font-helv">Documents</p>
                       </div>
                     </Link>
-                    <Link to="/recipes" onClick={() => handleLinkClick('recipes')}>
+                    <Link to="/recipes" onClick={() => {
+                      handleLinkClick('recipes')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                    }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'recipes' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
                         {/* <BsReceipt size={25}/> */}
                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -443,7 +456,10 @@ const Navbar = () => {
                         <p className="text-[15px]  ml-[10px] font-helv">Recipes</p>
                       </div>
                     </Link>
-                    <Link to="/art" onClick={() => handleLinkClick('art')}>
+                    <Link to="/art" onClick={() => {
+                      handleLinkClick('art')
+                      dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                    }}>
                       <div className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${activeLink === 'art' ? 'shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold' : ''}`}>
                         {/* <MdDocumentScanner size={25}/> */}
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -471,12 +487,14 @@ const Navbar = () => {
                     <AiOutlineCloseCircle 
                           onClick={()=>{
                             setHovered(!isHovered)
+                            dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                           }}  className='w-12 h-6 float-right mt-2 hover:text-red-500 cursor-pointer'/>
                   
                     <div className="flex flex-col items-center justify-center ">
                         <div className="mt-[5vh] ">
                             <Link to="/profile" onClick={()=>{
                             setHovered(!isHovered)
+                            dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                           }}>
                                 <div  className='flex mb-4  hover:text-blue-500 cursor-pointer'>
                                   <div className='mr-2'>
@@ -504,7 +522,8 @@ const Navbar = () => {
                               </div>
                             </div>                      
                                 <Link to="/logout" onClick={() =>{
-                                  handleLinkClick('logout')
+                                    dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                                    handleLinkClick('logout')
                                     localStorage.clear();
                                     dispatch(_delete_token_(null))
                                     dispatch(_save_survey_(null))
