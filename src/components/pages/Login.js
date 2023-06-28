@@ -46,7 +46,6 @@ import axios from 'axios';
 import FacebookLoginPage from './FacebookLoginPage'
 import GoogleOneTap from './GoogleOneTap';
 
-
 const style = {
     position: 'absolute',
     top: '50%',
