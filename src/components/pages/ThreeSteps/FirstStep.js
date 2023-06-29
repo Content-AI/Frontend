@@ -30,7 +30,7 @@ const FirstStep = () => {
           <div className="min-h-full flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             {/*content*/}
             {/*header*/}
-            <div className="w-full max-w-[727px] px-10 py-[52px] border border-[#CFD0D5] rounded">
+            <div className="font-helv w-full max-w-[727px] px-10 py-[52px] border border-[#CFD0D5] rounded">
               <TopBar />
               <div className="my-7">
                 <Dots steps="first" />
