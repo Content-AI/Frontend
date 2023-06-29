@@ -1,256 +1,301 @@
-import React , {useEffect, useState} from 'react'
-import TopBar from './TopBar'
-import toast, { Toaster } from 'react-hot-toast';
-import Dots from '../Dots';
-import ChoiceButton from '../ChoiceButton';
+import React, { useEffect, useState } from "react";
+import TopBar from "./TopBar";
+import toast, { Toaster } from "react-hot-toast";
+import Dots from "../Dots";
+import ChoiceButton from "../ChoiceButton";
 
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 import { useNavigate } from "react-router-dom";
 
 const FirstStep = () => {
-
   let navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [showModal, setShowModal] = React.useState(true);
-  
-  const [data,setdata] = useState("");
-  
 
-  
+  const [data, setdata] = useState("");
+
   const handleToggle = (e) => {
     setIsSelected(!isSelected);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(data)
-  },[data])
-
+  }, [data]);
 
   return (
     <>
-       {showModal ? (
+      {showModal ? (
         <>
-          <div
-            className="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
-              
-
-              {/*content*/}
-                {/*header*/}
-                <div className="flex  items-center justify-center p-3 border-b border-solid border-slate-200 rounded-t">
-            <div className="font-sans p-3 w-[70%] rounded-md shadow-2xl">
+          <div className="min-h-full flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            {/*content*/}
+            {/*header*/}
+            <div className="font-helv w-full max-w-[727px] px-10 py-[52px] border border-[#CFD0D5] rounded">
               <TopBar />
-              <Dots steps="first"/>
-              <h1 className="text-1xl p-3 font-semibold space-x-0 mt-10">
+              <div className="my-7">
+                <Dots steps="first" />
+              </div>
+              <h3 className="text-sm font-bold mb-5">
                 What best describes your role?
-              </h1>
-
-              <div className="flex justify-evenly ">
-
-                  {data==="Business Owner"
-                    ?
-                    <div onClick={()=>{
-                      setdata("Business Owner")
-                    }} 
-                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                        <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                        <span className="text-blue-800 font-semibold text-[13px]">Business Owner</span>
-                    </div>
-                  :
-                    <div onClick={()=>{
-                      setdata("Business Owner")
-                    }} 
-                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                        <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                        <span className="text-blue-800 font-semibold text-[13px]">Business Owner</span>
-                    </div>
-                    
-                  }
-
-
-                {data==="Marketer - at a company"
-                  ?
-                  <div onClick={()=>{
-                    setdata("Marketer - at a company")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Marketer - at a company</span>
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                {data === "Business Owner" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Business Owner");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Business Owner
+                    </span>
                   </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Marketer - at a company")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Marketer - at a company</span>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Business Owner");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Business Owner
+                    </span>
                   </div>
-                }
-                </div>
+                )}
 
-
-
-                <div className="flex justify-evenly ">
-
-                {data==="Marketer - agency or freelance"
-                  ?
-                  <div onClick={()=>{
-                    setdata("Marketer - agency or freelance")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Marketer - agency or freelance</span>
+                {data === "Marketer - at a company" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Marketer - at a company");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Marketer - at a company
+                    </span>
                   </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Marketer - agency or freelance")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Marketer - agency or freelance</span>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Marketer - at a company");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Marketer - at a company
+                    </span>
                   </div>
-                }
+                )}
 
-                {data==="Copywriter - at a company"
-                  ?
-
-                  <div onClick={()=>{
-                    setdata("Copywriter - at a company")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Copywriter - at a company</span>
+                {data === "Marketer - agency or freelance" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Marketer - agency or freelance");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Marketer - agency or freelance
+                    </span>
                   </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Copywriter - at a company")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Copywriter - at a company</span>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Marketer - agency or freelance");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Marketer - agency or freelance
+                    </span>
                   </div>
-                }
-                </div>
-                <div 
-                  className="flex justify-evenly ">
+                )}
 
-                {data==="Copywriter - at a freelance"
-                  ?
-                <div onClick={()=>{
-                    setdata("Copywriter - at a freelance")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Copywriter - at a freelance</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Copywriter - at a freelance")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Copywriter - at a freelance</span>
-                </div>
-                }
+                {data === "Copywriter - at a company" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Copywriter - at a company");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Copywriter - at a company
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Copywriter - at a company");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Copywriter - at a company
+                    </span>
+                  </div>
+                )}
 
-                {data==="Other employee - at a company"
-                  ?
-                <div onClick={()=>{
-                    setdata("Other employee - at a company")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Other employee - at a company</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Other employee - at a company")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Other employee - at a company</span>
-                </div>
-                }
+                {data === "Copywriter - at a freelance" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Copywriter - at a freelance");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Copywriter - at a freelance
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Copywriter - at a freelance");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Copywriter - at a freelance
+                    </span>
+                  </div>
+                )}
+
+                {data === "Other employee - at a company" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Other employee - at a company");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Other employee - at a company
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Other employee - at a company");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Other employee - at a company
+                    </span>
+                  </div>
+                )}
+
+                {data === "Student" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Student");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Student
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Student");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Student
+                    </span>
+                  </div>
+                )}
+
+                {data === "Hobbyist" ? (
+                  <div
+                    onClick={() => {
+                      setdata("Hobbyist");
+                    }}
+                    className="bg-blue-200 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-blue-700"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Hobbyist
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      setdata("Hobbyist");
+                    }}
+                    className="bg-blue-100 h-[40px] rounded items-center px-4 py-3 flex gap-x-3"
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#1d43ff80]"></span>
+                    <span className="text-blue-800 font-semibold text-[13px]">
+                      Hobbyist
+                    </span>
+                  </div>
+                )}
               </div>
-                <div 
-                  className="flex justify-evenly ">
-
-              {data==="Student"
-                  ?
-                <div onClick={()=>{
-                    setdata("Student")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Student</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Student")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Student</span>
-                </div>
-              }
-              
-              {data==="Hobbyist"
-                ?
-                <div onClick={()=>{
-                    setdata("Hobbyist")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Hobbyist</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Hobbyist")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Hobbyist</span>
-                </div>
-              }
-                </div>
-
-                <Button variant="contained" className="float-right"
-                sx={{textTransform: 'none'}} 
-                  onClick={()=>{
-                      // navigate("/second_step")
-                      navigate("/second_step?survey_data_second=by-for-user-clarification", {
+              <div className="flex justify-end mt-5">
+                <Button
+                  variant="contained"
+                  className="flex items-center justify-center !px-8 !py-3 bg-[1D43FF] opacity-50"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => {
+                    // navigate("/second_step")
+                    navigate(
+                      "/second_step?survey_data_second=by-for-user-clarification",
+                      {
                         state: {
-                          first_answer:data,
+                          first_answer: data,
                         },
-                      });
+                      }
+                    );
                   }}
-                  >Next</Button>
-                <div className="flex justify-center">
-                  <div>
-                    <button
-                    onClick={()=>{
-                      // navigate("/second_step")
-                      navigate("/second_step?survey_data_second=by-for-user-clarification", {
-                        state: {
-                          first_answer:data,
-                        },
-                      });
-                  }}
-                      type='button' className="p-6 bg-white text-blue-700 font-semibold text-[15px]">Skip Question</button>
-                  </div>
-                </div>
-                  </div>
-                </div>
+                >
+                  Next
+                </Button>
               </div>
+              <div className="flex justify-center mt-5">
+                <button
+                  onClick={() => {
+                    // navigate("/second_step")
+                    navigate(
+                      "/second_step?survey_data_second=by-for-user-clarification",
+                      {
+                        state: {
+                          first_answer: data,
+                        },
+                      }
+                    );
+                  }}
+                  type="button"
+                  className="text-blue-700 text-sm"
+                >
+                  Skip Question
+                </button>
+              </div>
+            </div>
+          </div>
 
-
-
-          
           <div className="fixed inset-0 z-40 bg-white"></div>
         </>
       ) : null}
-      
-        <Toaster />
+
+      <Toaster />
     </>
-  )
-}
+  );
+};
 
-
-export default FirstStep
+export default FirstStep;
