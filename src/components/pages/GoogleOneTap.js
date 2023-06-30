@@ -15,6 +15,10 @@ import {
 import {
   _save_survey_
 } from "../../features/ThreeSteps";
+import {
+  _load_screen_
+} from "../../features/LoadingScreen";
+
 
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
@@ -30,6 +34,11 @@ const GoogleOneTap = () => {
     const notifyerr = (message) => toast.error(message);
 
     const [token_of_gmail,set_token_of_gmail] = useState(null)
+
+
+    let loading_page = useSelector(
+      (state) => state.SetLoadingScreen.LoadingScreen
+    );
 
     useEffect(()=>{
         const script=document.createElement("script");
@@ -60,6 +69,7 @@ const GoogleOneTap = () => {
   const get_user_date = async(token_data) =>{
     // console.log('token_data',token_data)
     if (token_data){
+        dispatch(_load_screen_(true))
         axios.post(BACKEND_URL+BACK_API_GOOGLE,{
           auth_token: token_data
         }).then((response)=>{
@@ -71,8 +81,10 @@ const GoogleOneTap = () => {
             dispatch(_save_survey_(response.data.three_steps))
 
           }
+          dispatch(_load_screen_(false))
           navigate("/");
         }).catch((err)=>{
+          dispatch(_load_screen_(false))
           try{
             notifyerr("Try loggin in different account")
           }catch(e){

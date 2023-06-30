@@ -24,6 +24,10 @@ import {
     _save_survey_
   } from "../../features/ThreeSteps";
 
+import {
+    _load_screen_
+  } from "../../features/LoadingScreen";
+
 import {BACKEND_URL,BACK_API_LOGIN_URL,BACK_TOKEN_RECEIVE,BACK_API_FACEBOOK} from '../../apis/urls'
 import Checkbox from '@mui/material/Checkbox';
 
@@ -64,6 +68,7 @@ export default function Login() {
     const dispatch = useDispatch();
 
     const [open, setOpen] = React.useState(false);
+    const [popupgoogle,setpopupgoogle] = React.useState(false);
 
     
     const [OTP, setOTP] = useState("");
@@ -77,10 +82,24 @@ export default function Login() {
     const[loading,setloading]=useState(false)
 
 
-    // const [formData, setFormData] = useState({
-    //     email: '',
-    //     password: '',
-    //   });
+    let TOKEN = useSelector(
+        (state) => state.SetAuthenticationToken.AuthenticationToken
+      );
+  
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if(TOKEN){
+            }else{
+                setpopupgoogle(true)
+            }
+        }, 10000);
+    
+        return () => {
+          clearTimeout(timer);
+        };
+      }, []);
+    
+
     const [formData, setFormData] = useState({
         email: '',
       });
@@ -175,7 +194,7 @@ export default function Login() {
     
     return (
         <>
-        <GoogleOneTap/>
+        {popupgoogle?<GoogleOneTap/>:null}
         <div className={open ? 'blur-sm' : ''}>
         <div className=" flex items-center flex-col  w-full p-4 sm:p-1">
             <div className='mt-[5%] items-center font-bold text-[25px] text-blue-800'>

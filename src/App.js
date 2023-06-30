@@ -12,6 +12,10 @@ import {
 } from "./features/ThreeSteps";
 
 import { _save_user_profile } from './features/Fullprofile';
+import {
+  _load_screen_
+} from "./features/LoadingScreen";
+
 
 import { useNavigate } from "react-router-dom";
 import Login from './components/pages/Login';
@@ -19,6 +23,7 @@ import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
 import { fetchData } from './apis/apiService';
 import { BACK_END_API_PROFILE,BACKEND_URL } from './apis/urls';
+import LoadingPage from './components/LoadingPage';
 
 function App() {
   
@@ -29,6 +34,9 @@ function App() {
   );
   let _survey_data_ = useSelector(
     (state) => state.SetThreeSteps.ThreeSteps
+  );
+  let loading_page = useSelector(
+    (state) => state.SetLoadingScreen.LoadingScreen
   );
 
 
@@ -67,14 +75,27 @@ function App() {
   return (  
     (TOKEN
       ?
-        <>
+      <>
+      {loading_page
+        ?
+          <LoadingPage/>
+        :
           <div>
             <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-              <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+            <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
           </div>
+        }
         </>
       :
-        <Login/>
+      loading_page
+        ?
+          <>
+            <LoadingPage/>
+          </>
+        :
+          <>
+            <Login/>
+          </>
     )
   );
 }
