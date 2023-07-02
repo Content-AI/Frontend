@@ -24,6 +24,10 @@ import {
     _save_survey_
   } from "../../features/ThreeSteps";
 
+import {
+    _load_screen_
+  } from "../../features/LoadingScreen";
+
 import {BACKEND_URL,BACK_API_LOGIN_URL,BACK_TOKEN_RECEIVE,BACK_API_FACEBOOK} from '../../apis/urls'
 import Checkbox from '@mui/material/Checkbox';
 
@@ -46,7 +50,6 @@ import axios from 'axios';
 import FacebookLoginPage from './FacebookLoginPage'
 import GoogleOneTap from './GoogleOneTap';
 
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -65,6 +68,7 @@ export default function Login() {
     const dispatch = useDispatch();
 
     const [open, setOpen] = React.useState(false);
+    const [popupgoogle,setpopupgoogle] = React.useState(false);
 
     
     const [OTP, setOTP] = useState("");
@@ -78,10 +82,24 @@ export default function Login() {
     const[loading,setloading]=useState(false)
 
 
-    // const [formData, setFormData] = useState({
-    //     email: '',
-    //     password: '',
-    //   });
+    let TOKEN = useSelector(
+        (state) => state.SetAuthenticationToken.AuthenticationToken
+      );
+  
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if(TOKEN){
+            }else{
+                setpopupgoogle(true)
+            }
+        }, 10000);
+    
+        return () => {
+          clearTimeout(timer);
+        };
+      }, []);
+    
+
     const [formData, setFormData] = useState({
         email: '',
       });
@@ -176,7 +194,7 @@ export default function Login() {
     
     return (
         <>
-        <GoogleOneTap/>
+        {popupgoogle?<GoogleOneTap/>:null}
         <div className={open ? 'blur-sm' : ''}>
         <div className=" flex items-center flex-col  w-full p-4 sm:p-1">
             <div className='mt-[5%] items-center font-bold text-[25px] text-blue-800'>
@@ -207,14 +225,14 @@ export default function Login() {
 
 
         <div className="flex mt-4 items-center">
-            <hr className="flex-grow border-t border-gray-300 ml-20" />
+            <hr className="flex-grow border-t border-gray-300 lg:ml-[30%] md:ml-[10%] sm:ml-[10%]" />
             <span className="px-4 text-slate-600 text-[15px] ">or continue with</span>
-            <hr className="flex-grow border-t border-gray-300 mr-20" />
+            <hr className="flex-grow border-t border-gray-300 lg:mr-[30%] md:mr-[10%] sm:mr-[10%]" />
         </div>
 
 
         <form className="p-6" onSubmit={handleSubmit}>
-        <div className='flex  lg:w-[60%] md:w-[100%] sm:w-[60%] m-auto flex-col  p-3'>
+        <div className='flex  lg:w-[40%] md:w-[100%] sm:w-[60%] m-auto flex-col  p-3'>
                             <div className="mb-2">
                                 <label
                                     htmlFor="email"

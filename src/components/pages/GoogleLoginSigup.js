@@ -47,15 +47,13 @@ const GoogleLoginSigup = () => {
             dispatch(_save_token_(response.data.access));
             localStorage.setItem("three_steps",response.data.three_steps)
             dispatch(_save_survey_(response.data.three_steps))
-            // dispatch(_save_user_profile(response.data.user))            
-            navigate("/");
 
           }
           navigate("/");
         }).catch((err)=>{
           // navigate("/login");
           try{
-            notifyerr("Try loggin in")
+            notifyerr("Try loggin in different account")
           }catch(e){
             notifyerr("something went wrong refresh page")
           }
@@ -81,6 +79,8 @@ const GoogleLoginSigup = () => {
               onSuccess={credentialResponse => {
                   get_user_date(credentialResponse.credential)
               }}
+              prompt="select_account"
+              isSignedIn={false}
           >
             {(renderProps) => (
               <button
