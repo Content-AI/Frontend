@@ -8,15 +8,12 @@ import SecondStep from "../pages/ThreeSteps/SecondStep";
 import ThirdStep from "../pages/ThreeSteps/ThirdStep";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  _save_token_
-} from "../../features/AuthenticationToken";
+import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-import Chat from '../pages/chat/Chat'
-
+import Chat from "../pages/chat/Chat";
+import Template from "../pages/Template/Template";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
-
   const location = useLocation();
 
   let TOKEN = useSelector(
@@ -25,24 +22,44 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
 
   return (
     <>
-    {TOKEN
-      ?
-    <Routes>
-        <Route path="/" element={<Home />} />
+      {TOKEN ? (
+        <main className="lg:ml-64 p-6 bg-white">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/Template" element={<Template />} />
 
-        <Route path="/profile" element={<Profile />} />
-        
-        <Route path="/chat" element={<Chat />} />
-        
-        <Route path="/first_step" element={<FirstStep AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_} />} />
-        <Route path="/second_step" element={<SecondStep AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_} />} />
-        <Route path="/third_step" element={<ThirdStep AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_} />} />
-        <Route path="/*" element={<Home />} />
-
-    </Routes>
-    :
-      <Route path="/login" element={<Login />} />
-    }
+            <Route
+              path="/first_step"
+              element={
+                <FirstStep
+                  AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_}
+                />
+              }
+            />
+            <Route
+              path="/second_step"
+              element={
+                <SecondStep
+                  AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_}
+                />
+              }
+            />
+            <Route
+              path="/third_step"
+              element={
+                <ThirdStep
+                  AUTHORIZATION_TOKEN={_TOKEN_FOR_VALIDATION_NAVBAR_}
+                />
+              }
+            />
+            <Route path="/*" element={<Home />} />
+          </Routes>
+        </main>
+      ) : (
+        <Route path="/login" element={<Login />} />
+      )}
     </>
   );
 };
