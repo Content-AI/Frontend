@@ -1,4 +1,3 @@
-
 // BACKEND_URL = "http://localhost:8000"
 BACKEND_URL = "https://copyai.pythonanywhere.com"
 export var BACKEND_URL;
