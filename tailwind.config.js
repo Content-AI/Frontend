@@ -27,10 +27,15 @@ module.exports = {
       colors: {
         blue: {
           DEFAULT: "#1D43FF",
+          700: "#2196F3",
           900: "#FAFBFD",
+        },
+        green: {
+          DEFAULT: "#23C16B",
         },
         text: {
           DEFAULT: "#414357",
+          black: "#36464E",
         },
         border: {
           DEFAULT: "#CFD0D5",

@@ -47,6 +47,8 @@ import {
   BsRecordCircleFill,
 } from "react-icons/bs";
 
+import NavIcons from "../Icons/NavIcons";
+
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("");
   const dispatch = useDispatch();
@@ -76,10 +78,12 @@ const Navbar = () => {
     { name: "Contact", link: "#contact" },
   ];
 
+  const navURL = [{ title: "dashboard", link: "/" }];
+
   return (
     <>
       <div className="flex items-center justify-between h-20 px-6 border-b border-border">
-        <div className="p-2 sm:hidden">
+        <div className="p-2 lg:hidden">
           {NAV_BAR_CONDITION ? (
             <>
               <FaTimes
@@ -102,19 +106,20 @@ const Navbar = () => {
             </>
           )}
         </div>
-        <div className="pl-4 sm:hidden">
+        <div className="pl-4 lg:hidden">
           <img
             src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
             className="w-[50px] h-[50px] rounded-full"
           />
         </div>
-        <div className="sm:flex items-center gap-10 ml-auto hidden">
+        <div className="lg:flex items-center gap-10 ml-auto hidden">
           <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
             What's New
             <span className="text-blue-600 absolute -top-[1px] -right-2">
               <MdCircle size={10} />
             </span>
           </p>
+
           <Select
             options={language}
             className="w-[80px] font-semibold text-[12px]"
@@ -133,7 +138,7 @@ const Navbar = () => {
             to Pro
           </Button>
         </div>
-        <div className="sm:hidden p-2">
+        <div className="lg:hidden p-2">
           <Select
             options={language}
             className="mr-4 w-[80px] font-semibold text-[12px]"
@@ -142,7 +147,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="fixed hidden sm:block left-0 top-0 w-64 h-full bg-blue-900 border-r border-border">
+      <div className="fixed hidden lg:block left-0 top-0 w-64 h-full bg-blue-900 border-r border-border">
         <div className="logo flex items-center h-20 pl-4 mb-6 border-b border-border">
           <img
             src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
@@ -190,7 +195,31 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="mt-[1vh] h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
+          <div className="mt-6 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
+            {/* {navURL.map((items, index) => {
+              const { title, link, icon } = items;
+              return (
+                <Link
+                  key={index}
+                  to={link}
+                  onClick={() => handleLinkClick(title)}
+                >
+                  <div
+                    className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${
+                      activeLink === title
+                        ? "shadow-sm text-blue-800 bg-slate-300  rounded-[10px] font-bold"
+                        : ""
+                    }`}
+                  >
+                    <NavIcons {...items} />
+
+                    <p className="text-[15px] capitalize ml-[10px] font-helv">
+                      {title}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })} */}
             <Link to="/" onClick={() => handleLinkClick("dashboard")}>
               <div
                 className={`flex p-[10px] mb-4 mt-1 mr-2 ml-2   ${
