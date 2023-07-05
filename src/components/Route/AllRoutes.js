@@ -10,7 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-import Chat from "../pages/Chat/Chat";
+// import Chat from "../pages/Chat/Chat";
+import Chat from "../pages/chat/Chat"
 import Template from "../pages/Template/Template";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
