@@ -1,6 +1,7 @@
-const dashboard = ({ fill = "#343330" }) => {
+const Dashboard = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="18"
       height="26"
       viewBox="0 0 18 19"
@@ -15,9 +16,10 @@ const dashboard = ({ fill = "#343330" }) => {
   );
 };
 
-const template = ({ fill = "#343330" }) => {
+const Template = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="18"
       height="26"
       viewBox="0 0 18 18"
@@ -32,9 +34,10 @@ const template = ({ fill = "#343330" }) => {
   );
 };
 
-const chat = ({ fill = "#343330" }) => {
+const Chat = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="22"
       height="20"
       viewBox="0 0 22 20"
@@ -43,15 +46,16 @@ const chat = ({ fill = "#343330" }) => {
     >
       <path
         d="M20.7299 15.5623C21.2589 14.4871 21.5225 13.3008 21.4987 12.1028C21.4749 10.9047 21.1644 9.72984 20.5932 8.67647C20.022 7.6231 19.2067 6.72193 18.2156 6.04843C17.2245 5.37493 16.0865 4.94871 14.8968 4.80545C14.5023 3.8857 13.9276 3.05421 13.2067 2.35998C12.4859 1.66575 11.6333 1.12282 10.6994 0.763179C9.76539 0.403539 8.76889 0.234462 7.76857 0.265911C6.76825 0.29736 5.78434 0.528698 4.87482 0.946295C3.96529 1.36389 3.14854 1.9593 2.47269 2.69744C1.79683 3.43558 1.27555 4.30153 0.939551 5.24425C0.603551 6.18698 0.459629 7.18742 0.516265 8.18663C0.572901 9.18584 0.828949 10.1636 1.26932 11.0623L0.551198 13.5767C0.487117 13.8016 0.484309 14.0396 0.543067 14.266C0.601824 14.4924 0.720012 14.699 0.885399 14.8644C1.05079 15.0298 1.25736 15.148 1.48376 15.2067C1.71015 15.2655 1.94813 15.2627 2.17307 15.1986L4.68745 14.4805C5.44618 14.853 6.26232 15.0948 7.10151 15.1958C7.50154 16.133 8.08836 16.9788 8.82615 17.6817C9.56394 18.3846 10.4372 18.9298 11.3927 19.284C12.3482 19.6381 13.3658 19.7939 14.3835 19.7417C15.4012 19.6895 16.3976 19.4305 17.3118 18.9805L19.8262 19.6986C20.0511 19.7627 20.2891 19.7655 20.5155 19.7067C20.7419 19.648 20.9485 19.5298 21.1139 19.3644C21.2793 19.199 21.3974 18.9924 21.4562 18.766C21.515 18.5396 21.5122 18.3016 21.4481 18.0767L20.7299 15.5623ZM19.2056 15.688L19.9134 18.1639L17.4374 17.4561C17.2488 17.403 17.0469 17.4259 16.8749 17.5198C15.4924 18.272 13.8699 18.4514 12.3564 18.0194C10.843 17.5873 9.5596 16.5785 8.78245 15.2098C9.80943 15.1029 10.8032 14.7848 11.7015 14.2757C12.5998 13.7665 13.3831 13.0771 14.0024 12.2509C14.6216 11.4247 15.0635 10.4794 15.3002 9.47436C15.5368 8.46931 15.5633 7.4262 15.3778 6.41045C16.2765 6.62225 17.1142 7.03861 17.8256 7.62711C18.5371 8.2156 19.1032 8.96037 19.4798 9.80341C19.8563 10.6465 20.0332 11.565 19.9967 12.4876C19.9603 13.4102 19.7113 14.312 19.2693 15.1226C19.1747 15.2954 19.1518 15.4985 19.2056 15.688Z"
-        fill="#1D43FF"
+        fill={fill}
       />
     </svg>
   );
 };
 
-const documents = ({ fill = "#343330" }) => {
+const Documents = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="18"
       height="20"
       viewBox="0 0 18 20"
@@ -66,9 +70,10 @@ const documents = ({ fill = "#343330" }) => {
   );
 };
 
-const recipes = ({ fill = "#343330" }) => {
+const Recipes = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="19"
       height="19"
       viewBox="0 0 19 19"
@@ -83,9 +88,10 @@ const recipes = ({ fill = "#343330" }) => {
   );
 };
 
-const art = ({ fill = "#343330" }) => {
+const Art = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="20"
       height="20"
       viewBox="0 0 20 20"
@@ -100,9 +106,10 @@ const art = ({ fill = "#343330" }) => {
   );
 };
 
-const settings = ({ fill = "#343330" }) => {
+const Settings = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -117,9 +124,10 @@ const settings = ({ fill = "#343330" }) => {
   );
 };
 
-const help = ({ fill = "#343330" }) => {
+const Help = ({ fill }) => {
   return (
     <svg
+      className="w-full h-full"
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -134,15 +142,19 @@ const help = ({ fill = "#343330" }) => {
   );
 };
 
-const NavIcons = {
-  dashboard,
-  template,
-  chat,
-  documents,
-  recipes,
-  art,
-  settings,
-  help,
+const NavIcons = ({ icon, fill }) => {
+  return (
+    <>
+      {icon === "dashboard" && <Dashboard fill={fill} />}
+      {icon === "template" && <Template fill={fill} />}
+      {icon === "chat" && <Chat fill={fill} />}
+      {icon === "documents" && <Documents fill={fill} />}
+      {icon === "recipes" && <Recipes fill={fill} />}
+      {icon === "art" && <Art fill={fill} />}
+      {icon === "settings" && <Settings fill={fill} />}
+      {icon === "help" && <Help fill={fill} />}
+    </>
+  );
 };
 
 export default NavIcons;

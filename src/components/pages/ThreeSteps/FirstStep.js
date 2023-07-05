@@ -45,7 +45,7 @@ const FirstStep = () => {
     <>
       {showModal ? (
         <>
-          <div className="relative z-50 min-h-screen flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+          <div className="z-50 fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
             {/*content*/}
             {/*header*/}
             <div className="w-full max-w-[727px] font-helv px-10 py-[52px] border border-[#CFD0D5] rounded">

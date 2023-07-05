@@ -84,7 +84,7 @@ const ThirdStep = () => {
     <>
       {showModal ? (
         <>
-          <div className="relative z-50 min-h-screen flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+          <div className="z-50 fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
             {/*content*/}
             {/*header*/}
             <div className="w-full max-w-[727px] font-helv px-10 py-[52px] border border-[#CFD0D5] rounded">
@@ -119,7 +119,7 @@ const ThirdStep = () => {
                       viewBox="0 0 20 20"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      classname="w-full h-full"
+                      className="w-full h-full"
                     >
                       <path
                         d="M12.9417 15.8077C12.9998 15.8657 13.0458 15.9347 13.0773 16.0105C13.1087 16.0864 13.1249 16.1677 13.1249 16.2499C13.1249 16.332 13.1087 16.4133 13.0773 16.4892C13.0458 16.565 12.9998 16.634 12.9417 16.692C12.8836 16.7501 12.8147 16.7962 12.7388 16.8276C12.663 16.859 12.5816 16.8752 12.4995 16.8752C12.4174 16.8752 12.3361 16.859 12.2602 16.8276C12.1843 16.7962 12.1154 16.7501 12.0573 16.692L5.80733 10.442C5.74922 10.384 5.70312 10.3151 5.67167 10.2392C5.64021 10.1633 5.62402 10.082 5.62402 9.99986C5.62402 9.91772 5.64021 9.8364 5.67167 9.76052C5.70312 9.68465 5.74922 9.61572 5.80733 9.55767L12.0573 3.30767C12.1746 3.1904 12.3337 3.12451 12.4995 3.12451C12.6654 3.12451 12.8244 3.1904 12.9417 3.30767C13.059 3.42495 13.1249 3.58401 13.1249 3.74986C13.1249 3.91571 13.059 4.07477 12.9417 4.19205L7.13311 9.99986L12.9417 15.8077Z"

@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-import Chat from "../pages/chat/Chat";
+import Chat from "../pages/Chat/Chat";
 import Template from "../pages/Template/Template";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
@@ -23,7 +23,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   return (
     <>
       {TOKEN ? (
-        <main className="lg:ml-64 p-6 bg-white">
+        <main className="flex flex-col lg:ml-64 min-h-[calc(100vh-80px)] p-6 text-black bg-white">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
