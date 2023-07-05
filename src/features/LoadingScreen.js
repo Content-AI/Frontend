@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialStateValue = {
-    LoadingScreen:  false,
+    LoadingScreen:  true,
 }
 
 export const counterSlice = createSlice({

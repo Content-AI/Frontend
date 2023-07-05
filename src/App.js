@@ -27,8 +27,10 @@ import LoadingPage from './components/LoadingPage';
 
 function App() {
   
+  
   let navigate = useNavigate();
   const dispatch = useDispatch();
+
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
@@ -44,6 +46,7 @@ function App() {
     if (localStorage.getItem("token")) {
       dispatch(_save_token_(localStorage.getItem("token")));
     }else{
+      dispatch(_load_screen_(false))
       navigate('login')
     }
   }, []);
@@ -52,6 +55,7 @@ function App() {
     const profile_data = await fetchData(BACKEND_URL+BACK_END_API_PROFILE,TOKEN)
     if(profile_data.status=200){
       dispatch(_save_user_profile(profile_data.data[0]))
+      dispatch(_load_screen_(false))
     }
 
   }
@@ -71,31 +75,27 @@ function App() {
       navigate("/first_step?survey_data_first=by-for-user-clarification")
     }
   },[_survey_data_])
+  
 
   return (  
     (TOKEN
       ?
-      <>
-      {loading_page
-        ?
-          <LoadingPage/>
-        :
+      loading_page
+      ?
+        <LoadingPage/>
+      :
           <div>
             <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
             <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
           </div>
-        }
-        </>
       :
       loading_page
-        ?
-          <>
-            <LoadingPage/>
-          </>
-        :
-          <>
-            <Login/>
-          </>
+      ?
+        <LoadingPage/>
+      :
+        <>
+          <Login/>
+        </>
     )
   );
 }
