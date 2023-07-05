@@ -50,8 +50,6 @@ import clsx from "clsx";
 
 import NavIcons from "../Icons/NavIcons";
 
-import NavIcons from "../Icons/NavIcons";
-
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("");
   const dispatch = useDispatch();
