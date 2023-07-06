@@ -15,6 +15,8 @@ import { _save_user_profile } from './features/Fullprofile';
 import {
   _load_screen_
 } from "./features/LoadingScreen";
+import { _delete_token_ } from "./features/AuthenticationToken";
+import { _delete_user_profile } from "./features/Fullprofile";
 
 
 import { useNavigate } from "react-router-dom";
@@ -45,17 +47,29 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(_save_token_(localStorage.getItem("token")));
-    }else{
       dispatch(_load_screen_(false))
+    }else{
       navigate('login')
+      dispatch(_load_screen_(false))
     }
   }, []);
 
   const get_profile_data = async() => {
     const profile_data = await fetchData(BACKEND_URL+BACK_END_API_PROFILE,TOKEN)
-    if(profile_data.status=200){
-      dispatch(_save_user_profile(profile_data.data[0]))
-      dispatch(_load_screen_(false))
+    console.log(profile_data.status)
+      if(profile_data.status=200){
+        try{
+          dispatch(_save_user_profile(profile_data.data[0]))
+          dispatch(_load_screen_(false))
+        }catch(e){
+          localStorage.clear();
+          dispatch(_delete_token_(null));
+          dispatch(_save_survey_(null));
+          dispatch(_delete_user_profile(null));
+          dispatch(_load_screen_(false))
+          navigate("login")
+        }
+
     }
 
   }

@@ -13,6 +13,7 @@ import Profile from "../Profile/Profile";
 // import Chat from "../pages/Chat/Chat";
 import Chat from "../pages/chat/Chat"
 import Template from "../pages/Template/Template";
+import SingleTemplate from "../pages/Template/SingleTemplate";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -29,7 +30,30 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/Template" element={<Template />} />
+            
+            {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
+
+            <Route
+              path="Template"
+              AUTH_TOKEN={TOKEN}
+            >
+              <Route
+                index
+                element={
+                  <Template
+                  AUTH_TOKEN={TOKEN}
+                  />
+                }
+              />
+              <Route
+                path=":template_id"
+                element={
+                  <SingleTemplate
+                  AUTH_TOKEN={TOKEN}
+                  />
+                }
+              />
+            </Route>
 
             <Route
               path="/first_step"
@@ -55,6 +79,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
                 />
               }
             />
+            
             <Route path="/*" element={<Home />} />
           </Routes>
         </main>

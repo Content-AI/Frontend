@@ -1,5 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+import { BACKEND_URL,BACK_END_API_TEMPLATE } from "../../../apis/urls";
+import { fetchData } from "../../../apis/apiService";
+import LoadingPage from "../../LoadingPage";
+import { useNavigate } from "react-router-dom";
+
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  _load_screen_
+} from "../../../features/LoadingScreen";
 
 const buttonTags = [
   "All",
@@ -98,8 +108,29 @@ const cardData = [
   },
 ];
 
-const Template = () => {
+const Template = ({AUTH_TOKEN}) => {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+
+  let loading_page = useSelector(
+    (state) => state.SetLoadingScreen.LoadingScreen
+  );
+
   const [activeCat, setActiveCat] = useState();
+  const [templateData,settemplateData] = useState([]);
+
+  const get_template = async(url,token) =>{
+    const response_data = await fetchData(url,token)
+    settemplateData(response_data.data)
+  }
+  useEffect(()=>{
+    // dispatch(_load_screen_(true))
+    get_template(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN)
+  },[])
+
+
+
 
   return (
     <div className="">
@@ -148,7 +179,43 @@ const Template = () => {
           })}
         </div>
         <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
-          {cardData.map((items, index) => {
+
+          {templateData.length>0
+          ?
+            templateData.map((items,index)=>{
+              return (
+              <div
+                key={items.id}
+                className="card flex p-6 border border-border rounded-xl cursor-pointer"
+                onClick={()=>{
+                  // console.log(items.id)
+                  navigate(`/template/${items.id}`)
+                }}
+              >
+                <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                  <img src={BACKEND_URL+items.icon} alt="" className="block w-full" />
+                </div>
+                <div className="content relative flex-auto pl-4">
+                  <div className="title flex items-center justify-between gap-2 mb-2">
+                    <h4 className="text-sm font-bold leading-none">
+                      {items.title}
+                    </h4>
+                    {items.premium && (
+                      <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                        Premium
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm leading-none">{items.description}</p>
+                </div>
+              </div>
+            );
+            })
+          :
+            <LoadingPage/>
+          }
+
+          {/* {cardData.map((items, index) => {
             return (
               <div
                 key={index}
@@ -172,7 +239,7 @@ const Template = () => {
                 </div>
               </div>
             );
-          })}
+          })} */}
         </div>
       </div>
     </div>

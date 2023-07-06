@@ -149,7 +149,7 @@ const Navbar = () => {
             className="!bg-blue !px-3 !py-2.5 !pr-6 !text-lg"
           >
             <BsCheckCircle className="text-[#FFFFFF] mr-3" size={24} /> Upgrade
-            to Pro
+            to Pro s
           </Button>
         </div>
         <div className="lg:hidden p-2">
@@ -191,7 +191,7 @@ const Navbar = () => {
                 Project
               </span>
               <img
-                src="up_down.png"
+                src="/up_down.png"
                 className="cursor-pointer font-sans absolute top-1/2 right-4 -translate-y-1/2 w-6 h-6"
               />
               <input
@@ -357,14 +357,14 @@ const Navbar = () => {
                     />
                   ) : (
                     <img
-                      src="default.png"
+                      src="/default.png"
                       alt="Image"
                       className="w-8 h-8 rounded-full"
                     />
                   )
                 ) : (
                   <img
-                    src="default.png"
+                    src="/default.png"
                     alt="Image"
                     className="w-8 h-8 rounded-full"
                   />
@@ -385,7 +385,7 @@ const Navbar = () => {
                     Free plan
                   </p>
                 </div>
-                <img src="up_down.png" className="w-6 h-6 ml-auto" />
+                <img src="/up_down.png" className="w-6 h-6 ml-auto" />
               </Button>
             </div>
           </div>

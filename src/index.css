@@ -47,3 +47,40 @@ code {
   outline: none;
 }
 
+
+
+
+/* ===============Bouncing loading ================ */
+
+.bouncing-loader {
+  display: flex;
+  justify-content: center;
+  margin: 2px;
+  /* margin-top: 10px; */
+  padding: 1px;
+}
+
+.bouncing-loader > div {
+  width: 13px;
+  height: 13px;
+  margin: 1px 2px;
+  border-radius: 50%;
+  background-color: #e7cdcd;
+  opacity: 1;
+  animation: bouncing-loader 0.6s infinite alternate;
+}
+
+@keyframes bouncing-loader {
+  to {
+    opacity: 0.1;
+    transform: translateY(-7px);
+  }
+}
+
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
