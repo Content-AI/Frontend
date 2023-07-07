@@ -27,8 +27,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 
-import { FaBars } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 import {
   CgFileDocument,
@@ -46,9 +45,10 @@ import {
   BsReceipt,
   BsRecordCircleFill,
 } from "react-icons/bs";
+
 import clsx from "clsx";
 
-import NavIcons from "../Icons/NavIcons";
+import { NavIcons, SealCheck } from "../Icons";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("");
@@ -63,8 +63,8 @@ const Navbar = () => {
   );
 
   const language = [
-    { value: "Eng", label: "EN" },
-    { value: "France", label: "FR" },
+    { value: "Eng", label: "Eng" },
+    { value: "France", label: "France" },
   ];
 
   const handleLinkClick = (link) => {
@@ -90,13 +90,9 @@ const Navbar = () => {
     { title: "Help", link: "/help" },
   ];
 
-  // useEffect(() => {
-  //   console.log("import", <NavIcons icon={"dashboard"} />);
-  // }, []);
-
   return (
     <>
-      <div className="flex items-center justify-between h-20 px-6 border-b border-border">
+      <div className="z-10 fixed top-0 left-0 right-0 flex items-center justify-between h-[74px] px-6 bg-white border-b border-border">
         <div className="p-2 lg:hidden">
           {NAV_BAR_CONDITION ? (
             <>
@@ -120,7 +116,7 @@ const Navbar = () => {
             </>
           )}
         </div>
-        <div className="pl-4 lg:hidden">
+        <div className="pl-4">
           <img
             src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
             className="w-[50px] h-[50px] rounded-full"
@@ -133,24 +129,15 @@ const Navbar = () => {
               <MdCircle size={10} />
             </span>
           </p>
-
           <Select
             options={language}
             className="w-[80px] font-semibold text-[12px]"
             defaultValue={language[0]}
           />
-          <Button
-            sx={{
-              textTransform: "none",
-              color: "white",
-              backgroundColor: "blue",
-            }}
-            variant="contained"
-            className="!bg-blue !px-3 !py-2.5 !pr-6 !text-lg"
-          >
-            <BsCheckCircle className="text-[#FFFFFF] mr-3" size={24} /> Upgrade
-            to Pro
-          </Button>
+          <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-blue pl-3 pr-6 py-2.5 rounded-md">
+            <SealCheck classes="w-6 h-6" />
+            Upgrade to Pro
+          </button>
         </div>
         <div className="lg:hidden p-2">
           <Select
@@ -160,19 +147,21 @@ const Navbar = () => {
           />
         </div>
       </div>
-
-      <div className="fixed hidden lg:block left-0 top-0 w-64 h-full bg-blue-900 border-r border-border">
-        <div className="logo flex items-center h-20 pl-4 mb-6 border-b border-border">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
-            className="w-[50px] h-[50px] rounded-full"
-          />
+      <div className="z-10 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
+        <div className="flex items-center h-[74px] border-b border-border">
+          <div className="pl-4">
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
+              className="w-[50px] h-[50px] rounded-full"
+            />
+          </div>
         </div>
-        <div className="flex flex-col px-4">
-          <div className="flex items-center justify-center">
-            {/* <label
+        <div className="flex flex-col">
+          <div className="flex items-center justify-center mt-1">
+            <div className="shadow-sm">
+              <label
                 htmlFor="Personal"
-                className="cursor-pointer uppercase absolute text-[14px] block text-sm  text-gray-800"
+                className="cursor-pointer uppercase absolute ml-[0.75rem] mt-4 text-[14px] block text-sm  text-gray-800"
               >
                 Personal
               </label>
@@ -185,25 +174,17 @@ const Navbar = () => {
               <img
                 src="up_down.png"
                 className="cursor-pointer font-sans absolute mt-7 w-[20px] h-[20px] ml-[12rem]"
-              /> */}
-            <div className="relative">
-              <span className="absolute top-2 left-4 text-xs uppercase">
-                Project
-              </span>
-              <img
-                src="up_down.png"
-                className="cursor-pointer font-sans absolute top-1/2 right-4 -translate-y-1/2 w-6 h-6"
               />
               <input
-                onClick={(e) => {
-                  console.log("change personal", e.target.value);
+                onClick={() => {
+                  console.log("change personal");
                 }}
                 type="select"
                 id="project"
                 name="project"
                 value="Personal"
                 // onChange={handleInputChange}
-                className="pt-6 pr-20 pb-2 pl-4 text-sm font-bold bg-white border border-border rounded-lg w-full shadow-custom"
+                className="cursor-pointer text-white block w-[15rem] h-[53px] text-[12px] font-bold px-4 py-2 mt-3  bg-white border rounded-md focus:outline-none focus:ring focus:ring-opacity-40"
                 readOnly
               />
             </div>
@@ -242,7 +223,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="w-full mt-auto px-4">
+        <div className="fixed bottom-0 w-64 p-4 bg-gray-100">
           <div className="relative">
             {isHovered && (
               <div
@@ -327,7 +308,7 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col bg-gray-100">
             {!isHovered && (
               <div>
                 <button
@@ -341,53 +322,52 @@ const Navbar = () => {
                 </button>
               </div>
             )}
-            <div className="">
+            <div className="bg-gray-100">
               <Button
                 sx={{ textTransform: "none" }}
                 onClick={() => {
                   setHovered(!isHovered);
                 }}
-                className="w-full !p-0"
+                className="bg-gray-100"
               >
                 {PROFILE_DATA ? (
                   PROFILE_DATA.profile_pic ? (
                     <img
                       src={PROFILE_DATA.profile_pic}
                       alt="PP"
-                      className="w-8 h-8 rounded-full"
+                      className="w-[40px] h-[40px] rounded-full"
                     />
                   ) : (
                     <img
                       src="default.png"
                       alt="Image"
-                      className="w-8 h-8 rounded-full"
+                      className="w-[40px] h-[40px] rounded-full"
                     />
                   )
                 ) : (
                   <img
                     src="default.png"
                     alt="Image"
-                    className="w-8 h-8 rounded-full"
+                    className="w-[40px] h-[40px] rounded-full"
                   />
                 )}
-                <div className="flex flex-col text-left pl-4">
-                  <p className="font-sans text-sm font-bold text-black whitespace-nowrap text-ellipsis max-w-[120px] overflow-hidden">
-                    {PROFILE_DATA
-                      ? PROFILE_DATA.first_name || PROFILE_DATA.last_name
-                        ? PROFILE_DATA.last_name
-                          ? PROFILE_DATA.first_name +
-                            " " +
-                            PROFILE_DATA.last_name
-                          : PROFILE_DATA.first_name + " "
-                        : "Personal Workspace"
-                      : "Personal Workspace"}
-                  </p>
-                  <p className="font-sans text-xs font-normal text-black">
-                    Free plan
-                  </p>
-                </div>
-                <img src="up_down.png" className="w-6 h-6 ml-auto" />
+                <p className="mt-1 ml-3 text-[12px] font-sans font-bold text-black">
+                  {PROFILE_DATA
+                    ? PROFILE_DATA.first_name || PROFILE_DATA.last_name
+                      ? PROFILE_DATA.last_name
+                        ? PROFILE_DATA.first_name + " " + PROFILE_DATA.last_name
+                        : PROFILE_DATA.first_name + " "
+                      : "Personal Workspace"
+                    : "Personal Workspace"}
+                </p>
+                <img
+                  src="up_down.png"
+                  className="w-[20px] h-[20px] ml-[3.7rem]"
+                />
               </Button>
+              <p className="ml-[4.5rem] text-[10px] font-sans font-bold text-black">
+                Free plan
+              </p>
             </div>
           </div>
         </div>
