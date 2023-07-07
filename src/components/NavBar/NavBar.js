@@ -149,7 +149,7 @@ const Navbar = () => {
             className="!bg-blue !px-3 !py-2.5 !pr-6 !text-lg"
           >
             <BsCheckCircle className="text-[#FFFFFF] mr-3" size={24} /> Upgrade
-            to Pro s
+            to Pro
           </Button>
         </div>
         <div className="lg:hidden p-2">

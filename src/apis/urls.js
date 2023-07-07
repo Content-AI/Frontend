@@ -27,3 +27,5 @@ export const BACK_END_API_TEMPLATE = "/v1/template/data";
 export const BACK_END_API_INNER_TEMPLATE = "/v1/template/field?id=";
 
 export const BACK_END_API_RESPONSE = "/v1/template/response_of_template";
+
+export const BACK_END_API_CHAT = "/v1/chat/_chat_api_/";

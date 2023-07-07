@@ -56,7 +56,6 @@ function App() {
 
   const get_profile_data = async() => {
     const profile_data = await fetchData(BACKEND_URL+BACK_END_API_PROFILE,TOKEN)
-    console.log(profile_data.status)
       if(profile_data.status=200){
         try{
           dispatch(_save_user_profile(profile_data.data[0]))

@@ -39,11 +39,11 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     const notifyerror = (message) => toast.error(message);
     const notifysucces = (message) => toast.success(message);
 
+
     const get_inner_template_data = async (url, token) => {
         const resp = await fetchData(url, token)
         if (resp.status === 200) {
             setTemplateData(resp.data)
-
         } else { navigate("/template") }
     }
 
@@ -91,18 +91,35 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
           }        
       };
 
+      useEffect(()=>{
+        if(TemplateData!=null){
+            if (TemplateData && TemplateData.length > 0 && TemplateData[0]["template_fields"]) {
+                if((TemplateData[0]["template_fields"].length)>0){
+                    console.log("good")
+                }
+                else{
+                    navigate("/template")
+                }
+            }
+        }
+      },[TemplateData])
+
 
     useEffect(() => {
-        if (TemplateData) {
-            TemplateData[0]['template_fields'].map((data, index) => {
-                if(data.component=="textarea")
-                {
-                    setTemplateDataInputFields((TemplateDataInputFields) => [...TemplateDataInputFields, `<div class='mb-4'><label class='mt-4 mb-4 block text-[15px] font-semibold'>${data.label}</label><textarea class='resize-none h-[250px] appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 w-full text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' name='${data.title}' type='${data.component}' placeholder='${data.placeholder}'></textarea></div>`,]);
-                }else{
-                    setTemplateDataInputFields((TemplateDataInputFields) => [...TemplateDataInputFields,`<div class="mb-4">
-                    <label class="mt-4 mb-4 block text-[15px]  font-semibold">${data.label}</label><input name='${data.title}' type='${data.component}' placeholder='${data.placeholder}' class="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 w-full text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"/></div>`,]);
-                }
-            })
+        try{
+            if (TemplateData) {
+                TemplateData[0]['template_fields'].map((data, index) => {
+                    if(data.component=="textarea")
+                    {
+                        setTemplateDataInputFields((TemplateDataInputFields) => [...TemplateDataInputFields, `<div class='mb-4'><label class='mt-4 mb-4 block text-[15px] font-semibold'>${data.label}</label><textarea class='resize-none h-[250px] appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 w-full text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500' name='${data.title}' type='${data.component}' placeholder='${data.placeholder}'></textarea></div>`,]);
+                    }else{
+                        setTemplateDataInputFields((TemplateDataInputFields) => [...TemplateDataInputFields,`<div class="mb-4">
+                        <label class="mt-4 mb-4 block text-[15px]  font-semibold">${data.label}</label><input name='${data.title}' type='${data.component}' placeholder='${data.placeholder}' class="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 w-full text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"/></div>`,]);
+                    }
+                })
+            }
+        }catch(e){
+            navigate("/")
         }
     }, [TemplateData])
 
@@ -131,7 +148,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                 className=" text-black font-bold py-2 px-4 rounded mb-4">
                 <IoMdArrowBack />
             </button>
-            {TemplateData && TemplateData[0] && (
+            {TemplateData && (
                 <>
                     <div className='flex'>
                         <div>

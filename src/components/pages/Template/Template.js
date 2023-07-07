@@ -4,6 +4,8 @@ import { BACKEND_URL,BACK_END_API_TEMPLATE } from "../../../apis/urls";
 import { fetchData } from "../../../apis/apiService";
 import LoadingPage from "../../LoadingPage";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 import { useSelector, useDispatch } from "react-redux";
@@ -108,22 +110,40 @@ const cardData = [
   },
 ];
 
+
+
 const Template = ({AUTH_TOKEN}) => {
+
+  const location = useLocation();
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-
+  const notifyprogress = (message) => toast('Template comming soon',
+  {
+    icon: '👏',
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+)
   let loading_page = useSelector(
     (state) => state.SetLoadingScreen.LoadingScreen
-  );
-
-  const [activeCat, setActiveCat] = useState();
-  const [templateData,settemplateData] = useState([]);
-
-  const get_template = async(url,token) =>{
-    const response_data = await fetchData(url,token)
-    settemplateData(response_data.data)
-  }
+    );
+    
+    const [activeCat, setActiveCat] = useState();
+    const [templateData,settemplateData] = useState([]);
+    
+    const get_template = async(url,token) =>{
+      const response_data = await fetchData(url,token)
+      if(response_data.status==200){
+        settemplateData(response_data.data)
+      }else{
+        navigate("/logout")
+      }
+    }
+    
   useEffect(()=>{
     // dispatch(_load_screen_(true))
     get_template(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN)
@@ -180,7 +200,8 @@ const Template = ({AUTH_TOKEN}) => {
         </div>
         <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
 
-          {templateData.length>0
+          {templateData && templateData[0] && (
+            templateData.length>0
           ?
             templateData.map((items,index)=>{
               return (
@@ -213,7 +234,7 @@ const Template = ({AUTH_TOKEN}) => {
             })
           :
             <LoadingPage/>
-          }
+          )}
 
           {/* {cardData.map((items, index) => {
             return (
@@ -242,6 +263,7 @@ const Template = ({AUTH_TOKEN}) => {
           })} */}
         </div>
       </div>
+      <Toaster/>
     </div>
   );
 };
