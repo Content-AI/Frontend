@@ -12,6 +12,7 @@ import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
 import Chat from "../pages/Chat/Chat";
 import Template from "../pages/Template/Template";
+import Projects from "../pages/Projects/Projects";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/Template" element={<Template />} />
+            <Route path="/Projects" element={<Projects />} />
 
             <Route
               path="/first_step"
