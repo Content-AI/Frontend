@@ -1,288 +1,159 @@
-import React , {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import TopBar from './TopBar'
-import toast, { Toaster } from 'react-hot-toast';
-import Dots from '../Dots';
-import ChoiceButton from '../ChoiceButton';
+import TopBar from "./TopBar";
+import toast, { Toaster } from "react-hot-toast";
+import Dots from "../Dots";
+import ChoiceButton from "../ChoiceButton";
+import StepOptions from "./StepOptions";
 
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 import { useNavigate } from "react-router-dom";
+
+import clsx from "clsx";
 
 const SecondStep = () => {
   let navigate = useNavigate();
   const location = useLocation();
 
   // console.log(location.state)
-  
-  const [isSelected, setIsSelected] = useState(false);
-  
-  const [data,setdata] = useState("");
-  
-  const [datatext,settext] = useState("");
-  
 
+  const [isSelected, setIsSelected] = useState(false);
+  const [data, setData] = useState("");
+  const [datatext, setDatatext] = useState("");
   const [showModal, setShowModal] = React.useState(true);
-  
+
   const handleToggle = (e) => {
     setIsSelected(!isSelected);
   };
 
-  useEffect(()=>{
+  const localOptions = [
+    "Paid Ads",
+    "Social Media Content",
+    "Website copy",
+    "Email",
+    "Video",
+    "Blog",
+    "Case Study or Testimonial",
+    "Other",
+  ];
+
+  function setStateFormVal(val) {
+    setData(val);
+  }
+
+  function setStateFormText(val) {
+    setDatatext(val);
+  }
+
+  useEffect(() => {
     // console.log(data)
     // console.log(datatext)
-    settext('')
-  },[data])
+    setDatatext("");
+  }, [data]);
 
   return (
     <>
-
-{showModal ? (
+      {showModal ? (
         <>
-        <div
-            className="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
-            {/* <div className="relative w-auto my-6 mx-auto max-w-3xl"> */}
-              {/*content*/}
-                {/*header*/}
-                <div className="flex  items-center justify-center p-3 border-b border-solid border-slate-200 rounded-t">
-                <div className="font-sans p-3 w-[70%] rounded-md shadow-2xl">
+          <div className="z-50 fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+            {/*content*/}
+            {/*header*/}
+            <div className="w-full max-w-[727px] font-helv px-10 py-[52px] border border-[#CFD0D5] rounded">
               <TopBar />
-              <Dots steps="second"/>
-              <h1 className="text-1xl p-3 font-semibold space-x-0 mt-10">
-              What do you need to make?
-              </h1>
-
-              <div className="flex justify-evenly ">
-
-                  {data==="Paid Ads"
-                    ?
-                    <div onClick={()=>{
-                      setdata("Paid Ads")
-                    }} 
-                    className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                        <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                        <span className="text-blue-800 font-semibold text-[13px]">Paid Ads</span>
-                    </div>
-                  :
-                    <div onClick={()=>{
-                      setdata("Paid Ads")
-                    }} 
-                    className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                        <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                        <span className="text-blue-800 font-semibold text-[13px]">Paid Ads</span>
-                    </div>
-                    
-                  }
-
-
-                {data==="Social Media Content"
-                  ?
-                  <div onClick={()=>{
-                    setdata("Social Media Content")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Social Media Content</span>
-                  </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Social Media Content")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Social Media Content</span>
-                  </div>
-                }
-                </div>
-
-
-
-                <div className="flex justify-evenly ">
-
-                {data==="Website copy"
-                  ?
-                  <div onClick={()=>{
-                    setdata("Website copy")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Website copy</span>
-                  </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Website copy")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Website copy</span>
-                  </div>
-                }
-
-                {data==="Email"
-                  ?
-
-                  <div onClick={()=>{
-                    setdata("Email")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Email</span>
-                  </div>
-                  :
-                  <div onClick={()=>{
-                    setdata("Email")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                      <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                      <span className="text-blue-800 font-semibold text-[13px]">Email</span>
-                  </div>
-                }
-                </div>
-                <div 
-                  className="flex justify-evenly ">
-
-                {data==="Video"
-                  ?
-                <div onClick={()=>{
-                    setdata("Video")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Video</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Video")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Video</span>
-                </div>
-                }
-
-                {data==="Blog"
-                  ?
-                <div onClick={()=>{
-                    setdata("Blog")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Blog</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Blog")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Blog</span>
-                </div>
-                }
+              <div className="my-7">
+                <Dots steps="second" />
               </div>
-                <div 
-                  className="flex justify-evenly ">
-
-              {data==="Case Study or Testimonial"
-                  ?
-                <div onClick={()=>{
-                    setdata("Case Study or Testimonial")
-                  }}  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Case Study or Testimonial</span>
-                </div>
-                :
-                <div onClick={()=>{
-                    setdata("Case Study or Testimonial")
-                  }}  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Case Study or Testimonial</span>
-                </div>
-              }
-              
-              {data==="Other"
-                ?
-                <>
-                <div onClick={()=>{
-                    setdata("Other")
-                  }} 
-                  className="bg-blue-200 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-blue-700"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Other</span>
-                    <input
-                      className="block  px-4 py-2  text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                      type='text'
-                      maxLength="20"
-                      defaultValue={datatext}
-                      onChange={settext}
-                    />
-                </div>
-                </>
-                :
-                <>
-                <div onClick={()=>{
-                    setdata("Other")
-                  }} 
-                  className="bg-blue-100 m-4 h-[40px] items-center w-[50%] p-6 flex  space-x-2 divide-x cursor-pointer">
-                    <span className="ml-6 w-4 h-4 rounded-full bg-gray-400"></span>
-                    <span className="text-blue-800 font-semibold text-[13px]">Other</span>
-                    <input
-                      className="block  px-4 py-2  text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                      type='text'
-                      maxLength="20"
-                      defaultValue={datatext}
-                      onChange={settext}
-                    />
-                </div>
-                
-                </>
-              }
-                </div>
-
-                <Button variant="contained" className="float-left"
-                sx={{textTransform: 'none'}} 
-                  onClick={()=>{
-                      navigate("/first_step?survey_data_first=by-for-user-clarification")
-                  }}
-                  >Back</Button>
-
-
-                <Button variant="contained" className="float-right"
-                sx={{textTransform: 'none'}} 
-                  onClick={()=>{
-                      // navigate("/third_step")
-                      navigate("/third_step?survey_data_third=by-for-user-clarification", {
-                        state: {
-                          first_answer:location.state?.first_answer,
-                          second_answer:data,
-                        },
-                      });
-                  }}
-                  >Next</Button>
-                <div className="flex justify-center">
-                  <div>
-                    <button
-                      onClick={()=>{
-                      // navigate("/third_step")
-                      navigate("/third_step?survey_data_third=by-for-user-clarification", {
-                        state: {
-                          first_answer:location.state?.first_answer,
-                          second_answer:data,
-                        },
-                      });
-                  }}
-                      type='button' className="p-6 bg-white text-blue-700 font-semibold text-[15px]">Skip Question</button>
-                  </div>
-                </div>
-              </div> 
-                </div>
+              <h3 className="text-sm font-bold mb-5">
+                What do you need to make?
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <StepOptions
+                  data={localOptions}
+                  activeData={data}
+                  toggleData={setStateFormVal}
+                  activeText={datatext}
+                  toggleText={setStateFormText}
+                />
               </div>
+
+              <div className="flex justify-between mt-5">
+                <button
+                  className="flex items-center gap-3 font-normal text-blue text-sm"
+                  onClick={() => {
+                    navigate(
+                      "/first_step?survey_data_first=by-for-user-clarification"
+                    );
+                  }}
+                >
+                  <span className="w-5 h-5">
+                    <svg
+                      width={20}
+                      height={20}
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-full h-full"
+                    >
+                      <path
+                        d="M12.9417 15.8077C12.9998 15.8657 13.0458 15.9347 13.0773 16.0105C13.1087 16.0864 13.1249 16.1677 13.1249 16.2499C13.1249 16.332 13.1087 16.4133 13.0773 16.4892C13.0458 16.565 12.9998 16.634 12.9417 16.692C12.8836 16.7501 12.8147 16.7962 12.7388 16.8276C12.663 16.859 12.5816 16.8752 12.4995 16.8752C12.4174 16.8752 12.3361 16.859 12.2602 16.8276C12.1843 16.7962 12.1154 16.7501 12.0573 16.692L5.80733 10.442C5.74922 10.384 5.70312 10.3151 5.67167 10.2392C5.64021 10.1633 5.62402 10.082 5.62402 9.99986C5.62402 9.91772 5.64021 9.8364 5.67167 9.76052C5.70312 9.68465 5.74922 9.61572 5.80733 9.55767L12.0573 3.30767C12.1746 3.1904 12.3337 3.12451 12.4995 3.12451C12.6654 3.12451 12.8244 3.1904 12.9417 3.30767C13.059 3.42495 13.1249 3.58401 13.1249 3.74986C13.1249 3.91571 13.059 4.07477 12.9417 4.19205L7.13311 9.99986L12.9417 15.8077Z"
+                        fill="#343330"
+                      />
+                    </svg>
+                  </span>
+                  Go Back
+                </button>
+
+                <Button
+                  variant="contained"
+                  className="flex items-center justify-center !font-bold !px-8 !py-3 !bg-blue/50"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => {
+                    // navigate("/second_step")
+                    navigate(
+                      "/third_step?survey_data_third=by-for-user-clarification",
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                  }}
+                >
+                  Next
+                </Button>
+              </div>
+
+              <div className="flex justify-center mt-5">
+                <button
+                  onClick={() => {
+                    // navigate("/second_step")
+                    navigate(
+                      "/third_step?survey_data_third=by-for-user-clarification",
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                  }}
+                  type="button"
+                  className="text-blue-700 text-sm"
+                >
+                  Skip Question
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="fixed inset-0 z-40 bg-white"></div>
         </>
       ) : null}
-           
-        <Toaster />
+
+      <Toaster />
     </>
-  )
-}
+  );
+};
 
-
-export default SecondStep
+export default SecondStep;
