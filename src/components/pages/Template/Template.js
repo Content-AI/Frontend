@@ -13,6 +13,8 @@ import {
   _load_screen_
 } from "../../../features/LoadingScreen";
 
+import CardDoc from "../../Card/CardDoc";
+
 const buttonTags = [
   "All",
   "Blog",

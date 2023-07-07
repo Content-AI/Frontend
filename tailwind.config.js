@@ -37,12 +37,16 @@ module.exports = {
           DEFAULT: "#414357",
           black: "#36464E",
         },
+        gray: {
+          lightbg: "#F7FAFC",
+        },
         border: {
           DEFAULT: "#CFD0D5",
         },
       },
       boxShadow: {
         custom: "0 4px 4px rgba(0,0,0,.25)",
+        customv2: "0 0 15px rgba(0,0,0,.15)",
       },
     },
   },
