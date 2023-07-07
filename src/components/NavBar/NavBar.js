@@ -86,7 +86,7 @@ const Navbar = () => {
     { title: "Documents", link: "/documents" },
     { title: "Recipes", link: "/recipes" },
     { title: "Art", link: "/art" },
-    { title: "Settings", link: "/settings" },
+    { title: "Settings", link: "/settings", offset: true },
     { title: "Help", link: "/help" },
   ];
 
@@ -209,14 +209,15 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="mt-6 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
+          <div className="flex flex-col my-6 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
             {navURL.map((items, index) => {
-              const { title, link } = items;
+              const { title, link, offset } = items;
               return (
                 <Link
-                  key={index}
+                  key={"nav_" + index}
                   to={link}
                   onClick={() => handleLinkClick(title)}
+                  className={clsx({ "mt-auto": offset })}
                 >
                   <div
                     className={clsx("flex items-center px-4 py-2", {
