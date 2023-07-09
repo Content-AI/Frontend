@@ -1,41 +1,31 @@
-import React from 'react'
+import React from "react";
 
-const Dots = ({steps}) => {
+const Dots = ({ steps }) => {
   return (
-    <div className="flex justify-center items-center">
-      {steps=="first"
-      ?
+    <div className="flex justify-center items-center gap-2">
+      {steps == "first" ? (
         <>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-blue-500 border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-blue-500 border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
         </>
-      :
-        null
-      }
-      {steps=="second"
-      ?
+      ) : null}
+      {steps == "second" ? (
         <>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-blue-500 border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-blue-500 border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
         </>
-      :
-        null
-      }
-      {steps=="third"
-      ?
+      ) : null}
+      {steps == "third" ? (
         <>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-[#CFD0D5] border-none cursor-pointer"></button>
-          <button className="ml-2 mr-2 rounded-md w-8 h-1 bg-blue-500 border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-[#CFD0D5] border-none cursor-pointer"></button>
+          <button className="rounded-full w-8 h-[5px] bg-blue-500 border-none cursor-pointer"></button>
         </>
-      :
-        null
-      }
-
+      ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default Dots
+export default Dots;
