@@ -136,9 +136,27 @@ const Template = ({AUTH_TOKEN}) => {
     
     const [activeCat, setActiveCat] = useState();
     const [templateData,settemplateData] = useState([]);
+    const [filter_category,setfilter_category] = useState(null);
+    const [search_parameter,setsearch_parameter] = useState(null);
     
     const get_template = async(url,token) =>{
       const response_data = await fetchData(url,token)
+      if(response_data.status==200){
+        settemplateData(response_data.data)
+      }else{
+        navigate("/logout")
+      }
+    }
+    const get_template_categories = async(url,token,category) =>{
+      const response_data = await fetchData(url+"?category="+filter_category,token)
+      if(response_data.status==200){
+        settemplateData(response_data.data)
+      }else{
+        navigate("/logout")
+      }
+    }
+    const get_template_search = async(url,token,search_parameter) =>{
+      const response_data = await fetchData(url+"?search="+search_parameter,token)
       if(response_data.status==200){
         settemplateData(response_data.data)
       }else{
@@ -150,6 +168,18 @@ const Template = ({AUTH_TOKEN}) => {
     // dispatch(_load_screen_(true))
     get_template(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN)
   },[])
+
+  useEffect(()=>{
+    if(filter_category!=null){
+      get_template_categories(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,filter_category)
+    }
+  },[filter_category])
+
+  useEffect(()=>{
+    if(search_parameter!=null){
+      get_template_search(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,search_parameter)
+    }
+  },[search_parameter])
 
 
 
@@ -178,6 +208,9 @@ const Template = ({AUTH_TOKEN}) => {
             className="w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder:opacity-100"
             type="text"
             placeholder="Search content types like Facebook Ads, Email, Blog ideas..."
+            onChange={(e)=>{
+              setsearch_parameter(e.target.value)
+            }}
           />
         </div>
         <div className="searchtags flex flex-wrap gap-2 mb-6">
@@ -193,7 +226,10 @@ const Template = ({AUTH_TOKEN}) => {
                     "hover:bg-blue/10": activeCat !== items,
                   }
                 )}
-                onClick={(e) => setActiveCat(items)}
+                onClick={(e) => {
+                  setActiveCat(items)
+                  setfilter_category(items)
+                }}
               >
                 {items}
               </button>
