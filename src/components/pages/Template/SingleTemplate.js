@@ -98,6 +98,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
     const handleClick = async(id_of_template) => {
 
+        // console.log(TemplateData[0]["title"])
+        // return true
+
         const divElement = document.getElementById(id_of_template);
         const inputElements = divElement.getElementsByTagName('input');
         const textareaElements = divElement.getElementsByTagName('textarea');
@@ -111,6 +114,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         let isFormDataValid = true;
         formData["language"]="Generate whole text in "+OutputlanguageChoice+" Language"
         formData["output_results"]=ContentOutputNumber.toString()
+        formData["generate"]=TemplateData[0]["title"]
         Object.entries(formData).forEach(([key, value]) => {
             if (value.trim() === '') {
               notifyerror(`Value for ${key} is empty.`)
@@ -201,14 +205,14 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         setInputs([...inputs, ""]);
       };
     
-      const handleSubmit = () => {
-        const formData = inputs.reduce((data, input, index) => {
-          data[`value-${index + 1}`] = input;
-          return data;
-        }, {});
+    //   const handleSubmit = () => {
+    //     const formData = inputs.reduce((data, input, index) => {
+    //       data[`value-${index + 1}`] = input;
+    //       return data;
+    //     }, {});
     
-        setMultipleInputForms(formData);
-      };
+    //     setMultipleInputForms(formData);
+    //   };
 
 
       const handleInputLanguageChange = (event) => {
@@ -222,7 +226,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
         const displayText = (index) => {
             if (index === 0) {
-            return "Tell us key word";
+            return "Tell us first key word";
             } else if (index === 1) {
             return "Tell us second key word";
             } else if (index === 2) {
