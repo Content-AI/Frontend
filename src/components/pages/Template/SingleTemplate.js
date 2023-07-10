@@ -32,6 +32,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     const [TemplateData, setTemplateData] = useState(null);
     const [TemplateResponseData, setTemplateResponseData] = useState(null);
 
+    const [ProjectId,setProjectId] = useState(null);
+
     // const [Inputlanguage,setInputlanguage] = useState([]);
 
     const [languageOptions, setLanguageOptions] = useState([]);
@@ -129,7 +131,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
             let res_of_template =  await postData(formData,BACKEND_URL+BACK_END_API_RESPONSE,AUTH_TOKEN)
             if(res_of_template.status==200){
                 // console.log(res_of_template.data)
-            setTemplateResponseData(res_of_template.data)
+            setTemplateResponseData(res_of_template.data.data)
+            setProjectId(res_of_template.data.project_id)
             setLoadingButton(false)
             }else{
                 notifyerror("Try again")
@@ -138,6 +141,12 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
             }
           }        
       };
+
+
+    useEffect(()=>{
+        console.log(TemplateResponseData)
+        console.log(ProjectId)
+    },[ProjectId])
 
       const get_history = async() => {
         const resp =  await fetchData(BACKEND_URL+BACK_API_HISTORY,AUTH_TOKEN)

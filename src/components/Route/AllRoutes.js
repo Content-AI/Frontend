@@ -14,7 +14,9 @@ import Profile from "../Profile/Profile";
 import Chat from "../pages/chat/Chat"
 import Template from "../pages/Template/Template";
 import SingleTemplate from "../pages/Template/SingleTemplate";
+import EditTemplate from "../pages/Template/EditTemplate";
 import Logout from "../pages/Logout";
+
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
 
@@ -80,6 +82,8 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
               }
             />
             
+            <Route path="/template_data/:template_id" element={<EditTemplate  AUTH_TOKEN={TOKEN} />} />
+
             <Route path="/*" element={<Home />} />
             <Route path="/logout" element={<Logout />} />
           </Routes>
