@@ -23,7 +23,6 @@ export const BACK_API_SURVEY = "/v1/accounts/survey/data/";
 
 export const BACK_END_API_PROFILE = "/v1/auth/users/";
 
-
 export const BACK_END_API_PROJECT = "/v1/single_response/single_response/";
 
 export const BACK_END_API_TEMPLATE = "/v1/template/project_template/";
