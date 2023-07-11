@@ -543,7 +543,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                 (history_answer.map((data,index)=>{
                                     return (
                                         <div key={index}>
-                                            <ResponseTemplate  r_time={data["created_at"]} r_data={data["answer_response"]}/>
+                                            <ResponseTemplate r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
                                         </div>
                                     )
                                 }))

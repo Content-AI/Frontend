@@ -1,10 +1,12 @@
 import React, {useRef, useState } from 'react';
 import RenderHtml from './RenderHtml'
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 const ResponseTemplate = (prop) => {
 
     const textRef = useRef(null);
+    let navigate = useNavigate();
 
     const handleCopyClick = () => {
       const textToCopy = textRef.current.innerText;
@@ -26,7 +28,6 @@ const ResponseTemplate = (prop) => {
       });
 
     
-      console.log(prop)
     
   return (
     <>
@@ -56,7 +57,7 @@ const ResponseTemplate = (prop) => {
 
                 <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
                     onClick={()=>{
-                        console.log("open new document")
+                        navigate(`/template_data/${prop.r_id}?template=edit_by_user`)
                     }}
                 >
                 <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
