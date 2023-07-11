@@ -10,6 +10,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 
 import RenderHtml from '../Template/RenderHtml';
+import RenderTemplate from '../Template/RenderTemplate'
 
 const buttonTags = [
   "All",
@@ -55,7 +56,7 @@ const Chat = ({AUTH_TOKEN}) => {
   const [AnswerOfChat,setAnswerOfChat] = useState('');
   
   const [CurrentQuestion,setCurrentQuestion] = useState(null);
-  const [CurrentAnswer,setCurrentAnswer] = useState(null);
+  const [CurrentAnswer,setCurrentAnswer] = useState([]);
 
   const [Loading,setLoading] = useState(false);
 
@@ -67,14 +68,18 @@ const Chat = ({AUTH_TOKEN}) => {
 
   const submitChatText = async() =>{
     // try{
-      setCurrentQuestion(ChatText)
+      // setCurrentQuestion(ChatText)
+      // let tmp_answer = []
+      // let tmp_question = []
+      // tmp_answer.push(setCurrentAnswer)
+      // tmp_question.push(setCurrentQuestion)
       setLoading(true)
       if (ChatText === '') {
         notifyerror("you need to say somethings")
         return false;
       }
       if(ChatText){
-          setCurrentAnswer(null)
+          setCurrentQuestion(ChatText)
           if(divRef.current){
             divRef.current.focus();
           }
@@ -84,10 +89,11 @@ const Chat = ({AUTH_TOKEN}) => {
           const resp = await postData(formdata,BACKEND_URL+BACK_END_API_CHAT,AUTH_TOKEN)
           if(resp.status==201){
             // console.log(resp.data)
-            const data = {"content": resp.data["content"],
-                          "description": ChatText
+            setCurrentQuestion(null)
+            const data = {"content": resp.data[0]["content"],
+                          "description": resp.data[0]["description"]
                           }
-            setCurrentAnswer(resp.data["content"])
+            setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer,data]);
             setChatText('')
           }else{
             notifyerror("something went wrong")
@@ -98,6 +104,10 @@ const Chat = ({AUTH_TOKEN}) => {
       // }
       setLoading(false)
   }
+
+  useEffect(()=>{
+  console.log('CurrentAnswer',CurrentAnswer)
+  },[CurrentAnswer])
 
   const get_initial_chat = async()=>{
     const resp = await fetchData(BACKEND_URL+BACK_END_API_CHAT,AUTH_TOKEN)
@@ -132,7 +142,7 @@ const Chat = ({AUTH_TOKEN}) => {
               alt="User"
             />
             <div className="ml-1  text-black p-2 rounded-lg">
-              <RenderHtml htmldata={chat_data.description}/>
+              <RenderTemplate htmldata={chat_data.description}/>
             </div>
           </div>
 
@@ -144,44 +154,73 @@ const Chat = ({AUTH_TOKEN}) => {
               alt="ChatBot"
             />
             <div className="ml-1  text-black p-2 rounded-lg">
-              <RenderHtml htmldata={chat_data.content}/>
+              <RenderTemplate htmldata={chat_data.content}/>
             </div>
           </div>
         </div>
       ))}
+
+      {CurrentAnswer.length>0
+      ?
+          CurrentAnswer.map((data,index)=>{
+            return(
+                  <div className="flex flex-col items-start mb-3 mt-4">
+                    <div className="flex  bg-[rgba(248,251,252,var(--tw-bg-opacity))]">
+                      <img
+                        className="w-10 h-10 rounded-full"
+                        src="default.png"
+                        alt="User"
+                      />
+                      <div className="ml-1  text-black p-2 rounded-lg">
+                        <p>{data["description"]}</p>
+                      </div>
+                    </div>
+
+                    
+                    <div className="flex mt-3 mb-3">
+                      <img
+                        className="w-10 h-10 rounded-full"
+                        src="chat.png"
+                        alt="ChatBot"
+                      />
+                      <div className="ml-1  text-black p-2 rounded-lg" tabIndex={0} ref={divRef}>
+                        <RenderTemplate htmldata={data["content"]}/>
+                      </div>
+                    </div>
+                  </div>
+            )
+          })
+        :
+          null
+      }
+
       {CurrentQuestion
       ?
-        <div className="flex flex-col items-start mb-3 mt-4">
-          {/* User */}
-          <div className="flex  bg-[rgba(248,251,252,var(--tw-bg-opacity))]">
-            <img
-              className="w-10 h-10 rounded-full"
-              src="default.png"
-              alt="User"
-            />
-            <div className="ml-1  text-black p-2 rounded-lg">
-              <p>{CurrentQuestion}</p>
-            </div>
+      <div className="flex flex-col items-start mb-3 mt-4">
+        <div className="flex  bg-[rgba(248,251,252,var(--tw-bg-opacity))]">
+          <img
+            className="w-10 h-10 rounded-full"
+            src="default.png"
+            alt="User"
+          />
+          <div className="ml-1  text-black p-2 rounded-lg">
+            <p>{CurrentQuestion}</p>
           </div>
+        </div>
 
-          {/* Bot */}
-          <div className="flex mt-3 mb-3">
-            <img
-              className="w-10 h-10 rounded-full"
-              src="chat.png"
-              alt="ChatBot"
-            />
-            <div className="ml-1  text-black p-2 rounded-lg" tabIndex={0} ref={divRef}>
-              {CurrentAnswer
-              ?
-                <RenderHtml htmldata={CurrentAnswer}/>
-              :
-                <>
+        {/* Bot */}
+        <div className="flex mt-3 mb-3">
+          <img
+            className="w-10 h-10 rounded-full"
+            src="chat.png"
+            alt="ChatBot"
+          />
+          <div className="ml-1  text-black p-2 rounded-lg" tabIndex={0} ref={divRef}>
+              <>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><circle cx="18" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="12" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="6" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle></svg>
-                </>
-              }
-            </div>
+              </>
           </div>
+        </div>
         </div>
         :
           null
