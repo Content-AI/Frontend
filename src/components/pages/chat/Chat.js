@@ -41,6 +41,8 @@ const tagList = [
 const Chat = ({AUTH_TOKEN}) => {
   let navigate = useNavigate();
   const chatContainerRef = useRef(null);
+  const chatLoadingRef = useRef(null);
+
 
   const divRef = useRef(null);
 
@@ -121,6 +123,12 @@ const Chat = ({AUTH_TOKEN}) => {
     get_initial_chat()
   },[])
 
+
+  useEffect(() => {
+    if (chatLoadingRef.current) {
+      chatLoadingRef.current.focus();
+    }
+  }, [CurrentQuestion,]);
 
   return (
     <div className="flex flex-col flex-auto">
@@ -215,7 +223,7 @@ const Chat = ({AUTH_TOKEN}) => {
             src="chat.png"
             alt="ChatBot"
           />
-          <div className="ml-1  text-black p-2 rounded-lg" tabIndex={0} ref={divRef}>
+          <div className="ml-1  text-black p-2 rounded-lg" tabIndex={0} ref={chatLoadingRef}>
               <>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><circle cx="18" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="12" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle><circle cx="6" cy="12" r="0" fill="currentColor"><animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle></svg>
               </>

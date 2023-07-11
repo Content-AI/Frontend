@@ -39,3 +39,5 @@ export const BACK_API_HISTORY = "/v1/template/history";
 export const BACK_END_API_PROJECT = "/v1/single_response/single_response/";
 
 export const BACK_END_API_SINGLE_TEMPLATE = "/v1/template/project_template/";
+
+export const BACK_END_API_CATEGORIES = "/v1/template/categories";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { BACKEND_URL,BACK_END_API_TEMPLATE } from "../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_TEMPLATE ,BACK_END_API_CATEGORIES} from "../../../apis/urls";
 import { fetchData } from "../../../apis/apiService";
 import LoadingPage from "../../LoadingPage";
 import { useNavigate } from "react-router-dom";
@@ -140,6 +140,8 @@ const Template = ({AUTH_TOKEN}) => {
     const [filter_category,setfilter_category] = useState(null);
     const [search_parameter,setsearch_parameter] = useState(null);
     
+    const [category,setcategory] = useState(null);
+    
     const get_template = async(url,token) =>{
       const response_data = await fetchData(url,token)
       if(response_data.status==200){
@@ -156,6 +158,15 @@ const Template = ({AUTH_TOKEN}) => {
         navigate("/logout")
       }
     }
+    const get_categories = async(url,token) =>{
+      const response_data = await fetchData(url,token)
+      if(response_data.status==200){
+        setcategory(response_data.data)
+      }else{
+        // navigate("/logout")
+      }
+    }
+
     const get_template_search = async(url,token,search_parameter) =>{
       const response_data = await fetchData(url+"?search="+search_parameter,token)
       if(response_data.status==200){
@@ -168,6 +179,7 @@ const Template = ({AUTH_TOKEN}) => {
   useEffect(()=>{
     // dispatch(_load_screen_(true))
     get_template(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN)
+    get_categories(BACKEND_URL+BACK_END_API_CATEGORIES,AUTH_TOKEN)
   },[])
 
   useEffect(()=>{
@@ -215,27 +227,32 @@ const Template = ({AUTH_TOKEN}) => {
           />
         </div>
         <div className="searchtags flex flex-wrap gap-2 mb-6">
-          {buttonTags.map((items, index) => {
-            return (
-              <button
-                key={index}
-                className={clsx(
-                  "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
-                  {
-                    "active text-white bg-blue border-blue":
-                      activeCat === items,
-                    "hover:bg-blue/10": activeCat !== items,
-                  }
-                )}
-                onClick={(e) => {
-                  setActiveCat(items)
-                  setfilter_category(items)
-                }}
-              >
-                {items}
-              </button>
-            );
-          })}
+        {category
+        ?
+            category.map((items, index) => {
+              return (
+                <button
+                  key={index}
+                  className={clsx(
+                    "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
+                    {
+                      "active text-white bg-blue border-blue":
+                        activeCat === items,
+                      "hover:bg-blue/10": activeCat !== items,
+                    }
+                  )}
+                  onClick={(e) => {
+                    setActiveCat(items)
+                    setfilter_category(items)
+                  }}
+                >
+                  {items}
+                </button>
+              );
+            })
+          :
+            <LoadingPage/>
+          }
         </div>
         <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
 
