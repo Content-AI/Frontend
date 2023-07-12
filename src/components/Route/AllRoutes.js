@@ -26,7 +26,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   return (
     <>
       {TOKEN ? (
-        <main className="flex flex-col lg:ml-64 min-h-[calc(100vh-80px)] p-6 text-black bg-white">
+        <main className="flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] p-6 text-black bg-white">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
