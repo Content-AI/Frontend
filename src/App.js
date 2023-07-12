@@ -5,16 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "./features/AuthenticationToken";
 
-import {
-  _save_survey_
-} from "./features/ThreeSteps";
-
-import { _save_user_profile } from './features/Fullprofile';
-import {
-  _load_screen_
-} from "./features/LoadingScreen";
-import { _delete_token_ } from "./features/AuthenticationToken";
-import { _delete_user_profile } from "./features/Fullprofile";
+import { _save_survey_ } from "./features/ThreeSteps";
 
 import { _save_user_profile } from "./features/Fullprofile";
 import { _load_screen_ } from "./features/LoadingScreen";
@@ -42,28 +33,20 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(_save_token_(localStorage.getItem("token")));
-      dispatch(_load_screen_(false))
-    }else{
-      navigate('login')
-      dispatch(_load_screen_(false))
+    } else {
+      dispatch(_load_screen_(false));
+      navigate("login");
     }
   }, []);
 
-  const get_profile_data = async() => {
-    const profile_data = await fetchData(BACKEND_URL+BACK_END_API_PROFILE,TOKEN)
-      if(profile_data.status=200){
-        try{
-          dispatch(_save_user_profile(profile_data.data[0]))
-          dispatch(_load_screen_(false))
-        }catch(e){
-          localStorage.clear();
-          dispatch(_delete_token_(null));
-          dispatch(_save_survey_(null));
-          dispatch(_delete_user_profile(null));
-          dispatch(_load_screen_(false))
-          navigate("login")
-        }
-
+  const get_profile_data = async () => {
+    const profile_data = await fetchData(
+      BACKEND_URL + BACK_END_API_PROFILE,
+      TOKEN
+    );
+    if ((profile_data.status = 200)) {
+      dispatch(_save_user_profile(profile_data.data[0]));
+      dispatch(_load_screen_(false));
     }
   };
 
@@ -83,25 +66,14 @@ function App() {
     }
   }, [_survey_data_]);
 
-  return (  
-    (TOKEN
-      ?
-      loading_page
-      ?
-        <LoadingPage/>
-      :
-          <div>
-            <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-            <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-          </div>
-      :
-      loading_page
-      ?
-        <LoadingPage/>
-      :
-        <>
-          <Login/>
-        </>
+  return TOKEN ? (
+    loading_page ? (
+      <LoadingPage />
+    ) : (
+      <div>
+        <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN} />
+        <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN} />
+      </div>
     )
   ) : loading_page ? (
     <LoadingPage />
