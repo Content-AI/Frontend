@@ -13,6 +13,9 @@ import Profile from "../Profile/Profile";
 import Chat from "../pages/Chat/Chat";
 import Template from "../pages/Template/Template";
 import Projects from "../pages/Projects/Projects";
+import SingleTemplate from "../pages/Template/SingleTemplate";
+import EditTemplate from "../pages/Template/EditTemplate";
+import Logout from "../pages/Logout";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -28,9 +31,19 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
             <Route path="/Template" element={<Template />} />
             <Route path="/Projects" element={<Projects />} />
+
+            {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
+
+            <Route path="Template" AUTH_TOKEN={TOKEN}>
+              <Route index element={<Template AUTH_TOKEN={TOKEN} />} />
+              <Route
+                path=":template_id"
+                element={<SingleTemplate AUTH_TOKEN={TOKEN} />}
+              />
+            </Route>
 
             <Route
               path="/first_step"
@@ -56,7 +69,14 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
                 />
               }
             />
+
+            <Route
+              path="/template_data/:template_id"
+              element={<EditTemplate AUTH_TOKEN={TOKEN} />}
+            />
+
             <Route path="/*" element={<Home />} />
+            <Route path="/logout" element={<Logout />} />
           </Routes>
         </main>
       ) : (

@@ -1,5 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+import { BACKEND_URL, BACK_END_API_TEMPLATE } from "../../../apis/urls";
+import { fetchData } from "../../../apis/apiService";
+import LoadingPage from "../../LoadingPage";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+
+import { useSelector, useDispatch } from "react-redux";
+import { _load_screen_ } from "../../../features/LoadingScreen";
 
 import CardDoc from "../../Card/CardDoc";
 
@@ -100,8 +109,84 @@ const cardData = [
   },
 ];
 
-const Template = () => {
+const Template = ({ AUTH_TOKEN }) => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  const notifyprogress = (message) =>
+    toast("Template comming soon", {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+  let loading_page = useSelector(
+    (state) => state.SetLoadingScreen.LoadingScreen
+  );
+
   const [activeCat, setActiveCat] = useState();
+  const [templateData, settemplateData] = useState([]);
+  const [filter_category, setfilter_category] = useState(null);
+  const [search_parameter, setsearch_parameter] = useState(null);
+
+  const get_template = async (url, token) => {
+    const response_data = await fetchData(url, token);
+    if (response_data.status == 200) {
+      settemplateData(response_data.data);
+    } else {
+      navigate("/logout");
+    }
+  };
+  const get_template_categories = async (url, token, category) => {
+    const response_data = await fetchData(
+      url + "?category=" + filter_category,
+      token
+    );
+    if (response_data.status == 200) {
+      settemplateData(response_data.data);
+    } else {
+      navigate("/logout");
+    }
+  };
+  const get_template_search = async (url, token, search_parameter) => {
+    const response_data = await fetchData(
+      url + "?search=" + search_parameter,
+      token
+    );
+    if (response_data.status == 200) {
+      settemplateData(response_data.data);
+    } else {
+      navigate("/logout");
+    }
+  };
+
+  useEffect(() => {
+    // dispatch(_load_screen_(true))
+    get_template(BACKEND_URL + BACK_END_API_TEMPLATE, AUTH_TOKEN);
+  }, []);
+
+  useEffect(() => {
+    if (filter_category != null) {
+      get_template_categories(
+        BACKEND_URL + BACK_END_API_TEMPLATE,
+        AUTH_TOKEN,
+        filter_category
+      );
+    }
+  }, [filter_category]);
+
+  useEffect(() => {
+    if (search_parameter != null) {
+      get_template_search(
+        BACKEND_URL + BACK_END_API_TEMPLATE,
+        AUTH_TOKEN,
+        search_parameter
+      );
+    }
+  }, [search_parameter]);
 
   return (
     <div className="">
@@ -127,6 +212,9 @@ const Template = () => {
             className="w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder:opacity-100"
             type="text"
             placeholder="Search content types like Facebook Ads, Email, Blog ideas..."
+            onChange={(e) => {
+              setsearch_parameter(e.target.value);
+            }}
           />
         </div>
         <div className="searchtags flex flex-wrap gap-2 mb-6">
@@ -142,7 +230,10 @@ const Template = () => {
                     "hover:bg-blue/10": activeCat !== items,
                   }
                 )}
-                onClick={(e) => setActiveCat(items)}
+                onClick={(e) => {
+                  setActiveCat(items);
+                  setfilter_category(items);
+                }}
               >
                 {items}
               </button>
@@ -150,11 +241,76 @@ const Template = () => {
           })}
         </div>
         <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
-          {cardData.map((items, index) => {
-            return <CardDoc {...items} key={index} />;
-          })}
+          {templateData &&
+            templateData[0] &&
+            (templateData.length > 0 ? (
+              templateData.map((items, index) => {
+                return (
+                  <div
+                    key={items.id}
+                    className="card flex p-6 border border-border rounded-xl cursor-pointer"
+                    onClick={() => {
+                      // console.log(items.id)
+                      navigate(`/template/${items.id}`);
+                    }}
+                  >
+                    <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                      <img
+                        src={BACKEND_URL + items.icon}
+                        alt=""
+                        className="block w-full"
+                      />
+                    </div>
+                    <div className="content relative flex-auto pl-4">
+                      <div className="title flex items-center justify-between gap-2 mb-2">
+                        <h4 className="text-sm font-bold leading-none">
+                          {items.title}
+                        </h4>
+                        {items.premium && (
+                          <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                            Premium
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm leading-none">
+                        {items.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <LoadingPage />
+            ))}
+
+          {/* {cardData.map((items, index) => {
+            return (
+              <div
+                key={index}
+                className="card flex p-6 border border-border rounded-xl"
+              >
+                <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                  <img src={items.icon} alt="" className="block w-full" />
+                </div>
+                <div className="content relative flex-auto pl-4">
+                  <div className="title flex items-center justify-between gap-2 mb-2">
+                    <h4 className="text-sm font-bold leading-none">
+                      {items.title}
+                    </h4>
+                    {items.isPremium && (
+                      <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                        Premium
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm leading-none">{items.description}</p>
+                </div>
+              </div>
+            );
+          })} */}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
