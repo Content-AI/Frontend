@@ -5,6 +5,7 @@ import Fullprofile from '../features/Fullprofile'
 import BlurBgNavBar from '../features/BlurBg'
 import HideShowNavBarGlobalState from '../features/HideShowNavBarGlobalState'
 import LoadingScreen from '../features/LoadingScreen'
+import LoadingScreenMessage from '../features/LoadingScreenMessage'
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         SetBlurBgNavBar:BlurBgNavBar,
         SetHideShowNavBarGlobalState:HideShowNavBarGlobalState,
         SetLoadingScreen:LoadingScreen,
+        SetLoadingScreenMessage:LoadingScreenMessage,
     }
 })
 

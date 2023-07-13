@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialStateValue = {
-  LoadingScreen: true,
-};
+    LoadingScreen:  true,
+}
 
 export const counterSlice = createSlice({
   name: "SetLoadingScreen",
