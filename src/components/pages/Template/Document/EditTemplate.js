@@ -524,10 +524,9 @@ export default function EditTemplate() {
                                   }}
                                   className={`${
                                               HoverBtnColor
-                                                ? "bg-blue-300 "
-                                                : " "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
-
+                                                ? " bg-slate-400 "
+                                                : "  "
+                                            } transition-all  duration-200  relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
                                 >
                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                     <small className="-my-0.5">
@@ -543,9 +542,10 @@ export default function EditTemplate() {
                                   }}
                                   className={`${
                                               HoverBtnColor
-                                                ? " "
-                                                : " bg-blue-300 "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
+                                                ? "  "
+                                                : " bg-slate-400 "
+                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+                                  >
                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                     <small className="-my-0.5">
                                       Outputs
