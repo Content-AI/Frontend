@@ -10,12 +10,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-import Chat from "../pages/Chat/Chat";
+// import Chat from "../pages/Chat/Chat";
+import Chat from "../pages/chat/Chat"
 import Template from "../pages/Template/Template";
-import Projects from "../pages/Projects/Projects";
 import SingleTemplate from "../pages/Template/SingleTemplate";
-import EditTemplate from "../pages/Template/EditTemplate";
+import EditTemplate from "../pages/Template/Document/EditTemplate";
 import Logout from "../pages/Logout";
+import Projects from "../pages/Projects/Projects"
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -31,17 +32,29 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
-            <Route path="/Template" element={<Template />} />
-            <Route path="/Projects" element={<Projects />} />
-
+            <Route path="/chat" element={<Chat  AUTH_TOKEN={TOKEN} />} />
+            
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
 
-            <Route path="Template" AUTH_TOKEN={TOKEN}>
-              <Route index element={<Template AUTH_TOKEN={TOKEN} />} />
+            <Route
+              path="Template"
+              AUTH_TOKEN={TOKEN}
+            >
+              <Route
+                index
+                element={
+                  <Template
+                  AUTH_TOKEN={TOKEN}
+                  />
+                }
+              />
               <Route
                 path=":template_id"
-                element={<SingleTemplate AUTH_TOKEN={TOKEN} />}
+                element={
+                  <SingleTemplate
+                  AUTH_TOKEN={TOKEN}
+                  />
+                }
               />
             </Route>
 
@@ -69,13 +82,12 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
                 />
               }
             />
-
-            <Route
-              path="/template_data/:template_id"
-              element={<EditTemplate AUTH_TOKEN={TOKEN} />}
-            />
+            
+            <Route path="/template_data/:document_id" element={<EditTemplate  AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/*" element={<Home />} />
+            <Route path="/Projects" element={<Projects />} />
+
             <Route path="/logout" element={<Logout />} />
           </Routes>
         </main>

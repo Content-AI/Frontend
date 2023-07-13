@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from "react";
-import  QuillWrapper from './quillcomponent'
+import React, { useState } from "react";
 
-export default function EditTemplate() {
+export default function EditBlog() {
+  const [dirtyInnerHTML, setDirtyInnerHTML] = useState();
   const [delta, setDelta] = useState({
-    ops: [{ insert: "Write your article here..\n" }]
+    ops: [
+      { insert: "Audre Toutou in " },
+      { attributes: { bold: true }, insert: "Amelie 🤸‍♀️." },
+      { insert: "\n" }
+    ]
   });
-  const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
   const [text, setText] = useState("");
   const [length, setLength] = useState("");
 
   console.log(delta);
   console.log(JSON.stringify(delta));
 
-  const handleTextChange = (content, delta, source, editor) => {
+  function handleTextChange(content, delta, source, editor) {
     setDelta(editor.getContents()); // the delta
     setDirtyInnerHTML(editor.getHTML()); // innerhtml
     setText(editor.getText()); // text string
     setLength(editor.getLength()); // text length
-  };
+  }
 
   return (
     <div>
-      <p>Index</p>
-      <QuillWrapper onChange={handleTextChange} value={delta} />
+      <QuillWrapper value={delta} onChange={handleTextChange} />
     </div>
   );
 }

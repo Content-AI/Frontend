@@ -83,8 +83,8 @@ const Navbar = () => {
     { title: "Dashboard", link: "/" },
     { title: "Template", link: "/template" },
     { title: "Chat", link: "/chat" },
-    { title: "Projects", link: "/projects" },
     { title: "Documents", link: "/documents" },
+    { title: "Projects", link: "/projects" },
     { title: "Recipes", link: "/recipes" },
     { title: "Art", link: "/art" },
     { title: "Settings", link: "/settings", offset: true },
@@ -340,14 +340,14 @@ const Navbar = () => {
                     />
                   ) : (
                     <img
-                      src="default.png"
+                      src="/default.png"
                       alt="Image"
                       className="w-[40px] h-[40px] rounded-full"
                     />
                   )
                 ) : (
                   <img
-                    src="default.png"
+                    src="/default.png"
                     alt="Image"
                     className="w-[40px] h-[40px] rounded-full"
                   />
