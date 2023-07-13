@@ -14,7 +14,7 @@ import Profile from "../Profile/Profile";
 import Chat from "../pages/chat/Chat"
 import Template from "../pages/Template/Template";
 import SingleTemplate from "../pages/Template/SingleTemplate";
-import EditTemplate from "../pages/Template/Document/EditTemplate";
+import EditDocuments from "../pages/Template/Document/EditDocuments";
 import Logout from "../pages/Logout";
 import Projects from "../pages/Projects/Projects"
 
@@ -83,7 +83,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
               }
             />
             
-            <Route path="/template_data/:document_id" element={<EditTemplate  AUTH_TOKEN={TOKEN} />} />
+            <Route path="/template_data/:document_id" element={<EditDocuments  AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/*" element={<Home />} />
             <Route path="/Projects" element={<Projects />} />

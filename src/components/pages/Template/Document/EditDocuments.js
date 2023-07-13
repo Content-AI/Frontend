@@ -16,7 +16,7 @@ import ResponseTemplate from "../ResponseTemplate";
 
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
 
-export default function EditTemplate() {
+export default function EditDocuments() {
   let navigate = useNavigate();
 
   const [delta, setDelta] = useState({
@@ -37,8 +37,6 @@ export default function EditTemplate() {
   const templateValue = searchParams.get('template');
 
 
-  // console.log(delta);
-  // console.log(JSON.stringify(delta));
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
@@ -112,7 +110,9 @@ export default function EditTemplate() {
 
     try {
       if (resp.status == 200) {
-        setDelta(resp.data?.document_content)
+        const res_data = resp.data?.document_content
+        const formattedData = res_data.replace(/\n/g, '<br>');
+        setDelta(formattedData)
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
         setLengthOfWord(resp.data?.document_content)
@@ -524,7 +524,7 @@ export default function EditTemplate() {
                                   }}
                                   className={`${
                                               HoverBtnColor
-                                                ? "bg-blue-300 "
+                                                ? "bg-slate-400 "
                                                 : " "
                                             } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
 
@@ -544,7 +544,7 @@ export default function EditTemplate() {
                                   className={`${
                                               HoverBtnColor
                                                 ? " "
-                                                : " bg-blue-300 "
+                                                : " bg-slate-400 "
                                             } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                     <small className="-my-0.5">
@@ -733,6 +733,8 @@ export default function EditTemplate() {
                                             handleClick(document_id)
                                             setTemplateResponseData(null)
                                             setLoadingButton(true)
+                                            setHoverBtnColor(false)
+                                            setShowHideHistory(false)
                                         }}
                                         disabled={LoadingButton}
                                         >
@@ -880,7 +882,7 @@ export default function EditTemplate() {
                     <QuillWrapper
                       onChange={handleTextChange}
                       value={delta}
-                      className="h-[100vh]"
+                      className="h-full"
                     />
 
                   </div>
