@@ -10,13 +10,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-// import Chat from "../pages/Chat/Chat";
-import Chat from "../pages/chat/Chat"
+import Chat from "../pages/Chat/Chat";
 import Template from "../pages/Template/Template";
 import SingleTemplate from "../pages/Template/SingleTemplate";
 import EditDocuments from "../pages/Template/Document/EditDocuments";
 import Logout from "../pages/Logout";
-import Projects from "../pages/Projects/Projects"
+import Projects from "../pages/Projects/Projects";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -32,29 +31,15 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/chat" element={<Chat  AUTH_TOKEN={TOKEN} />} />
-            
+            <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
+
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
 
-            <Route
-              path="Template"
-              AUTH_TOKEN={TOKEN}
-            >
-              <Route
-                index
-                element={
-                  <Template
-                  AUTH_TOKEN={TOKEN}
-                  />
-                }
-              />
+            <Route path="Template" AUTH_TOKEN={TOKEN}>
+              <Route index element={<Template AUTH_TOKEN={TOKEN} />} />
               <Route
                 path=":template_id"
-                element={
-                  <SingleTemplate
-                  AUTH_TOKEN={TOKEN}
-                  />
-                }
+                element={<SingleTemplate AUTH_TOKEN={TOKEN} />}
               />
             </Route>
 
