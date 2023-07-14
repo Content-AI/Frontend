@@ -12,6 +12,15 @@ import {
     _message_
   } from "../../../features/LoadingScreenMessage";
 
+import {
+    setText
+} from "../../../features/EditorText";
+  
+import {
+    _copy_text_,_reset_copy_text_
+} from "../../../features/CopiedText";
+  
+
 import { useParams } from 'react-router-dom';
 
 import toast, { Toaster } from 'react-hot-toast';
@@ -22,6 +31,7 @@ import { postData } from '../../../apis/apiService';
 
 const ResponseTemplate = (prop) => {
 
+    // console.log(prop)
 
     const textRef = useRef(null);
     let navigate = useNavigate();
@@ -36,11 +46,16 @@ const ResponseTemplate = (prop) => {
     let loading_page = useSelector(
     (state) => state.SetLoadingScreen.LoadingScreen
     );
+    
+    let COPIED_TEXT = useSelector(
+        (state) => state.SetCopiedText.CopiedText
+      );
 
     const handleCopyClick = () => {
       const textToCopy = textRef.current.innerText;
       navigator.clipboard.writeText(textToCopy);
       notifycopy("Text Copied")
+      dispatch(_copy_text_(textToCopy))
     };
 
     const notifyerror = (message) => toast.error(message);
@@ -117,21 +132,41 @@ const ResponseTemplate = (prop) => {
 
                    {/* ============================ */}
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
-                        onClick={()=>{
-                            dispatch(_load_screen_(true))
-                            dispatch(_message_("Creating Document"))
-                            createDocumentForUser()
-                        }}
-                    >
-                        {/* <div className="tooltip" title="Open in Document"> */}
+                    {prop?.r_show
+                    ?
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                            onClick={()=>{
+                                const formattedData = COPIED_TEXT.replace(/\n/g, '<br>');
+                                dispatch(setText(formattedData))
+                            }}>
                         <div className="tooltip-container">
                             <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                <path d="M14.14,12.67c.09-1.51,.14-3.07,.14-4.67,0-.65,0-1.29-.02-1.92-.01-.44-.16-.88-.42-1.24-1.01-1.37-1.81-2.22-3.12-3.24-.36-.28-.81-.43-1.27-.44-.46,0-.94-.01-1.45-.01-1.55,0-2.8,.05-4.1,.14-1.1,.08-1.98,.95-2.04,2.05-.1,1.51-.15,3.07-.15,4.67s.05,3.16,.15,4.67c.07,1.1,.94,1.98,2.04,2.05,1.29,.09,2.55,.14,4.1,.14s2.8-.05,4.1-.14c1.1-.08,1.98-.95,2.05-2.05Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                            <path d="M4.67,2.71c-.18,.02-.35,.05-.53,.07-.22,.03-.44,.06-.66,.08-.55,.07-.98,.51-1.02,1.06-.24,3.34-.24,6.5,0,9.84,.04,.55,.47,.99,1.02,1.04,3.03,.25,5.79,.25,8.82,0,.55-.05,.98-.49,1.02-1.04,.24-3.34,.24-6.5,0-9.84-.04-.55-.47-.99-1.02-1.06-.22-.03-.44-.05-.66-.08-.18-.02-.35-.04-.53-.07-.08,.86-.81,1.54-1.69,1.54h-3.07c-.88,0-1.61-.67-1.69-1.54Z" fill="transparent" fillRule="evenodd"></path>
+                            <path d="M5.82,7.45h4.36" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"></path>
+                            <path d="M5.82,10.77h2.63" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"></path>
+                            <path d="M9.43,.86h-3.07c-.94,0-1.7,.76-1.7,1.7h0c0,.94,.76,1.7,1.7,1.7h3.07c.94,0,1.7-.76,1.7-1.7h0c0-.94-.76-1.7-1.7-1.7Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"></path>
+                            <path d="M4.78,2.71c-.4,.05-.8,.1-1.2,.15-.55,.07-.98,.51-1.02,1.06-.24,3.34-.24,6.5,0,9.84,.04,.55,.47,.99,1.02,1.04,3.03,.25,5.79,.25,8.82,0,.55-.05,.98-.49,1.02-1.04,.24-3.34,.24-6.5,0-9.84-.04-.55-.47-.99-1.02-1.06-.39-.05-.79-.1-1.2-.15" fill="none" stroke="currentColor" strokeWidth="1"></path>
                             </svg>
-                            <span className="tooltip-text">Open in Document</span>
-                        </div>
-                    </button>
+                            <span className="tooltip-text">Paste to Editor</span>
+                            </div>
+                        </button>
+                    :
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                            onClick={()=>{
+                                dispatch(_load_screen_(true))
+                                dispatch(_message_("Creating Document"))
+                                createDocumentForUser()
+                            }}
+                        >
+                            {/* <div className="tooltip" title="Open in Document"> */}
+                            <div className="tooltip-container">
+                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    <path d="M14.14,12.67c.09-1.51,.14-3.07,.14-4.67,0-.65,0-1.29-.02-1.92-.01-.44-.16-.88-.42-1.24-1.01-1.37-1.81-2.22-3.12-3.24-.36-.28-.81-.43-1.27-.44-.46,0-.94-.01-1.45-.01-1.55,0-2.8,.05-4.1,.14-1.1,.08-1.98,.95-2.04,2.05-.1,1.51-.15,3.07-.15,4.67s.05,3.16,.15,4.67c.07,1.1,.94,1.98,2.04,2.05,1.29,.09,2.55,.14,4.1,.14s2.8-.05,4.1-.14c1.1-.08,1.98-.95,2.05-2.05Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                                </svg>
+                                <span className="tooltip-text">Open in Document</span>
+                            </div>
+                        </button>
+                    }
 
                     <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

@@ -6,6 +6,8 @@ import BlurBgNavBar from '../features/BlurBg'
 import HideShowNavBarGlobalState from '../features/HideShowNavBarGlobalState'
 import LoadingScreen from '../features/LoadingScreen'
 import LoadingScreenMessage from '../features/LoadingScreenMessage'
+import EditorText from '../features/EditorText'
+import CopiedText from '../features/CopiedText'
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +18,8 @@ export const store = configureStore({
         SetHideShowNavBarGlobalState:HideShowNavBarGlobalState,
         SetLoadingScreen:LoadingScreen,
         SetLoadingScreenMessage:LoadingScreenMessage,
+        SetEditorText:EditorText,
+        SetCopiedText:CopiedText,
     }
 })
 
