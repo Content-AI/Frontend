@@ -12,18 +12,21 @@ import { useLocation } from 'react-router-dom';
 
 import toast, { Toaster } from 'react-hot-toast';
 
+import {setText} from "../../../../features/EditorText";
+
 import ResponseTemplate from "../ResponseTemplate";
 
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
 
 export default function EditDocuments() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [delta, setDelta] = useState({
     ops: [{ insert: "" }]
   });
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const [length, setLength] = useState("");
   const [DocumentId, setDocumentId] = useState(null);
   const [title, settitle] = useState(null);
@@ -39,6 +42,10 @@ export default function EditDocuments() {
 
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
+  );
+
+  let EDITOR_TEXT = useSelector(
+    (state) => state.SetEditorText
   );
 
 
@@ -112,6 +119,7 @@ export default function EditDocuments() {
       if (resp.status == 200) {
         const res_data = resp.data?.document_content
         const formattedData = res_data.replace(/\n/g, '<br>');
+        dispatch(setText(formattedData));
         setDelta(formattedData)
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
@@ -146,10 +154,11 @@ export default function EditDocuments() {
 
   const handleTextChange = (content, delta, source, editor) => {
     // console.log(editor.getContents()["ops"][0]["insert"])
-    // const text = editor.getContents().getText().replace(/\n/g, '<br>');
+    const data = editor.getContents()["ops"][0]["insert"]
+    const text = data.replace(/\n/g, '<br>');
     // console.log("text",text)
     setDelta(editor.getContents()); // the delta
-
+    dispatch(setText(text))
     setLengthOfWord(editor.getContents()["ops"][0]["insert"])
     // setDirtyInnerHTML(editor.getHTML()); // innerhtml
 
@@ -283,6 +292,14 @@ export default function EditDocuments() {
     }
   };
 
+
+  const LoaderDiv = () => {
+    return (
+          <div class="flex justify-center items-center mt-[50vh]">
+            <div class="border-t-4 border-gray-900 rounded-full animate-spin h-12 w-12"></div>
+          </div>
+    )
+  }
 
   return (
     <div className="fixed z-50 top-0 left-0 right-0 h-screen bg-white">
@@ -878,12 +895,17 @@ export default function EditDocuments() {
                     <div className="jsx-1f9b1dd4731f1fae absolute inset-0 z-0 pointer-events-none">
 
                     </div>
-                    {/* <div hidden="" className="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
-                    <QuillWrapper
-                      onChange={handleTextChange}
-                      value={delta}
-                      className="h-full"
-                    />
+                    {/* <div hidden="" c  lassName="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
+                    {EDITOR_TEXT?.text
+                    ?
+                      <QuillWrapper
+                        onChange={handleTextChange}
+                        value={EDITOR_TEXT.text}
+                        className="h-[100vh]"
+                      />
+                    :   
+                      <LoaderDiv />
+                    }
 
                   </div>
                   <div className="jsx-1f9b1dd4731f1fae absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
