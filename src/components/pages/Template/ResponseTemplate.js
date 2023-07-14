@@ -12,6 +12,15 @@ import {
     _message_
   } from "../../../features/LoadingScreenMessage";
 
+import {
+    setText
+} from "../../../features/EditorText";
+  
+import {
+    _copy_text_,_reset_copy_text_
+} from "../../../features/CopiedText";
+  
+
 import { useParams } from 'react-router-dom';
 
 import toast, { Toaster } from 'react-hot-toast';
@@ -22,6 +31,7 @@ import { postData } from '../../../apis/apiService';
 
 const ResponseTemplate = (prop) => {
 
+    // console.log(prop)
 
     const textRef = useRef(null);
     let navigate = useNavigate();
@@ -36,11 +46,16 @@ const ResponseTemplate = (prop) => {
     let loading_page = useSelector(
     (state) => state.SetLoadingScreen.LoadingScreen
     );
+    
+    let COPIED_TEXT = useSelector(
+        (state) => state.SetCopiedText.CopiedText
+      );
 
     const handleCopyClick = () => {
       const textToCopy = textRef.current.innerText;
       navigator.clipboard.writeText(textToCopy);
       notifycopy("Text Copied")
+      dispatch(_copy_text_(textToCopy))
     };
 
     const notifyerror = (message) => toast.error(message);
@@ -86,10 +101,11 @@ const ResponseTemplate = (prop) => {
             <>
                 <div className="flex items-center space-x-2">
                 <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 group-hover:opacity-100 hover:ring-1 hover:ring-gray-200 hover:bg-white hover:text-yellow-500">
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path d="M8,1.33c.18,0,.34,.1,.43,.27l1.86,3.76,3.98,.68c.18,.03,.32,.16,.38,.34,.06,.18,.01,.38-.11,.51l-2.83,3.02,.61,4.18c.03,.19-.05,.37-.19,.48-.15,.11-.34,.13-.5,.04l-3.61-1.89-3.6,1.89c-.16,.09-.35,.07-.5-.04-.15-.11-.22-.3-.19-.48l.61-4.18L1.47,6.89c-.13-.13-.17-.33-.11-.51,.06-.18,.2-.31,.38-.34l3.99-.68,1.85-3.76c.08-.17,.25-.27,.43-.27Z" fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="1"></path>
-                    </svg>
-                    </button>
+                        <svg title="Copy" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8,1.33c.18,0,.34,.1,.43,.27l1.86,3.76,3.98,.68c.18,.03,.32,.16,.38,.34,.06,.18,.01,.38-.11,.51l-2.83,3.02,.61,4.18c.03,.19-.05,.37-.19,.48-.15,.11-.34,.13-.5,.04l-3.61-1.89-3.6,1.89c-.16,.09-.35,.07-.5-.04-.15-.11-.22-.3-.19-.48l.61-4.18L1.47,6.89c-.13-.13-.17-.33-.11-.51,.06-.18,.2-.31,.38-.34l3.99-.68,1.85-3.76c.08-.17,.25-.27,.43-.27Z" fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="1">   
+                            </path>
+                        </svg>
+                </button>
 
                     <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -102,25 +118,55 @@ const ResponseTemplate = (prop) => {
                     <button
                         onClick={handleCopyClick}
                     className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path d="M4.92,3.99c-.03,.8-.05,1.62-.05,2.44,0,1.3,.04,2.57,.12,3.79,.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11,.38,0,.74,0,1.09-.01-.02,.45-.04,.9-.07,1.35-.06,.9-.77,1.62-1.67,1.68-1.05,.07-2.07,.11-3.33,.11s-2.27-.04-3.32-.11c-.9-.06-1.62-.78-1.67-1.68-.08-1.22-.12-2.49-.12-3.79s.04-2.57,.12-3.79c.06-.9,.77-1.62,1.67-1.68,.73-.05,1.45-.08,2.24-.1Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
-                        <path d="M14.99,10.23c.08-1.22,.12-2.49,.12-3.79,0-.53,0-1.05-.02-1.56,0-.36-.13-.72-.34-1.01-.82-1.11-1.47-1.8-2.54-2.63-.3-.23-.66-.35-1.04-.36-.37,0-.76-.01-1.18-.01-1.26,0-2.27,.04-3.33,.11-.9,.06-1.62,.78-1.67,1.68-.08,1.22-.12,2.49-.12,3.79s.04,2.57,.12,3.79c.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11s2.27-.04,3.32-.11c.9-.06,1.62-.78,1.67-1.68Z" fill="transparent"></path>
-                        <path d="M14.99,10.23c.08-1.22,.12-2.49,.12-3.79,0-.53,0-1.05-.02-1.56,0-.36-.13-.72-.34-1.01-.82-1.11-1.47-1.8-2.54-2.63-.3-.23-.66-.35-1.04-.36-.37,0-.76-.01-1.18-.01-1.26,0-2.27,.04-3.33,.11-.9,.06-Here's the rest of the code with improved formatting: 1.62,.78-1.67,1.68-.08,1.22-.12,2.49-.12,3.79s.04,2.57,.12,3.79c.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11s2.27-.04,3.32-.11c.9-.06,1.62-.78,1.67-1.68Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
-                    </svg>
+                        {/* <div className="tooltip" title="Copy"> */}
+                        <div className="tooltip-container">
+                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                <path d="M4.92,3.99c-.03,.8-.05,1.62-.05,2.44,0,1.3,.04,2.57,.12,3.79,.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11,.38,0,.74,0,1.09-.01-.02,.45-.04,.9-.07,1.35-.06,.9-.77,1.62-1.67,1.68-1.05,.07-2.07,.11-3.33,.11s-2.27-.04-3.32-.11c-.9-.06-1.62-.78-1.67-1.68-.08-1.22-.12-2.49-.12-3.79s.04-2.57,.12-3.79c.06-.9,.77-1.62,1.67-1.68,.73-.05,1.45-.08,2.24-.1Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                                <path d="M14.99,10.23c.08-1.22,.12-2.49,.12-3.79,0-.53,0-1.05-.02-1.56,0-.36-.13-.72-.34-1.01-.82-1.11-1.47-1.8-2.54-2.63-.3-.23-.66-.35-1.04-.36-.37,0-.76-.01-1.18-.01-1.26,0-2.27,.04-3.33,.11-.9,.06-1.62,.78-1.67,1.68-.08,1.22-.12,2.49-.12,3.79s.04,2.57,.12,3.79c.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11s2.27-.04,3.32-.11c.9-.06,1.62-.78,1.67-1.68Z" fill="transparent"></path>
+                                <path d="M14.99,10.23c.08-1.22,.12-2.49,.12-3.79,0-.53,0-1.05-.02-1.56,0-.36-.13-.72-.34-1.01-.82-1.11-1.47-1.8-2.54-2.63-.3-.23-.66-.35-1.04-.36-.37,0-.76-.01-1.18-.01-1.26,0-2.27,.04-3.33,.11-.9,.06-Here's the rest of the code with improved formatting: 1.62,.78-1.67,1.68-.08,1.22-.12,2.49-.12,3.79s.04,2.57,.12,3.79c.06,.9,.77,1.62,1.67,1.68,1.05,.07,2.07,.11,3.33,.11s2.27-.04,3.32-.11c.9-.06,1.62-.78,1.67-1.68Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                            </svg>
+                            <span className="tooltip-text">Copy</span>
+                        </div>
                     </button>
+
+
                    {/* ============================ */}
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
-                        onClick={()=>{
-                            dispatch(_load_screen_(true))
-                            dispatch(_message_("Creating Document"))
-                            createDocumentForUser()
-                        }}
-                    >
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path d="M14.14,12.67c.09-1.51,.14-3.07,.14-4.67,0-.65,0-1.29-.02-1.92-.01-.44-.16-.88-.42-1.24-1.01-1.37-1.81-2.22-3.12-3.24-.36-.28-.81-.43-1.27-.44-.46,0-.94-.01-1.45-.01-1.55,0-2.8,.05-4.1,.14-1.1,.08-1.98,.95-2.04,2.05-.1,1.51-.15,3.07-.15,4.67s.05,3.16,.15,4.67c.07,1.1,.94,1.98,2.04,2.05,1.29,.09,2.55,.14,4.1,.14s2.8-.05,4.1-.14c1.1-.08,1.98-.95,2.05-2.05Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
-                    </svg>
-                    </button>
+                    {prop?.r_show
+                    ?
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                            onClick={()=>{
+                                const formattedData = COPIED_TEXT.replace(/\n/g, '<br>');
+                                dispatch(setText(formattedData))
+                            }}>
+                        <div className="tooltip-container">
+                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M4.67,2.71c-.18,.02-.35,.05-.53,.07-.22,.03-.44,.06-.66,.08-.55,.07-.98,.51-1.02,1.06-.24,3.34-.24,6.5,0,9.84,.04,.55,.47,.99,1.02,1.04,3.03,.25,5.79,.25,8.82,0,.55-.05,.98-.49,1.02-1.04,.24-3.34,.24-6.5,0-9.84-.04-.55-.47-.99-1.02-1.06-.22-.03-.44-.05-.66-.08-.18-.02-.35-.04-.53-.07-.08,.86-.81,1.54-1.69,1.54h-3.07c-.88,0-1.61-.67-1.69-1.54Z" fill="transparent" fillRule="evenodd"></path>
+                            <path d="M5.82,7.45h4.36" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"></path>
+                            <path d="M5.82,10.77h2.63" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"></path>
+                            <path d="M9.43,.86h-3.07c-.94,0-1.7,.76-1.7,1.7h0c0,.94,.76,1.7,1.7,1.7h3.07c.94,0,1.7-.76,1.7-1.7h0c0-.94-.76-1.7-1.7-1.7Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"></path>
+                            <path d="M4.78,2.71c-.4,.05-.8,.1-1.2,.15-.55,.07-.98,.51-1.02,1.06-.24,3.34-.24,6.5,0,9.84,.04,.55,.47,.99,1.02,1.04,3.03,.25,5.79,.25,8.82,0,.55-.05,.98-.49,1.02-1.04,.24-3.34,.24-6.5,0-9.84-.04-.55-.47-.99-1.02-1.06-.39-.05-.79-.1-1.2-.15" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                            </svg>
+                            <span className="tooltip-text">Paste to Editor</span>
+                            </div>
+                        </button>
+                    :
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                            onClick={()=>{
+                                dispatch(_load_screen_(true))
+                                dispatch(_message_("Creating Document"))
+                                createDocumentForUser()
+                            }}
+                        >
+                            {/* <div className="tooltip" title="Open in Document"> */}
+                            <div className="tooltip-container">
+                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    <path d="M14.14,12.67c.09-1.51,.14-3.07,.14-4.67,0-.65,0-1.29-.02-1.92-.01-.44-.16-.88-.42-1.24-1.01-1.37-1.81-2.22-3.12-3.24-.36-.28-.81-.43-1.27-.44-.46,0-.94-.01-1.45-.01-1.55,0-2.8,.05-4.1,.14-1.1,.08-1.98,.95-2.04,2.05-.1,1.51-.15,3.07-.15,4.67s.05,3.16,.15,4.67c.07,1.1,.94,1.98,2.04,2.05,1.29,.09,2.55,.14,4.1,.14s2.8-.05,4.1-.14c1.1-.08,1.98-.95,2.05-2.05Z" fill="none" stroke="currentColor" strokeWidth="1"></path>
+                                </svg>
+                                <span className="tooltip-text">Open in Document</span>
+                            </div>
+                        </button>
+                    }
 
                     <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

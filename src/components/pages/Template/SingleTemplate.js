@@ -114,27 +114,25 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const handleClick = async (id_of_template) => {
     // console.log(TemplateData[0]["title"])
     // return true
-
     const divElement = document.getElementById(id_of_template);
-    const inputElements = divElement.getElementsByTagName("input");
-    const textareaElements = divElement.getElementsByTagName("textarea");
-
+    const inputElements = divElement.getElementsByTagName('input');
+    const textareaElements = divElement.getElementsByTagName('textarea');
+  
     const elements = [...inputElements, ...textareaElements];
-
+  
     const formData = Array.from(elements).reduce((data, element) => {
       data[element.name] = element.value;
       return data;
     }, {});
     let isFormDataValid = true;
-    formData["language"] =
-      "Generate whole text in " + OutputlanguageChoice + " Language";
-    formData["output_results"] = ContentOutputNumber.toString();
-    formData["generate"] = TemplateData[0]["title"];
-    const keyToCheck = /^(?!.*[Tt]one).*$/;
+    formData["language"]="Generate whole text in "+OutputlanguageChoice+" Language"
+    formData["output_results"]=ContentOutputNumber.toString()
+    formData["generate"]=TemplateData[0]["title"]
+    
+    const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
 
     Object.entries(formData).forEach(([key, value]) => {
-      if (key.match(keyToCheck)) {
-        // Case-sensitive match
+      if (key.match(keyToCheck)) { // Case-sensitive match
         if (value.trim() === "") {
           notifyerror(`Value for ${key} is empty.`);
           isFormDataValid = false;
@@ -145,6 +143,19 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     if (inputs.length > 0) {
       formData["inputs"] = inputs;
     }
+
+
+    
+    if (inputs.length > 0) {
+      formData["inputs"] = inputs;
+    }
+    
+    Object.entries(formData).forEach(([key, value]) => {
+      const trimmedValue = value.trim();
+      if (trimmedValue === '') {
+        delete formData[key]; // Remove the key from formData
+      }
+    });
     if (isFormDataValid) {
       setLoadingButton(true);
       let res_of_template = await postData(
@@ -164,10 +175,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(TemplateResponseData);
-    console.log(ProjectId);
-  }, [ProjectId]);
+//   useEffect(() => {
+//     console.log(TemplateResponseData);
+//     console.log(ProjectId);
+//   }, [ProjectId]);
 
   const get_history = async () => {
     const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY, AUTH_TOKEN);
@@ -464,25 +475,25 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                   </div>
 
                   <div className="flex flex-col border border-border p-6 rounded-md mt-[30px] mb-[50px]">
-                    <div class="flex flex-col items-start md:flex-row md:justify-start md:items-center sm:flex-wrap lg:flex-nowrap">
-                      <h3 class="text-sm font-medium flex items-center md:mr-3 md:mb-2">
-                        <span class="md:whitespace-nowrap">
+                    <div className="flex flex-col items-start md:flex-row md:justify-start md:items-center sm:flex-wrap lg:flex-nowrap">
+                      <h3 className="text-sm font-medium flex items-center md:mr-3 md:mb-2">
+                        <span className="md:whitespace-nowrap">
                           Language options
                         </span>{" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="2"
+                          strokeWidth="2"
                           stroke="currentColor"
                           aria-hidden="true"
                           role="button"
-                          class="w-4 text-gray-500 ml-2 flex-shrink-0"
+                          className="w-4 text-gray-500 ml-2 flex-shrink-0"
                           aria-expanded="false"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           ></path>
                         </svg>
