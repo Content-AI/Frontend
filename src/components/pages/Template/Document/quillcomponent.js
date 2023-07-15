@@ -3,6 +3,7 @@ import BlotFormatter from "quill-blot-formatter";
 import React from "react";
 
 import "react-quill/dist/quill.snow.css";
+import ImageResize from 'quill-image-resize-module-react';
 
 Quill.register("modules/blotFormatter", BlotFormatter);
 
