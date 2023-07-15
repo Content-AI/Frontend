@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+
 import QuillWrapper from './quillcomponent'
+import Editor from './EditorWithUseQuill';
+
+
+
 import { useParams } from 'react-router-dom';
 
 import { fetchData, patchData,postData } from "../../../../apis/apiService";
-import { BACKEND_URL, BACK_END_API_DOCUMENTS, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
+import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
-import { AiOutlineArrowRight } from "react-icons/ai";
 
 import { useLocation } from 'react-router-dom';
 
@@ -18,14 +22,18 @@ import {setText} from "../../../../features/EditorText";
 import ResponseTemplate from "../ResponseTemplate";
 
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
+import WholeTemplateRender from "./WholeTemplateRender";
+import {_template_id_} from '../../../../features/LeftTemplateId';
+
 
 export default function EditDocuments() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [delta, setDelta] = useState({
-    ops: [{ insert: "" }]
+    ops: [{ insert: "Hello" }]
   });
+
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
   // const [text, setText] = useState("");
   const [length, setLength] = useState("");
@@ -44,6 +52,9 @@ export default function EditDocuments() {
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
+  let LeftListTemplateData = useSelector(
+    (state) => state.SetLeftTemplateId.LeftTemplateId
+  );
 
   let EDITOR_TEXT = useSelector(
     (state) => state.SetEditorText
@@ -52,6 +63,8 @@ export default function EditDocuments() {
 
   const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateResponseData, setTemplateResponseData] = useState(null);
+  
+  const [WholeTemplate,setWholeTemplate] = useState(null);
 
   const [ProjectId, setProjectId] = useState(null);
 
@@ -119,9 +132,13 @@ export default function EditDocuments() {
     try {
       if (resp.status == 200) {
         const res_data = resp.data?.document_content
-        const formattedData = res_data.replace(/\n/g, '<br>');
+        // const formattedData = res_data.replace(/\n/g, '<br>');
         // dispatch(setText(formattedData));
-        setDelta(formattedData)
+        // setDelta(formattedData)
+        const newDelta = {
+          ops: [{ insert: res_data }],
+        };
+        setDelta(newDelta);
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
         setLengthOfWord(resp.data?.document_content)
@@ -132,12 +149,23 @@ export default function EditDocuments() {
       if (resp_template_data.status == 200) {
         setTemplateData(resp_template_data.data)
       }else{
-        navigate("/template")
+        // navigate("/template")
+          const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+          if(res_template.status==200){
+            setWholeTemplate(res_template.data)
+          }
       }
     } catch (e) {
       notifyerror("something went wrong refresh page")
     }
 
+  }
+
+  const WholeTemplateApi = async() =>{
+    const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+      if(res_template.status==200){
+        setWholeTemplate(res_template.data)
+      }
   }
 
   const get_history = async() => {
@@ -156,9 +184,12 @@ export default function EditDocuments() {
   const handleTextChange = (content, delta, source, editor) => {
     // console.log(editor.getContents()["ops"][0]["insert"])
     const data = editor.getContents()["ops"][0]["insert"]
-    const text = data.replace(/\n/g, '<br>');
+    // const text = data.replace(/\n/g, '<br>');
     // console.log("text",text)
-    setDelta(editor.getContents()); // the delta
+    const newDelta = {
+      ops: [{ insert: editor.getContents()["ops"][0]["insert"] }],
+    };
+    setDelta(newDelta); // the delta
     // dispatch(setText(text))
     setLengthOfWord(editor.getContents()["ops"][0]["insert"])
     // setDirtyInnerHTML(editor.getHTML()); // innerhtml
@@ -171,12 +202,22 @@ export default function EditDocuments() {
 
   useEffect(()=>{
     if(EDITOR_TEXT.text){
-      setDelta(EDITOR_TEXT.text)
+      const newDelta = {
+        ops: [{ insert: EDITOR_TEXT.text}],
+      };
+      setDelta(newDelta);
       dispatch(setText(null))
+      
     }
   },[EDITOR_TEXT])
 
 
+  useEffect(()=>{
+    if(LeftListTemplateData){
+      setTemplateData(LeftListTemplateData)
+      setWholeTemplate(null)
+    }
+  },[LeftListTemplateData])
 
   const handleClick = async(id_of_template) => {
 
@@ -502,83 +543,98 @@ export default function EditDocuments() {
             <div className="jsx-1f9b1dd4731f1fae flex flex-col-reverse md:flex-row bg:white overflow-hidden h-full">
               <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
                 <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
-                  <div className="flex flex-col h-full relative bg-white overflow-auto p-4 xl:p-6">
-                    <div className="flex flex-row absolute inset-0 divide-x divide-slate-200">
+                  {/* <div className="flex flex-col h-full relative bg-white overflow-auto p-4 xl:p-6">
+                    <div className="flex flex-row absolute inset-0 divide-x divide-slate-200"> */}
                       {/* ===========Template name from apis=============== */}
 
+                    {TemplateData ?(
+                      <>
                       <div className="flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
-                        <div className="flex items-baseline">
-                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0">
-                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                              <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                        
+                        <div className="flex items-baseline sticky top-0 bg-white z-10">
+                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0"
+                          onClick={()=>{
+                              setTemplateData(null)
+                              dispatch(_template_id_(null))
+                              WholeTemplateApi()
+                          }}>
+                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                  <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                                </path>
-                                <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path></svg><span className="sr-only">Back</span></span></button></div><div className="flex flex-col w-full">
+                                  </path>
+                                  <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                          {TemplateData && (
-                            <>
-                              <div className="flex-1">
+                                  </path>
+                                  </svg>
+                                  <span className="sr-only">
+                                    Back
+                                  </span>
+                                  </span>
+                          </button>
+                        </div>
+                            
+                            <div className="flex flex-col w-full">
+                              <div className="flex-1 sticky top-0 bg-white z-10">
                                 <h2 className="leading-7 text-gray-900 font-semibold line-clamp-1">
                                   {TemplateData[0].title}
                                 </h2>
                                 <p className="leading-tight text-gray-500 text-xs line-clamp-1">
                                   {TemplateData[0].description}
                                 </p>
+                            <div className="pt-2">
+                              <div className="
+                                  flex items-center transform
+                                  [&amp;_.active_button]:bg-indigo-100
+                                  [&amp;_.active_button]:text-indigo-600
+                                  [&amp;_.active_button]:ring-indigo-700
+                                  [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
+                                  [&amp;_:first-child_button]:!rounded-r-none
+                                  [&amp;_:last-child_button]:!rounded-l-none
+                                ">
+                                <span className="active z-10 mr-3">
+                                  <button type="button" 
+                                    onClick={()=>{
+                                      setHoverBtnColor(true)
+                                    }}
+                                    className={`${
+                                                HoverBtnColor
+                                                  ? "bg-slate-400 "
+                                                  : " "
+                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+
+                                  >
+                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                      <small className="-my-0.5">
+                                        Inputs
+                                      </small>
+                                    </span>
+                                  </button>
+                                </span>
+                                <span className="relative hover:z-10">
+                                  <button type="button" 
+                                    onClick={()=>{
+                                      setHoverBtnColor(false)
+                                    }}
+                                    className={`${
+                                                HoverBtnColor
+                                                  ? " "
+                                                  : " bg-slate-400 "
+                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
+                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                      <small className="-my-0.5">
+                                        Outputs
+                                      </small>
+                                    </span>
+                                  </button>
+                                </span>
+
                               </div>
-                            </>
-                          )}
-
-                          <div className="pt-2">
-                            <div className="
-                                flex items-center transform
-                                [&amp;_.active_button]:bg-indigo-100
-                                [&amp;_.active_button]:text-indigo-600
-                                [&amp;_.active_button]:ring-indigo-700
-                                [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                                [&amp;_:first-child_button]:!rounded-r-none
-                                [&amp;_:last-child_button]:!rounded-l-none
-                              ">
-                              <span className="active z-10 mr-3">
-                                <button type="button" 
-                                  onClick={()=>{
-                                    setHoverBtnColor(true)
-                                  }}
-                                  className={`${
-                                              HoverBtnColor
-                                                ? "bg-slate-400 "
-                                                : " "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
-
-                                >
-                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <small className="-my-0.5">
-                                      Inputs
-                                    </small>
-                                  </span>
-                                </button>
-                              </span>
-                              <span className="relative hover:z-10">
-                                <button type="button" 
-                                  onClick={()=>{
-                                    setHoverBtnColor(false)
-                                  }}
-                                  className={`${
-                                              HoverBtnColor
-                                                ? " "
-                                                : " bg-slate-400 "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
-                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <small className="-my-0.5">
-                                      Outputs
-                                    </small>
-                                  </span>
-                                </button>
-                              </span>
-
                             </div>
-                          </div>
-                          
+                              </div>
+
+                        
+                         
                           {HoverBtnColor
                           ?
                             <>
@@ -908,16 +964,29 @@ export default function EditDocuments() {
                         </div>
 
                       </div>
+                      </>
+                    )
+                    :
+                      (
+                      WholeTemplate&& (
+                          <WholeTemplateRender template_data={WholeTemplate}/>
+                      )
+                      )
+                      }
+                    {/* ===================================================== */}
 
-                      {/* ========================== */}
-                      <div className="h-full flex-1">
+                    {/* ===================Left side whole template Render================================== */}
+                    {/* ===================================================== */}
+                    
+
+                      {/* <div className="h-full flex-1">
                         <div className="h-full flex justify-center items-center">
                           <div className="w-6 h-6 text-gray-400 relative overflow-hidden text-center">
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex absolute w-full left-0 z-10 justify-between gap-3 items-center pointer-events-none top-0">
                   <div></div>
@@ -937,11 +1006,15 @@ export default function EditDocuments() {
                     {/* <div hidden="" c  lassName="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
                     {delta
                     ?
-                      <QuillWrapper
-                        onChange={handleTextChange}
-                        value={delta}
-                        className="h-[100vh]"
-                      />
+                      <>
+                        {/* <QuillWrapper
+                          onChange={handleTextChange}
+                          value={delta}
+                          className="h-[100vh]"
+                        /> */}
+                        {/* <Editor  placeholder={'Write something...'} /> */}
+                        <Editor datas={delta} placeholder={"Write something..."} />
+                      </>
                     :   
                       <LoaderDiv />
                     }

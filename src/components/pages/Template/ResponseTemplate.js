@@ -136,8 +136,8 @@ const ResponseTemplate = (prop) => {
                     ?
                         <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
                             onClick={()=>{
-                                const formattedData = COPIED_TEXT.replace(/\n/g, '<br>');
-                                dispatch(setText(formattedData))
+                                // const formattedData = COPIED_TEXT.replace(/\n/g, '<br>');
+                                dispatch(setText(COPIED_TEXT))
                             }}>
                         <div className="tooltip-container">
                             <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

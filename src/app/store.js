@@ -8,6 +8,7 @@ import LoadingScreen from '../features/LoadingScreen'
 import LoadingScreenMessage from '../features/LoadingScreenMessage'
 import EditorText from '../features/EditorText'
 import CopiedText from '../features/CopiedText'
+import LeftTemplateId from '../features/LeftTemplateId'
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         SetLoadingScreenMessage:LoadingScreenMessage,
         SetEditorText:EditorText,
         SetCopiedText:CopiedText,
+        SetLeftTemplateId:LeftTemplateId,
     }
 })
 
