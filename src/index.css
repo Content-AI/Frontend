@@ -148,3 +148,11 @@ code {
   border: 0;
 }
 
+
+.ql-toolbar.ql-snow {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: #fff !important;
+  z-index: 1 !important;
+}
+

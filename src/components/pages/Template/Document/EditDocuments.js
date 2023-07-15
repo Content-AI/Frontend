@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+
 import QuillWrapper from './quillcomponent'
+import Editor from './EditorWithUseQuill';
+
+
+
 import { useParams } from 'react-router-dom';
 
 import { fetchData, patchData,postData } from "../../../../apis/apiService";
-import { BACKEND_URL, BACK_END_API_DOCUMENTS, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
+import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -12,18 +17,25 @@ import { useLocation } from 'react-router-dom';
 
 import toast, { Toaster } from 'react-hot-toast';
 
+import {setText} from "../../../../features/EditorText";
+
 import ResponseTemplate from "../ResponseTemplate";
 
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
+import WholeTemplateRender from "./WholeTemplateRender";
+import {_template_id_} from '../../../../features/LeftTemplateId';
+
 
 export default function EditDocuments() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [delta, setDelta] = useState({
-    ops: [{ insert: "" }]
+    ops: [{ insert: "Hello" }]
   });
+
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const [length, setLength] = useState("");
   const [DocumentId, setDocumentId] = useState(null);
   const [title, settitle] = useState(null);
@@ -40,10 +52,19 @@ export default function EditDocuments() {
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
+  let LeftListTemplateData = useSelector(
+    (state) => state.SetLeftTemplateId.LeftTemplateId
+  );
+
+  let EDITOR_TEXT = useSelector(
+    (state) => state.SetEditorText
+  );
 
 
   const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateResponseData, setTemplateResponseData] = useState(null);
+  
+  const [WholeTemplate,setWholeTemplate] = useState(null);
 
   const [ProjectId, setProjectId] = useState(null);
 
@@ -111,8 +132,13 @@ export default function EditDocuments() {
     try {
       if (resp.status == 200) {
         const res_data = resp.data?.document_content
-        const formattedData = res_data.replace(/\n/g, '<br>');
-        setDelta(formattedData)
+        // const formattedData = res_data.replace(/\n/g, '<br>');
+        // dispatch(setText(formattedData));
+        // setDelta(formattedData)
+        const newDelta = {
+          ops: [{ insert: res_data }],
+        };
+        setDelta(newDelta);
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
         setLengthOfWord(resp.data?.document_content)
@@ -123,12 +149,23 @@ export default function EditDocuments() {
       if (resp_template_data.status == 200) {
         setTemplateData(resp_template_data.data)
       }else{
-        navigate("/template")
+        // navigate("/template")
+          const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+          if(res_template.status==200){
+            setWholeTemplate(res_template.data)
+          }
       }
     } catch (e) {
       notifyerror("something went wrong refresh page")
     }
 
+  }
+
+  const WholeTemplateApi = async() =>{
+    const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+      if(res_template.status==200){
+        setWholeTemplate(res_template.data)
+      }
   }
 
   const get_history = async() => {
@@ -146,10 +183,14 @@ export default function EditDocuments() {
 
   const handleTextChange = (content, delta, source, editor) => {
     // console.log(editor.getContents()["ops"][0]["insert"])
-    // const text = editor.getContents().getText().replace(/\n/g, '<br>');
+    const data = editor.getContents()["ops"][0]["insert"]
+    // const text = data.replace(/\n/g, '<br>');
     // console.log("text",text)
-    setDelta(editor.getContents()); // the delta
-
+    const newDelta = {
+      ops: [{ insert: editor.getContents()["ops"][0]["insert"] }],
+    };
+    setDelta(newDelta); // the delta
+    // dispatch(setText(text))
     setLengthOfWord(editor.getContents()["ops"][0]["insert"])
     // setDirtyInnerHTML(editor.getHTML()); // innerhtml
 
@@ -159,12 +200,24 @@ export default function EditDocuments() {
     // setLength(editor.getLength()); // text length
   };
 
-  // useEffect(()=>{
-  //   console.log(delta["ops"][0])
-  //     // ["insert"])
-  // },[delta])
+  useEffect(()=>{
+    if(EDITOR_TEXT.text){
+      const newDelta = {
+        ops: [{ insert: EDITOR_TEXT.text}],
+      };
+      setDelta(newDelta);
+      dispatch(setText(null))
+      
+    }
+  },[EDITOR_TEXT])
 
 
+  useEffect(()=>{
+    if(LeftListTemplateData){
+      setTemplateData(LeftListTemplateData)
+      setWholeTemplate(null)
+    }
+  },[LeftListTemplateData])
 
   const handleClick = async(id_of_template) => {
 
@@ -211,7 +264,9 @@ export default function EditDocuments() {
       }
     });
     if (isFormDataValid) {
-        setHoverBtnColor(!HoverBtnColor)
+        setLoadingButton(true)
+        setShowHideHistory(false)
+        setHoverBtnColor(false)
         const res_of_template =  await postData(formData,BACKEND_URL+BACK_END_API_RESPONSE,TOKEN)
         if(res_of_template.status==200){
           setTemplateResponseData(res_of_template.data.data)
@@ -283,6 +338,14 @@ export default function EditDocuments() {
     }
   };
 
+
+  const LoaderDiv = () => {
+    return (
+          <div className="flex justify-center items-center mt-[50vh]">
+            <div className="border-t-4 border-gray-900 rounded-full animate-spin h-12 w-12"></div>
+          </div>
+    )
+  }
 
   return (
     <div className="fixed z-50 top-0 left-0 right-0 h-screen bg-white">
@@ -480,143 +543,135 @@ export default function EditDocuments() {
             <div className="jsx-1f9b1dd4731f1fae flex flex-col-reverse md:flex-row bg:white overflow-hidden h-full">
               <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
                 <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
-                  <div className="flex flex-col h-full relative bg-white overflow-auto p-4 xl:p-6">
-                    <div className="flex flex-row absolute inset-0 divide-x divide-slate-200">
+                  {/* <div className="flex flex-col h-full relative bg-white overflow-auto p-4 xl:p-6">
+                    <div className="flex flex-row absolute inset-0 divide-x divide-slate-200"> */}
                       {/* ===========Template name from apis=============== */}
 
+                    {TemplateData ?(
+                      <>
                       <div className="flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
-                        <div className="flex items-baseline">
-                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0">
-                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                              <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                        
+                        <div className="flex items-baseline sticky top-0 bg-white z-10">
+                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0"
+                          onClick={()=>{
+                              setTemplateData(null)
+                              dispatch(_template_id_(null))
+                              WholeTemplateApi()
+                          }}>
+                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                  <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                                </path>
-                                <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path></svg><span className="sr-only">Back</span></span></button></div><div className="flex flex-col w-full">
+                                  </path>
+                                  <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                          {TemplateData && (
-                            <>
-                              <div className="flex-1">
+                                  </path>
+                                  </svg>
+                                  <span className="sr-only">
+                                    Back
+                                  </span>
+                                  </span>
+                          </button>
+                        </div>
+                            
+                            <div className="flex flex-col w-full">
+                              <div className="flex-1 sticky top-0 bg-white z-10">
                                 <h2 className="leading-7 text-gray-900 font-semibold line-clamp-1">
                                   {TemplateData[0].title}
                                 </h2>
                                 <p className="leading-tight text-gray-500 text-xs line-clamp-1">
                                   {TemplateData[0].description}
                                 </p>
+                            <div className="pt-2">
+                              <div className="
+                                  flex items-center transform
+                                  [&amp;_.active_button]:bg-indigo-100
+                                  [&amp;_.active_button]:text-indigo-600
+                                  [&amp;_.active_button]:ring-indigo-700
+                                  [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
+                                  [&amp;_:first-child_button]:!rounded-r-none
+                                  [&amp;_:last-child_button]:!rounded-l-none
+                                ">
+                                <span className="active z-10 mr-3">
+                                  <button type="button" 
+                                    onClick={()=>{
+                                      setHoverBtnColor(true)
+                                    }}
+                                    className={`${
+                                                HoverBtnColor
+                                                  ? "bg-slate-400 "
+                                                  : " "
+                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+
+                                  >
+                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                      <small className="-my-0.5">
+                                        Inputs
+                                      </small>
+                                    </span>
+                                  </button>
+                                </span>
+                                <span className="relative hover:z-10">
+                                  <button type="button" 
+                                    onClick={()=>{
+                                      setHoverBtnColor(false)
+                                    }}
+                                    className={`${
+                                                HoverBtnColor
+                                                  ? " "
+                                                  : " bg-slate-400 "
+                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
+                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                      <small className="-my-0.5">
+                                        Outputs
+                                      </small>
+                                    </span>
+                                  </button>
+                                </span>
+
                               </div>
-                            </>
-                          )}
-
-                          <div className="pt-2">
-                            <div className="
-                                flex items-center transform
-                                [&amp;_.active_button]:bg-indigo-100
-                                [&amp;_.active_button]:text-indigo-600
-                                [&amp;_.active_button]:ring-indigo-700
-                                [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                                [&amp;_:first-child_button]:!rounded-r-none
-                                [&amp;_:last-child_button]:!rounded-l-none
-                              ">
-                              <span className="active z-10 mr-3">
-                                <button type="button" 
-                                  onClick={()=>{
-                                    setHoverBtnColor(!HoverBtnColor)
-                                  }}
-                                  className={`${
-                                              HoverBtnColor
-                                                ? "bg-slate-400 "
-                                                : " "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
-
-                                >
-                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <small className="-my-0.5">
-                                      Inputs
-                                    </small>
-                                  </span>
-                                </button>
-                              </span>
-                              <span className="relative hover:z-10">
-                                <button type="button" 
-                                  onClick={()=>{
-                                    setHoverBtnColor(!HoverBtnColor)
-                                  }}
-                                  className={`${
-                                              HoverBtnColor
-                                                ? " "
-                                                : " bg-slate-400 "
-                                            } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
-                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <small className="-my-0.5">
-                                      Outputs
-                                    </small>
-                                  </span>
-                                </button>
-                              </span>
-
                             </div>
-                          </div>
-                          
+                              </div>
+
+                        
+                         
                           {HoverBtnColor
                           ?
                             <>
                               {/* =============Template inner value==================== */}
+                              <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
                               <div id={document_id} className="mt-4 mb-7">
                               {TemplateData &&
                                 TemplateData[0]['template_fields'].map((data, index) => {
                                   const textLength = fieldValues[index]?.value?.length || 0;
-
-                                  return (
-                                    data.component === 'textarea' && (
-                                      <div className="last:mb-1 relative" key={index}>
-                                        <div className="space-y-1.5 w-full">
-                                          <label htmlFor="form-field-productInfo" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
-                                            <span className="flex items-center space-x-1">
-                                              <span>{data.label}</span>
-                                            </span>
-                                          </label>
-                                          <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                            <textarea
-                                              id="form-field-productInfo"
-                                              className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
-                                              maxLength={data.range_of_text}
-                                              name={data.title}
-                                              placeholder={data.placeholder}
-                                              value={fieldValues[index]?.value || data.pre_define_value || ''}
-                                              onChange={(event) => handleInputChange(event, index)}
-                                            ></textarea>
-                                          </div>
-                                          <div className="flex items-center gap-2">
-                                            <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                              {textLength}/{data.range_of_text}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )
-                                    ||
-                                    data.component === 'text' && (
-                                      <div className="space-y-1.5 w-full" key={index}>
-                                        <label htmlFor="form-field-productName" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
+                                return (
+                                  (data.component === "textarea" && (
+                                    <div className="last:mb-1 relative" key={index}>
+                                      <div className="space-y-1.5 w-full">
+                                        <label
+                                          htmlFor="form-field-productInfo"
+                                          className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                        >
                                           <span className="flex items-center space-x-1">
                                             <span>{data.label}</span>
                                           </span>
                                         </label>
-                                        <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                          <div className="flex items-center grow gap-2 py-1.5">
-                                            <div className="flex gap-1 grow">
-                                              <input
-                                                id="form-field-productName"
-                                                className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                                maxLength={data.range_of_text}
-                                                name={data.title}
-                                                type={data.component}
-                                                placeholder={data.placeholder}
-                                                value={fieldValues[index]?.value || data.pre_define_value || ''}
-                                                onChange={(event) => handleInputChange(event, index)}
-                                              />
-                                            </div>
-                                          </div>
+                                        <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                          <textarea
+                                            id="form-field-productInfo"
+                                            className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                                            maxLength={data.range_of_text}
+                                            name={data.title}
+                                            placeholder={data.placeholder}
+                                            value={
+                                              fieldValues[index]?.value ||
+                                              data.pre_define_value ||
+                                              ""
+                                            }
+                                            onChange={(event) =>
+                                              handleInputChange(event, index)
+                                            }
+                                          ></textarea>
                                         </div>
                                         <div className="flex items-center gap-2">
                                           <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
@@ -624,87 +679,147 @@ export default function EditDocuments() {
                                           </span>
                                         </div>
                                       </div>
-                                    )
-                                    ||
-                                    (
-
-
-                                      data.component === 'Example' && (
-
-                                        <>
-                                          <div>
-                                            <label htmlFor="form-field-productInfo" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
-                                              <span className="flex items-center space-x-1">
-                                                <span>Example</span>
-                                              </span>
-                                            </label>
+                                    </div>
+                                  )) ||
+                                  (data.component === "text" && (
+                                    <div className="space-y-1.5 w-full" key={index}>
+                                      <label
+                                        htmlFor="form-field-productName"
+                                        className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                      >
+                                        <span className="flex items-center space-x-1">
+                                          <span>{data.label}</span>
+                                        </span>
+                                      </label>
+                                      <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <div className="flex items-center grow gap-2 py-1.5">
+                                          <div className="flex gap-1 grow">
+                                            <input
+                                              id="form-field-productName"
+                                              className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                              maxLength={data.range_of_text}
+                                              name={data.title}
+                                              type={data.component}
+                                              placeholder={data.placeholder}
+                                              value={
+                                                fieldValues[index]?.value ||
+                                                data.pre_define_value ||
+                                                ""
+                                              }
+                                              onChange={(event) =>
+                                                handleInputChange(event, index)
+                                              }
+                                            />
                                           </div>
-                                          <div className="flex justify-between flex-col space-y-2 key={index_inner}">
-                                            {inputs.map((input, index_inner) => (
-                                              <div className="flex justify-between flex-col space-y-2" key={index_inner}>
-                                                <div className="flex items-center justify-between space-x-2">
-                                                  <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                                    {index_inner + 1}
-                                                  </div>
-                                                  <div className="space-y-1.5 w-full">
-                                                    <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                                      <div className="flex items-center grow gap-2 py-1.5">
-                                                        <div className="flex gap-1 grow">
-                                                          <input
-                                                            id={`example-${index_inner + 1}`}
-                                                            type="text"
-                                                            className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                                            placeholder={displayText(index_inner)}
-                                                            value={input}
-                                                            onChange={(event) =>
-                                                              handleMultipleInputChange(event, index_inner)
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </div>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                          {textLength}/{data.range_of_text}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  )) ||
+                                  (data.component === "Example" && (
+                                    <>
+                                      <div>
+                                        <label
+                                          htmlFor="form-field-productInfo"
+                                          className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                        >
+                                          <span className="flex items-center space-x-1">
+                                            <span>Example</span>
+                                          </span>
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-between flex-col space-y-2 key={index_inner}">
+                                        {inputs.map((input, index_inner) => (
+                                          <div
+                                            className="flex justify-between flex-col space-y-2"
+                                            key={index_inner}
+                                          >
+                                            <div className="flex items-center justify-between space-x-2">
+                                              <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                                {index_inner + 1}
+                                              </div>
+                                              <div className="space-y-1.5 w-full">
+                                                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                  <div className="flex items-center grow gap-2 py-1.5">
+                                                    <div className="flex gap-1 grow">
+                                                      <input
+                                                        id={`example-${index_inner + 1}`}
+                                                        type="text"
+                                                        className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                        placeholder={displayText(
+                                                          index_inner
+                                                        )}
+                                                        value={input}
+                                                        onChange={(event) =>
+                                                          handleMultipleInputChange(
+                                                            event,
+                                                            index_inner
+                                                          )
+                                                        }
+                                                      />
                                                     </div>
                                                   </div>
-
-                                                  {/* Delete button */}
-                                                  <button
-                                                    type="button"
-                                                    className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                                    onClick={() => handleMultipleInputDelete(index_inner)}
-                                                  >
-                                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-3">
-                                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                                                      </svg>
-                                                    </span>
-                                                  </button>
                                                 </div>
                                               </div>
-                                            ))}
 
-                                            {/* + button */}
-                                            <span className="self-end">
+                                              {/* Delete button */}
                                               <button
                                                 type="button"
-                                                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                                onClick={handleAdd}
+                                                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                onClick={() =>
+                                                  handleMultipleInputDelete(index_inner)
+                                                }
                                               >
-                                                +
+                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                  <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                    aria-hidden="true"
+                                                    className="w-3"
+                                                  >
+                                                    <path
+                                                      fillRule="evenodd"
+                                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                      clipRule="evenodd"
+                                                    ></path>
+                                                  </svg>
+                                                </span>
                                               </button>
-                                            </span>
-
-                                            {/* Submit button */}
-                                            {/* <button
-                                                    type="button"
-                                                    className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                                    onClick={handleSubmit}
-                                                >
-                                                    save
-                                                </button> */}
+                                            </div>
                                           </div>
-                                        </>
-                                      ))
-                                  );
-                                })}
+                                        ))}
+
+                                        {/* + button */}
+                                        <span className="self-end">
+                                          <button
+                                            type="button"
+                                            className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                            onClick={handleAdd}
+                                          >
+                                            +
+                                          </button>
+                                        </span>
+
+                                        {/* Submit button */}
+                                        {/* <button
+                                                          type="button"
+                                                          className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                          onClick={handleSubmit}
+                                                      >
+                                                          save
+                                                      </button> */}
+                                      </div>
+                                    </>
+                                  ))
+                                );
+                                })}                                 
+                              </div>
+
                               </div>
 
                               {/* =======Generate Button=========== */}
@@ -732,9 +847,6 @@ export default function EditDocuments() {
                                         onClick={()=>{
                                             handleClick(document_id)
                                             setTemplateResponseData(null)
-                                            setLoadingButton(true)
-                                            setHoverBtnColor(false)
-                                            setShowHideHistory(false)
                                         }}
                                         disabled={LoadingButton}
                                         >
@@ -806,7 +918,7 @@ export default function EditDocuments() {
                                     (history_answer.map((data,index)=>{
                                         return (
                                             <div key={index}>
-                                                <ResponseTemplate r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
+                                                <ResponseTemplate r_show={"false"} r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
                                             </div>
                                         )
                                     }))
@@ -820,7 +932,7 @@ export default function EditDocuments() {
                                 TemplateResponseData.map((data,index)=>{
                                     return (
                                         <div key={index}>
-                                            <ResponseTemplate r_time={data["created_at"]} r_data={data["content"]}/>
+                                            <ResponseTemplate  r_show={"false"} r_time={data["created_at"]} r_data={data["content"]}/>
                                         </div>
                                     )
                                 })
@@ -852,16 +964,29 @@ export default function EditDocuments() {
                         </div>
 
                       </div>
+                      </>
+                    )
+                    :
+                      (
+                      WholeTemplate&& (
+                          <WholeTemplateRender template_data={WholeTemplate}/>
+                      )
+                      )
+                      }
+                    {/* ===================================================== */}
 
-                      {/* ========================== */}
-                      <div className="h-full flex-1">
+                    {/* ===================Left side whole template Render================================== */}
+                    {/* ===================================================== */}
+                    
+
+                      {/* <div className="h-full flex-1">
                         <div className="h-full flex justify-center items-center">
                           <div className="w-6 h-6 text-gray-400 relative overflow-hidden text-center">
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex absolute w-full left-0 z-10 justify-between gap-3 items-center pointer-events-none top-0">
                   <div></div>
@@ -878,12 +1003,21 @@ export default function EditDocuments() {
                     <div className="jsx-1f9b1dd4731f1fae absolute inset-0 z-0 pointer-events-none">
 
                     </div>
-                    {/* <div hidden="" className="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
-                    <QuillWrapper
-                      onChange={handleTextChange}
-                      value={delta}
-                      className="h-full"
-                    />
+                    {/* <div hidden="" c  lassName="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
+                    {delta
+                    ?
+                      <>
+                        {/* <QuillWrapper
+                          onChange={handleTextChange}
+                          value={delta}
+                          className="h-[100vh]"
+                        /> */}
+                        {/* <Editor  placeholder={'Write something...'} /> */}
+                        <Editor datas={delta} placeholder={"Write something..."} />
+                      </>
+                    :   
+                      <LoaderDiv />
+                    }
 
                   </div>
                   <div className="jsx-1f9b1dd4731f1fae absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
