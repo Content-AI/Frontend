@@ -73,7 +73,7 @@ const WholeTemplateRender = ({template_data}) => {
                 ?
                     ListOfTemplate.map((data,index)=>{
                     return (
-                            <li className="px-1">
+                            <li className="px-1" key={index}>
                         <button className="group w-full px-2 py-1 items-center space-x-2 flex hover:bg-slate-200/50 rounded-lg cursor-pointer"
                             onClick={()=>{
                                 _get_single_template_data_(data.id)

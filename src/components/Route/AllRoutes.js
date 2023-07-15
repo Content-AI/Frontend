@@ -16,6 +16,7 @@ import SingleTemplate from "../pages/Template/SingleTemplate";
 import EditDocuments from "../pages/Template/Document/EditDocuments";
 import Logout from "../pages/Logout";
 import Projects from "../pages/Projects/Projects";
+import ListOfDocument from "../pages/Template/Document/ListOfDocument";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
+            <Route path="/documents" element={<ListOfDocument AUTH_TOKEN={TOKEN} />} />
 
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
 

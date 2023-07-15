@@ -9,6 +9,7 @@ import LoadingScreenMessage from '../features/LoadingScreenMessage'
 import EditorText from '../features/EditorText'
 import CopiedText from '../features/CopiedText'
 import LeftTemplateId from '../features/LeftTemplateId'
+import LengthOfEditorWord from '../features/LengthOfEditorWord'
 
 export const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
         SetEditorText:EditorText,
         SetCopiedText:CopiedText,
         SetLeftTemplateId:LeftTemplateId,
+        SetLengthOfEditorWord:LengthOfEditorWord,
     }
 })
 

@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import QuillWrapper from './quillcomponent'
 import Editor from './EditorWithUseQuill';
 
-
-
 import { useParams } from 'react-router-dom';
 
 import { fetchData, patchData,postData } from "../../../../apis/apiService";
@@ -24,6 +22,7 @@ import ResponseTemplate from "../ResponseTemplate";
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
 import WholeTemplateRender from "./WholeTemplateRender";
 import {_template_id_} from '../../../../features/LeftTemplateId';
+import {_pre_len_text_,_now_len_text_} from '../../../../features/LengthOfEditorWord';
 
 
 export default function EditDocuments() {
@@ -31,7 +30,7 @@ export default function EditDocuments() {
   const dispatch = useDispatch();
 
   const [delta, setDelta] = useState({
-    ops: [{ insert: "Hello" }]
+    ops: [{ insert: " Loading ....." }]
   });
 
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
@@ -54,6 +53,12 @@ export default function EditDocuments() {
   );
   let LeftListTemplateData = useSelector(
     (state) => state.SetLeftTemplateId.LeftTemplateId
+  );
+  let PRE_LENGTH_OF_WORD = useSelector(
+    (state) => state.SetLengthOfEditorWord.LengthOfEditorWord.preLen
+  );
+  let NOW_LENGTH_OF_WORD = useSelector(
+    (state) => state.SetLengthOfEditorWord.LengthOfEditorWord.nowLen
   );
 
   let EDITOR_TEXT = useSelector(
@@ -142,6 +147,8 @@ export default function EditDocuments() {
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
         setLengthOfWord(resp.data?.document_content)
+        dispatch(_pre_len_text_((resp.data?.document_content).length))
+        dispatch(_now_len_text_((resp.data?.document_content).length))
       } else {
         navigate("/template")
       }
@@ -192,6 +199,7 @@ export default function EditDocuments() {
     setDelta(newDelta); // the delta
     // dispatch(setText(text))
     setLengthOfWord(editor.getContents()["ops"][0]["insert"])
+    dispatch(_now_len_text_((editor.getContents()["ops"][0]["insert"]).length))
     // setDirtyInnerHTML(editor.getHTML()); // innerhtml
 
     // console.log("text",text)
@@ -442,7 +450,7 @@ export default function EditDocuments() {
                   </div>
                 </div>
                 <div className="flex items-center justify-end px-3 py-0.5 space-x-2 flex-1">
-                  <div className="pr-2 text-sm text-gray-400">{LengthOfWord.length}</div>
+                  <div className="pr-2 text-sm text-gray-400">{NOW_LENGTH_OF_WORD}</div>
                   <div className="relative inline-block text-left" data-headlessui-state="">
                     <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -1007,12 +1015,6 @@ export default function EditDocuments() {
                     {delta
                     ?
                       <>
-                        {/* <QuillWrapper
-                          onChange={handleTextChange}
-                          value={delta}
-                          className="h-[100vh]"
-                        /> */}
-                        {/* <Editor  placeholder={'Write something...'} /> */}
                         <Editor datas={delta} placeholder={"Write something..."} />
                       </>
                     :   

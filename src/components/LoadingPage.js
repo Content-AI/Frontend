@@ -18,7 +18,7 @@ const LoadingPage = () => {
       <div className='flex flex-col items-center'>
         <div>
           <h1 className='text-[20px] text-slate-950 font-helv'>
-            {message?message:"loading ..."}
+            {message?message:""}
           </h1>
         </div>
         <div className='mt-3'>
