@@ -30,7 +30,7 @@ export default function EditDocuments() {
   const dispatch = useDispatch();
 
   const [delta, setDelta] = useState({
-    ops: [{ insert: "Hello" }]
+    ops: [{ insert: " Loading ....." }]
   });
 
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
