@@ -39,6 +39,9 @@ const ListOfDocument = (props) => {
   const notifyerror = (message) => toast.error(message);
   const notifysuccess = (message) => toast.success(message);
 
+  let FolderDataState = useSelector(
+    (state) => state.SetFolderData.FolderData
+  );
 
   const get_all_user_doc = async () => {
     const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
@@ -164,7 +167,7 @@ const ListOfDocument = (props) => {
 }
   useEffect(()=>{
     get_project_data()
-  },[])
+  },[FolderDataState])
 
   useEffect(()=>{
     dispatch(_save_doc_data_(documentData))

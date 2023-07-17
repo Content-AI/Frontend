@@ -49,6 +49,7 @@ const FolderData = (props) => {
         const resp = await fetchData(BACKEND_URL+BACK_END_API_GET_FOLDER_DETAILS+folder_id+"/",props.AUTH_TOKEN)
         if(resp.status==200){
             setFolderData(resp.data)
+
         }else{
             navigate("/")
         }
