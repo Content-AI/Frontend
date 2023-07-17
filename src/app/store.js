@@ -12,6 +12,7 @@ import LeftTemplateId from '../features/LeftTemplateId'
 import LengthOfEditorWord from '../features/LengthOfEditorWord'
 import ProjectOrFolderIdChoosen from '../features/ProjectOrFolderIdChoosen'
 import DocumentsData from '../features/DocumentsData'
+import FolderData from '../features/FolderData'
 
 export const store = configureStore({
     reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
         SetLengthOfEditorWord:LengthOfEditorWord,
         SetProjectOrFolderIdChoosen:ProjectOrFolderIdChoosen,
         SetDocumentsData:DocumentsData,
+        SetFolderData:FolderData,
     }
 })
 

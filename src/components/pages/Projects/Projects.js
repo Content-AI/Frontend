@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 import ListOfDocument from '../Template/Document/ListOfDocument'
 import { useSelector, useDispatch } from "react-redux";
+import {
+  _save_folder_data_
+} from "../../../features/FolderData";
 
 
 const cardData = [
@@ -28,6 +31,7 @@ const cardData = [
 
 const Projects = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [FolderOfUser,setFolderOfUser] = useState(null)
   const [PopUpModelToCreateFolder,setPopUpModelToCreateFolder] = useState(false)
@@ -56,6 +60,7 @@ const Projects = (props) => {
     const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECTS,props.AUTH_TOKEN)
     if(resp.status=200){
       setFolderOfUser(resp.data)
+      dispatch(_save_folder_data_(resp.data))
     }
   }
 
