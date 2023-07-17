@@ -10,6 +10,8 @@ import EditorText from '../features/EditorText'
 import CopiedText from '../features/CopiedText'
 import LeftTemplateId from '../features/LeftTemplateId'
 import LengthOfEditorWord from '../features/LengthOfEditorWord'
+import ProjectOrFolderIdChoosen from '../features/ProjectOrFolderIdChoosen'
+import DocumentsData from '../features/DocumentsData'
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +26,8 @@ export const store = configureStore({
         SetCopiedText:CopiedText,
         SetLeftTemplateId:LeftTemplateId,
         SetLengthOfEditorWord:LengthOfEditorWord,
+        SetProjectOrFolderIdChoosen:ProjectOrFolderIdChoosen,
+        SetDocumentsData:DocumentsData,
     }
 })
 

@@ -49,7 +49,7 @@ function App() {
       dispatch(_save_token_(localStorage.getItem("token")));
       dispatch(_load_screen_(false))
     }else{
-      navigate('login')
+      navigate('/login')
       dispatch(_load_screen_(false))
     }
   }, []);
@@ -66,7 +66,7 @@ function App() {
           dispatch(_save_survey_(null));
           dispatch(_delete_user_profile(null));
           dispatch(_load_screen_(false))
-          navigate("login")
+          navigate("/login")
         }
 
     }

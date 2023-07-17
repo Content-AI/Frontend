@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { BACKEND_URL, BACK_END_API_DOCUMENTS } from "../../../../apis/urls";
+import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE } from "../../../../apis/urls";
 import { fetchData, patchData } from "../../../../apis/apiService";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import RenderHtml from "../RenderHtml";
 import LoadingPage from "../../../LoadingPage";
+import { useSelector, useDispatch } from "react-redux";
+
+import { _save_doc_data_ } from "../../../../features/DocumentsData";
 
 const ListOfDocument = (props) => {
+
   const navigate = useNavigate();
+  const popupRef = useRef(null);
+  const dispatch = useDispatch();
+
 
   const [ListOrGrid, setListOrGrid] = useState(true);
   const [openPopupIndex, setOpenPopupIndex] = useState(null);
@@ -18,8 +25,16 @@ const ListOfDocument = (props) => {
   const [inputText, setInputText] = useState("");
   const [LoadingData, setLoadingData] = useState(true);
   const [searchText, setSearchText] = useState('');
+  
+  const [RenameDocumentId,setRenameDocumentId] = useState(null);
+  const [ChangeFolderDiv, setChangeFolderDiv] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [SelectedOptions, setSelectedOptions] = useState(null);
+  
 
-  const popupRef = useRef(null);
+  const [showModalForDelete,setshowModalForDelete] = useState(false);
+  const [DeleteFolderId,setDeleteFolderId] = useState(null);
+
 
   const notifyerror = (message) => toast.error(message);
   const notifysuccess = (message) => toast.success(message);
@@ -49,18 +64,19 @@ const ListOfDocument = (props) => {
     setdocumentData((prevDocuments) =>
       prevDocuments.filter((document) => document.id !== id)
     );
+    setshowModalForDelete(false)
   };
 
   const _update_document_data = async (data, id, message) => {
+    handleDelete(id)
+    if (popupRef.current) {
+      setOpenPopupIndex(null);
+    }
     const resp = await patchData(data, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
     if (resp.status == 201) {
       notifysuccess(message)
-      handleDelete(id)
     } else {
       notifyerror("something went wrong")
-    }
-    if (popupRef.current) {
-      setOpenPopupIndex(null);
     }
   }
   const _update_name_ = async (data, id, message) => {
@@ -124,6 +140,40 @@ const ListOfDocument = (props) => {
     }
   };
 
+
+
+  const update_folder = async() =>{
+    let formData = {
+        project_id:selectedValue
+      }
+      const resp = await patchData(formData, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + RenameDocumentId + "/", props.AUTH_TOKEN)
+      if(resp.status=201){
+        get_all_user_doc()
+        notifysuccess("Document Moved")
+      }else{
+        notifyerror("something went wrong")
+      }
+    setChangeFolderDiv(false)
+  }
+
+  const get_project_data = async() => {
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
+    if(resp.status==200){
+        setSelectedOptions(resp.data)
+    }
+}
+  useEffect(()=>{
+    get_project_data()
+  },[])
+
+  useEffect(()=>{
+    dispatch(_save_doc_data_(documentData))
+  },[documentData])
+
+  const handleSelectChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
   return (
     <>
       {LoadingData
@@ -139,12 +189,15 @@ const ListOfDocument = (props) => {
               <>
               {/* ===================search field========================== */}
                 <div className="flex flex-col justify-between sm:flex-row">
+
                 <div className="flex items-center space-x-6">
                   <div className="w-80">
                     <div className="w-full space-y-1.5">
                       <label htmlFor="search-content" className="sr-only"
                       ><span className="flex items-center space-x-1"><span>Search content</span></span></label
                       >
+                    {props.search_bar!="off"
+                      ?
                       <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
                         <div className="flex grow items-center gap-2 py-1.5">
                           <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -163,9 +216,13 @@ const ListOfDocument = (props) => {
                           </div>
                         </div>
                       </div>
+                      :
+                      null
+                  }
                     </div>
                   </div>
                 </div>
+               
           {/* ===================search field========================== */}
           
               {/* ===================list or gird========================== */}
@@ -202,7 +259,8 @@ const ListOfDocument = (props) => {
                       </div>
                 </div>
                 {/* ===================list or gird========================== */}
-              </div>
+                </div>
+             
               </>
               :
               <>
@@ -239,7 +297,7 @@ const ListOfDocument = (props) => {
                         <tr>
                           <th scope="col" className="w-12 px-3.5 py-3.5"></th>
                           <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
-                          {/* <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Campaign</th> */}
+                          {/* <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">folder</th> */}
                           <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
                           <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Last modified</th>
                           <th scope="col" className="w-12 bg-gray-50 px-3.5 py-3.5"><span className="sr-only">More options</span></th>
@@ -251,8 +309,8 @@ const ListOfDocument = (props) => {
                           <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
                             <td className="w-12 px-3.5 py-3.5" title={"open "+ data.title}
                             onClick={() => {
-                              console.log(data.id)
-                              // navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
+                              // console.log(data.id)
+                              navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                             }}>
                               <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                 <path d="M8,.57c-1.56,0-2.83,.05-4.14,.14-1.39,.1-2.49,1.2-2.58,2.59-.1,1.52-.14,3.09-.14,4.7s.05,3.18,.14,4.7c.09,1.39,1.19,2.49,2.58,2.59,1.31,.09,2.57,.14,4.14,.14s2.83-.05,4.14-.14c1.39-.1,2.49-1.2,2.58-2.59,.1-1.52,.14-3.09,.14-4.7,0-.65,0-1.3-.02-1.94-.01-.56-.2-1.11-.53-1.56-1.03-1.41-1.87-2.3-3.24-3.35-.46-.36-1.03-.55-1.6-.56-.46-.01-.95-.02-1.46-.02Z" fill="#8DA2FB" fillRule="evenodd"></path>
@@ -318,15 +376,34 @@ const ListOfDocument = (props) => {
                                         </svg>
                                         <span role="none">Rename</span>
                                       </button>
+
+                                      <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                      onClick={()=>{
+                                        setChangeFolderDiv(true)
+                                        setRenameDocumentId(data.id)
+                                        if (popupRef.current) {
+                                            setOpenPopupIndex(null);
+                                        }
+                                      }}
+                                      >
+                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                            <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                            <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                        </svg>
+                                        <span role="none">Move to folder</span>
+                                      </button>
+
                                     </div>
                                     <div role="none">
                                       <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                         onClick={() => {
-                                          const formData = {
-                                            trash: true
-                                          }
-                                          _update_document_data(formData, data.id, "Moved to trash")
-                                        }}>
+                                          setshowModalForDelete(true)
+                                          setDeleteFolderId(data.id)
+                                          if (popupRef.current) {
+                                            setOpenPopupIndex(null);
+                                            }
+                                        }}
+                                        >
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
                                           <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
                                           <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
@@ -346,6 +423,8 @@ const ListOfDocument = (props) => {
 
                       </tbody>
                     </table>
+                    
+                   
                     {RenameDiv
                       ?
                       <>
@@ -402,7 +481,7 @@ const ListOfDocument = (props) => {
             <div className="flex flex-wrap">            
                   {documentData.map((data,index)=>{
                     return (
-                        <div title={"Open "+ data.title} className="relative m-3 transition-all p-3 group cursor-pointer hover:bg-blue-50 border rounded-xl w-[240px] h-[280px]">
+                        <div key={index} title={"Open "+ data.title} className="relative m-3 transition-all p-3 group cursor-pointer hover:bg-blue-50 border rounded-xl w-[240px] h-[280px]">
 
                                 <div className="opacity-0 group-hover:opacity-100 absolute right-5 top-5">
                                   <span className="relative inline-block text-left" data-headlessui-state="">
@@ -414,9 +493,9 @@ const ListOfDocument = (props) => {
                                               <path d="M6.31,2.61c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="#9CA3AF"></path>
                                               <path d="M6.31,8c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="#9CA3AF"></path>
                                               <path d="M6.31,13.39c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.72-1.71-1.72-1.71,.62-1.71,1.72Z" fill="#9CA3AF"></path>
-                                              <path d="M6.31,2.61c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                              <path d="M6.31,8c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                              <path d="M6.31,13.39c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.72-1.71-1.72-1.71,.62-1.71,1.72Z" fill="none" stroke="#4B5563" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+                                              <path d="M6.31,2.61c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                              <path d="M6.31,8c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                              <path d="M6.31,13.39c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.72-1.71-1.72-1.71,.62-1.71,1.72Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
                                             </svg>
                                         </span>
                                       </button>
@@ -445,14 +524,30 @@ const ListOfDocument = (props) => {
                                                 </svg>
                                                 <span role="none">Rename</span>
                                               </button>
+                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                  onClick={()=>{
+                                                    setChangeFolderDiv(true)
+                                                    setRenameDocumentId(data.id)
+                                                    if (popupRef.current) {
+                                                        setOpenPopupIndex(null);
+                                                    }
+                                                  }}
+                                                  >
+                                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                        <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                        <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                    </svg>
+                                                    <span role="none">Move to folder</span>
+                                                  </button>
                                             </div>
                                             <div role="none">
                                               <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                 onClick={() => {
-                                                  const formData = {
-                                                    trash: true
-                                                  }
-                                                  _update_document_data(formData, data.id, "Moved to trash")
+                                                  setshowModalForDelete(true)
+                                                  setDeleteFolderId(data.id)
+                                                  if (popupRef.current) {
+                                                    setOpenPopupIndex(null);
+                                                    }
                                                 }}>
                                                 <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
                                                   <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
@@ -546,9 +641,130 @@ const ListOfDocument = (props) => {
             </div>
           </>
         }
+        {ChangeFolderDiv
+            ?
+            <>
+            <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
+                <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                    <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                    <h3 className="text-lg font-semibold">Move to folder</h3>
+                    </div>
+                    <div className="flex flex-col p-6">
+                        <div className="p-6">
+                        <div className="space-y-1.5 w-full">
+                                <div className="relative inline-block text-left w-full">
+                                    {/* ============select field================= */}
+                                        <select
+                                            className="p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
+                                            id="selectField"
+                                            value={selectedValue}
+                                            onChange={handleSelectChange}
+                                        >
+                                            <option value="">choose your folder ...</option>
+                                            
+                                            {SelectedOptions &&
+                                                SelectedOptions.map((data,index)=>{
+                                                    return (
+                                                        <option key={index} value={data.value}>{data.label}</option>
+                                                    )
+                                                })
+                                            }
+                                            
+                                        </select>
+                                    {/* ========================================= */}
+                                </div>
+                        </div>
+                        </div>
+                        <div className="p-6 flex items-center gap-4 justify-end"><button
+                        onClick={() => {
+                            setChangeFolderDiv(false)
+                            setSelectedValue(null)
+                        }} type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                        Cancel</span></button>
+                        <button
+                            onClick={()=>{
+                            update_folder()
+                            if (popupRef.current) {
+                                setOpenPopupIndex(null);
+                                }
+                            }}
+                            
+                            type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0"><span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            Save</span></button></div>
+                    
+                    </div>
+                </div>
+                </div>
+            </div>
+            </>
+            :
+            null
+        }
 
-
-
+        {showModalForDelete ? (
+                <>
+                    <div className="fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm backdrop-filter bg-opacity-20">
+                        <div
+                            className="fixed inset-0 w-full h-full"
+                            onClick={() => setshowModalForDelete(false)}
+                        ></div>
+                        <div className="flex items-center min-h-screen px-4 py-8">
+                            <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
+                                <div className="mt-3 sm:flex flex items-center justify-center">
+                                    {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
+                                       
+                                    </div> */}
+                                    <div className=" flex items-center justify-center flex-col mt-2 text-center sm:ml-4 sm:text-left">
+                                        <div>
+                                        <svg
+                                            
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="w-6 h-6 text-red-600"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                        <h4 className="text-2xl font-medium text-red-500 m-3">
+                                             Are you sure want to Delete ??
+                                        </h4>
+                                        <div className="items-center gap-2 mt-3 sm:flex">
+                                            <button
+                                                className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
+                                                onClick={() =>{
+                                                  const formData = {
+                                                    trash: true
+                                                  }
+                                                  _update_document_data(formData, DeleteFolderId, "Moved to trash")
+                                                }}
+                                            >
+                                                Delete
+                                            </button>
+                                            <button
+                                                className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                                onClick={() =>{
+                                                    setshowModalForDelete(false)
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : null}
           
         </div>
         <Toaster />
