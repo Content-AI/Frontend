@@ -20,6 +20,10 @@ import {
     _copy_text_,_reset_copy_text_
 } from "../../../features/CopiedText";
   
+import {
+    _save_folder_id_
+} from "../../../features/ProjectOrFolderIdChoosen";
+  
 
 import { useParams } from 'react-router-dom';
 
@@ -47,6 +51,10 @@ const ResponseTemplate = (prop) => {
     (state) => state.SetLoadingScreen.LoadingScreen
     );
     
+    let ProjectOrFolderIdChoosen = useSelector(
+    (state) => state.SetProjectOrFolderIdChoosen.ProjectOrFolderIdChoosen
+    );
+    
     let COPIED_TEXT = useSelector(
         (state) => state.SetCopiedText.CopiedText
       );
@@ -72,9 +80,19 @@ const ResponseTemplate = (prop) => {
       });
 
       const createDocumentForUser = async() =>{
-        let formData = {
-            document_content:prop.r_data
+        let formData = {}
+        if(ProjectOrFolderIdChoosen){
+            formData = {
+                document_content:prop.r_data,
+                project_id:ProjectOrFolderIdChoosen
+            }
+        }else{
+            formData = {
+                document_content:prop.r_data,
+            }
+
         }
+
         const resp = await postData(formData,BACKEND_URL+BACK_END_API_DOCUMENTS+"/",TOKEN)
         try{
             if(resp.status==201){

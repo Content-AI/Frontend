@@ -44,3 +44,9 @@ export const BACK_END_API_CATEGORIES = "/v1/template/categories";
 
 export const BACK_END_API_DOCUMENTS = "/v1/documents_data/document";
 export const BACK_END_API_DOCUMENTS_PATCH = "/v1/documents_data/doc_patch/encode";
+
+export const BACK_END_API_PROJECTS = "/v1/projects_data/projects/";
+
+export const BACK_END_API_PROJECT_CHOOSE = "/v1/projects_data/project_choose";
+
+export const BACK_END_API_GET_FOLDER_DETAILS = "/v1/projects_data/projects/";

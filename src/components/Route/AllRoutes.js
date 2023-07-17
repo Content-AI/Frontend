@@ -17,6 +17,8 @@ import EditDocuments from "../pages/Template/Document/EditDocuments";
 import Logout from "../pages/Logout";
 import Projects from "../pages/Projects/Projects";
 import ListOfDocument from "../pages/Template/Document/ListOfDocument";
+import CreateNewContent from "../pages/CreateNewContent";
+import FolderData from "../pages/Projects/FolderData";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -34,6 +36,9 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
             <Route path="/documents" element={<ListOfDocument AUTH_TOKEN={TOKEN} />} />
+            
+            <Route path="/create_new_content" element={<CreateNewContent AUTH_TOKEN={TOKEN} />} />
+            <Route path="/folder_of_user/:folder_id" element={<FolderData AUTH_TOKEN={TOKEN} />} />
 
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
 
@@ -76,7 +81,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             />
 
             <Route path="/*" element={<Home />} />
-            <Route path="/Projects" element={<Projects />} />
+            <Route path="/Projects" element={<Projects AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/logout" element={<Logout />} />
           </Routes>
