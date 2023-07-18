@@ -871,7 +871,7 @@ export default function EditDocuments() {
                                 
                             </>
                           :
-                              <div className="mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-slate-600 max-h-[500px] overflow-y-auto">
+                              <div className="mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-black max-h-[500px] overflow-y-auto">
                                 <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                                 <nav className="flex flex-grow py-1 space-x-3" aria-label="Tabs">
                                     <button 
@@ -879,7 +879,7 @@ export default function EditDocuments() {
                                         ShowHideHistory
                                               ? "  "
                                               : " bg-gray-100 "
-                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-blue-800 transition-all duration-150 hover:text-black`}
+                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-black transition-all duration-150 hover:text-black`}
 
                                     onClick={()=>{
                                         get_history()
@@ -898,7 +898,7 @@ export default function EditDocuments() {
                                         ShowHideHistory
                                               ? " bg-gray-100 "
                                               : " "
-                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-blue-800 transition-all duration-150 hover:text-black`}
+                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
 
                                     onClick={()=>{
                                         // get_history()
@@ -909,7 +909,7 @@ export default function EditDocuments() {
                                     </button>
                                 </nav>
                                 <div>
-                                    <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-gray-400 transition-all duration-150 hover:text-gray-600"
+                                    <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black transition-all duration-150 hover:text-gray-600"
                                     onClick={()=>{
                                         setTemplateResponseData(null)
                                     }}>
