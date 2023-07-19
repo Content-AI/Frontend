@@ -534,7 +534,7 @@ const Chat = ({ AUTH_TOKEN }) => {
         </div>
         <div
           className={clsx(
-            "z-10 absolute top-[50px] sm:top-0 -right-0 h-[calc(100%-50px)] sm:relative w-60 max-w-screen bg-gray-50 flex flex-col duration-300",
+            "z-10 absolute top-[50px] sm:top-0 -right-0 h-[calc(100%-50px)] sm:h-full sm:relative w-60 max-w-screen bg-gray-50 flex flex-col duration-300",
             {
               "sm:hidden !-right-full": !sidebarStatus,
             }
