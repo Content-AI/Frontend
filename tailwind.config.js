@@ -40,6 +40,7 @@ module.exports = {
         },
         gray: {
           lightbg: "#F7FAFC",
+          500: "#85A0AD",
         },
         border: {
           DEFAULT: "#CFD0D5",
