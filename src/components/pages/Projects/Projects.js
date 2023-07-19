@@ -12,6 +12,8 @@ import {
   _save_folder_data_
 } from "../../../features/FolderData";
 
+import { useLocation } from 'react-router-dom';
+
 
 const cardData = [
   {
@@ -32,6 +34,11 @@ const cardData = [
 const Projects = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const create_folder_params = searchParams.get('create');
 
   const [FolderOfUser,setFolderOfUser] = useState(null)
   const [PopUpModelToCreateFolder,setPopUpModelToCreateFolder] = useState(false)
@@ -151,6 +158,14 @@ const Projects = (props) => {
   useEffect(()=>{
     get_folder_of_user()
   },[DocumentsData])
+
+
+
+  useEffect(()=>{
+    if(create_folder_params=="new_folder"){
+      setPopUpModelToCreateFolder(true)
+    }
+  },[])
 
   return (
     <div className="" >
@@ -607,7 +622,7 @@ const Projects = (props) => {
             </div>
           </div>
         </div> */}
-          <ListOfDocument AUTH_TOKEN={props.AUTH_TOKEN} search_bar={"off"}/>
+          <ListOfDocument SHOW={"active"} AUTH_TOKEN={props.AUTH_TOKEN} search_bar={"off"}/>
       </div>
 
 

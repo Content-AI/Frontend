@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE } from "../../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
 import { fetchData, patchData } from "../../../../apis/apiService";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
 
 const ListOfDocument = (props) => {
+
+  // console.log("props :",props)
 
   const navigate = useNavigate();
   const popupRef = useRef(null);
@@ -26,6 +28,9 @@ const ListOfDocument = (props) => {
   const [LoadingData, setLoadingData] = useState(true);
   const [searchText, setSearchText] = useState('');
   
+  const [ActiveOrTrash,setActiveOrTrash] = useState(null);
+  
+
   const [RenameDocumentId,setRenameDocumentId] = useState(null);
   const [ChangeFolderDiv, setChangeFolderDiv] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
@@ -34,6 +39,8 @@ const ListOfDocument = (props) => {
 
   const [showModalForDelete,setshowModalForDelete] = useState(false);
   const [DeleteFolderId,setDeleteFolderId] = useState(null);
+  
+  const [DownloadLoader,setDownloadLoader] = useState(false);
 
 
   const notifyerror = (message) => toast.error(message);
@@ -43,7 +50,39 @@ const ListOfDocument = (props) => {
     (state) => state.SetFolderData.FolderData
   );
 
+
+  // console.log(props.SHOW)
+
   const get_all_user_doc = async () => {
+    if(props.SHOW=="trash"){
+
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/", props.AUTH_TOKEN)
+      if (resp.status == 200) {
+        setdocumentData(resp.data.results)
+      } else {
+        notifyerror("something went wrong")
+      }
+    }
+    if(props.SHOW=="active"){
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
+      if (resp.status == 200) {
+        setdocumentData(resp.data.results)
+      } else {
+        notifyerror("something went wrong")
+      }
+    }
+  }
+  const initial_get_all_user_doc = async () => {
+    setLoadingData(true)
+    if(props.SHOW=="trash"){
+        const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/", props.AUTH_TOKEN)
+        if (resp.status == 200) {
+          setdocumentData(resp.data.results)
+        } else {
+          notifyerror("something went wrong")
+        }
+    }
+    if(props.SHOW=="active"){
     const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
     if (resp.status == 200) {
       setdocumentData(resp.data.results)
@@ -51,14 +90,6 @@ const ListOfDocument = (props) => {
       notifyerror("something went wrong")
     }
   }
-  const initial_get_all_user_doc = async () => {
-    setLoadingData(true)
-    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
-    if (resp.status == 200) {
-      setdocumentData(resp.data.results)
-    } else {
-      notifyerror("something went wrong")
-    }
     setLoadingData(false)
   }
 
@@ -119,12 +150,28 @@ const ListOfDocument = (props) => {
     };
   }, []);
 
+  useEffect(()=>{
+    setActiveOrTrash(props.SHOW)
+  })
+
   useEffect(() => {
     initial_get_all_user_doc()
-  }, [])
+  }, [ActiveOrTrash])
 
 
   const search_from_api = async (search_text) => {
+    if(props.SHOW=="trash"){
+      const resp = await fetchData(BACKEND_URL +BACK_END_API_DOCUMENTS_PATCH+ "/?search="+search_text, props.AUTH_TOKEN)
+      if (resp.status == 200) {
+        if(resp.data.results.length>0){
+          setdocumentData(resp.data.results)
+        }
+      } else {
+        notifyerror("something went wrong")
+      }
+
+    }
+    if(props.SHOW=='active'){
     const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?search="+search_text, props.AUTH_TOKEN)
     if (resp.status == 200) {
       if(resp.data.results.length>0){
@@ -133,6 +180,7 @@ const ListOfDocument = (props) => {
     } else {
       notifyerror("something went wrong")
     }
+  }
   }
 
   const handleSearchText = (event) => {
@@ -177,6 +225,34 @@ const ListOfDocument = (props) => {
     setSelectedValue(event.target.value);
   };
 
+
+
+  const handleDownload = (file_link) => {
+    const link = document.createElement('a');
+    link.href = file_link;
+    link.download = getFileNameFromLink(file_link); // Get the file name from the link
+    link.click();
+  };
+
+  const getFileNameFromLink = (fileLink) => {
+    // Extract the file name from the link
+    const urlParts = fileLink.split('/');
+    return decodeURIComponent(urlParts[urlParts.length - 1]);
+  };
+
+  const download_file = async(id)=>{
+    setDownloadLoader(true)
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_DOWNLOAD_FILE+id+"/",props.AUTH_TOKEN)
+    if(resp.status==201){
+      handleDownload(BACKEND_URL+"/"+resp.data.link)
+    }
+    setDownloadLoader(false)
+    if (popupRef.current) {
+      setOpenPopupIndex(null);
+  }
+  }
+
+
   return (
     <>
       {LoadingData
@@ -184,6 +260,11 @@ const ListOfDocument = (props) => {
         <LoadingPage/>
       :
       <div className="space-y-8 px-4 md:px-10" ref={popupRef}>
+        {props.SHOW=="trash"
+        ?
+          <h1 className="text-[35px] font-bold">Trash</h1>
+        :
+        null}
         <div className="space-y-4">
 
         {documentData &&
@@ -354,69 +435,128 @@ const ListOfDocument = (props) => {
                                   </span>
                                 </button>
 
-                                {openPopupIndex === index && (
-                                  <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
-                                    <div role="none">
-                                      <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                          <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                        </svg>
-                                        <span role="none">Add to favorites</span>
-                                      </button>
-                                      <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
-                                        onClick={() => {
-                                          setRenameDiv(true)
-                                          setRenameId(data.id)
-                                          if (popupRef.current) {
-                                            setOpenPopupIndex(null);
-                                          }
-                                          setInputText(data.title)
-                                        }}
-                                      >
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                          <path d="M.09,7.46c.05-.96,.15-1.9,.25-2.79,.11-1.01,.65-1.88,1.42-2.45,.49-.37,1.07-.61,1.71-.68,.95-.11,1.96-.22,3-.27,.07,0,.15,0,.22,.01,.24,0,.47-.01,.71-.01,1.38,0,2.73,.15,3.96,.29,1.62,.19,2.92,1.48,3.1,3.11l-1.01,.11,1.01-.11c.14,1.23,.28,2.56,.28,3.94,0,.29,0,.58-.02,.87,.01,.08,.02,.17,.02,.26-.05,.96-.15,1.9-.25,2.79-.11,1.01-.65,1.88-1.42,2.45-.49,.37-1.07,.61-1.71,.68-.95,.11-1.96,.22-3,.27-.08,0-.15,0-.22-.01-.24,0-.47,.01-.71,.01-1.38,0-2.73-.15-3.96-.29-1.62-.19-2.92-1.48-3.1-3.11-.14-1.23-.28-2.56-.28-3.94,0-.29,0-.58,.02-.87-.01-.08-.02-.17-.02-.26Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                          <path d="M12.06,.79c.86-.92,2.31-.95,3.2-.06,.89,.89,.86,2.34-.06,3.2l-4.09,3.79c-.18,.17-.39,.29-.62,.37l-1.71,.57c-.89,.3-1.74-.55-1.44-1.45l.57-1.71c.08-.23,.2-.44,.37-.62L12.06,.79Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
-                                        </svg>
-                                        <span role="none">Rename</span>
-                                      </button>
+                                {props.SHOW=="trash"
+                                      ?
+                                      <>
+                                        {openPopupIndex === index && (
+                                          <>
+                                          <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                              <div role="none">
+                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                                  onClick={() => {
+                                                    const formData = {
+                                                      trash: false
+                                                    }
+                                                    _update_document_data(formData, data.id, "Restored")
+                                                    if (popupRef.current) {
+                                                      setOpenPopupIndex(null);
+                                                      }
+                                                  }}
+                                                  >
+                                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                      <path d="M2.15,5.13c-.12,2.74-.09,5.49,.32,8.26,.22,1.49,1.48,2.61,2.99,2.61h5.08c1.51,0,2.77-1.12,2.99-2.61,.41-2.77,.44-5.52,.32-8.26H2.15Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                      <path d="M5.85,6.77c.54-.47,1.37-.08,1.37,.63v.76h1.5c1.66,0,3,1.34,3,3s-1.34,3-3,3h-.78c-.39,0-.71-.32-.71-.71s.32-.71,.71-.71h.78c.87,0,1.57-.7,1.57-1.57s-.7-1.57-1.57-1.57h-1.5v.77c0,.7-.81,1.09-1.36,.64-.65-.54-1.04-.93-1.54-1.57-.26-.34-.25-.81,.02-1.13,.53-.63,.92-1.01,1.51-1.52Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                      <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33,.7-.7,1.64-1.09,2.62-1.09s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.21c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.1c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.2Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                    </svg>                                                  
+                                                  <span role="none">Restore</span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                        </>
+                                        )}
+                                      </>
+                                      :
+                                      <>
+                                        {openPopupIndex === index && (
+                                          <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                            <div role="none">
+                                              <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
+                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                  <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                </svg>
+                                                <span role="none">Add to favorites</span>
+                                              </button>
+                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                onClick={() => {
+                                                  setRenameDiv(true)
+                                                  setRenameId(data.id)
+                                                  if (popupRef.current) {
+                                                    setOpenPopupIndex(null);
+                                                  }
+                                                  setInputText(data.title)
+                                                }}
+                                              >
+                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                  <path d="M.09,7.46c.05-.96,.15-1.9,.25-2.79,.11-1.01,.65-1.88,1.42-2.45,.49-.37,1.07-.61,1.71-.68,.95-.11,1.96-.22,3-.27,.07,0,.15,0,.22,.01,.24,0,.47-.01,.71-.01,1.38,0,2.73,.15,3.96,.29,1.62,.19,2.92,1.48,3.1,3.11l-1.01,.11,1.01-.11c.14,1.23,.28,2.56,.28,3.94,0,.29,0,.58-.02,.87,.01,.08,.02,.17,.02,.26-.05,.96-.15,1.9-.25,2.79-.11,1.01-.65,1.88-1.42,2.45-.49,.37-1.07,.61-1.71,.68-.95,.11-1.96,.22-3,.27-.08,0-.15,0-.22-.01-.24,0-.47,.01-.71,.01-1.38,0-2.73-.15-3.96-.29-1.62-.19-2.92-1.48-3.1-3.11-.14-1.23-.28-2.56-.28-3.94,0-.29,0-.58,.02-.87-.01-.08-.02-.17-.02-.26Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                  <path d="M12.06,.79c.86-.92,2.31-.95,3.2-.06,.89,.89,.86,2.34-.06,3.2l-4.09,3.79c-.18,.17-.39,.29-.62,.37l-1.71,.57c-.89,.3-1.74-.55-1.44-1.45l.57-1.71c.08-.23,.2-.44,.37-.62L12.06,.79Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                </svg>
+                                                <span role="none">Rename</span>
+                                              </button>
 
-                                      <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
-                                      onClick={()=>{
-                                        setChangeFolderDiv(true)
-                                        setRenameDocumentId(data.id)
-                                        if (popupRef.current) {
-                                            setOpenPopupIndex(null);
-                                        }
-                                      }}
-                                      >
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                            <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                            <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
-                                        </svg>
-                                        <span role="none">Move to folder</span>
-                                      </button>
+                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              onClick={()=>{
+                                                setChangeFolderDiv(true)
+                                                setRenameDocumentId(data.id)
+                                                if (popupRef.current) {
+                                                    setOpenPopupIndex(null);
+                                                }
+                                              }}
+                                              >
+                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                    <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                    <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                </svg>
+                                                <span role="none">Move to folder</span>
+                                              </button>
+                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              onClick={()=>{
+                                                // setRenameDocumentId(data.id)
+                                                download_file(data.id)
+                                              }}
+                                              >
+                                              
+                                               {DownloadLoader?
+                                                  <svg className="animate-spin w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 125" version="1.1" x="0px" y="0px">
+                                                  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                                      <path d="M9,46 L26,46 C28.209139,46 30,47.790861 30,50 C30,52.209139 28.209139,54 26,54 L9,54 C6.790861,54 5,52.209139 5,50 C5,47.790861 6.790861,46 9,46 Z M74,46 L91,46 C93.209139,46 95,47.790861 95,50 C95,52.209139 93.209139,54 91,54 L74,54 C71.790861,54 70,52.209139 70,50 C70,47.790861 71.790861,46 74,46 Z M54,9 L54,26 C54,28.209139 52.209139,30 50,30 C47.790861,30 46,28.209139 46,26 L46,9 C46,6.790861 47.790861,5 50,5 C52.209139,5 54,6.790861 54,9 Z M54,74 L54,91 C54,93.209139 52.209139,95 50,95 C47.790861,95 46,93.209139 46,91 L46,74 C46,71.790861 47.790861,70 50,70 C52.209139,70 54,71.790861 54,74 Z M18.1801948,76.1629509 L30.2010101,64.1421356 C31.7631073,62.5800385 34.2957672,62.5800385 35.8578644,64.1421356 C37.4199615,65.7042328 37.4199615,68.2368927 35.8578644,69.7989899 L23.8370491,81.8198052 C22.2749519,83.3819023 19.742292,83.3819023 18.1801948,81.8198052 C16.6180977,80.257708 16.6180977,77.7250481 18.1801948,76.1629509 Z M64.1421356,30.2010101 L76.1629509,18.1801948 C77.7250481,16.6180977 80.257708,16.6180977 81.8198052,18.1801948 C83.3819023,19.742292 83.3819023,22.2749519 81.8198052,23.8370491 L69.7989899,35.8578644 C68.2368927,37.4199615 65.7042328,37.4199615 64.1421356,35.8578644 C62.5800385,34.2957672 62.5800385,31.7631073 64.1421356,30.2010101 Z M23.8370491,18.1801948 L35.8578644,30.2010101 C37.4199615,31.7631073 37.4199615,34.2957672 35.8578644,35.8578644 C34.2957672,37.4199615 31.7631073,37.4199615 30.2010101,35.8578644 L18.1801948,23.8370491 C16.6180977,22.2749519 16.6180977,19.742292 18.1801948,18.1801948 C19.742292,16.6180977 22.2749519,16.6180977 23.8370491,18.1801948 Z M69.7989899,64.1421356 L81.8198052,76.1629509 C83.3819023,77.7250481 83.3819023,80.257708 81.8198052,81.8198052 C80.257708,83.3819023 77.7250481,83.3819023 76.1629509,81.8198052 L64.1421356,69.7989899 C62.5800385,68.2368927 62.5800385,65.7042328 64.1421356,64.1421356 C65.7042328,62.5800385 68.2368927,62.5800385 69.7989899,64.1421356 Z" fill="#000000"/>
+                                                  </g>
+                                                </svg>
 
-                                    </div>
-                                    <div role="none">
-                                      <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
-                                        onClick={() => {
-                                          setshowModalForDelete(true)
-                                          setDeleteFolderId(data.id)
-                                          if (popupRef.current) {
-                                            setOpenPopupIndex(null);
-                                            }
-                                        }}
-                                        >
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                          <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
-                                          <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                          <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                        </svg>
-                                        <span role="none">Delete</span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                )}
+                                              :
+                                                  <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 76 91.25" version="1.1" x="0px" y="0px">
+                                                  
+                                                  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                                      <path d="M73.5,46.6586399 C74.8807119,46.6586399 76,47.777928 76,49.1586399 L76,49.1586399 L76,58.1586399 C76,66.1667688 69.5081289,72.6586399 61.5,72.6586399 L61.5,72.6586399 L14.5,72.6586399 C6.49187113,72.6586399 0,66.1667688 0,58.1586399 L0,58.1586399 L0,49.1586399 C0,47.777928 1.11928813,46.6586399 2.5,46.6586399 C3.88071187,46.6586399 5,47.777928 5,49.1586399 L5,49.1586399 L5,58.1586399 C5,63.405345 9.25329488,67.6586399 14.5,67.6586399 L14.5,67.6586399 L61.5,67.6586399 C66.7467051,67.6586399 71,63.405345 71,58.1586399 L71,58.1586399 L71,49.1586399 C71,47.777928 72.1192881,46.6586399 73.5,46.6586399 Z M38.0000093,0.158639918 C39.3254927,0.158639918 40.410048,1.19017585 40.4946916,2.49426423 L40.5000093,2.65863992 L40.5,43.9046399 L51.2942137,33.8310017 C52.2597044,32.9298771 53.7490822,32.9406081 54.7012376,33.8266048 L54.8276475,33.9528443 C55.7287722,34.918335 55.7180412,36.4077128 54.8320444,37.3598683 L54.7058049,37.4862781 L39.7208572,51.4721198 C39.6757911,51.5148978 39.6291319,51.5560138 39.5809779,51.5953694 C39.5683135,51.6057519 39.5553541,51.6161416 39.5423186,51.6263826 C39.5127111,51.6495734 39.4825793,51.672149 39.4519322,51.6940497 C39.4306184,51.7093993 39.4093041,51.7241425 39.387821,51.738515 C39.3659323,51.7530143 39.343524,51.7674893 39.3208733,51.7816119 C39.2995492,51.7950669 39.2781907,51.8079414 39.2566895,51.8204663 C39.2236044,51.8395831 39.1899714,51.8581562 39.1558764,51.875966 L39.1158176,51.8965512 C39.0852208,51.9117193 39.0542257,51.9264152 39.0228881,51.9404845 C39.001496,51.9501454 38.9797673,51.959518 38.9579395,51.9685663 C38.9300801,51.9800992 38.9024913,51.9909732 38.8746677,52.0013656 L38.8025919,52.0269593 C38.7805846,52.0344803 38.7586811,52.0415607 38.7366477,52.0483446 C38.706391,52.057548 38.6759498,52.0662748 38.645389,52.0744108 C38.5630973,52.0964627 38.4792945,52.114266 38.3940583,52.1277616 C38.3727059,52.1310321 38.3516194,52.1340997 38.3305059,52.1368971 L38.164385,52.1533222 L38.0000093,52.1586399 L37.9990052,52.1586397 C37.8718303,52.1585853 37.7444354,52.1488334 37.6183044,52.1294345 L37.5004321,52.1082447 C36.7351727,52.2639002 35.9086169,52.0597211 35.2942137,51.4862781 L20.2942137,37.4862781 C19.284837,36.5441932 19.2302862,34.962221 20.1723711,33.9528443 C21.114456,32.9434676 22.6964282,32.8889168 23.7058049,33.8310017 L35.5,44.8396399 L35.5000093,2.65863992 C35.5000093,1.27792804 36.6192974,0.158639918 38.0000093,0.158639918 Z" fill="#000000" fillRule="nonzero"/>
+                                                  </g>
+                                                </svg>
+                                              }
+                                                <span role="none">Download</span>
+                                              </button>
+
+                                            </div>
+                                            <div role="none">
+                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                                onClick={() => {
+                                                  setshowModalForDelete(true)
+                                                  setDeleteFolderId(data.id)
+                                                  if (popupRef.current) {
+                                                    setOpenPopupIndex(null);
+                                                    }
+                                                }}
+                                                >
+                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                  <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                                  <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                                  <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                                </svg>
+                                                <span role="none">Delete</span>
+                                              </button>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </>
+                                }
+
                               </span>
                             </td>
                           </tr>
@@ -502,66 +642,124 @@ const ListOfDocument = (props) => {
                                             </svg>
                                         </span>
                                       </button>
-                                      {openPopupIndex === index && (
+                                      {props.SHOW=="trash"
+                                      ?
+                                      <>
+                                        {openPopupIndex === index && (
+                                          <>
                                           <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
-                                            <div role="none">
-                                              <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
-                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                                  <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                                </svg>
-                                                <span role="none">Add to favorites</span>
-                                              </button>
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
-                                                onClick={() => {
-                                                  setRenameDiv(true)
-                                                  setRenameId(data.id)
-                                                  if (popupRef.current) {
-                                                    setOpenPopupIndex(null);
-                                                  }
-                                                  setInputText(data.title)
-                                                }}
-                                              >
-                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                                  <path d="M.09,7.46c.05-.96,.15-1.9,.25-2.79,.11-1.01,.65-1.88,1.42-2.45,.49-.37,1.07-.61,1.71-.68,.95-.11,1.96-.22,3-.27,.07,0,.15,0,.22,.01,.24,0,.47-.01,.71-.01,1.38,0,2.73,.15,3.96,.29,1.62,.19,2.92,1.48,3.1,3.11l-1.01,.11,1.01-.11c.14,1.23,.28,2.56,.28,3.94,0,.29,0,.58-.02,.87,.01,.08,.02,.17,.02,.26-.05,.96-.15,1.9-.25,2.79-.11,1.01-.65,1.88-1.42,2.45-.49,.37-1.07,.61-1.71,.68-.95,.11-1.96,.22-3,.27-.08,0-.15,0-.22-.01-.24,0-.47,.01-.71,.01-1.38,0-2.73-.15-3.96-.29-1.62-.19-2.92-1.48-3.1-3.11-.14-1.23-.28-2.56-.28-3.94,0-.29,0-.58,.02-.87-.01-.08-.02-.17-.02-.26Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                                  <path d="M12.06,.79c.86-.92,2.31-.95,3.2-.06,.89,.89,.86,2.34-.06,3.2l-4.09,3.79c-.18,.17-.39,.29-.62,.37l-1.71,.57c-.89,.3-1.74-.55-1.44-1.45l.57-1.71c.08-.23,.2-.44,.37-.62L12.06,.79Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
-                                                </svg>
-                                                <span role="none">Rename</span>
-                                              </button>
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
-                                                  onClick={()=>{
-                                                    setChangeFolderDiv(true)
-                                                    setRenameDocumentId(data.id)
-                                                    if (popupRef.current) {
-                                                        setOpenPopupIndex(null);
+                                              <div role="none">
+                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                                  onClick={() => {  
+                                                    const formData = {
+                                                      trash: false
                                                     }
+                                                    _update_document_data(formData, data.id, "Restored")
+                                                    if (popupRef.current) {
+                                                      setOpenPopupIndex(null);
+                                                      }
                                                   }}
                                                   >
                                                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                                        <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                                        <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                      <path d="M2.15,5.13c-.12,2.74-.09,5.49,.32,8.26,.22,1.49,1.48,2.61,2.99,2.61h5.08c1.51,0,2.77-1.12,2.99-2.61,.41-2.77,.44-5.52,.32-8.26H2.15Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                      <path d="M5.85,6.77c.54-.47,1.37-.08,1.37,.63v.76h1.5c1.66,0,3,1.34,3,3s-1.34,3-3,3h-.78c-.39,0-.71-.32-.71-.71s.32-.71,.71-.71h.78c.87,0,1.57-.7,1.57-1.57s-.7-1.57-1.57-1.57h-1.5v.77c0,.7-.81,1.09-1.36,.64-.65-.54-1.04-.93-1.54-1.57-.26-.34-.25-.81,.02-1.13,.53-.63,.92-1.01,1.51-1.52Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                      <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33,.7-.7,1.64-1.09,2.62-1.09s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.21c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.1c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.2Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
                                                     </svg>
-                                                    <span role="none">Move to folder</span>
-                                                  </button>
+                                                  <span role="none">Restore</span>
+                                                </button>
+                                              </div>
                                             </div>
-                                            <div role="none">
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
-                                                onClick={() => {
-                                                  setshowModalForDelete(true)
-                                                  setDeleteFolderId(data.id)
-                                                  if (popupRef.current) {
-                                                    setOpenPopupIndex(null);
-                                                    }
-                                                }}>
-                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                                  <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
-                                                  <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                                  <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                                </svg>
-                                                <span role="none">Delete</span>
-                                              </button>
-                                            </div>
-                                          </div>
+                                        </>
                                         )}
+                                      </>
+                                      :
+                                      <>
+                                        {openPopupIndex === index && (
+                                            <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                              <div role="none">
+                                                <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
+                                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                    <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                  </svg>
+                                                  <span role="none">Add to favorites</span>
+                                                </button>
+                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                  onClick={() => {
+                                                    setRenameDiv(true)
+                                                    setRenameId(data.id)
+                                                    if (popupRef.current) {
+                                                      setOpenPopupIndex(null);
+                                                    }
+                                                    setInputText(data.title)
+                                                  }}
+                                                >
+                                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                    <path d="M.09,7.46c.05-.96,.15-1.9,.25-2.79,.11-1.01,.65-1.88,1.42-2.45,.49-.37,1.07-.61,1.71-.68,.95-.11,1.96-.22,3-.27,.07,0,.15,0,.22,.01,.24,0,.47-.01,.71-.01,1.38,0,2.73,.15,3.96,.29,1.62,.19,2.92,1.48,3.1,3.11l-1.01,.11,1.01-.11c.14,1.23,.28,2.56,.28,3.94,0,.29,0,.58-.02,.87,.01,.08,.02,.17,.02,.26-.05,.96-.15,1.9-.25,2.79-.11,1.01-.65,1.88-1.42,2.45-.49,.37-1.07,.61-1.71,.68-.95,.11-1.96,.22-3,.27-.08,0-.15,0-.22-.01-.24,0-.47,.01-.71,.01-1.38,0-2.73-.15-3.96-.29-1.62-.19-2.92-1.48-3.1-3.11-.14-1.23-.28-2.56-.28-3.94,0-.29,0-.58,.02-.87-.01-.08-.02-.17-.02-.26Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                    <path d="M12.06,.79c.86-.92,2.31-.95,3.2-.06,.89,.89,.86,2.34-.06,3.2l-4.09,3.79c-.18,.17-.39,.29-.62,.37l-1.71,.57c-.89,.3-1.74-.55-1.44-1.45l.57-1.71c.08-.23,.2-.44,.37-.62L12.06,.79Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                  </svg>
+                                                  <span role="none">Rename</span>
+                                                </button>
+                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                    onClick={()=>{
+                                                      setChangeFolderDiv(true)
+                                                      setRenameDocumentId(data.id)
+                                                      if (popupRef.current) {
+                                                          setOpenPopupIndex(null);
+                                                      }
+                                                    }}
+                                                    >
+                                                      <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                          <path d="M.57,8c0,4.1,3.32,7.43,7.43,7.43s7.43-3.33,7.43-7.43S12.1,.57,8,.57,.57,3.9,.57,8Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                                          <path d="M8.54,9.75c0,.72,.84,1.13,1.41,.65,.78-.66,1.27-1.19,1.97-2.04,.17-.21,.17-.51,0-.72-.69-.85-1.19-1.38-1.97-2.04-.56-.48-1.41-.07-1.41,.65v.9h-3.96c-.47,0-.86,.38-.86,.86s.38,.86,.86,.86h3.96v.9Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                                      </svg>
+                                                      <span role="none">Move to folder</span>
+                                                    </button>
+                                                    <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              onClick={()=>{
+                                                // setRenameDocumentId(data.id)
+                                                download_file(data.id)
+                                              }}
+                                              >
+                                              
+                                               {DownloadLoader?
+                                                  <svg className="animate-spin w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 125" version="1.1" x="0px" y="0px">
+                                                  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                                      <path d="M9,46 L26,46 C28.209139,46 30,47.790861 30,50 C30,52.209139 28.209139,54 26,54 L9,54 C6.790861,54 5,52.209139 5,50 C5,47.790861 6.790861,46 9,46 Z M74,46 L91,46 C93.209139,46 95,47.790861 95,50 C95,52.209139 93.209139,54 91,54 L74,54 C71.790861,54 70,52.209139 70,50 C70,47.790861 71.790861,46 74,46 Z M54,9 L54,26 C54,28.209139 52.209139,30 50,30 C47.790861,30 46,28.209139 46,26 L46,9 C46,6.790861 47.790861,5 50,5 C52.209139,5 54,6.790861 54,9 Z M54,74 L54,91 C54,93.209139 52.209139,95 50,95 C47.790861,95 46,93.209139 46,91 L46,74 C46,71.790861 47.790861,70 50,70 C52.209139,70 54,71.790861 54,74 Z M18.1801948,76.1629509 L30.2010101,64.1421356 C31.7631073,62.5800385 34.2957672,62.5800385 35.8578644,64.1421356 C37.4199615,65.7042328 37.4199615,68.2368927 35.8578644,69.7989899 L23.8370491,81.8198052 C22.2749519,83.3819023 19.742292,83.3819023 18.1801948,81.8198052 C16.6180977,80.257708 16.6180977,77.7250481 18.1801948,76.1629509 Z M64.1421356,30.2010101 L76.1629509,18.1801948 C77.7250481,16.6180977 80.257708,16.6180977 81.8198052,18.1801948 C83.3819023,19.742292 83.3819023,22.2749519 81.8198052,23.8370491 L69.7989899,35.8578644 C68.2368927,37.4199615 65.7042328,37.4199615 64.1421356,35.8578644 C62.5800385,34.2957672 62.5800385,31.7631073 64.1421356,30.2010101 Z M23.8370491,18.1801948 L35.8578644,30.2010101 C37.4199615,31.7631073 37.4199615,34.2957672 35.8578644,35.8578644 C34.2957672,37.4199615 31.7631073,37.4199615 30.2010101,35.8578644 L18.1801948,23.8370491 C16.6180977,22.2749519 16.6180977,19.742292 18.1801948,18.1801948 C19.742292,16.6180977 22.2749519,16.6180977 23.8370491,18.1801948 Z M69.7989899,64.1421356 L81.8198052,76.1629509 C83.3819023,77.7250481 83.3819023,80.257708 81.8198052,81.8198052 C80.257708,83.3819023 77.7250481,83.3819023 76.1629509,81.8198052 L64.1421356,69.7989899 C62.5800385,68.2368927 62.5800385,65.7042328 64.1421356,64.1421356 C65.7042328,62.5800385 68.2368927,62.5800385 69.7989899,64.1421356 Z" fill="#000000"/>
+                                                  </g>
+                                                </svg>
+
+                                              :
+                                                  <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 76 91.25" version="1.1" x="0px" y="0px">
+                                                  
+                                                  <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                                      <path d="M73.5,46.6586399 C74.8807119,46.6586399 76,47.777928 76,49.1586399 L76,49.1586399 L76,58.1586399 C76,66.1667688 69.5081289,72.6586399 61.5,72.6586399 L61.5,72.6586399 L14.5,72.6586399 C6.49187113,72.6586399 0,66.1667688 0,58.1586399 L0,58.1586399 L0,49.1586399 C0,47.777928 1.11928813,46.6586399 2.5,46.6586399 C3.88071187,46.6586399 5,47.777928 5,49.1586399 L5,49.1586399 L5,58.1586399 C5,63.405345 9.25329488,67.6586399 14.5,67.6586399 L14.5,67.6586399 L61.5,67.6586399 C66.7467051,67.6586399 71,63.405345 71,58.1586399 L71,58.1586399 L71,49.1586399 C71,47.777928 72.1192881,46.6586399 73.5,46.6586399 Z M38.0000093,0.158639918 C39.3254927,0.158639918 40.410048,1.19017585 40.4946916,2.49426423 L40.5000093,2.65863992 L40.5,43.9046399 L51.2942137,33.8310017 C52.2597044,32.9298771 53.7490822,32.9406081 54.7012376,33.8266048 L54.8276475,33.9528443 C55.7287722,34.918335 55.7180412,36.4077128 54.8320444,37.3598683 L54.7058049,37.4862781 L39.7208572,51.4721198 C39.6757911,51.5148978 39.6291319,51.5560138 39.5809779,51.5953694 C39.5683135,51.6057519 39.5553541,51.6161416 39.5423186,51.6263826 C39.5127111,51.6495734 39.4825793,51.672149 39.4519322,51.6940497 C39.4306184,51.7093993 39.4093041,51.7241425 39.387821,51.738515 C39.3659323,51.7530143 39.343524,51.7674893 39.3208733,51.7816119 C39.2995492,51.7950669 39.2781907,51.8079414 39.2566895,51.8204663 C39.2236044,51.8395831 39.1899714,51.8581562 39.1558764,51.875966 L39.1158176,51.8965512 C39.0852208,51.9117193 39.0542257,51.9264152 39.0228881,51.9404845 C39.001496,51.9501454 38.9797673,51.959518 38.9579395,51.9685663 C38.9300801,51.9800992 38.9024913,51.9909732 38.8746677,52.0013656 L38.8025919,52.0269593 C38.7805846,52.0344803 38.7586811,52.0415607 38.7366477,52.0483446 C38.706391,52.057548 38.6759498,52.0662748 38.645389,52.0744108 C38.5630973,52.0964627 38.4792945,52.114266 38.3940583,52.1277616 C38.3727059,52.1310321 38.3516194,52.1340997 38.3305059,52.1368971 L38.164385,52.1533222 L38.0000093,52.1586399 L37.9990052,52.1586397 C37.8718303,52.1585853 37.7444354,52.1488334 37.6183044,52.1294345 L37.5004321,52.1082447 C36.7351727,52.2639002 35.9086169,52.0597211 35.2942137,51.4862781 L20.2942137,37.4862781 C19.284837,36.5441932 19.2302862,34.962221 20.1723711,33.9528443 C21.114456,32.9434676 22.6964282,32.8889168 23.7058049,33.8310017 L35.5,44.8396399 L35.5000093,2.65863992 C35.5000093,1.27792804 36.6192974,0.158639918 38.0000093,0.158639918 Z" fill="#000000" fillRule="nonzero"/>
+                                                  </g>
+                                                </svg>
+                                              }
+                                                <span role="none">Download</span>
+                                              </button>
+                                              </div>
+                                              <div role="none">
+                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                                  onClick={() => {
+                                                    setshowModalForDelete(true)
+                                                    setDeleteFolderId(data.id)
+                                                    if (popupRef.current) {
+                                                      setOpenPopupIndex(null);
+                                                      }
+                                                  }}>
+                                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                    <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                                    <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                                  </svg>
+                                                  <span role="none">Delete</span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          )}
+                                      </>
+                                      }
 
                                   </span>
                                 </div>
