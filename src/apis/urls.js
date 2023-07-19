@@ -49,3 +49,10 @@ export const BACK_END_API_PROJECTS = "/v1/projects_data/projects/";
 export const BACK_END_API_PROJECT_CHOOSE = "/v1/projects_data/project_choose";
 
 export const BACK_END_API_GET_FOLDER_DETAILS = "/v1/projects_data/projects/";
+
+
+export const BACK_END_API_BRAND_VOICE = "/v1/brand_voice/data/";
+
+export const BACK_END_API_DOWNLOAD_FILE = "/v1/documents_data/get_doc_file/";
+
+export const BACK_END_API_SELECT_FIELD = "/v1/template/select_field_of_template";

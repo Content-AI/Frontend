@@ -7,12 +7,15 @@ import {
   BACK_API_LANG,
   BACK_END_API_INNER_TEMPLATE,
   BACK_END_API_RESPONSE,
+  BACK_END_API_SELECT_FIELD,
 } from "../../../apis/urls";
 import { fetchData, postData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import Select from 'react-select';
+import CreatableSelect from "react-select/creatable";
+
 import { useNavigate } from "react-router-dom";
-import Select from "react-select";
 import { Button } from "@mui/material";
 import LoadingPage from "../../LoadingPage";
 import toast, { Toaster } from "react-hot-toast";
@@ -43,6 +46,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [languageOptions, setLanguageOptions] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState("");
 
+
   const [Outputlanguage, setOutputlanguage] = useState([]);
   const [OutputlanguageChoice, setOutputlanguageChoice] = useState("English");
 
@@ -70,6 +74,25 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [renderKey, setRenderKey] = useState(0);
 
   const [fieldValues, setFieldValues] = useState([]);
+
+
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState([
+    { value: "nice", label: "nice" },
+    { value: "fancy", label: "fancy" },
+    { value: "relaxed", label: "relaxed" },
+    { value: "skilled", label: "skilled" },
+    { value: "confident", label: "confident" },
+    { value: "daring", label: "daring" },
+    { value: "funny", label: "funny" },
+    { value: "persuasive", label: "persuasive" },
+    { value: "empathetic", label: "empathetic" },
+  ]);
+  const [value, setValue] = useState(null);
+
+
+
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
@@ -130,10 +153,17 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     formData["generate"]=TemplateData[0]["title"]
     
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
+    
+    // return true
+    for (const [key, value] of Object.entries(formData)) {
+      if (value === "") {
+        delete formData[key];
+      }
+    }
 
-    Object.entries(formData).forEach(([key, value]) => {
+    Object.entries(formData).forEach(([key, value_d]) => {
       if (key.match(keyToCheck)) { // Case-sensitive match
-        if (value.trim() === "") {
+        if (value_d.trim() === "") {
           notifyerror(`Value for ${key} is empty.`);
           isFormDataValid = false;
         }
@@ -143,19 +173,17 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     if (inputs.length > 0) {
       formData["inputs"] = inputs;
     }
-
-
     
-    if (inputs.length > 0) {
-      formData["inputs"] = inputs;
-    }
-    
-    Object.entries(formData).forEach(([key, value]) => {
-      const trimmedValue = value.trim();
-      if (trimmedValue === '') {
+    Object.entries(formData).forEach(([key, value__d]) => {
+      const trimmedValue__d = value__d.trim();
+      if (trimmedValue__d === '') {
         delete formData[key]; // Remove the key from formData
       }
     });
+    if(value!=null){
+      formData["tone"]=value.value
+    }
+
     if (isFormDataValid) {
       setLoadingButton(true);
       let res_of_template = await postData(
@@ -262,6 +290,49 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       return "...";
     }
   };
+
+
+    
+
+  
+const createOption = (label) => ({
+  label,
+  value: label.toLowerCase().replace(/\W/g, "")
+});
+
+const handleCreate = (inputValue) => {
+  setIsLoading(true);
+  setTimeout(() => {
+    const newOption = createOption(inputValue);
+    setIsLoading(false);
+    setOptions((prev) => [newOption, ...prev]);
+    setValue(newOption);
+  }, 1000);
+};
+
+const get_select_fields = async() =>{
+  const resp = await fetchData(BACKEND_URL+BACK_END_API_SELECT_FIELD,AUTH_TOKEN)
+  if(resp.status==200){
+    const newData = resp.data.map((item) => createOption(item.label));
+    setOptions((prevOptions) => [...newData, ...prevOptions]);
+  }
+}
+useEffect(()=>{
+  get_select_fields()
+},[])
+
+const save_select_fields = async(value_data) =>{
+  const formData = {
+    value:value_data
+  }
+  const resp = await postData(formData,BACKEND_URL+BACK_END_API_SELECT_FIELD,AUTH_TOKEN)
+}
+useEffect(() => {
+  // console.log("options : ", options[0]["value"]);
+  save_select_fields(options[0]["value"])
+}, [options]);
+
+
 
   return (
     <>
@@ -469,10 +540,36 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                             </button> */}
                             </div>
                           </>
+                        )) ||
+                        (data.component === "select" && (
+                          <>
+                            <div>
+                              <label
+                                htmlFor="form-field-productInfo"
+                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                              >
+                              <span className="flex items-center space-x-1">
+                                <span>{data.label}</span>
+                              </span>
+                              </label>
+                            </div>
+                            <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                            <CreatableSelect
+                                isClearable
+                                isDisabled={isLoading}
+                                isLoading={isLoading}
+                                onChange={(newValue) => setValue(newValue)}
+                                onCreateOption={handleCreate}
+                                options={options}
+                                value={value}
+                              />
+                            </div>
+                          </>
                         ))
                       );
                     })}
                   </div>
+
 
                   <div className="flex flex-col border border-border p-6 rounded-md mt-[30px] mb-[50px]">
                     <div className="flex flex-col items-start md:flex-row md:justify-start md:items-center sm:flex-wrap lg:flex-nowrap">

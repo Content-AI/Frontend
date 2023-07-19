@@ -27,7 +27,7 @@ import {
   MdSearch,
 } from "react-icons/md";
 
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaTrash } from "react-icons/fa";
 
 import {
   CgFileDocument,
@@ -82,6 +82,7 @@ const Navbar = () => {
   const navURL = [
     { title: "Dashboard", link: "/" },
     { title: "Create New Content", link: "/create_new_content" },
+    { title: "Brand Voice", link: "/brand_voice" },
     { title: "Chat", link: "/chat" },
     { title: "Projects", link: "/projects" },
     { title: "Recent Added", link: "/documents" },
@@ -294,6 +295,20 @@ const Navbar = () => {
                         <p className="text-[15px]  ml-[10px] font-helv">
                           Search
                         </p>
+                      </div>
+                    </div>
+                    <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                      <div className="mr-2">
+                        <FaTrash size={20} />
+                      </div>
+                      <div>
+                        <Link
+                            to="/trash"
+                          >
+                          <p className="text-[15px]  ml-[10px] font-helv">
+                            Trash
+                          </p>
+                        </Link>
                       </div>
                     </div>
                     <Link
@@ -705,6 +720,21 @@ const Navbar = () => {
                             </p>
                           </div>
                         </div>
+                        <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                      <div className="mr-2">
+                        <FaTrash size={20} />
+                      </div>
+                      <div>
+                        <Link
+                            to="/trash"
+                          >
+                          <p className="text-[15px]  ml-[10px] font-helv">
+                            Trash
+                          </p>
+                        </Link>
+                      </div>
+                    </div>
+                        
                         <Link
                           to="/logout"
                           onClick={() => {

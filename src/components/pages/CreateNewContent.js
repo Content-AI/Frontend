@@ -3,6 +3,8 @@ import { BACKEND_URL,BACK_END_API_PROJECT_CHOOSE } from '../../apis/urls';
 import { fetchData } from '../../apis/apiService';
 import { useNavigate } from 'react-router-dom';
 
+import Select from 'react-select';
+
 import { useSelector, useDispatch } from "react-redux";
 import {
     _save_folder_id_
@@ -20,10 +22,13 @@ const CreateNewContent = (props) => {
     const [selectedValue, setSelectedValue] = useState('');
     const [SelectedOptions, setSelectedOptions] = useState(null);
 
-    const handleSelectChange = (event) => {
-        setSelectedValue(event.target.value);
-      };
-    
+
+    // const handleSelectChange = (event) => {
+    //     setSelectedValue(event.target.value);
+    //   };
+
+    const [selectedOption, setSelectedOption] = useState({"value":"Select a Folder","label":"Select a Folder"});
+
     const get_project_data = async() => {
         const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
         if(resp.status==200){
@@ -34,9 +39,22 @@ const CreateNewContent = (props) => {
         get_project_data()
       },[])
 
+    //   useEffect(()=>{
+    //     dispatch(_save_folder_id_(selectedValue))
+    //   },[selectedValue])
+
       useEffect(()=>{
-        dispatch(_save_folder_id_(selectedValue))
-      },[selectedValue])
+        dispatch(_save_folder_id_(selectedOption.value))
+      },[selectedOption])
+
+    
+      const handleSelectChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+      };
+
+    //   useEffect(()=>{
+    //     console.log(selectedOption.value)
+    //   },[selectedOption])
 
   return (
     <>
@@ -49,10 +67,17 @@ const CreateNewContent = (props) => {
                         <div className="p-6 space-y-4">
                             <div className="space-y-1">
                                 <h1 className="mb-2 text-lg font-semibold text-gray-900">Get started with new content powered by  <b>Web Central</b></h1>
-                                <div className="w-64">
-                                    <div className="relative inline-block text-left w-full">
+                                <div className="flex">
+                                    <div className="w-64 mt-2">
                                     {/* ============select field================= */}
-                                        <select
+                                    <Select
+                                        options={SelectedOptions}
+                                        value={selectedOption}
+                                        onChange={handleSelectChange}
+                                        isSearchable={true} // Enable searching in the select field
+                                        placeholder="Select Folder"
+                                    />
+                                        {/* <select
                                             className="p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
                                             id="selectField"
                                             value={selectedValue}
@@ -68,8 +93,22 @@ const CreateNewContent = (props) => {
                                                 })
                                             }
                                             
-                                        </select>
+                                        </select> */}
                                     {/* ========================================= */}
+                                    </div>
+                                    <div>
+                                    <div className="ml-3 md:flex flex-row justify-between items-center w-full"> 
+
+                                            <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                                                onClick={()=>{
+                                                    navigate("/projects?create=new_folder&true=redirect_site")
+                                                }}
+                                            >
+                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
+                                                    + Create New Folder
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
