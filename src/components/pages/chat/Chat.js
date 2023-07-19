@@ -167,9 +167,9 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   return (
     <>
-      <div className="z-10 fixed top-0 left-0 w-full h-screen sm:pl-64 flex">
+      <div className="z-10 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
         <div className="flex-auto flex flex-col h-full">
-          <div className="w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
+          <div className="sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
             <div className="flex-1 text-xl font-semibold">
               <div>
                 <input
@@ -533,9 +533,12 @@ const Chat = ({ AUTH_TOKEN }) => {
           </div>
         </div>
         <div
-          className={clsx("w-60 bg-gray-50 flex flex-col", {
-            hidden: !sidebarStatus,
-          })}
+          className={clsx(
+            "z-10 absolute top-[50px] sm:top-0 -right-0 h-[calc(100%-50px)] sm:relative w-60 max-w-screen bg-gray-50 flex flex-col duration-300",
+            {
+              "sm:hidden !-right-full": !sidebarStatus,
+            }
+          )}
         >
           <div className="p-4 pb-2">
             <button
