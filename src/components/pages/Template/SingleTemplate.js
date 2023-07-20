@@ -12,7 +12,7 @@ import {
 import { fetchData, postData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import Select from 'react-select';
+import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,6 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [languageOptions, setLanguageOptions] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState("");
 
-
   const [Outputlanguage, setOutputlanguage] = useState([]);
   const [OutputlanguageChoice, setOutputlanguageChoice] = useState("English");
 
@@ -75,8 +74,6 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const [fieldValues, setFieldValues] = useState([]);
 
-
-
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([
     { value: "nice", label: "nice" },
@@ -90,9 +87,6 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     { value: "empathetic", label: "empathetic" },
   ]);
   const [value, setValue] = useState(null);
-
-
-
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
@@ -138,22 +132,23 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     // console.log(TemplateData[0]["title"])
     // return true
     const divElement = document.getElementById(id_of_template);
-    const inputElements = divElement.getElementsByTagName('input');
-    const textareaElements = divElement.getElementsByTagName('textarea');
-  
+    const inputElements = divElement.getElementsByTagName("input");
+    const textareaElements = divElement.getElementsByTagName("textarea");
+
     const elements = [...inputElements, ...textareaElements];
-  
+
     const formData = Array.from(elements).reduce((data, element) => {
       data[element.name] = element.value;
       return data;
     }, {});
     let isFormDataValid = true;
-    formData["language"]="Generate whole text in "+OutputlanguageChoice+" Language"
-    formData["output_results"]=ContentOutputNumber.toString()
-    formData["generate"]=TemplateData[0]["title"]
-    
+    formData["language"] =
+      "Generate whole text in " + OutputlanguageChoice + " Language";
+    formData["output_results"] = ContentOutputNumber.toString();
+    formData["generate"] = TemplateData[0]["title"];
+
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
-    
+
     // return true
     for (const [key, value] of Object.entries(formData)) {
       if (value === "") {
@@ -162,7 +157,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }
 
     Object.entries(formData).forEach(([key, value_d]) => {
-      if (key.match(keyToCheck)) { // Case-sensitive match
+      if (key.match(keyToCheck)) {
+        // Case-sensitive match
         if (value_d.trim() === "") {
           notifyerror(`Value for ${key} is empty.`);
           isFormDataValid = false;
@@ -173,15 +169,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     if (inputs.length > 0) {
       formData["inputs"] = inputs;
     }
-    
+
     Object.entries(formData).forEach(([key, value__d]) => {
       const trimmedValue__d = value__d.trim();
-      if (trimmedValue__d === '') {
+      if (trimmedValue__d === "") {
         delete formData[key]; // Remove the key from formData
       }
     });
-    if(value!=null){
-      formData["tone"]=value.value
+    if (value != null) {
+      formData["tone"] = value.value;
     }
 
     if (isFormDataValid) {
@@ -203,10 +199,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }
   };
 
-//   useEffect(() => {
-//     console.log(TemplateResponseData);
-//     console.log(ProjectId);
-//   }, [ProjectId]);
+  //   useEffect(() => {
+  //     console.log(TemplateResponseData);
+  //     console.log(ProjectId);
+  //   }, [ProjectId]);
 
   const get_history = async () => {
     const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY, AUTH_TOKEN);
@@ -291,52 +287,53 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }
   };
 
+  const createOption = (label) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ""),
+  });
 
-    
+  const handleCreate = (inputValue) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const newOption = createOption(inputValue);
+      setIsLoading(false);
+      setOptions((prev) => [newOption, ...prev]);
+      setValue(newOption);
+    }, 1000);
+  };
 
-  
-const createOption = (label) => ({
-  label,
-  value: label.toLowerCase().replace(/\W/g, "")
-});
+  const get_select_fields = async () => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_API_SELECT_FIELD,
+      AUTH_TOKEN
+    );
+    if (resp.status == 200) {
+      const newData = resp.data.map((item) => createOption(item.label));
+      setOptions((prevOptions) => [...newData, ...prevOptions]);
+    }
+  };
+  useEffect(() => {
+    get_select_fields();
+  }, []);
 
-const handleCreate = (inputValue) => {
-  setIsLoading(true);
-  setTimeout(() => {
-    const newOption = createOption(inputValue);
-    setIsLoading(false);
-    setOptions((prev) => [newOption, ...prev]);
-    setValue(newOption);
-  }, 1000);
-};
-
-const get_select_fields = async() =>{
-  const resp = await fetchData(BACKEND_URL+BACK_END_API_SELECT_FIELD,AUTH_TOKEN)
-  if(resp.status==200){
-    const newData = resp.data.map((item) => createOption(item.label));
-    setOptions((prevOptions) => [...newData, ...prevOptions]);
-  }
-}
-useEffect(()=>{
-  get_select_fields()
-},[])
-
-const save_select_fields = async(value_data) =>{
-  const formData = {
-    value:value_data
-  }
-  const resp = await postData(formData,BACKEND_URL+BACK_END_API_SELECT_FIELD,AUTH_TOKEN)
-}
-useEffect(() => {
-  // console.log("options : ", options[0]["value"]);
-  save_select_fields(options[0]["value"])
-}, [options]);
-
-
+  const save_select_fields = async (value_data) => {
+    const formData = {
+      value: value_data,
+    };
+    const resp = await postData(
+      formData,
+      BACKEND_URL + BACK_END_API_SELECT_FIELD,
+      AUTH_TOKEN
+    );
+  };
+  useEffect(() => {
+    // console.log("options : ", options[0]["value"]);
+    save_select_fields(options[0]["value"]);
+  }, [options]);
 
   return (
     <>
-      <div className="relative -m-6">
+      <div className="relative -mx-6 lg:-mb-6">
         <button
           onClick={() => {
             navigate("/template");
@@ -347,8 +344,8 @@ useEffect(() => {
         </button>
         {TemplateData && (
           <>
-            <div className="flex max-h-[calc(100vh-74px)]">
-              <div className="w-1/2 flex flex-col max-h-full bg-blue-900">
+            <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)]">
+              <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
                 <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
                     <img
@@ -548,13 +545,13 @@ useEffect(() => {
                                 htmlFor="form-field-productInfo"
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
-                              <span className="flex items-center space-x-1">
-                                <span>{data.label}</span>
-                              </span>
+                                <span className="flex items-center space-x-1">
+                                  <span>{data.label}</span>
+                                </span>
                               </label>
                             </div>
                             <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                            <CreatableSelect
+                              <CreatableSelect
                                 isClearable
                                 isDisabled={isLoading}
                                 isLoading={isLoading}
@@ -569,7 +566,6 @@ useEffect(() => {
                       );
                     })}
                   </div>
-
 
                   <div className="flex flex-col border border-border p-6 rounded-md mt-[30px] mb-[50px]">
                     <div className="flex flex-col items-start md:flex-row md:justify-start md:items-center sm:flex-wrap lg:flex-nowrap">
@@ -705,7 +701,7 @@ useEffect(() => {
                 </div>
               </div>
 
-              <div className="w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+              <div className="lg:w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
                 <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
@@ -784,23 +780,34 @@ useEffect(() => {
                       </div>
                     </div>
                   </>
-                ) : 
-
+                ) : (
                   <div className="mt-[25%] w-[400px] ml-[20%] max-w-lg relative py-3 pl-8 space-x-2 text-xs text-gray-400 rounded-md ring-1 ring-gray-200">
                     <div className="absolute inset-y-0 left-0 flex items-center justify-center w-8 bg-gray-100 rounded-l-md">
-                      <svg className="w-10 h-" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 125" x="0px" y="0px">
-                        <path d="M48.68,62.5A6.27,6.27,0,0,1,54,57.17c4-.56,9.89-1.49,18.55-3C63.9,52.69,58,51.77,54,51.2a6.26,6.26,0,0,1-5.33-5.33c-.57-4-1.5-9.9-3-18.56-1.49,8.66-2.42,14.56-3,18.56a6.26,6.26,0,0,1-5.32,5.33c-4,.57-9.9,1.49-18.56,3,8.66,1.49,14.55,2.42,18.56,3A6.27,6.27,0,0,1,42.7,62.5c.57,4,1.5,9.9,3,18.56C47.18,72.4,48.11,66.5,48.68,62.5Z"/>
-                        <path d="M67.91,38.49a3.49,3.49,0,0,1,3-3c2.22-.31,5.5-.83,10.31-1.66-4.81-.83-8.09-1.34-10.31-1.66a3.48,3.48,0,0,1-3-3c-.32-2.22-.83-5.5-1.66-10.31-.83,4.81-1.35,8.09-1.66,10.31a3.48,3.48,0,0,1-3,3c-2.22.32-5.5.83-10.31,1.66,4.81.83,8.09,1.35,10.31,1.66a3.49,3.49,0,0,1,3,3c.31,2.23.83,5.5,1.66,10.31C67.08,44,67.59,40.72,67.91,38.49Z"/>
-                        <path d="M58.33,72.86a1.46,1.46,0,0,1,1.25-1.24c.94-.14,2.32-.35,4.34-.7-2-.35-3.4-.57-4.34-.7A1.46,1.46,0,0,1,58.33,69c-.13-.93-.35-2.31-.7-4.34-.34,2-.56,3.41-.69,4.34a1.47,1.47,0,0,1-1.25,1.25c-.94.13-2.32.35-4.34.7,2,.35,3.4.56,4.34.7a1.47,1.47,0,0,1,1.25,1.24c.13.94.35,2.32.69,4.34C58,75.18,58.2,73.8,58.33,72.86Z"/>
-                        <path d="M31.75,42.1A1.46,1.46,0,0,1,33,40.86c.94-.14,2.31-.35,4.34-.7-2-.35-3.4-.57-4.34-.7a1.46,1.46,0,0,1-1.25-1.25c-.13-.93-.35-2.31-.7-4.34-.35,2-.56,3.41-.7,4.34a1.45,1.45,0,0,1-1.24,1.25c-.94.13-2.32.35-4.34.7,2,.35,3.4.56,4.34.7a1.45,1.45,0,0,1,1.24,1.24c.14.94.35,2.32.7,4.35C31.4,44.42,31.62,43,31.75,42.1Z"/>
+                      <svg
+                        className="w-10 h-"
+                        xmlns="http://www.w3.org/2000/svg"
+                        data-name="Layer 1"
+                        viewBox="0 0 100 125"
+                        x="0px"
+                        y="0px"
+                      >
+                        <path d="M48.68,62.5A6.27,6.27,0,0,1,54,57.17c4-.56,9.89-1.49,18.55-3C63.9,52.69,58,51.77,54,51.2a6.26,6.26,0,0,1-5.33-5.33c-.57-4-1.5-9.9-3-18.56-1.49,8.66-2.42,14.56-3,18.56a6.26,6.26,0,0,1-5.32,5.33c-4,.57-9.9,1.49-18.56,3,8.66,1.49,14.55,2.42,18.56,3A6.27,6.27,0,0,1,42.7,62.5c.57,4,1.5,9.9,3,18.56C47.18,72.4,48.11,66.5,48.68,62.5Z" />
+                        <path d="M67.91,38.49a3.49,3.49,0,0,1,3-3c2.22-.31,5.5-.83,10.31-1.66-4.81-.83-8.09-1.34-10.31-1.66a3.48,3.48,0,0,1-3-3c-.32-2.22-.83-5.5-1.66-10.31-.83,4.81-1.35,8.09-1.66,10.31a3.48,3.48,0,0,1-3,3c-2.22.32-5.5.83-10.31,1.66,4.81.83,8.09,1.35,10.31,1.66a3.49,3.49,0,0,1,3,3c.31,2.23.83,5.5,1.66,10.31C67.08,44,67.59,40.72,67.91,38.49Z" />
+                        <path d="M58.33,72.86a1.46,1.46,0,0,1,1.25-1.24c.94-.14,2.32-.35,4.34-.7-2-.35-3.4-.57-4.34-.7A1.46,1.46,0,0,1,58.33,69c-.13-.93-.35-2.31-.7-4.34-.34,2-.56,3.41-.69,4.34a1.47,1.47,0,0,1-1.25,1.25c-.94.13-2.32.35-4.34.7,2,.35,3.4.56,4.34.7a1.47,1.47,0,0,1,1.25,1.24c.13.94.35,2.32.69,4.34C58,75.18,58.2,73.8,58.33,72.86Z" />
+                        <path d="M31.75,42.1A1.46,1.46,0,0,1,33,40.86c.94-.14,2.31-.35,4.34-.7-2-.35-3.4-.57-4.34-.7a1.46,1.46,0,0,1-1.25-1.25c-.13-.93-.35-2.31-.7-4.34-.35,2-.56,3.41-.7,4.34a1.45,1.45,0,0,1-1.24,1.25c-.94.13-2.32.35-4.34.7,2,.35,3.4.56,4.34.7a1.45,1.45,0,0,1,1.24,1.24c.14.94.35,2.32.7,4.35C31.4,44.42,31.62,43,31.75,42.1Z" />
                       </svg>
                     </div>
                     <div className="flex-grow pl-2 pr-4 text-left">
-                        <div className="mb-1 text-sm font-medium text-gray-500">Respond to the prompts</div>
-                        <div>Achieve optimal outcomes by experimenting with various inputs of different lengths</div>
+                      <div className="mb-1 text-sm font-medium text-gray-500">
+                        Respond to the prompts
+                      </div>
+                      <div>
+                        Achieve optimal outcomes by experimenting with various
+                        inputs of different lengths
+                      </div>
                     </div>
                   </div>
-                }
+                )}
               </div>
 
               <Toaster />
