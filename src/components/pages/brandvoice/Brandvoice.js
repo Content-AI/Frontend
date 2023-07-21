@@ -119,7 +119,7 @@ const Brandvoice = (props) => {
 
                     {BrandVoiceData.map((data,index)=>{
                       return (
-                          <tbody className="divide-y divide-gray-100 bg-white">
+                          <tbody className="divide-y divide-gray-100 bg-white" key={index}>
                             <tr>
                                 <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700 cursor-pointer">
                                   <div className="flex flex-row items-center space-x-2">

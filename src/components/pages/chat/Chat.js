@@ -1189,8 +1189,8 @@ const handleChange = (event) => {
         {selectedSummarizes.map((data,index)=>{
           return (
             <>
-              <div class="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center">
-                  <div class="mr-2 w-3 h-3 flex items-center justify-center">
+              <div key={index} className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center">
+                  <div className="mr-2 w-3 h-3 flex items-center justify-center">
                   <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 125" x="0px" y="0px">
                     <path d="M12.54,71a33.93,33.93,0,0,0,6.29,3.3L17.18,92a2.5,2.5,0,0,0,2.26,2.72h.24a2.5,2.5,0,0,0,2.49-2.27L23.7,75.88c1.11.28,2.23.54,3.4.74a55.44,55.44,0,0,0,9.46.83q2.31,0,4.57-.21a9.78,9.78,0,0,0,8.61-12,10.6,10.6,0,0,1,.56-2.92L50.79,61a4.5,4.5,0,0,0-.26-3.56,4.41,4.41,0,0,0-2.72-2.21c-3.85-1.06-6.24-3.06-6.93-5.77A36.38,36.38,0,0,0,52.72,49a2.5,2.5,0,0,0,1.92-2.32L55,39.58a14.33,14.33,0,0,0,6-3.23,6.58,6.58,0,0,0,1.43-7.72,8,8,0,0,0-3.06-3.11,15,15,0,0,1-6.91-13.24,40.5,40.5,0,0,0,0-4.67,2.5,2.5,0,0,0-5,.34,35.3,35.3,0,0,1,0,4.1A19.91,19.91,0,0,0,56.59,29.7a4.25,4.25,0,0,1,1.31,1.11,1.61,1.61,0,0,1-.34,1.88A10.56,10.56,0,0,1,52.1,35.1,2.5,2.5,0,0,0,50,37.46l-.31,7a32.38,32.38,0,0,1-8.49,0,4.79,4.79,0,0,0-5.32,5.74c.56,2.67,2.6,7.42,10,9.67l-.3.86a13.87,13.87,0,0,0-.79,5.3,2.61,2.61,0,0,0,.06.31,4.79,4.79,0,0,1-.72,4,4.74,4.74,0,0,1-3.45,2A48.51,48.51,0,0,1,28,71.69a32.42,32.42,0,0,1-12.63-4.84A17,17,0,0,1,9.56,61a2.5,2.5,0,0,0-4.42,2.33A21.87,21.87,0,0,0,12.54,71Z"/>
                     <path d="M60.38,61.69a2.5,2.5,0,1,0,2.68,4.22,12.4,12.4,0,0,0,4.22-16.36,2.5,2.5,0,1,0-4.39,2.4A7.39,7.39,0,0,1,60.38,61.69Z"/>
@@ -1198,14 +1198,14 @@ const handleChange = (event) => {
                     <path d="M89.42,40.31A2.5,2.5,0,0,0,88,43.54a33.73,33.73,0,0,1-9.71,37.63A2.5,2.5,0,1,0,81.49,85,38.74,38.74,0,0,0,92.64,41.76,2.5,2.5,0,0,0,89.42,40.31Z"/>
                   </svg>
                     </div>
-                    <div class="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
+                    <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
                       {data.label}
                     </div>
-                    <div class="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
+                    <div className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
                       onClick={() => handleDeleteClick(data.label)}>
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M14.87,14.87L1.13,1.13" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round"></path>
-                          <path d="M1.13,14.87L14.87,1.13" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round"></path>
+                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                          <path d="M14.87,14.87L1.13,1.13" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
+                          <path d="M1.13,14.87L14.87,1.13" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
                         </svg>
                     </div>
               </div>
@@ -1383,7 +1383,7 @@ const handleChange = (event) => {
               <>
               {ChatTitleForSideBar.map((data,index)=>{
                   return (
-                    <div className="cursor-pointer group border-b border-gray-200 flex items-center h-13 bg-gray-100 mt-1 mb-1 hover: bg-[#ffffff]">
+                    <div key={index} className="cursor-pointer group border-b border-gray-200 flex items-center h-13 bg-gray-100 mt-1 mb-1 hover: bg-[#ffffff]">
                     <div className="p-4 flex flex-grow justify-between items-center truncate"
                     >
                       <div className="truncate text-ellipsis w-full"
@@ -1470,7 +1470,7 @@ const handleChange = (event) => {
                     className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
                     aria-label="Delete conversation"
                     onClick={()=>{
-                      console.log(data.id)
+                      // console.log(data.id)
                         const formData = {
                           trash: true
                         }
@@ -1660,10 +1660,10 @@ const handleChange = (event) => {
                   </>
                 :
                   <>
-                      <button type="button" class="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                      <button type="button" className="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
                       onClick={showinputtocreate}  
                       >
-                      <span class="flex items-center justify-center mx-auto space-x-2 select-none">
+                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                         + Create Custom template
                       </span>
                       </button>
@@ -1699,7 +1699,7 @@ const handleChange = (event) => {
                                           EditCustomTemplateHandleSaveClick(index,data.id)
                                       }}
                                       >
-                                          <span class="flex items-center justify-center mx-auto space-x-2 select-none">     
+                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">     
                                           <svg className="w-4 h-4"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                           <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#292D32"/>
                                           </svg>
@@ -1711,8 +1711,8 @@ const handleChange = (event) => {
                                         setEditCustomTemplateEditingTitleIndex(null)
                                       }}
                                       >
-                                          <span class="flex items-center justify-center mx-auto space-x-2 select-none">
-                                          <svg className="w-4 h-4 mt-[2px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" xmlnsSerif="http://www.serif.com/" viewBox="0 0 20 25" version="1.1" xmlSpace="preserve"  x="0px" y="0px" fillRule="evenodd" clipRule="evenodd" stroke-linejoin="round" strokeMiterlimit="2">
+                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                          <svg className="w-4 h-4 mt-[2px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" xmlnsSerif="http://www.serif.com/" viewBox="0 0 20 25" version="1.1" xmlSpace="preserve"  x="0px" y="0px" fillRule="evenodd" clipRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2">
                                           <g transform="matrix(1,0,0,1,-350,-30)">
                                               <path d="M360,42.472L367.528,50L370,47.528L362.472,40L370,32.472L367.528,30L360,37.528L352.472,30L350,32.472L357.528,40L350,47.528L352.472,50L360,42.472Z" fillRule="nonzero"/>
                                           </g>
@@ -1737,11 +1737,11 @@ const handleChange = (event) => {
                                         className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
                                         onClick={() => EditCustomTemplateHandleEditClick(index)}
                                       >
-                                        <span class="flex items-center justify-center mx-auto space-x-2 select-none">
-                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                           <path d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z" fill="transparent"></path>
-                                          <path d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+                                          <path d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                          <path d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
                                         </svg>
                                     </span>
                                       </button>
@@ -1752,13 +1752,13 @@ const handleChange = (event) => {
                                           delete_the_custom_template(data.id)
                                         }}
                                       >
-                                        <span class="flex items-center justify-center mx-auto space-x-2 select-none">
-                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                          <path d="M.86,4.28H15.14" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round"></path>
-                                          <path d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M6.29,7.34v4.73" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M9.71,7.34v4.73" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                          <path d="M.86,4.28H15.14" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
+                                          <path d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                          <path d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                          <path d="M6.29,7.34v4.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                          <path d="M9.71,7.34v4.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
                                         </svg>
                                     </span>
                                       </button>
@@ -1794,7 +1794,7 @@ const handleChange = (event) => {
                         {second_layer_title.map((data,index)=>{
                             return (
                               <>
-                                <div key={index} class="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
+                                <div key={index} className="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
                                 onClick={()=>{
                                     get_value_of_template(data.id)
                                   }}>
@@ -2025,7 +2025,7 @@ const handleChange = (event) => {
           vertical: "bottom",
           horizontal: "left",
         }}
-        classes="shadow-none"
+        className="shadow-none"
       >
         <div className="w-[800px] max-w-full border border-grey-300 bg-white shadow-lg md:left-0 rounded-xl">
           <div>
