@@ -333,7 +333,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   return (
     <>
-      <div className="relative -mx-6 lg:-mb-6">
+      <div className="relative lg:-m-6">
         <button
           onClick={() => {
             navigate("/template");
