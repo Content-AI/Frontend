@@ -51,15 +51,13 @@ export const fetchData = async (url,ACCESS_TOKEN) => {
   }
 };
 
-export const deleteData = async (url,password,ACCESS_TOKEN) => {
+export const deleteData = async (url,ACCESS_TOKEN) => {
 
   try{
     const res = await axios.delete(url,{
       headers:{
         Authorization: `Bearer ${ACCESS_TOKEN}`
-      },data: {
-        password: password,
-      },
+      }
     })
     return res
   }catch(err){
