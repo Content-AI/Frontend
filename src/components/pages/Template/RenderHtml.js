@@ -7,10 +7,7 @@ const RenderHtml = ({ htmldata }) => {
     .join('');
 
   return (
-    <>
         <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
-        {/* {formattedContent} */}
-    </>
     )};
 
 export default RenderHtml;

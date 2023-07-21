@@ -27,7 +27,7 @@ const CreateNewContent = (props) => {
     //     setSelectedValue(event.target.value);
     //   };
 
-    const [selectedOption, setSelectedOption] = useState({"value":"Select a Folder","label":"Select a Folder"});
+    const [selectedOption, setSelectedOption] = useState({"value":"select a folder","label":"select a folder"});
 
     const get_project_data = async() => {
         const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
