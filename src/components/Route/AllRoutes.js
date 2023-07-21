@@ -19,7 +19,7 @@ import Projects from "../pages/Projects/Projects";
 import ListOfDocument from "../pages/Template/Document/ListOfDocument";
 import CreateNewContent from "../pages/CreateNewContent";
 import FolderData from "../pages/Projects/FolderData";
-import Brandvoice from "../pages/brandvoice/Brandvoice"
+import Brandvoice from "../pages/brandvoice/Brandvoice";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -31,19 +31,34 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   return (
     <>
       {TOKEN ? (
-        <main className="flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-0 p-6 text-black bg-white">
+        <main className="flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
-            <Route path="/documents" element={<ListOfDocument SHOW={"active"} AUTH_TOKEN={TOKEN} />} />
-            
-            <Route path="/brand_voice" element={<Brandvoice AUTH_TOKEN={TOKEN} />} />
-            
-            <Route path="/create_new_content" element={<CreateNewContent AUTH_TOKEN={TOKEN} />} />
-            <Route path="/folder_of_user/:folder_id" element={<FolderData AUTH_TOKEN={TOKEN} />} />
-            
-            <Route path="/trash" element={<ListOfDocument SHOW={"trash"} AUTH_TOKEN={TOKEN} />} />
+            <Route
+              path="/documents"
+              element={<ListOfDocument SHOW={"active"} AUTH_TOKEN={TOKEN} />}
+            />
+
+            <Route
+              path="/brand_voice"
+              element={<Brandvoice AUTH_TOKEN={TOKEN} />}
+            />
+
+            <Route
+              path="/create_new_content"
+              element={<CreateNewContent AUTH_TOKEN={TOKEN} />}
+            />
+            <Route
+              path="/folder_of_user/:folder_id"
+              element={<FolderData AUTH_TOKEN={TOKEN} />}
+            />
+
+            <Route
+              path="/trash"
+              element={<ListOfDocument SHOW={"trash"} AUTH_TOKEN={TOKEN} />}
+            />
 
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
 

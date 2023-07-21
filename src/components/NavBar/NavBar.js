@@ -247,69 +247,66 @@ const Navbar = () => {
           <div className="relative">
             {isHovered && (
               <div
-                className="absolute bottom-full left-[-16px] w-64 h-64 bg-gray-100"
+                className="absolute bottom-full left-0 w-60 bg-white border border-border rounded"
                 style={{
                   boxShadow:
                     "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
                 }}
               >
-                <AiOutlineCloseCircle
-                  onClick={() => {
-                    setHovered(!isHovered);
-                  }}
-                  className="w-12 h-6 float-right mt-2 hover:text-red-500 cursor-pointer"
-                />
+                <div className="absolute top-2 right-2 w-6 h-6">
+                  <AiOutlineCloseCircle
+                    onClick={() => {
+                      setHovered(!isHovered);
+                    }}
+                    className="w-full h-full duration-300 hover:text-red-500 cursor-pointer"
+                  />
+                </div>
 
-                <div className="flex flex-col items-center justify-center ">
-                  <div className="mt-[5vh] ">
+                <div className="flex flex-col justify-center ">
+                  <div className="py-4 px-2">
                     <Link
                       to="/profile"
                       onClick={() => {
                         setHovered(!isHovered);
                       }}
                     >
-                      <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                      <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                         <div className="mr-2">
-                          <MdSettings size={25} />
+                          <MdSettings size={18} />
                         </div>
                         <div>
-                          <p className="text-[15px]  ml-[10px] font-helv">
-                            Settings
-                          </p>
+                          <p className="text-sm font-helv">Settings</p>
                         </div>
                       </div>
                     </Link>
-                    <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                    <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                       <div className="mr-2">
-                        <MdHelp size={25} />
+                        <MdHelp size={18} />
                       </div>
                       <div>
-                        <p className="text-[15px]  ml-[10px] font-helv">Help</p>
+                        <p className="text-sm font-helv">Help</p>
                       </div>
                     </div>
-                    <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                    <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                       <div className="mr-2">
-                        <MdSearch size={25} />
+                        <MdSearch size={18} />
                       </div>
                       <div>
-                        <p className="text-[15px]  ml-[10px] font-helv">
-                          Search
-                        </p>
+                        <p className="text-sm font-helv">Search</p>
                       </div>
                     </div>
-                    <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
+                    <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                       <div className="mr-2">
-                        <FaTrash size={20} />
+                        <FaTrash size={18} />
                       </div>
                       <div>
                         <Link to="/trash">
-                          <p className="text-[15px]  ml-[10px] font-helv">
-                            Trash
-                          </p>
+                          <p className="text-sm font-helv">Trash</p>
                         </Link>
                       </div>
                     </div>
                     <Link
+                      className="pt-2 mt-4 block border-t border-border"
                       to="/logout"
                       onClick={() => {
                         handleLinkClick("logout");
@@ -320,17 +317,15 @@ const Navbar = () => {
                       }}
                     >
                       <div
-                        className={`flex mt-7 ${
+                        className={`py-2 px-3 flex items-center ${
                           activeLink === "logout" ? "text-blue-500" : ""
                         }`}
                       >
                         <div className="mr-2">
-                          <MdLogout size={25} />
+                          <MdLogout size={18} />
                         </div>
                         <div>
-                          <p className="text-[15px]  ml-[10px] font-helv">
-                            Logout
-                          </p>
+                          <p className="text-sm font-helv">Logout</p>
                         </div>
                       </div>
                     </Link>
@@ -342,15 +337,15 @@ const Navbar = () => {
 
           <div className="flex flex-col bg-gray-100">
             {!isHovered && (
-              <div>
+              <div className="mb-4">
                 <button
                   onClick={() => {
                     console.log("pricing");
                   }}
-                  className="mb-2 focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-purple-500 hover:bg-purple-700 w-full h-[30px] px-5"
+                  className="focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-blue hover:bg-blue-700 w-full px-5 gap-x-2"
                 >
-                  <BsCheckCircle className="text-white ml-2 mr-3" size={16} />{" "}
-                  Upgrade to Pro
+                  <BsCheckCircle className="text-white" size={16} /> Upgrade to
+                  Pro
                 </button>
               </div>
             )}
@@ -360,7 +355,7 @@ const Navbar = () => {
                 onClick={() => {
                   setHovered(!isHovered);
                 }}
-                className="bg-gray-100"
+                className="flex items-center"
               >
                 {PROFILE_DATA ? (
                   PROFILE_DATA.profile_pic ? (
@@ -383,16 +378,23 @@ const Navbar = () => {
                     className="w-[40px] h-[40px] rounded-full"
                   />
                 )}
-                <p className="mt-1 ml-3 text-[12px] font-sans font-bold text-black">
-                  {PROFILE_DATA
-                    ? PROFILE_DATA.first_name || PROFILE_DATA.last_name
-                      ? PROFILE_DATA.last_name
-                        ? PROFILE_DATA.first_name + " " + PROFILE_DATA.last_name
-                        : PROFILE_DATA.first_name + " "
-                      : "Personal Workspace"
-                    : "Personal Workspace"}
-                </p>
-                <span className="w-[20px] h-[20px] ml-[3.7rem]">
+                <div className="ml-2 text-left">
+                  <p className="text-xs font-sans font-bold text-black">
+                    {PROFILE_DATA
+                      ? PROFILE_DATA.first_name || PROFILE_DATA.last_name
+                        ? PROFILE_DATA.last_name
+                          ? PROFILE_DATA.first_name +
+                            " " +
+                            PROFILE_DATA.last_name
+                          : PROFILE_DATA.first_name + " "
+                        : "Personal Workspace"
+                      : "Personal Workspace"}
+                  </p>
+                  <p className="text-[10px] font-sans font-bold text-black">
+                    Free plan
+                  </p>
+                </div>
+                <span className="w-4 h-4 ml-2">
                   <svg
                     width="14"
                     height="14"
@@ -415,9 +417,6 @@ const Navbar = () => {
                   </svg>
                 </span>
               </Button>
-              <p className="ml-[4.5rem] text-[10px] font-sans font-bold text-black">
-                Free plan
-              </p>
             </div>
           </div>
         </div>
@@ -494,7 +493,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px] mt-1 ml-[10px] font-helv">
+                    <p className="text-sm mt-1 ml-[10px] font-helv">
                       Dashboard
                     </p>
                   </div>
@@ -528,7 +527,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px]  ml-[10px] font-helv">Template</p>
+                    <p className="text-sm  ml-[10px] font-helv">Template</p>
                   </div>
                 </Link>
                 <Link
@@ -559,7 +558,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px]  ml-[10px] font-helv">Chat</p>
+                    <p className="text-sm  ml-[10px] font-helv">Chat</p>
                   </div>
                 </Link>
                 <Link
@@ -590,9 +589,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px]  ml-[10px] font-helv">
-                      Documents
-                    </p>
+                    <p className="text-sm  ml-[10px] font-helv">Documents</p>
                   </div>
                 </Link>
                 <Link
@@ -623,7 +620,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px]  ml-[10px] font-helv">Recipes</p>
+                    <p className="text-sm  ml-[10px] font-helv">Recipes</p>
                   </div>
                 </Link>
                 <Link
@@ -654,7 +651,7 @@ const Navbar = () => {
                       />
                     </svg>
 
-                    <p className="text-[15px]  ml-[10px] font-helv">Art</p>
+                    <p className="text-sm  ml-[10px] font-helv">Art</p>
                   </div>
                 </Link>
               </div>
@@ -664,7 +661,7 @@ const Navbar = () => {
               <div className="relative">
                 {isHovered && (
                   <div
-                    className="absolute bottom-full left-[-16px] w-64 h-64 bg-gray-100"
+                    className="absolute bottom-full left-0 w-64 bg-gray-100 border border-border rounded"
                     style={{
                       boxShadow:
                         "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
@@ -692,7 +689,7 @@ const Navbar = () => {
                               <MdSettings size={25} />
                             </div>
                             <div>
-                              <p className="text-[15px]  ml-[10px] font-helv">
+                              <p className="text-sm  ml-[10px] font-helv">
                                 Settings
                               </p>
                             </div>
@@ -703,9 +700,7 @@ const Navbar = () => {
                             <MdHelp size={25} />
                           </div>
                           <div>
-                            <p className="text-[15px]  ml-[10px] font-helv">
-                              Help
-                            </p>
+                            <p className="text-sm  ml-[10px] font-helv">Help</p>
                           </div>
                         </div>
                         <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
@@ -713,7 +708,7 @@ const Navbar = () => {
                             <MdSearch size={25} />
                           </div>
                           <div>
-                            <p className="text-[15px]  ml-[10px] font-helv">
+                            <p className="text-sm  ml-[10px] font-helv">
                               Search
                             </p>
                           </div>
@@ -724,7 +719,7 @@ const Navbar = () => {
                           </div>
                           <div>
                             <Link to="/trash">
-                              <p className="text-[15px]  ml-[10px] font-helv">
+                              <p className="text-sm  ml-[10px] font-helv">
                                 Trash
                               </p>
                             </Link>
@@ -751,7 +746,7 @@ const Navbar = () => {
                               <MdLogout size={25} />
                             </div>
                             <div>
-                              <p className="text-[15px]  ml-[10px] font-helv">
+                              <p className="text-sm  ml-[10px] font-helv">
                                 Logout
                               </p>
                             </div>
@@ -765,12 +760,12 @@ const Navbar = () => {
 
               <div className="flex flex-col bg-gray-100">
                 {!isHovered && (
-                  <div>
+                  <div className="mb-4">
                     <button
                       onClick={() => {
                         console.log("pricing");
                       }}
-                      className="mb-2 focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-purple-500 hover:bg-purple-700 w-full h-[30px] px-5"
+                      className="focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-blue hover:bg-blue-700 w-full px-5 gap-x-2"
                     >
                       <BsCheckCircle
                         className="text-white ml-2 mr-3"
