@@ -1,5 +1,5 @@
-// BACKEND_URL = "http://localhost:8000"
-BACKEND_URL = "https://copyai.pythonanywhere.com"
+BACKEND_URL = "http://localhost:8000"
+// BACKEND_URL = "https://copyai.pythonanywhere.com"
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL = "/v1/accounts/accounts_data/login_using_token/";
@@ -57,6 +57,10 @@ export const BACK_END_API_GET_FOLDER_DETAILS = "/v1/projects_data/projects/";
 
 
 export const BACK_END_API_BRAND_VOICE = "/v1/brand_voice/data/";
+
+export const BACK_END_API_BRAND_VOICE_URLS = "/v1/brand_voice/extract-url/";
+
+export const BACK_END_API_BRAND_VOICE_FILE = "/v1/brand_voice/extract-file/";
 
 export const BACK_END_API_DOWNLOAD_FILE = "/v1/documents_data/get_doc_file/";
 

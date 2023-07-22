@@ -13,6 +13,9 @@ import {
 import {
   _message_
 } from "../../../features/LoadingScreenMessage";
+import {
+  _save_ask_question_again_
+} from "../../../features/RepeatQuestionInChat";
 
 
 import LoadingPage from '../../LoadingPage';
@@ -38,6 +41,17 @@ const Differentbtn = (props) => {
         },
       });
 
+      
+  const notifylikeordislike=(message)=>toast(message,
+  {
+    icon: '👏',
+    style: {
+      borderRadius: '10px',
+      background: '#333',
+      color: '#fff',
+    },
+  }
+);
 
     const [copiedText, setCopiedText] = useState('');
 
@@ -109,6 +123,12 @@ const Differentbtn = (props) => {
       };
 
 
+      const ask_question_in_repeat = async() =>{
+        dispatch(_save_ask_question_again_(props.all_data.question))
+      }
+
+
+
   return (
     <>
       {loading_page
@@ -131,7 +151,10 @@ const Differentbtn = (props) => {
               </button>
             </span> */}
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Upvote Message">
+              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Upvote Message"
+              onClick={()=>{
+                notifylikeordislike("Thank you for feedback")
+              }}>
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -144,7 +167,10 @@ const Differentbtn = (props) => {
               </button>
             </span>
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Downvote Message">
+              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Downvote Message"
+              onClick={()=>{
+                notifylikeordislike("Thank you for feedback")
+              }}>
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -156,8 +182,12 @@ const Differentbtn = (props) => {
                   </span>
               </button>
             </span>
+            
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message">
+              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message"
+              onClick={()=>{
+                ask_question_in_repeat()
+              }}>
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -170,6 +200,7 @@ const Differentbtn = (props) => {
                   </span>
               </button>
             </span>
+
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
               <button type="button" className="tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Copy Message"
               onClick={handleCopyClick}
@@ -186,6 +217,7 @@ const Differentbtn = (props) => {
                   <span className="tooltip-text">Copy</span>
               </button>
             </span>
+
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
               <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Add Message to Knowledge Base">
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -204,7 +236,8 @@ const Differentbtn = (props) => {
                                 dispatch(_load_screen_(true))
                                 dispatch(_message_("Creating Document"))
                                 createDocumentForUser()
-                            }}>
+                            }}
+                            >
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

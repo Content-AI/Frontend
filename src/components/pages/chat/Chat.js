@@ -20,11 +20,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Popover from "@mui/material/Popover";
 import Differentbtn from "./Differentbtn";
-
+import { useSelector, useDispatch } from "react-redux";
 import Typed from "react-typed"
 import LoadingPage from "../../LoadingPage";
-
-import Modal from 'react-modal';
+import { _save_ask_question_again_ } from "../../../features/RepeatQuestionInChat";
 
 
 
@@ -66,6 +65,8 @@ const adjustTextareaHeight = (textarea) => {
 
 const Chat = ({ AUTH_TOKEN }) => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const chatContainerRef = useRef(null);
   const chatLoadingRef = useRef(null);
 
@@ -110,11 +111,11 @@ const Chat = ({ AUTH_TOKEN }) => {
   const [open, setOpen] = useState(false);
   const [popStat, setPopStat] = useState(false);
 
-  const typingSpeed = 50; // Adjust typing speed (in milliseconds)
-
-
   const popRef = React.useRef();
 
+  let REPEAT_QUESTION = useSelector(
+    (state) => state.SetRepeatQuestionInChat.RepeatQuestionInChat
+  );
 
   const get_initial_chat = async (url,room_id) => {
     const resp = await fetchData(url+"/"+room_id+"/",AUTH_TOKEN);
@@ -702,6 +703,110 @@ const handleChange = (event) => {
   search_first_chat_template_title(event.target.value)
 };
 
+
+
+
+// ===============Repeat ask question again==================
+
+ const submitRepeat = async (repeat_ask_question) => {
+    setLoading(true);      
+  // =================Initial chat without data==============================
+    if(AllChatText.length<=0){
+
+      // if there is tone selected for chat 
+      let InTone = ``;
+      if(selectedSummarizes.length>0){
+        selectedSummarizes.forEach((item) => {
+          InTone += `Generate In Tone:${item.value}\n`;
+        });
+
+      }else{
+        InTone="Default"
+      }
+      if(repeat_ask_question){
+        setAfterTypeDontShowIni(true)
+        setCurrentQuestionIni(repeat_ask_question);
+        if (divRef.current) {
+          divRef.current.focus();
+        }
+        const formdata = {
+          question: repeat_ask_question,
+          Tone:InTone,
+          chat_root: IdOfTopTitleChat,
+        };
+        const resp = await postData(
+          formdata,
+          BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION+"/",
+          AUTH_TOKEN
+        );
+        if (resp.status == 201) {
+          setCurrentQuestionIni(null);
+          const data = {
+            content: resp.data[0]["content"],
+            question: resp.data[0]["question"],
+          };
+          setCurrentAnswerIni((CurrentAnswerIni) => [...CurrentAnswerIni, data]);
+          setChatText("");
+        } else {
+          notifyerror("something went wrong");
+        }
+        setLoading(false)
+        return true
+      }
+    }
+
+// =================Initial chat without data==============================
+
+
+// =================Initial chat with data or after there is some data==============================
+    if (repeat_ask_question) {
+      // if there is tone selected for chat 
+      let InTone = ``;
+      if(selectedSummarizes.length>0){
+        selectedSummarizes.forEach((item) => {
+          InTone += `Generate In Tone :${item.value}\n`;
+        });
+
+      }else{
+        InTone="Default"
+      }
+      setCurrentQuestion(repeat_ask_question);
+      if (divRef.current) {
+        divRef.current.focus();
+      }
+      const formdata = {
+        question: repeat_ask_question,
+        Tone:InTone,
+        chat_root: IdOfTopTitleChat,
+      };
+      const resp = await postData(
+        formdata,
+        BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION+"/",
+        AUTH_TOKEN
+      );
+      if (resp.status == 201) {
+        setCurrentQuestion(null);
+        const data = {
+          content: resp.data[0]["content"],
+          question: resp.data[0]["question"],
+        };
+        setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer, data]);
+        setChatText("");
+      } else {
+        notifyerror("something went wrong");
+      }
+    }
+  // =================Initial chat with data or after there is some data==============================
+    setLoading(false);
+  };
+
+useEffect(()=>{
+  if(REPEAT_QUESTION!=null){
+    submitRepeat(REPEAT_QUESTION)
+  }
+},[REPEAT_QUESTION])
+
+
   return (
     <>
        
@@ -800,7 +905,7 @@ const handleChange = (event) => {
                               <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
                                 <RenderHtml htmldata={chat_data.content} />
                                 {/* ============all sorts of btn================ */}
-                                  <Differentbtn data={chat_data.content}/>
+                                  <Differentbtn all_data={chat_data} data={chat_data.content}/>
                                 {/* ============all sorts of btn================ */}
                               </div>
                             </div>
@@ -850,7 +955,7 @@ const handleChange = (event) => {
                                         <RenderHtml htmldata={data["content"]} />
                                     }
                                     {/* ============all sorts of btn================ */}
-                                      <Differentbtn data={data_}/>
+                                      <Differentbtn all_data={data} data={data_}/>
                                     {/* ============all sorts of btn================ */}
                                     </div>
                                   </div>
@@ -1003,7 +1108,7 @@ const handleChange = (event) => {
                                       <RenderHtml htmldata={data["content"]} />
                                     }
                                     {/* ============all sorts of btn================ */}
-                                      <Differentbtn data={data["content"]}/>
+                                      <Differentbtn all_data={data} data={data["content"]}/>
                                     {/* ============all sorts of btn================ */}
                                     </div>
                                   </div>

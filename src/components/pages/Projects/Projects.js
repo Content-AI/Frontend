@@ -118,6 +118,15 @@ const Projects = (props) => {
   }
 
   const create_folder = async() => {
+
+    if(folderName==null){
+      notifyerror("Your forgot to name folder")
+      return true
+    }
+    if(folderName.length>=10){
+      notifyerror("A little bit shorter . The name is quite big")
+      return true
+    }
     let formData={
       project_name:folderName
     }
@@ -659,7 +668,7 @@ const Projects = (props) => {
                             </div>
                           </div>
                           <div className="flex flex-col items-center justify-center align-middle">
-                          <button   tabIndex="0" className="focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring-2 bg-purple-800 text-white my-4 h-10 w-40 justify-center"
+                          <button   tabIndex="0" className="focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring-2 bg-[#334977] text-white my-4 h-10 w-40 justify-center"
                             onClick={()=>{
                               create_folder()
                             }}

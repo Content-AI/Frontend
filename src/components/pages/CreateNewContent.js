@@ -28,11 +28,15 @@ const CreateNewContent = (props) => {
     //   };
 
     const [selectedOption, setSelectedOption] = useState({"value":"select a folder","label":"select a folder"});
+    const [options, setoptions] = useState([
+      { value: "Your content", label: "Your content"},
+    ]);
 
     const get_project_data = async() => {
         const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
         if(resp.status==200){
             setSelectedOptions(resp.data)
+            setoptions(resp.data)
         }
     }
       useEffect(()=>{
@@ -43,9 +47,9 @@ const CreateNewContent = (props) => {
     //     dispatch(_save_folder_id_(selectedValue))
     //   },[selectedValue])
 
-      useEffect(()=>{
-        dispatch(_save_folder_id_(selectedOption.value))
-      },[selectedOption])
+      // useEffect(()=>{
+      //   dispatch(_save_folder_id_(selectedOption.value))
+      // },[selectedOption])
 
     
       const handleSelectChange = (selectedOption) => {
@@ -55,6 +59,44 @@ const CreateNewContent = (props) => {
     //   useEffect(()=>{
     //     console.log(selectedOption.value)
     //   },[selectedOption])
+
+
+
+    // =============select folder or create new folder===========
+    // const options = [
+    //     { value: "your content", label: "Your content" },
+    //   ];
+    
+      const [selectedOptionFolder, setSelectedOptionFolder] = useState(options[0].value);
+      const [searchText, setSearchText] = useState("");
+      const [showToUser,setshowToUser] = useState("Select a Folder");
+      const [showDropdown, setShowDropdown] = useState(false);
+    
+      const handleOptionClick = (option) => {
+        setSelectedOptionFolder(option);
+        setShowDropdown(false);
+      };
+    
+      const handleNewCampaignClick = () => {
+          navigate("/projects?create=new_folder&true=redirect_site")
+      };
+    
+      const handleSelectOption = (option) => {
+        setshowToUser(option)
+      };
+
+
+      useEffect(()=>{
+        dispatch(_save_folder_id_(selectedOptionFolder))
+      },[selectedOptionFolder])
+    
+      const filteredOptions = options.filter((option) =>
+        option.label.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      const capitalizeFrontText = (text) => {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      };
 
   return (
     <>
@@ -70,46 +112,102 @@ const CreateNewContent = (props) => {
                                 <div className="flex">
                                     <div className="w-64 mt-2">
                                     {/* ============select field================= */}
-                                    <Select
-                                        options={SelectedOptions}
-                                        value={selectedOption}
-                                        onChange={handleSelectChange}
-                                        isSearchable={true} // Enable searching in the select field
-                                        placeholder="Select Folder"
-                                    />
-                                        {/* <select
-                                            className="p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
-                                            id="selectField"
-                                            value={selectedValue}
-                                            onChange={handleSelectChange}
-                                        >
-                                            <option value="">choose your folder ...</option>
-                                            
-                                            {SelectedOptions &&
-                                                SelectedOptions.map((data,index)=>{
-                                                    return (
-                                                        <option key={index} value={data.value}>{data.label}</option>
-                                                    )
-                                                })
-                                            }
-                                            
-                                        </select> */}
+
+    <div className="w-64">
+      <div className="relative inline-block text-left w-full">
+        <button
+          className="flex items-center justify-between w-full px-4 py-2 truncate transition-all duration-150 bg-white rounded-md group active:ring-gray-400 hover:ring-gray-300 ring-1 ring-gray-200"
+          aria-label="Select a campaign"
+          onClick={() => setShowDropdown((prevState) => !prevState)}
+        >
+          <span className="items-start block truncate">
+            <span className="block text-sm text-left text-gray-600 truncate">
+              {/* {selectedOptionFolder} */}
+              {/* {showToUser} */}
+              {capitalizeFrontText(showToUser)}
+            </span>
+          </span>
+          <span className="ml-3 -mr-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              aria-hidden="true"
+              className="w-5 h-5 text-gray-400 group-hover:text-gray-600"
+            >
+              <path d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </span>
+        </button>
+        {showDropdown && (
+          <div className="border border-green-300 origin-top absolute left-0 z-50 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none w-full !min-w-0 transform opacity-100">
+            <div className="px-4 py-3">
+              <div className="space-y-1.5 w-full">
+                <label htmlFor="search-projects" className="sr-only">
+                  <span className="flex items-center space-x-1">
+                    <span>Search projects</span>
+                  </span>
+                </label>
+                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                  <div className="flex items-center grow gap-2 py-1.5">
+                    <div className="flex gap-1 grow">
+                      <input
+                        id="search-projects"
+                        type="text"
+                        className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                        placeholder="Search"
+                        autoComplete="off"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul className="py-1 max-h-[12.875rem] overflow-y-auto">
+              {filteredOptions.map((option) => (
+                <li key={option.value}>
+                  <button
+                    className="text-left w-full relative text-gray-700 hover:bg-gray-200 hover:text-gray-900 truncate px-4 py-2 text-sm  pr-8"
+                    onClick={() => {
+                      handleOptionClick(option.value);
+                      handleSelectOption(option.label);
+                    }}
+                  >
+                  <span className="flex-grow">{capitalizeFrontText(option.label)}</span>
+                  {option.label=="default"
+                  ?
+                  <svg className='w-6 h-6 float-right' xmlnsDc="http://purl.org/dc/elements/1.1/" xmlnsCc="http://creativecommons.org/ns#" xmlnsRdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlnsSvg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16.933333 21.1666675" x="0px" y="0px">
+                    <g transform="translate(0,-280.06665)">
+                        <path transform="matrix(0.26458334,0,0,0.26458334,0,280.06665)" d="m 58,21.998047 c -38.666667,28.001301 -19.333333,14.000651 0,0 z M 6.0019531,14.001953 H 18.927734 l 1.335938,2.001953 H 8.0019531 v 17.123047 0.002 l -2,9.330078 z m 6.0019529,5.994141 h 41.994141 v 2.001953 H 12.003906 Z m 1.615235,6.001953 H 57.341797 L 50.492188,49.996094 H 8.4746094 Z" class="text-black font-normal text-base leading-normal font-sans font-normal tracking-normal text-left whitespace-normal"/>
+                    </g>
+                  </svg>
+                  :
+                    null
+                  }
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              id="newProject"
+              className="text-left w-full text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-4 py-2 rounded-b-md"
+              onClick={handleNewCampaignClick}
+            >
+              + Create Folder
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+
+
                                     {/* ========================================= */}
                                     </div>
-                                    <div>
-                                    <div className="ml-3 md:flex flex-row justify-between items-center w-full"> 
-
-                                            <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
-                                                onClick={()=>{
-                                                    navigate("/projects?create=new_folder&true=redirect_site")
-                                                }}
-                                            >
-                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
-                                                    + Create New Folder
-                                                </span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <p className="text-sm font-normal text-gray-600">You have the option to produce a document for lengthy content, utilize a template for concise excerpts of specialized content, or employ our guided forms</p>

@@ -1,7 +1,7 @@
 import React , {useState,useEffect}from 'react'
 import { IoMdArrowBack, IoMdRefresh } from "react-icons/io";
 import { fetchData, postData } from '../../../apis/apiService';
-import { BACKEND_URL,BACK_END_API_BRAND_VOICE } from '../../../apis/urls';
+import { BACKEND_URL,BACK_END_API_BRAND_VOICE,BACK_END_API_BRAND_VOICE_URLS,BACK_END_API_BRAND_VOICE_FILE } from '../../../apis/urls';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +13,11 @@ const ModalAddVoice = (props) => {
     const [showTextInputBox,setshowTextInputBox]=useState(false)
     const [analyzingdata,setanalyzingdata]=useState(false)
     const [response,setresponse]=useState(false)
-
+    
     const [responseData,setresponseData]=useState([])
+    
+    // for urls
+    const [showTextUrl,setshowTextUrl]=useState(false)
 
     const [text, setText] = useState('');
     const [titletext, settitletext] = useState('');
@@ -72,6 +75,65 @@ const ModalAddVoice = (props) => {
         setshowTextInputBox(false)
       }
 
+
+
+
+    //   ========For Url==============
+    const [url, setUrl] = useState('');
+    const [isValidUrl, setIsValidUrl] = useState(true);
+    const [brandVoiceUrl, setBrandVoiceUrl] = useState('');
+    const [analyze_url_tone,setanalyze_url_tone] = useState(false);
+
+  
+    const handleInputChangeUrl = (event) => {
+      setUrl(event.target.value);
+      setIsValidUrl(isValidURL(event.target.value));
+    };
+    const handleInputChangeBrandVoiceUrl = (event) => {
+        setBrandVoiceUrl(event.target.value);
+      };
+    
+  
+    const isValidURL = (inputURL) => {
+      // Simple URL validation logic (can be customized)
+      try {
+        new URL(inputURL);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    };
+  
+    const handleButtonClickUrl = async() => {
+        if(brandVoiceUrl==""){
+            notifyerror("You forgot to put Tone name")
+            return true
+        }
+      if (isValidUrl) {
+        setanalyzingdata(true)
+        setshowTextUrl(false)
+        // BACK_END_API_BRAND_VOICE_URLS
+        const formData = {
+            brand_voice:brandVoiceUrl,
+            urls: [
+                url
+              ]
+        }
+        const resp  = await postData(formData,BACKEND_URL+BACK_END_API_BRAND_VOICE_URLS,props.AUTH_TOKEN)
+        if(resp.status==200){
+            setanalyzingdata(false)
+            notifysucces("Brand voice created")
+            setresponse(true)
+            setresponseData(resp.data)
+            }else{
+            notifyerror("something went wrong")
+        }
+      } else {
+        notifyerror("Please enter a valid URL.")
+      }
+      setanalyze_url_tone(false)
+    };
+
   return (
     <>
  
@@ -80,6 +142,7 @@ const ModalAddVoice = (props) => {
                 <button
                     onClick={() => {
                         setshowTextInputBox(false)
+                        setshowTextUrl(false)
                         setanalyzingdata(false)
                         setshowInitialsetup(true)
                         setresponse(null)
@@ -110,6 +173,56 @@ const ModalAddVoice = (props) => {
                 {showInitialsetup
                 ?
                 <>
+                {/* ==========Url Extractor====================== */}
+                    <button className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+                        onClick={()=>{
+                            setshowInitialsetup(false)
+                            setshowTextUrl(true)
+                        }}>
+                        <div className="py-6 text-center">
+                            <div className="flex justify-center">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 128 160" 
+                            className="enable-background:new 0 0 128 128 w-24 h-24" xmlSpace="preserve">
+                                <path d="M122,31H6c-3.3,0-6,2.6-6,5.9v32.2C0,72.4,2.7,75,6,75h55.1l-1-4.8c-0.7-3.2,1.4-6.4,4.7-7.1c1.1-0.2,2.3-0.1,3.4,0.3  l21.1,8.4c1.5,0.6,2.7,1.7,3.3,3.2H122c3.3,0,6-2.6,6-5.9V36.9C128,33.6,125.3,31,122,31z M80.7,59c-1.1,0-2-0.9-2-2  c0-1.1,0.9-2,2-2c1.1,0,2,0.9,2,2C82.7,58.1,81.8,59,80.7,59C80.7,59,80.7,59,80.7,59z M80.7,51c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2  c1.1,0,2,0.9,2,2C82.7,50.1,81.8,51,80.7,51C80.7,51,80.7,51,80.7,51z M88.6,62.8c-0.5,1-1.6,1.5-2.7,1s-1.5-1.6-1-2.7l8.1-18  c0.5-1,1.6-1.5,2.6-1c1,0.5,1.4,1.6,1,2.6L88.6,62.8z M106.8,44.8l-8.1,18c-0.5,1-1.6,1.4-2.7,1c-1-0.4-1.5-1.6-1-2.6c0,0,0,0,0,0  l8.1-18c0.4-1,1.6-1.5,2.6-1C106.8,42.6,107.3,43.8,106.8,44.8C106.8,44.8,106.8,44.8,106.8,44.8z"/>
+                                <path d="M83.3,81.2l4.6-2c1-0.4,1.5-1.6,1.1-2.6c-0.2-0.5-0.6-0.9-1.1-1.1l-21.1-8.4c-1-0.4-2.2,0.1-2.6,1.1C64,68.6,64,69,64,69.4  l4.7,23.1c0.2,1.1,1.3,1.8,2.4,1.6c0.6-0.1,1.1-0.5,1.3-1l2.5-4.3c0,0,6.1,7.5,6.1,7.5c0.7,0.9,2,1,2.9,0.2c0,0,0,0,0,0l5.5-4.9  c0.8-0.7,0.9-1.9,0.2-2.8L83.3,81.2z M82.8,92.1L76.1,84c-0.7-0.9-2-1-2.8-0.3c-0.2,0.2-0.3,0.3-0.5,0.6l-1.3,2.2l-2.9-14.3  l13.1,5.2l-2.6,1.1c-1,0.4-1.5,1.6-1.1,2.6c0.1,0.2,0.2,0.3,0.3,0.5l6.7,8.2L82.8,92.1z"/>
+                            </svg>
+
+                            </div>
+                            <h3 className="font-medium">Using Urls</h3>
+                            <p className="text-gray-600 text-xs">copy and paste url</p>
+                        </div>
+                    </button>
+                    {/* ==========Url Extractor====================== */}
+                    
+
+
+   {/* ==========pdf Extractor====================== */}
+   <button className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+                        onClick={()=>{
+                            setshowInitialsetup(false)
+                            setanalyzingdata(false)
+                            setshowTextInputBox(true)
+                        }}>
+                        <div className="py-6 text-center">
+                            <div className="flex justify-center">
+
+                            <svg className='h-24 w-24' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" fill="none" x="0px" y="0px">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M5 3C5 2.44772 5.44772 2 6 2H18.4142L27 10.5858V29C27 29.5523 26.5523 30 26 30H6C5.44772 30 5 29.5523 5 29V3ZM7 4V28H25V12H17V4H7ZM19 5.41421L23.5858 10H19V5.41421Z" fill="black"/>
+                                <path fillRule="evenodd" clipRule="evenodd" d="M21.7071 17.7071L15 24.4142L11.2929 20.7071L12.7071 19.2929L15 21.5858L20.2929 16.2929L21.7071 17.7071Z" fill="black"/>
+                            </svg>
+
+                            </div>
+                            <h3 className="font-medium">From File</h3>
+                            <p className="text-gray-600 text-xs">Upload Your File we will analyze the tone</p>
+                        </div>
+                    </button>
+                    {/* ==========Pdf Extractor====================== */}
+
+
+
+                    
+                    {/* ==========Text Extractor====================== */}
                     <button className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
                         onClick={()=>{
                             setshowInitialsetup(false)
@@ -134,6 +247,7 @@ const ModalAddVoice = (props) => {
                             <p className="text-gray-600 text-xs">Write or copy and paste text</p>
                         </div>
                     </button>
+                    {/* ==========Text Extractor====================== */}
                    
                 </>
                 :
@@ -218,6 +332,60 @@ const ModalAddVoice = (props) => {
                     </>
                 :
                 null}
+
+                {showTextUrl
+                ?
+                <>
+                    <div className="space-y-1.5 w-full p-6">
+                        <div className="space-y-1.5 w-[60%] m-auto">
+                        <div className="flex justify-between">
+                            <h1 className="text-base font-semibold pb-2">Tone Name</h1>
+                        </div>
+                        <div className="space-y-1.5 w-full">
+                            <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                            <div className="flex items-center grow gap-2 py-1.5">
+                                <div className="flex gap-1 grow">
+                                <input
+                                    id="brand_voice_url"
+                                    placeholder='Eg. My custom Tone'
+                                    type="text"
+                                    className={`block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none`}
+                                    value={brandVoiceUrl}
+                                    onChange={handleInputChangeBrandVoiceUrl}
+                                />
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-between">
+                            <h1 className="text-base font-semibold pb-2">Website Url</h1>
+                        </div>
+                            <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                            <div className="flex items-center grow gap-2 py-1.5">
+                                <div className="flex gap-1 grow">
+                                <input
+                                    id="name"
+                                    placeholder='Eg. www.https://articles.com/have_tone'
+                                    type="text"
+                                    className={`block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none ${
+                                    !isValidUrl ? 'border-red-500' : ''
+                                    }`}
+                                    value={url}
+                                    onChange={handleInputChangeUrl}
+                                />
+                                </div>
+                                {!isValidUrl && (
+                                <span className="text-red-500">Please enter a valid URL.</span>
+                                )}
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                :
+                null
+                }
                     
                 </div>
                 <div className="font-normal text-gray-700 text-xs pb-6">Ownership or permission for content submission to AI is required. Utilizing our website to infringe upon others' rights constitutes a breach of our <a target="_blank" href="/">Terms of Service</a></div>
@@ -231,6 +399,20 @@ const ModalAddVoice = (props) => {
                     }}>
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                             <span>Continue</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
+                    </button>
+                :
+                    null
+                }
+                {showTextUrl
+                ?
+                <button type="submit" className="transition-all duration-200 relative font-semibold outline-none hover:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] border border-transparent shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
+        onClick={handleButtonClickUrl}>
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            <span>Process URL</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                             </svg>
