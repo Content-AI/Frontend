@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
-import { fetchData, patchData } from "../../../../apis/apiService";
+import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE,BACK_END_MULTIPLE_SELECT_FOR_TRASH,BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
+import { fetchData, patchData, postData } from "../../../../apis/apiService";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import RenderHtml from "../RenderHtml";
@@ -109,15 +109,17 @@ const ListOfDocument = (props) => {
     const resp = await patchData(data, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
     if (resp.status == 201) {
       notifysuccess(message)
+      setSelectedItems([])
     } else {
       notifyerror("something went wrong")
     }
   }
   const _update_name_ = async (data, id, message) => {
-    const resp = await patchData(data, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
+    const resp = await patchData(data,BACK_END_MULTIPLE_SELECT_FOR_TRASH, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
     if (resp.status == 201) {
       notifysuccess(message)
       get_all_user_doc()
+      setSelectedItems([])
       setRenameDiv(false)
     } else {
       notifyerror("something went wrong")
@@ -252,6 +254,66 @@ const ListOfDocument = (props) => {
   }
   }
 
+// ==============multiple select==================
+const [selectedItems, setSelectedItems] = useState([]);
+const [selectAll, setSelectAll] = useState(false);
+
+const handleItemSelection = (id) => {
+  setSelectedItems(prevSelectedItems => {
+    if (prevSelectedItems.includes(id)) {
+      return prevSelectedItems.filter(item => item !== id);
+    } else {
+      return [...prevSelectedItems, id];
+    }
+  });
+};
+
+const handleSelectButton = () => {
+  console.log(selectedItems);
+};
+
+const handleCheckboxChange = (id) => {
+  if (selectAll) {
+    setSelectAll(false);
+    setSelectedItems([]);
+  } else {
+    handleItemSelection(id);
+  }
+};
+
+const handleSelectAll = () => {
+  if (!selectAll) {
+    setSelectedItems(documentData.map(data => data.id));
+  } else {
+    setSelectedItems([]);
+  }
+  setSelectAll(prevSelectAll => !prevSelectAll);
+};
+
+
+const delete_multiple_data = async (data, message) => {
+  const resp = await postData(data,BACKEND_URL + BACK_END_MULTIPLE_SELECT_FOR_TRASH, props.AUTH_TOKEN)
+  if (resp.status == 200) {
+    notifysuccess(message)
+    get_all_user_doc()
+    setSelectedItems([])
+  } else {
+    notifyerror("something went wrong")
+  }
+}
+const permanently_delete_multiple_data = async (data, message) => {
+  const resp = await postData(data,BACKEND_URL + BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, props.AUTH_TOKEN)
+  if (resp.status == 200) {
+    notifysuccess(message)
+    get_all_user_doc()
+    setSelectedItems([])
+  } else {
+    notifyerror("something went wrong")
+  }
+}
+
+
+
 
   return (
     <>
@@ -262,7 +324,21 @@ const ListOfDocument = (props) => {
       <div className="space-y-8 px-4 md:px-10" ref={popupRef}>
         {props.SHOW=="trash"
         ?
-          <h1 className="text-[35px] font-bold">Trash</h1>
+        <>
+        <div className="flex">
+            <div>
+              <h1 className="text-[35px] font-bold">Trash </h1>
+            </div>
+            <div>
+            <svg className="w-6 h-6 mt-5 ml-2" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 388.245 485.30625"  xmlSpace="preserve">
+              <g>
+                  <path  d="M107.415,388.245h173.334c21.207,0,38.342-17.159,38.342-38.342V80.928H69.097v268.975   C69.097,371.086,86.264,388.245,107.415,388.245z M253.998,129.643c0-7.178,5.796-13.03,13.006-13.03   c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038c-7.21,0-13.006-5.828-13.006-13.038V129.643z    M181.491,129.643c0-7.178,5.804-13.03,13.006-13.03c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038   c-7.202,0-13.006-5.828-13.006-13.038C181.491,337.954,181.491,129.643,181.491,129.643z M109.025,129.643   c0-7.178,5.796-13.03,12.973-13.03s13.038,5.853,13.038,13.03v208.311c0,7.21-5.861,13.038-13.038,13.038   c-7.178,0-12.973-5.828-12.973-13.038V129.643z" fill="#010002"/>
+                  <path  d="M294.437,20.451h-52.779C240.39,8.966,230.75,0,218.955,0h-49.682   c-11.86,0-21.476,8.966-22.736,20.451H93.792c-25.865,0-46.756,20.955-46.902,46.756h294.466   C341.258,41.407,320.335,20.451,294.437,20.451z" fill="#010002"/>
+              </g>
+            </svg>
+            </div>
+          </div>
+        </>
         :
         null}
         <div className="space-y-4">
@@ -280,8 +356,9 @@ const ListOfDocument = (props) => {
                       <label htmlFor="search-content" className="sr-only"
                       ><span className="flex items-center space-x-1"><span>Search content</span></span></label
                       >
-                    {props.search_bar!="off"
-                      ?
+          
+                    
+                      <>
                       <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
                         <div className="flex grow items-center gap-2 py-1.5">
                           <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -300,11 +377,57 @@ const ListOfDocument = (props) => {
                           </div>
                         </div>
                       </div>
-                      :
-                      null
-                  }
+                      </>
+                      
                     </div>
                   </div>
+                  <div>
+                        {props.SHOW=="trash"
+                            ?
+                            <>
+                            <>
+                              {selectedItems.length>0
+                              ?
+                              <button id="selectButton" onClick={()=>{
+                                const formData = {
+                                        id:selectedItems,
+                                    }
+                                    permanently_delete_multiple_data(formData,"Data Deleted")
+                              }}>
+                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                    <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                    <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                  </svg>
+                                </button>
+                              :
+                                null
+                              }
+                              </>
+                            </>
+                            :
+                              <>
+                              {selectedItems.length>0
+                              ?
+                              <button id="selectButton" onClick={()=>{
+                                const formData = {
+                                        id:selectedItems,
+                                        trash:true
+                                    }
+                                    delete_multiple_data(formData,"Moved to Trash")
+                              }}>
+                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                    <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                    <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                  </svg>
+                                </button>
+                              :
+                                null
+                              }
+                              </>
+                          }
+                        </div>
                 </div>
                
           {/* ===================search field========================== */}
@@ -318,6 +441,7 @@ const ListOfDocument = (props) => {
                               setListOrGrid(true)
                             }}
                             >
+
                             <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                               <path d="M14.71,12.68c.1-1.5,.14-3.05,.14-4.64,0-.59,0-1.17-.02-1.75H1.16c-.01,.58-.02,1.16-.02,1.75,0,1.59,.05,3.14,.14,4.64,.07,1.09,.94,1.96,2.05,2.03,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.03Z" fill="transparent"></path>
                               <path d="M1.16,6.29c-.01,.58-.02,1.17-.02,1.77,0,1.6,.05,3.16,.14,4.67,.07,1.1,.94,1.98,2.05,2.05,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.05,.1-1.51,.14-3.07,.14-4.67,0-.59,0-1.18-.02-1.77" fill="none" stroke="#0D121C" strokeWidth="1"></path>
@@ -367,6 +491,7 @@ const ListOfDocument = (props) => {
                 </div>
               </>
         }
+  
 
       {ListOrGrid
       ?
@@ -379,18 +504,45 @@ const ListOfDocument = (props) => {
 
                       <thead className="bg-gray-50">
                         <tr>
-                          <th scope="col" className="w-12 px-3.5 py-3.5"></th>
-                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
-                          {/* <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">folder</th> */}
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Last modified</th>
-                          <th scope="col" className="w-12 bg-gray-50 px-3.5 py-3.5"><span className="sr-only">More options</span></th>
+                        
+                        <th scope="col" className="w-12 px-3.5 py-3.5">
+                        <input 
+                            checked={selectAll}
+                            onChange={handleSelectAll}
+                            type="checkbox"
+                            class="mr-[15px] mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                            />
+                        </th>
+                          {/* <th scope="col" class="p-2 m-3">
+                          <input 
+                            checked={selectAll}
+                            onChange={handleSelectAll}
+                            type="checkbox" id="" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"/>
+                        </th> */}
+                        <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
+                        <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"></th>
+                        <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
+                        <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Last modified</th>
+                        <th scope="col" className="w-12 bg-gray-50 px-3.5 py-3.5"><span className="sr-only">More options</span></th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100 bg-white">
 
                         {documentData.map((data, index) => (
                           <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
+                          <td class="w-12 p-3.5">
+                            <div class="absolute inset-y-0 left-0 w-0.5">
+
+                            </div>
+                            <div class="flex items-center space-x-2">
+                            <input 
+                            checked={selectedItems.includes(data.id) || selectAll}
+                            onChange={() => handleCheckboxChange(data.id)}
+                            type="checkbox" id="" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"/>
+                            <label for="" class="block text-md font-medium text-gray-600">
+                            </label>
+                            </div>
+                          </td>
                             <td className="w-12 px-3.5 py-3.5" title={"open "+ data.title}
                             onClick={() => {
                               // console.log(data.id)
@@ -563,10 +715,11 @@ const ListOfDocument = (props) => {
                         ))
                         }
 
-
                       </tbody>
                     </table>
-                    
+
+                  
+
                    
                     {RenameDiv
                       ?

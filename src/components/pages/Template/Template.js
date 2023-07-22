@@ -162,12 +162,14 @@ const Template = ({AUTH_TOKEN}) => {
       const response_data = await fetchData(url,token)
       if(response_data.status==200){
         setcategory(response_data.data)
+          // .sort((a, b) => a.localeCompare(b)))
       }else{
         // navigate("/logout")
       }
     }
 
     const get_template_search = async(url,token,search_parameter) =>{
+      setCategoryTmp(["all"])
       const response_data = await fetchData(url+"?search="+search_parameter,token)
       if(response_data.status==200){
         settemplateData(response_data.data)
@@ -195,13 +197,72 @@ const Template = ({AUTH_TOKEN}) => {
   },[search_parameter])
 
 
+  // ============select category=============
+  const [categoryTmp, setCategoryTmp] = useState(["all"]);
+  const [selectedCategories, setSelectedCategories] = useState("All");
 
+  const capitalizeFrontText = (text) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  };
+
+  const handleCategoryClick = (selectedCategory) => {
+    if (selectedCategory === "all") {
+      if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
+        // If only "All" is selected, deselect it
+        setCategoryTmp([]);
+      } else {
+        // If other categories are selected, select only "All"
+        setCategoryTmp(["all"]);
+      }
+    } else {
+      if (categoryTmp.includes("all")) {
+        // If "All" is selected, deselect it and select the clicked category
+        setCategoryTmp([selectedCategory]);
+      } else {
+        // Toggle the selection of the clicked category
+        setCategoryTmp((prevCategoryTmp) =>
+          prevCategoryTmp.includes(selectedCategory)
+            ? prevCategoryTmp.filter((item) => item !== selectedCategory)
+            : [...prevCategoryTmp, selectedCategory]
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
+      setSelectedCategories("All");
+    } else {
+      setSelectedCategories(
+        categoryTmp
+          .filter((category) => category !== "all")
+          .map(capitalizeFrontText)
+          .join(",")
+      );
+    }
+  }, [categoryTmp]);
+
+  const get_template_categories_new = async(url,token,category) =>{
+    const response_data = await fetchData(url+"?category="+category,token)
+    if(response_data.status==200){
+      settemplateData(response_data.data)
+    }else{
+      navigate("/logout")
+    }
+  }
+
+  useEffect(()=>{
+    if(selectedCategories!=null){
+      console.log("selectedCategories ; ",selectedCategories)
+      get_template_categories_new(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,selectedCategories)
+    }
+  },[selectedCategories])
 
   return (
-    <div className="">
+    <div className="w-full ">
       <h1 className="text-2xl font-bold mb-6">Templates</h1>
       <div>
-        <div className="searchbox relative max-w-md mx-auto mb-6">
+        <div className="searchbox relative mb-6 ml-[40%]">
           <div className="icon absolute top-1/2 left-4 -translate-y-1/2 w-6 h-6">
             <svg
               className="w-full h-full"
@@ -218,7 +279,7 @@ const Template = ({AUTH_TOKEN}) => {
             </svg>
           </div>
           <input
-            className="w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder:opacity-100"
+            className=" w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder:opacity-100"
             type="text"
             placeholder="Search content types like Facebook Ads, Email, Blog ideas..."
             onChange={(e)=>{
@@ -229,27 +290,27 @@ const Template = ({AUTH_TOKEN}) => {
         <div className="searchtags flex flex-wrap gap-2 mb-6">
         {category
         ?
-            category.map((items, index) => {
-              return (
-                <button
-                  key={index}
-                  className={clsx(
-                    "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
-                    {
-                      "active text-white bg-blue border-blue":
-                        activeCat === items,
-                      "hover:bg-blue/10": activeCat !== items,
-                    }
-                  )}
-                  onClick={(e) => {
-                    setActiveCat(items)
-                    setfilter_category(items)
-                  }}
-                >
-                  {items}
-                </button>
-              );
-            })
+        <>
+        {category.slice()
+        .sort((a, b) => a.localeCompare(b)) // Sort the categories in ascending order
+        .map((item, index) => (
+          <button
+            key={index}
+            className={clsx(
+              "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
+              {
+                "active text-white bg-blue border-blue": categoryTmp.includes(item),
+                "hover:bg-blue/10": !categoryTmp.includes(item),
+              }
+            )}
+            onClick={() => {
+              handleCategoryClick(item);
+            }}
+          >
+            {capitalizeFrontText(item)}
+          </button>
+        ))}
+            </>
           :
             <LoadingPage/>
           }

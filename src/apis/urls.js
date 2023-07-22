@@ -72,3 +72,7 @@ export const BACK_END_API_FIRST_CHAT_TEMPLATE = "/v1/chat_template/chat-template
 export const BACK_END_API_VALUE_OF_CHAT_TEMPLATE = "/v1/chat_template/get-value-template/";
 
 export const BACK_END_CUSTOM_CHAT_TEMPLATE = "/v1/chat_template/custom-template/";
+
+
+export const BACK_END_MULTIPLE_SELECT_FOR_TRASH = "/v1/documents_data/doc_trash/";
+export const BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE = "/v1/documents_data/doc_trash_delete/";
