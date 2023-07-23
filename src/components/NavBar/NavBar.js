@@ -80,8 +80,8 @@ const Navbar = () => {
   ];
 
   const navURL = [
-    { title: "Dashboard", link: "/" },
     { title: "Create New Content", link: "/create_new_content" },
+    { title: "Dashboard", link: "/" },
     { title: "Chat", link: "/chat" },
     { title: "Projects", link: "/projects" },
     { title: "Recent Added", link: "/documents" },

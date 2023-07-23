@@ -79,15 +79,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([
-    { value: "nice", label: "nice" },
-    { value: "fancy", label: "fancy" },
-    { value: "relaxed", label: "relaxed" },
-    { value: "skilled", label: "skilled" },
-    { value: "confident", label: "confident" },
-    { value: "daring", label: "daring" },
-    { value: "funny", label: "funny" },
-    { value: "persuasive", label: "persuasive" },
-    { value: "empathetic", label: "empathetic" },
+    { value: "nice", label: "Nice" },
+    { value: "fancy", label: "Fancy" },
+    { value: "relaxed", label: "Relaxed" },
+    { value: "skilled", label: "Skilled" },
+    { value: "confident", label: "Confident" },
+    { value: "daring", label: "Daring" },
+    { value: "funny", label: "Funny" },
+    { value: "persuasive", label: "Persuasive" },
+    { value: "empathetic", label: "Empathetic" },
   ]);
   const [value, setValue] = useState(null);
 
@@ -293,11 +293,12 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
 
     
-
-  
+const capitalizeFrontText = (text) => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
 const createOption = (label) => ({
   label,
-  value: label.toLowerCase().replace(/\W/g, "")
+  value: label
 });
 
 const handleCreate = (inputValue) => {
@@ -313,7 +314,9 @@ const handleCreate = (inputValue) => {
 const get_select_fields = async() =>{
   const resp = await fetchData(BACKEND_URL+BACK_END_API_SELECT_FIELD,AUTH_TOKEN)
   if(resp.status==200){
+    // console.log("resp.data : ",resp.data)
     const newData = resp.data.map((item) => createOption(item.label));
+    // console.log(newData)
     setOptions((prevOptions) => [...newData, ...prevOptions]);
   }
 }

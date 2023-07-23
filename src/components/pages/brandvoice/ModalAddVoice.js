@@ -127,7 +127,10 @@ const ModalAddVoice = (props) => {
             setresponse(true)
             setresponseData(resp.data)
             }else{
-            notifyerror("something went wrong")
+            setshowTextUrl(true)
+            setanalyze_url_tone(false)
+            setanalyzingdata(false)
+            notifyerror("we cannot read this ulr sorry")
         }
       } else {
         notifyerror("Please enter a valid URL.")
@@ -179,7 +182,7 @@ const handleUploadFile = async () => {
   } catch (error) {
     setfile_upload_form(true)
     setanalyzingdata(false)
-    notifyerror('Please Upload valid file like pdf,doc and text file');
+    notifyerror('Please Upload valid file like pdf,doc and text file with good content');
   }
 };
 
