@@ -1,5 +1,5 @@
-BACKEND_URL = "http://localhost:8000"
-// BACKEND_URL = "https://copyai.pythonanywhere.com"
+// BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://copyai.pythonanywhere.com"
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL = "/v1/accounts/accounts_data/login_using_token/";
