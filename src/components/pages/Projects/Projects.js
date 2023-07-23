@@ -347,7 +347,6 @@ const Projects = (props) => {
                                   <input
                                     type="text"
                                     className="flex flex-1 p-2 outline-none max-w-full rounded-md border-none text-sm cursor-pointer focus:ring-0 group-hover:text-blue-800 min-w-full overflow-ellipsis whitespace-nowrap pr-7"
-                                    readOnly=""
                                     spellCheck="false"
                                     required=""
                                     data-testid="project-folder-name"

@@ -761,9 +761,9 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   return (
     <>
-      <div className="z-10 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
+      <div className="z-20 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
         <div className="flex-auto flex flex-col h-full">
-          <div className="sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
+          <div className="sm:w-full bg-white px-4 py-2 sm:px-10 sm:py-5 sm:min-h-[74px] border border-gray-200 flex gap-2">
             <div className="flex-1 text-xl font-semibold">
               <div>
                 {TitleOfChat ? (

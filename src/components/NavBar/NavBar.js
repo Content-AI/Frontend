@@ -118,12 +118,12 @@ const Navbar = () => {
             </>
           )}
         </div>
-        {/* <div className="pl-4">
+        <div className="lg:hidden pl-4">
           <img
             src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
             className="w-[50px] h-[50px] rounded-full"
           />
-        </div> */}
+        </div>
         <div className="lg:flex items-center gap-10 ml-auto hidden">
           <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
             What's New
