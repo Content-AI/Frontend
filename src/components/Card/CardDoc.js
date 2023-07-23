@@ -1,6 +1,6 @@
 const CardDoc = ({ icon, title, description, isPremium }) => {
   return (
-    <div className="card flex p-6 border border-border rounded-xl">
+    <div className="card flex p-6 min-h-[144px] border border-border rounded-xl">
       <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
         <img src={icon} alt="" className="block w-full" />
       </div>

@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
 import Profile from "../Profile/Profile";
-import Chat from "../pages/chat/Chat";
+import Chat from "../pages/Chat/Chat";
 import Template from "../pages/Template/Template";
 import SingleTemplate from "../pages/Template/SingleTemplate";
 import EditDocuments from "../pages/Template/Document/EditDocuments";

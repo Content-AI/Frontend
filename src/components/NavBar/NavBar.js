@@ -94,7 +94,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="z-50 fixed top-0 left-0 right-0 flex items-center justify-between h-[74px] px-6 bg-white border-b border-border">
+      <div className="z-20 fixed top-0 left-0 right-0 flex items-center justify-between h-[74px] px-6 sm:pl-64 bg-white border-b border-border">
         <div className="p-2 lg:hidden">
           {NAV_BAR_CONDITION ? (
             <>
@@ -118,12 +118,12 @@ const Navbar = () => {
             </>
           )}
         </div>
-        <div className="pl-4">
+        {/* <div className="pl-4">
           <img
             src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
             className="w-[50px] h-[50px] rounded-full"
           />
-        </div>
+        </div> */}
         <div className="lg:flex items-center gap-10 ml-auto hidden">
           <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
             What's New
@@ -149,7 +149,7 @@ const Navbar = () => {
           />
         </div>
       </div>
-      <div className="z-10 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
+      <div className="z-20 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
         <div className="flex items-center h-[74px] border-b border-border">
           <div className="pl-4">
             <img
