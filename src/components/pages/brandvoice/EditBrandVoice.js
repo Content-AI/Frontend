@@ -18,6 +18,9 @@ const EditBrandVoice = (props) => {
     
     const [text, setText] = useState('');
     const [titletext, settitletext] = useState('');
+    const [content_summarize_resp,setcontent_summarize_resp] = useState('');
+    const [intial_len,setintial_len] = useState(0);
+    const [intial_len_title_len,setintial_len_title_len] = useState(0);
     const [textlen, settextlen] = useState(0);
     const [titlelen, settitlelen] = useState(0);
 
@@ -51,6 +54,10 @@ const EditBrandVoice = (props) => {
         if(resp.status==200){
             setbrandData(resp.data)
             settitletext(resp.data.brand_voice)
+            setintial_len_title_len(resp.data.brand_voice.length)
+            setcontent_summarize_resp(resp.data.content_summarize)
+            setintial_len(resp.data.content_summarize.length)
+            setText(resp.data.content_summarize)
             setids(resp.data.id)
         }
     }
@@ -63,11 +70,26 @@ const EditBrandVoice = (props) => {
 
     const _update_document_data = async () => {
         let data = []
-        if(text.length<=0){
+        if(intial_len_title_len!=titlelen && intial_len==text.length){
             data={
                 brand_voice:titletext
             }
-        }else{  
+
+            const resp = await patchData(data, BACKEND_URL + BACK_END_API_BRAND_VOICE + ids + "/", props.AUTH_TOKEN)
+            if (resp.status == 201) {
+                notifysucces("Brand Name Title change")
+            } else {
+                notifyerror("something went wrong")
+            }
+            return true
+        } else if (intial_len_title_len==titlelen && intial_len!=text.length) { 
+            data={
+                content:text
+            }
+        }else if(intial_len_title_len==titlelen && intial_len==text.length){
+            notifyerror("change something to update")
+            return true
+        }else{
             data={
                 brand_voice:titletext,
                 content:text
@@ -84,8 +106,9 @@ const EditBrandVoice = (props) => {
             sethidebtn(true)
             setresponse(resp.data)
         } else {
-          notifyerror("something went wrong")
+            notifyerror("something went wrong")
         }
+        setanalyzingdata(false)
       }
 
       
@@ -110,7 +133,12 @@ const EditBrandVoice = (props) => {
                     {analyzingdata
                 ?
                     <>
-                        <div className="flex items-center justify-center flex-col">
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <div className="spinner mb-4"></div>
+                        <p className="text-blue-500 font-semibold">Analyzing Tone</p>
+                        <p className="text-gray-500 text-sm">Please wait...</p>
+                    </div>
+                        {/* <div className="flex items-center justify-center flex-col">
                         <div className="w-12 h-12 animate-spin">
                             <svg className="w-full h-full text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <svg className='w-24 h-24' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" xmlSpace="preserve">
@@ -119,7 +147,7 @@ const EditBrandVoice = (props) => {
                             </svg>
                             </div>
                             <p className='text-[20px] font-semibold'>Analyzing Tone ....</p>
-                        </div>                        
+                        </div>                         */}
                     </>
                 :
                 null
@@ -130,6 +158,7 @@ const EditBrandVoice = (props) => {
                 ?
                     <>
                         <div className="space-y-1.5 w-full">
+                            {/* <h1 class="text-base font-semibold">Modify your tone</h1> */}
                             <div className="flex justify-between">
                                 <h1 className="text-base font-semibold pb-2">Name this voice</h1>
                             </div>
@@ -149,7 +178,18 @@ const EditBrandVoice = (props) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div>
+                            {/* <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div> */}
+
+                            {/* =================the content_summarize==================== */}
+                            <div class="flex justify-between">
+                            </div>
+                                <div class="block text-sm font-normal text-gray-600 mt-4">The AI model has acquired insights regarding your voice based on the provided content.
+                            </div>
+                                {/* <div class="mb-2 py-4 font-semibold text-gray-600 text-sm">
+                                {content_summarize_resp}
+                            </div> */}
+                                
+                            {/* =================the content_summarize==================== */}
                                 <label htmlFor="text" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
                                     <span className="flex items-center space-x-1">
                                     <span>Rewrite your Brand Voice </span>

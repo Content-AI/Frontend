@@ -13,6 +13,7 @@ import LengthOfEditorWord from '../features/LengthOfEditorWord'
 import ProjectOrFolderIdChoosen from '../features/ProjectOrFolderIdChoosen'
 import DocumentsData from '../features/DocumentsData'
 import FolderData from '../features/FolderData'
+import RepeatQuestionInChat from '../features/RepeatQuestionInChat'
 
 export const store = configureStore({
     reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
         SetProjectOrFolderIdChoosen:ProjectOrFolderIdChoosen,
         SetDocumentsData:DocumentsData,
         SetFolderData:FolderData,
+        SetRepeatQuestionInChat:RepeatQuestionInChat,
     }
 })
 
