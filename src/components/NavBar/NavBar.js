@@ -80,16 +80,16 @@ const Navbar = () => {
   ];
 
   const navURL = [
-    { title: "Dashboard", link: "/" },
     { title: "Create New Content", link: "/create_new_content" },
-    { title: "Brand Voice", link: "/brand_voice" },
+    { title: "Dashboard", link: "/" },
     { title: "Chat", link: "/chat" },
     { title: "Projects", link: "/projects" },
     { title: "Recent Added", link: "/documents" },
-    { title: "Recipes", link: "/recipes" },
-    { title: "Art", link: "/art" },
-    { title: "Settings", link: "/settings", offset: true },
-    { title: "Help", link: "/help" },
+    { title: "Brand Voice", link: "/brand_voice" },
+    // { title: "Recipes", link: "/recipes" },
+    // { title: "Art", link: "/art" },
+    // { title: "Settings", link: "/settings", offset: true },
+    // { title: "Help", link: "/help" },
   ];
 
   return (
@@ -125,7 +125,7 @@ const Navbar = () => {
           />
         </div>
         <div className="lg:flex items-center gap-10 ml-auto hidden">
-          <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
+          {/* <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
             What's New
             <span className="text-blue-600 absolute -top-[1px] -right-2">
               <MdCircle size={10} />
@@ -135,19 +135,19 @@ const Navbar = () => {
             options={language}
             className="w-[80px] font-semibold text-[12px]"
             defaultValue={language[0]}
-          />
-          <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-blue pl-3 pr-6 py-2.5 rounded-md">
+          /> */}
+          <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-[#334977] pl-3 pr-6 py-2.5 rounded-md">
             <SealCheck classes="w-6 h-6" />
             Upgrade to Pro
           </button>
         </div>
-        <div className="lg:hidden p-2">
+        {/* <div className="lg:hidden p-2">
           <Select
             options={language}
             className="mr-4 w-[80px] font-semibold text-[12px]"
             defaultValue={language[0]}
           />
-        </div>
+        </div> */}
       </div>
       <div className="z-20 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
         <div className="flex items-center h-[74px] border-b border-border">
@@ -159,7 +159,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="flex items-center justify-center mt-1">
+          {/* <div className="flex items-center justify-center mt-1">
             <div className="shadow-sm">
               <label
                 htmlFor="Personal"
@@ -208,36 +208,39 @@ const Navbar = () => {
                 readOnly
               />
             </div>
-          </div>
+          </div> */}
 
-          <div className="flex flex-col my-6 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none">
+          {/* <div className="flex flex-col my-3 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none"> */}
+          <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
             {navURL.map((items, index) => {
               const { title, link, offset } = items;
               return (
-                <Link
-                  key={"nav_" + index}
-                  to={link}
-                  onClick={() => handleLinkClick(title)}
-                  className={clsx({ "mt-auto": offset })}
-                >
                   <div
-                    className={clsx("flex items-center px-4 py-2", {
+                    key={"nav_" + index}
+                    //margin of menu reduced
+                    // className={clsx("flex items-center px-4 py-2", {
+                    className={clsx({ "mt-auto": offset })}
+                  >
+                  <Link
+                    to={link}
+                    onClick={() => handleLinkClick(title)}
+                    className={clsx("flex items-center p-1", {
                       "font-bold text-blue bg-blue/10 rounded-lg":
                         activeLink === title,
                       "mb-6": navURL.length - 1 !== index,
                     })}
                   >
-                    <span className="icon w-6 h-6 p-0.5 inline-flex items-center justify-center">
-                      <NavIcons
-                        icon={title.toLocaleLowerCase()}
-                        fill={activeLink === title ? "#1D43FF" : "#343330"}
-                      />
-                    </span>
-                    <p className="text-base capitalize font-helv ml-4">
-                      {title}
-                    </p>
-                  </div>
-                </Link>
+                      <span className="icon w-6 h-6 p-1 inline-flex items-center justify-center">
+                        <NavIcons
+                          icon={title.toLocaleLowerCase()}
+                          fill={activeLink === title ? "#1D43FF" : "#343330"}
+                        />
+                      </span>
+                      <p className="text-[14px] capitalize font-semibold ml-2">
+                        {title}
+                      </p>
+                  </Link>
+                </div>
               );
             })}
           </div>
@@ -342,7 +345,8 @@ const Navbar = () => {
                   onClick={() => {
                     console.log("pricing");
                   }}
-                  className="focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-blue hover:bg-blue-700 w-full px-5 gap-x-2"
+                  className="transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-5"
+                  // className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full h-[30px]"
                 >
                   <BsCheckCircle className="text-white" size={16} /> Upgrade to
                   Pro
@@ -765,7 +769,7 @@ const Navbar = () => {
                       onClick={() => {
                         console.log("pricing");
                       }}
-                      className="focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-blue hover:bg-blue-700 w-full px-5 gap-x-2"
+                      className="transition-all duration-200 bg-[#334977] mb-2 focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg  hover:bg-purple-700 w-full h-[30px] px-5"
                     >
                       <BsCheckCircle
                         className="text-white ml-2 mr-3"

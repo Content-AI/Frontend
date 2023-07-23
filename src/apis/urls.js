@@ -1,5 +1,5 @@
-// BACKEND_URL = "http://localhost:8000"
-BACKEND_URL = "https://copyai.pythonanywhere.com"
+BACKEND_URL = "http://localhost:8000"
+// BACKEND_URL = "https://copyai.pythonanywhere.com"
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL = "/v1/accounts/accounts_data/login_using_token/";
@@ -58,6 +58,10 @@ export const BACK_END_API_GET_FOLDER_DETAILS = "/v1/projects_data/projects/";
 
 export const BACK_END_API_BRAND_VOICE = "/v1/brand_voice/data/";
 
+export const BACK_END_API_BRAND_VOICE_URLS = "/v1/brand_voice/extract-url/";
+
+export const BACK_END_API_BRAND_VOICE_FILE = "/v1/brand_voice/extract-file/";
+
 export const BACK_END_API_DOWNLOAD_FILE = "/v1/documents_data/get_doc_file/";
 
 export const BACK_END_API_SELECT_FIELD = "/v1/template/select_field_of_template";
@@ -68,3 +72,8 @@ export const BACK_END_API_FIRST_CHAT_TEMPLATE = "/v1/chat_template/chat-template
 export const BACK_END_API_VALUE_OF_CHAT_TEMPLATE = "/v1/chat_template/get-value-template/";
 
 export const BACK_END_CUSTOM_CHAT_TEMPLATE = "/v1/chat_template/custom-template/";
+
+
+export const BACK_END_MULTIPLE_SELECT_FOR_TRASH = "/v1/documents_data/doc_trash/";
+export const BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE = "/v1/documents_data/doc_trash_delete/";
+export const BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID = "/v1/documents_data/doc_project_id_update/";

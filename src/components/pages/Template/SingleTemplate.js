@@ -76,15 +76,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([
-    { value: "nice", label: "nice" },
-    { value: "fancy", label: "fancy" },
-    { value: "relaxed", label: "relaxed" },
-    { value: "skilled", label: "skilled" },
-    { value: "confident", label: "confident" },
-    { value: "daring", label: "daring" },
-    { value: "funny", label: "funny" },
-    { value: "persuasive", label: "persuasive" },
-    { value: "empathetic", label: "empathetic" },
+    { value: "nice", label: "Nice" },
+    { value: "fancy", label: "Fancy" },
+    { value: "relaxed", label: "Relaxed" },
+    { value: "skilled", label: "Skilled" },
+    { value: "confident", label: "Confident" },
+    { value: "daring", label: "Daring" },
+    { value: "funny", label: "Funny" },
+    { value: "persuasive", label: "Persuasive" },
+    { value: "empathetic", label: "Empathetic" },
   ]);
   const [value, setValue] = useState(null);
 
