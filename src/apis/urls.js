@@ -76,3 +76,4 @@ export const BACK_END_CUSTOM_CHAT_TEMPLATE = "/v1/chat_template/custom-template/
 
 export const BACK_END_MULTIPLE_SELECT_FOR_TRASH = "/v1/documents_data/doc_trash/";
 export const BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE = "/v1/documents_data/doc_trash_delete/";
+export const BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID = "/v1/documents_data/doc_project_id_update/";

@@ -4,6 +4,7 @@ import { fetchData, postData } from '../../../apis/apiService';
 import { BACKEND_URL,BACK_END_API_BRAND_VOICE,BACK_END_API_BRAND_VOICE_URLS,BACK_END_API_BRAND_VOICE_FILE } from '../../../apis/urls';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const ModalAddVoice = (props) => {
 
@@ -134,6 +135,55 @@ const ModalAddVoice = (props) => {
       setanalyze_url_tone(false)
     };
 
+// =======file upload to analyze
+const [file_upload_form,setfile_upload_form] = useState(false);
+const [file, setFile] = useState(null);
+const [brandVoiceFileTitle, setBrandVoiceFileTitle] = useState('');
+const [errorMessage, setErrorMessage] = useState('');
+
+const handleFileChange = (e) => {
+  const selectedFile = e.target.files[0];
+  setFile(selectedFile);
+};
+
+const handleBrandVoiceFileTitleChange = (e) => {
+  setBrandVoiceFileTitle(e.target.value);
+};
+
+const handleUploadFile = async () => {
+  if (!file || !brandVoiceFileTitle) {
+    notifyerror("Please select a file and provide a brand voice title.")
+    return;
+  }
+  setfile_upload_form(false)
+  setanalyzingdata(true)
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('brand_voice', brandVoiceFileTitle);
+
+  try {
+    const response = await axios.post(BACKEND_URL+BACK_END_API_BRAND_VOICE_FILE, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${props.AUTH_TOKEN}`
+      },
+    });
+
+    setFile(null);
+    setBrandVoiceFileTitle('');
+    setanalyzingdata(false)
+    notifysucces("Brand voice created")
+    setresponse(true)
+    setresponseData(response.data)
+  } catch (error) {
+    setfile_upload_form(true)
+    setanalyzingdata(false)
+    notifyerror('Please Upload valid file like pdf,doc and text file');
+  }
+};
+
+
   return (
     <>
  
@@ -151,6 +201,7 @@ const ModalAddVoice = (props) => {
                         settextlen(0)
                         settitlelen(0)
                         settitletext('')
+                        setfile_upload_form(false)
                     }}
                     >
                         <IoMdRefresh/>
@@ -197,12 +248,12 @@ const ModalAddVoice = (props) => {
                     
 
 
-   {/* ==========pdf Extractor====================== */}
-   <button className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+                    {/* ==========pdf Extractor====================== */}
+                    <button className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
                         onClick={()=>{
                             setshowInitialsetup(false)
                             setanalyzingdata(false)
-                            setshowTextInputBox(true)
+                            setfile_upload_form(true)
                         }}>
                         <div className="py-6 text-center">
                             <div className="flex justify-center">
@@ -253,10 +304,60 @@ const ModalAddVoice = (props) => {
                 :
                     null
                 }
+                
+        {/* =========pdf data======================= */}
+        {file_upload_form
+        ?
+        <>
+        <div className="space-y-1.5 w-full">
+                            <div className="flex justify-between">
+                                <h1 className="text-base font-semibold pb-2">Name this voice</h1>
+                            </div>
+                            <div className="space-y-1.5 w-full">
+                                <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span>Make it easier to know which tone you're using when writing</span></span></label>
+                                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                    <div className="flex items-center grow gap-2 py-1.5">
+                                    <div className="flex gap-1 grow">
+                                        <input id="name" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" 
+                                        placeholder="e.g. My Brand voice for Blog, article" 
+                                        name="brandVoiceFileTitle"
+                                        value={brandVoiceFileTitle}
+                                        onChange={handleBrandVoiceFileTitleChange}
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2"><span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                        {brandVoiceFileTitle.length}/30</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                    <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div>
+                                        <label htmlFor="text" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
+                                            
+                                        </label>
+                                        <div className="py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <div className="mb-4">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2">Select File:</label>
+                                        <input type="file" name="file" onChange={handleFileChange} className="border rounded px-3 py-2 w-full" />
+                                        </div>
+                                        </div>
+                            </div>
+                        </div>  
+
+            </>
+        :
+            null
+        }
+        {/* =========pdf data======================= */}
+
                 {analyzingdata
                 ?
                     <>
-                        <div className="flex items-center justify-center flex-col">
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <div className="spinner mb-4"></div>
+                        <p className="text-blue-500 font-semibold">Analyzing Tone</p>
+                        <p className="text-gray-500 text-sm">Please wait...</p>
+                    </div>
+                        {/* <div className="flex items-center justify-center flex-col">
                         <div className="w-12 h-12 animate-spin">
                             <svg className="w-full h-full text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <svg className='w-24 h-24' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" xmlSpace="preserve">
@@ -265,7 +366,7 @@ const ModalAddVoice = (props) => {
                             </svg>
                             </div>
                             <p className='text-[20px] font-semibold'>Analyzing Tone ....</p>
-                        </div>                        
+                        </div>                         */}
                     </>
                 :
                 null
@@ -410,7 +511,7 @@ const ModalAddVoice = (props) => {
                 {showTextUrl
                 ?
                 <button type="submit" className="transition-all duration-200 relative font-semibold outline-none hover:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] border border-transparent shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
-        onClick={handleButtonClickUrl}>
+                    onClick={handleButtonClickUrl}>
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                             <span>Process URL</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50">
@@ -421,6 +522,22 @@ const ModalAddVoice = (props) => {
                 :
                     null
                 }
+                {file_upload_form
+                ?
+                <button type="button" className="transition-all duration-200 relative font-semibold outline-none hover:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] border border-transparent shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
+                    onClick={handleUploadFile}>
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            <span>Submit file</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </span>
+                    </button>
+                :
+                    null
+                }
+
+
                 
                 </div>
             </div>

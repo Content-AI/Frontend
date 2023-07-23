@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE,BACK_END_MULTIPLE_SELECT_FOR_TRASH,BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE,BACK_END_MULTIPLE_SELECT_FOR_TRASH,BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID,BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
 import { fetchData, patchData, postData } from "../../../../apis/apiService";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
@@ -315,6 +315,19 @@ const permanently_delete_multiple_data = async (data, message) => {
 
 
 
+const update_folder_bulk = async(formData, message) =>{
+    const resp = await postData(formData, BACKEND_URL + BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID, props.AUTH_TOKEN)
+    if(resp.status=201){
+      get_all_user_doc()
+      setSelectedItems([])
+      notifysuccess(message)
+    }else{
+      notifyerror("something went wrong")
+    }
+  setChangeFolderDiv(false)
+}
+
+
   return (
     <>
       {LoadingData
@@ -329,7 +342,8 @@ const permanently_delete_multiple_data = async (data, message) => {
             <div>
               <h1 className="text-[35px] font-bold">Trash </h1>
             </div>
-            <div>
+            <div >
+            {/* delete svg */}
             <svg className="w-6 h-6 mt-5 ml-2" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 388.245 485.30625"  xmlSpace="preserve">
               <g>
                   <path  d="M107.415,388.245h173.334c21.207,0,38.342-17.159,38.342-38.342V80.928H69.097v268.975   C69.097,371.086,86.264,388.245,107.415,388.245z M253.998,129.643c0-7.178,5.796-13.03,13.006-13.03   c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038c-7.21,0-13.006-5.828-13.006-13.038V129.643z    M181.491,129.643c0-7.178,5.804-13.03,13.006-13.03c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038   c-7.202,0-13.006-5.828-13.006-13.038C181.491,337.954,181.491,129.643,181.491,129.643z M109.025,129.643   c0-7.178,5.796-13.03,12.973-13.03s13.038,5.853,13.038,13.03v208.311c0,7.21-5.861,13.038-13.038,13.038   c-7.178,0-12.973-5.828-12.973-13.038V129.643z" fill="#010002"/>
@@ -338,6 +352,7 @@ const permanently_delete_multiple_data = async (data, message) => {
             </svg>
             </div>
           </div>
+          <div class="p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
         </>
         :
         null}
@@ -388,18 +403,34 @@ const permanently_delete_multiple_data = async (data, message) => {
                             <>
                               {selectedItems.length>0
                               ?
-                              <button id="selectButton" onClick={()=>{
-                                const formData = {
-                                        id:selectedItems,
-                                    }
-                                    permanently_delete_multiple_data(formData,"Data Deleted")
-                              }}>
-                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                    <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
-                                    <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                  </svg>
-                                </button>
+                              <>
+                                <button id="selectButton" onClick={()=>{
+                                  const formData = {
+                                          id:selectedItems,
+                                          trash:false
+                                      }
+                                      delete_multiple_data(formData,"Restored")
+                                }}>
+                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                    <path d="M2.15,5.13c-.12,2.74-.09,5.49,.32,8.26,.22,1.49,1.48,2.61,2.99,2.61h5.08c1.51,0,2.77-1.12,2.99-2.61,.41-2.77,.44-5.52,.32-8.26H2.15Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                    <path d="M5.85,6.77c.54-.47,1.37-.08,1.37,.63v.76h1.5c1.66,0,3,1.34,3,3s-1.34,3-3,3h-.78c-.39,0-.71-.32-.71-.71s.32-.71,.71-.71h.78c.87,0,1.57-.7,1.57-1.57s-.7-1.57-1.57-1.57h-1.5v.77c0,.7-.81,1.09-1.36,.64-.65-.54-1.04-.93-1.54-1.57-.26-.34-.25-.81,.02-1.13,.53-.63,.92-1.01,1.51-1.52Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33,.7-.7,1.64-1.09,2.62-1.09s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.21c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.1c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.2Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                </svg>  
+                                    {/* <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                      <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                      <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                      <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                    </svg> */}
+                                  </button>
+                                {/* <button id="selectButton" onClick={()=>{
+                                  const formData = {
+                                      project_ids:selectedItems,
+                                      }
+                                    update_folder_bulk(formData,"Project Moved")
+                                }}>
+                                    Restore
+                                  </button> */}
+                                </>
                               :
                                 null
                               }
