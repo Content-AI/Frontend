@@ -3,8 +3,22 @@ import clsx from "clsx";
 import AnimateHeight from "react-animate-height";
 
 import CaretDown from "../../Icons/CaretDown";
-import { postData, fetchData,patchData, deleteData } from "../../../apis/apiService";
-import { BACKEND_URL, BACK_END_API_CHAT_DATA,BACK_END_API_CHAT_ROOM,BACK_END_API_BRAND_VOICE,BACK_END_API_CHAT_ASK_QUESTION,BACK_END_API_FIRST_CHAT_TEMPLATE,BACK_END_API_VALUE_OF_CHAT_TEMPLATE,BACK_END_CUSTOM_CHAT_TEMPLATE } from "../../../apis/urls";
+import {
+  postData,
+  fetchData,
+  patchData,
+  deleteData,
+} from "../../../apis/apiService";
+import {
+  BACKEND_URL,
+  BACK_END_API_CHAT_DATA,
+  BACK_END_API_CHAT_ROOM,
+  BACK_END_API_BRAND_VOICE,
+  BACK_END_API_CHAT_ASK_QUESTION,
+  BACK_END_API_FIRST_CHAT_TEMPLATE,
+  BACK_END_API_VALUE_OF_CHAT_TEMPLATE,
+  BACK_END_CUSTOM_CHAT_TEMPLATE,
+} from "../../../apis/urls";
 
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -21,12 +35,10 @@ import DialogContent from "@mui/material/DialogContent";
 import Popover from "@mui/material/Popover";
 import Differentbtn from "./Differentbtn";
 
-import Typed from "react-typed"
+import Typed from "react-typed";
 import LoadingPage from "../../LoadingPage";
 
-import Modal from 'react-modal';
-
-
+import Modal from "react-modal";
 
 const buttonTags = [
   "All",
@@ -54,15 +66,10 @@ const tagList = [
   "Write a country song about cats in the style o...",
 ];
 
-
-
 const adjustTextareaHeight = (textarea) => {
-  textarea.style.height = 'auto'; // Reset the height to auto
+  textarea.style.height = "auto"; // Reset the height to auto
   textarea.style.height = `${textarea.scrollHeight}px`; // Set the height based on the scrollHeight
 };
-
-
-
 
 const Chat = ({ AUTH_TOKEN }) => {
   let navigate = useNavigate();
@@ -73,16 +80,15 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
-  const notifymessage=(message)=>toast(message,
-  {
-    icon: '👏',
-    style: {
-      borderRadius: '10px',
-      background: '#333',
-      color: '#fff',
-    },
-  }
-);
+  const notifymessage = (message) =>
+    toast(message, {
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
 
   const [chatFill, setChatFill] = useState("");
   const [ChatText, setChatText] = useState("");
@@ -93,14 +99,16 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const [CurrentQuestionIni, setCurrentQuestionIni] = useState(null);
   const [CurrentAnswerIni, setCurrentAnswerIni] = useState([]);
-  const [AfterTypeDontShowIni,setAfterTypeDontShowIni] = useState(false);
-  
+  const [AfterTypeDontShowIni, setAfterTypeDontShowIni] = useState(false);
+
   const [CurrentQuestion, setCurrentQuestion] = useState(null);
   const [CurrentAnswer, setCurrentAnswer] = useState([]);
 
-  
-  const [LatestOrCurrentClickGetChatFromID, setLatestOrCurrentClickGetChatFromID] = useState(null);
-  
+  const [
+    LatestOrCurrentClickGetChatFromID,
+    setLatestOrCurrentClickGetChatFromID,
+  ] = useState(null);
+
   const [ChatTitleForSideBar, setChatTitleForSideBar] = useState(null);
 
   const [Loading, setLoading] = useState(false);
@@ -112,95 +120,102 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const typingSpeed = 50; // Adjust typing speed (in milliseconds)
 
-
   const popRef = React.useRef();
 
-
-  const get_initial_chat = async (url,room_id) => {
-    const resp = await fetchData(url+"/"+room_id+"/",AUTH_TOKEN);
+  const get_initial_chat = async (url, room_id) => {
+    const resp = await fetchData(url + "/" + room_id + "/", AUTH_TOKEN);
     if (resp.status == 200 || resp.status == 201) {
       setAllChatText(resp.data.chat_data);
       // if(resp.data.length>0){
-        setTitleOfChat(resp.data.title)
-        setIdOfTopTitleChat(resp.data.id)
+      setTitleOfChat(resp.data.title);
+      setIdOfTopTitleChat(resp.data.id);
       // }
     } else {
       // navigate("/logout");
     }
   };
-  const get_chat_data_from_side_div_when_click = async (url,room_id) => {
-    setCurrentAnswer([])
-    setCurrentAnswerIni([])
-    const resp = await fetchData(url+"/"+room_id+"/",AUTH_TOKEN);
+  const get_chat_data_from_side_div_when_click = async (url, room_id) => {
+    setCurrentAnswer([]);
+    setCurrentAnswerIni([]);
+    const resp = await fetchData(url + "/" + room_id + "/", AUTH_TOKEN);
     if (resp.status == 200 || resp.status == 201) {
       setAllChatText(resp.data.chat_data);
-      setTitleOfChat(resp.data.title)
-      setIdOfTopTitleChat(resp.data.id)
+      setTitleOfChat(resp.data.title);
+      setIdOfTopTitleChat(resp.data.id);
     } else {
       // navigate("/logout");
     }
   };
 
-  const create_new_room_for_chat = async() =>{
-    setCurrentAnswer([])
-    setCurrentAnswerIni([])
-    const formData={}
-    const resp = await postData(formData,BACKEND_URL+BACK_END_API_CHAT_ROOM,AUTH_TOKEN)
-    if(resp.status==201){
-      get_title_of_chat_room_first(BACKEND_URL+BACK_END_API_CHAT_ROOM)
+  const create_new_room_for_chat = async () => {
+    setCurrentAnswer([]);
+    setCurrentAnswerIni([]);
+    const formData = {};
+    const resp = await postData(
+      formData,
+      BACKEND_URL + BACK_END_API_CHAT_ROOM,
+      AUTH_TOKEN
+    );
+    if (resp.status == 201) {
+      get_title_of_chat_room_first(BACKEND_URL + BACK_END_API_CHAT_ROOM);
     }
-  }
+  };
 
-
-
-  useEffect(()=>{
-    if(LatestOrCurrentClickGetChatFromID!=null){
-      get_initial_chat(BACKEND_URL+BACK_END_API_CHAT_DATA,LatestOrCurrentClickGetChatFromID)
+  useEffect(() => {
+    if (LatestOrCurrentClickGetChatFromID != null) {
+      get_initial_chat(
+        BACKEND_URL + BACK_END_API_CHAT_DATA,
+        LatestOrCurrentClickGetChatFromID
+      );
     }
-  },[LatestOrCurrentClickGetChatFromID])
+  }, [LatestOrCurrentClickGetChatFromID]);
 
-  const first_interaction_with_chat_create_new_room_by_default = async() =>{
-    const formData={}
-    const resp = await postData(formData,BACKEND_URL+BACK_END_API_CHAT_ROOM,AUTH_TOKEN)
-    if(resp.status==201){
-      get_title_of_chat_room_first(BACKEND_URL+BACK_END_API_CHAT_ROOM)
+  const first_interaction_with_chat_create_new_room_by_default = async () => {
+    const formData = {};
+    const resp = await postData(
+      formData,
+      BACKEND_URL + BACK_END_API_CHAT_ROOM,
+      AUTH_TOKEN
+    );
+    if (resp.status == 201) {
+      get_title_of_chat_room_first(BACKEND_URL + BACK_END_API_CHAT_ROOM);
     }
-  }
+  };
 
-  const get_title_of_chat_room_first = async(url) =>{
-    const resp = await fetchData(url,AUTH_TOKEN)
-    if(resp.status==200){
-      setChatTitleForSideBar(resp.data)
-      if(resp.data.length<=0){
-        first_interaction_with_chat_create_new_room_by_default()
+  const get_title_of_chat_room_first = async (url) => {
+    const resp = await fetchData(url, AUTH_TOKEN);
+    if (resp.status == 200) {
+      setChatTitleForSideBar(resp.data);
+      if (resp.data.length <= 0) {
+        first_interaction_with_chat_create_new_room_by_default();
       }
-      if(resp.data.length>0){
-        setLatestOrCurrentClickGetChatFromID(resp.data[0]["id"])
+      if (resp.data.length > 0) {
+        setLatestOrCurrentClickGetChatFromID(resp.data[0]["id"]);
       }
-    }else{
-      navigate("/")
+    } else {
+      navigate("/");
     }
-  }
-  const _title_change_but_not_the_chatting_ui_ = async(url) =>{
-    const resp = await fetchData(url,AUTH_TOKEN)
-    if(resp.status==200){
-      setChatTitleForSideBar(resp.data)
-    }else{
-      navigate("/")
+  };
+  const _title_change_but_not_the_chatting_ui_ = async (url) => {
+    const resp = await fetchData(url, AUTH_TOKEN);
+    if (resp.status == 200) {
+      setChatTitleForSideBar(resp.data);
+    } else {
+      navigate("/");
     }
-  }
-  const get_title_of_chat_room = async(url) =>{
-    const resp = await fetchData(url,AUTH_TOKEN)
-    if(resp.status==200){
-      setChatTitleForSideBar(resp.data)
-    }else{
-      navigate("/")
+  };
+  const get_title_of_chat_room = async (url) => {
+    const resp = await fetchData(url, AUTH_TOKEN);
+    if (resp.status == 200) {
+      setChatTitleForSideBar(resp.data);
+    } else {
+      navigate("/");
     }
-  }
+  };
 
-  useEffect(()=>{
-    get_title_of_chat_room_first(BACKEND_URL+BACK_END_API_CHAT_ROOM)
-  },[])
+  useEffect(() => {
+    get_title_of_chat_room_first(BACKEND_URL + BACK_END_API_CHAT_ROOM);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -235,36 +250,32 @@ const Chat = ({ AUTH_TOKEN }) => {
     }
     setLoading(true);
 
-
-      
-  // =================Initial chat without data==============================
-    if(AllChatText.length<=0){
-
-      // if there is tone selected for chat 
+    // =================Initial chat without data==============================
+    if (AllChatText.length <= 0) {
+      // if there is tone selected for chat
       let InTone = ``;
-      if(selectedSummarizes.length>0){
+      if (selectedSummarizes.length > 0) {
         selectedSummarizes.forEach((item) => {
           InTone += `Generate In Tone:${item.value}\n`;
         });
-
-      }else{
-        InTone="Default"
+      } else {
+        InTone = "Default";
       }
-      if(ChatText){
-        setChatText("")
-        setAfterTypeDontShowIni(true)
+      if (ChatText) {
+        setChatText("");
+        setAfterTypeDontShowIni(true);
         setCurrentQuestionIni(ChatText);
         if (divRef.current) {
           divRef.current.focus();
         }
         const formdata = {
           question: ChatText,
-          Tone:InTone,
+          Tone: InTone,
           chat_root: IdOfTopTitleChat,
         };
         const resp = await postData(
           formdata,
-          BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION+"/",
+          BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION + "/",
           AUTH_TOKEN
         );
         if (resp.status == 201) {
@@ -273,32 +284,33 @@ const Chat = ({ AUTH_TOKEN }) => {
             content: resp.data[0]["content"],
             question: resp.data[0]["question"],
           };
-          setCurrentAnswerIni((CurrentAnswerIni) => [...CurrentAnswerIni, data]);
+          setCurrentAnswerIni((CurrentAnswerIni) => [
+            ...CurrentAnswerIni,
+            data,
+          ]);
           setChatText("");
         } else {
           notifyerror("something went wrong");
         }
-        setLoading(false)
-        return true
+        setLoading(false);
+        return true;
       }
     }
 
-// =================Initial chat without data==============================
+    // =================Initial chat without data==============================
 
-
-// =================Initial chat with data or after there is some data==============================
+    // =================Initial chat with data or after there is some data==============================
     if (ChatText) {
-      setChatText("")
+      setChatText("");
 
-      // if there is tone selected for chat 
+      // if there is tone selected for chat
       let InTone = ``;
-      if(selectedSummarizes.length>0){
+      if (selectedSummarizes.length > 0) {
         selectedSummarizes.forEach((item) => {
           InTone += `Generate In Tone :${item.value}\n`;
         });
-
-      }else{
-        InTone="Default"
+      } else {
+        InTone = "Default";
       }
       setCurrentQuestion(ChatText);
       if (divRef.current) {
@@ -306,12 +318,12 @@ const Chat = ({ AUTH_TOKEN }) => {
       }
       const formdata = {
         question: ChatText,
-        Tone:InTone,
+        Tone: InTone,
         chat_root: IdOfTopTitleChat,
       };
       const resp = await postData(
         formdata,
-        BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION+"/",
+        BACKEND_URL + BACK_END_API_CHAT_ASK_QUESTION + "/",
         AUTH_TOKEN
       );
       if (resp.status == 201) {
@@ -326,7 +338,7 @@ const Chat = ({ AUTH_TOKEN }) => {
         notifyerror("something went wrong");
       }
     }
-  // =================Initial chat with data or after there is some data==============================
+    // =================Initial chat with data or after there is some data==============================
     setLoading(false);
   };
 
@@ -334,11 +346,10 @@ const Chat = ({ AUTH_TOKEN }) => {
   //   console.log("CurrentAnswer", CurrentAnswer);
   // }, [CurrentAnswer]);
 
-
   // useEffect(() => {
   //   get_initial_chat();
   // }, []);
-  
+
   useEffect(() => {
     if (chatLoadingRef.current) {
       chatLoadingRef.current.focus();
@@ -351,12 +362,9 @@ const Chat = ({ AUTH_TOKEN }) => {
     }
   }, [CurrentQuestion]);
 
-
-
   const [editingIndex, setEditingIndex] = useState(null);
-  const [initialTitle, setInitialTitle] = useState('');
-  const [searchValue, setSearchValue] = useState('');
-
+  const [initialTitle, setInitialTitle] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleEditClick = (index) => {
     setEditingIndex(index);
@@ -372,25 +380,32 @@ const Chat = ({ AUTH_TOKEN }) => {
     });
   };
 
-  const handleInputBlur = async(index) => {
+  const handleInputBlur = async (index) => {
     if (ChatTitleForSideBar[index].title !== initialTitle) {
       // console.log('Title changed:', ChatTitleForSideBar[index].title, 'ID:', ChatTitleForSideBar[index].id);
       const fromData = {
-        title:ChatTitleForSideBar[index].title
-      }
-      const resp = await patchData(fromData,BACKEND_URL+BACK_END_API_CHAT_ROOM+ChatTitleForSideBar[index].id+"/",AUTH_TOKEN)
+        title: ChatTitleForSideBar[index].title,
+      };
+      const resp = await patchData(
+        fromData,
+        BACKEND_URL +
+          BACK_END_API_CHAT_ROOM +
+          ChatTitleForSideBar[index].id +
+          "/",
+        AUTH_TOKEN
+      );
     }
     setEditingIndex(null);
-    setInitialTitle('');
+    setInitialTitle("");
   };
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
-    get_title_of_chat_room(BACKEND_URL+BACK_END_API_CHAT_ROOM+"?search="+value)
+    get_title_of_chat_room(
+      BACKEND_URL + BACK_END_API_CHAT_ROOM + "?search=" + value
+    );
   };
-
-
 
   const handleDelete = (id) => {
     setChatTitleForSideBar((prevtitledata) =>
@@ -399,19 +414,26 @@ const Chat = ({ AUTH_TOKEN }) => {
   };
 
   const _update_document_data = async (data, id, message) => {
-    handleDelete(id)
-    const resp = await deleteData(BACKEND_URL+BACK_END_API_CHAT_ROOM + id + "/",AUTH_TOKEN)
-  }
+    handleDelete(id);
+    const resp = await deleteData(
+      BACKEND_URL + BACK_END_API_CHAT_ROOM + id + "/",
+      AUTH_TOKEN
+    );
+  };
 
-
-
-  const call_api_change_title = async(newTitle) => {
+  const call_api_change_title = async (newTitle) => {
     const fromData = {
-      title:newTitle
-    }
-    const resp = await patchData(fromData,BACKEND_URL+BACK_END_API_CHAT_ROOM+IdOfTopTitleChat+"/",AUTH_TOKEN)
-    if(resp.status==201){
-      _title_change_but_not_the_chatting_ui_(BACKEND_URL+BACK_END_API_CHAT_ROOM)
+      title: newTitle,
+    };
+    const resp = await patchData(
+      fromData,
+      BACKEND_URL + BACK_END_API_CHAT_ROOM + IdOfTopTitleChat + "/",
+      AUTH_TOKEN
+    );
+    if (resp.status == 201) {
+      _title_change_but_not_the_chatting_ui_(
+        BACKEND_URL + BACK_END_API_CHAT_ROOM
+      );
     }
   };
 
@@ -420,7 +442,7 @@ const Chat = ({ AUTH_TOKEN }) => {
   };
 
   const TitleInputKeyPressed = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       call_api_change_title(TitleOfChat);
     }
   };
@@ -429,308 +451,341 @@ const Chat = ({ AUTH_TOKEN }) => {
     call_api_change_title(TitleOfChat);
   };
 
-
   const renderHTMLDataForChatting = (htmldata) => {
     const formattedContent = htmldata
-      .split('\n')
+      .split("\n")
       .map((line, index) => (index === 0 ? line : `<br>${line}`))
-      .join('');
+      .join("");
 
     return formattedContent;
   };
 
+  const [Chat_Template_Title, setChat_Template_Title] = useState(null);
+  const [second_layer_title, setsecond_layer_title] = useState(null);
+  const [value_of_template_to_use, setvalue_of_template_to_use] =
+    useState(null);
 
-  const [Chat_Template_Title,setChat_Template_Title]=useState(null)
-  const [second_layer_title,setsecond_layer_title]=useState(null)
-  const [value_of_template_to_use,setvalue_of_template_to_use]=useState(null)
-  
-  const [show_only_custom,set_show_only_custom]=useState(true)
-  const [custome_chat_template,setcustome_chat_template]=useState(null)
+  const [show_only_custom, set_show_only_custom] = useState(true);
+  const [custome_chat_template, setcustome_chat_template] = useState(null);
   // const [customDescription, setCustomDescription] = useState('');
 
-  const [innervalueofcustomechattemplate,setinnervalueofcustomechattemplate] = useState('');
-  const [previousinnervalueofcustomechattemplate,setpreviousinnervalueofcustomechattemplate] = useState('');
-  const [show_button_to_edit_text_area_description,setshow_button_to_edit_text_area_description] = useState(false);
-  const [descriptionid,setdescriptionid] = useState(null);
-  
-  
+  const [innervalueofcustomechattemplate, setinnervalueofcustomechattemplate] =
+    useState("");
+  const [
+    previousinnervalueofcustomechattemplate,
+    setpreviousinnervalueofcustomechattemplate,
+  ] = useState("");
+  const [
+    show_button_to_edit_text_area_description,
+    setshow_button_to_edit_text_area_description,
+  ] = useState(false);
+  const [descriptionid, setdescriptionid] = useState(null);
+
   const [show_create_input, setshow_create_input] = useState(false);
 
   //udpate description from textarea using id
-  const update_the_description = async() =>{
-      let formData = {
-        description:innervalueofcustomechattemplate
-      }
-      const resp = await patchData(formData,BACKEND_URL+BACK_END_CUSTOM_CHAT_TEMPLATE+descriptionid+"/",AUTH_TOKEN)
-      if(resp.status==201){
-        notifysucces("Description updated")
-      }else{
-        notifyerror("something went wrong")
-      }
-    setshow_button_to_edit_text_area_description(false)
-  }
+  const update_the_description = async () => {
+    let formData = {
+      description: innervalueofcustomechattemplate,
+    };
+    const resp = await patchData(
+      formData,
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE + descriptionid + "/",
+      AUTH_TOKEN
+    );
+    if (resp.status == 201) {
+      notifysucces("Description updated");
+    } else {
+      notifyerror("something went wrong");
+    }
+    setshow_button_to_edit_text_area_description(false);
+  };
 
   const handleChangeDescriptions = (e) => {
-    if(innervalueofcustomechattemplate==''){
-      return true
+    if (innervalueofcustomechattemplate == "") {
+      return true;
     }
-    setshow_button_to_edit_text_area_description(true)
+    setshow_button_to_edit_text_area_description(true);
     setinnervalueofcustomechattemplate(e.target.value);
   };
 
+  const get_first_chat_template_title = async () => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_API_FIRST_CHAT_TEMPLATE,
+      AUTH_TOKEN
+    );
+    if ((resp.status = 200)) {
+      setChat_Template_Title(resp.data);
+    }
+  };
 
-  const get_first_chat_template_title = async() => {
-    const resp = await fetchData(BACKEND_URL+BACK_END_API_FIRST_CHAT_TEMPLATE,AUTH_TOKEN)
-    if(resp.status=200){
-      setChat_Template_Title(resp.data)
+  const get_first_custom_chat_template_title = async () => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE,
+      AUTH_TOKEN
+    );
+    if ((resp.status = 200)) {
+      setcustome_chat_template(resp.data);
     }
-  }
+  };
 
-  const get_first_custom_chat_template_title = async() => {
-    const resp = await fetchData(BACKEND_URL+BACK_END_CUSTOM_CHAT_TEMPLATE,AUTH_TOKEN)
-    if(resp.status=200){
-      setcustome_chat_template(resp.data)
+  const second_layer_template = async (id) => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_API_FIRST_CHAT_TEMPLATE + id + "/",
+      AUTH_TOKEN
+    );
+    if ((resp.status = 200)) {
+      setsecond_layer_title(resp.data.second_title);
     }
-  }
-  
-  const second_layer_template = async(id) => {
-    const resp = await fetchData(BACKEND_URL+BACK_END_API_FIRST_CHAT_TEMPLATE+id+"/",AUTH_TOKEN)
-    if(resp.status=200){
-      setsecond_layer_title(resp.data.second_title)
-    }
-  }
-  const get_value_of_template = async(id) => {
+  };
+  const get_value_of_template = async (id) => {
     try {
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_VALUE_OF_CHAT_TEMPLATE + id + "/", AUTH_TOKEN);
-  
+      const resp = await fetchData(
+        BACKEND_URL + BACK_END_API_VALUE_OF_CHAT_TEMPLATE + id + "/",
+        AUTH_TOKEN
+      );
+
       if (resp.status === 200) {
         const innerValueData = resp.data.inner_value_data;
-  
-        if (innerValueData && Array.isArray(innerValueData) && innerValueData.length > 0) {
-          const valueOfPrompt = innerValueData[0].value_of_prompt;  
+
+        if (
+          innerValueData &&
+          Array.isArray(innerValueData) &&
+          innerValueData.length > 0
+        ) {
+          const valueOfPrompt = innerValueData[0].value_of_prompt;
           if (valueOfPrompt) {
             setvalue_of_template_to_use(valueOfPrompt);
           } else {
-            notifymessage("comming soon")
+            notifymessage("comming soon");
           }
         } else {
-          notifymessage("comming soon")
+          notifymessage("comming soon");
         }
       } else {
-        notifymessage("comming soon")
+        notifymessage("comming soon");
       }
     } catch (error) {
-        notifymessage("comming soon")
+      notifymessage("comming soon");
     }
   };
 
-
   const use_choosen_text_to_question = () => {
-    setChatText(value_of_template_to_use)
+    setChatText(value_of_template_to_use);
     setOpen(false);
   };
   const use_custome_text = () => {
-    setChatText(innervalueofcustomechattemplate)
+    setChatText(innervalueofcustomechattemplate);
     setOpen(false);
   };
 
-  useEffect(()=>{
-    get_first_chat_template_title()
-    get_first_custom_chat_template_title()
-  },[])
-
+  useEffect(() => {
+    get_first_chat_template_title();
+    get_first_custom_chat_template_title();
+  }, []);
 
   useEffect(() => {
-    const textarea = document.querySelector('textarea');
+    const textarea = document.querySelector("textarea");
     adjustTextareaHeight(textarea);
   }, [ChatText]); // Call the adjustTextareaHeight whenever the ChatText state changes
 
-  
-
   // =======create chat template code=============
-  const showinputtocreate = () =>{
-    setshow_create_input(true)
-  }
-
+  const showinputtocreate = () => {
+    setshow_create_input(true);
+  };
 
   const [newTitleName, setNewTitleName] = useState("");
   const [newDescription, setNewDescription] = useState("");
-  
+
   const handleNewTitleNameChange = (e) => {
     setNewTitleName(e.target.value);
   };
-  
 
   const handleNewDescriptionChange = (e) => {
     setNewDescription(e.target.value);
   };
 
-  const create_new_template = async() =>{
+  const create_new_template = async () => {
     if (!newTitleName || !newDescription) {
-      notifyerror("Title with description is needed")
+      notifyerror("Title with description is needed");
       return false;
     }
     let formData = {
-        title:newTitleName,
-        description:newDescription
-    }
-    const resp = await postData(formData,BACKEND_URL+BACK_END_CUSTOM_CHAT_TEMPLATE,AUTH_TOKEN)
-    if(resp.status==201){
-      notifysucces("Template created")
-      get_first_custom_chat_template_title()
-      setshow_create_input(false)
-      setNewTitleName('');
-      setNewDescription('');
-  
-    }else{
-      notifyerror("try again")
-    }
-  }
-
-
-  const get_the_inner_value_of_custom_template = async(id) =>{
-    const resp = await fetchData(BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE + id + "/", AUTH_TOKEN);
-    if(resp.status==200){
-      setinnervalueofcustomechattemplate(resp.data.description)
-      setpreviousinnervalueofcustomechattemplate(resp.data.description)
-      setdescriptionid(resp.data.id)
-    }
-  }
-
-
-// ====================Edit Custom Template==================
-const [EditCustomTemplateEditingTitleIndex, setEditCustomTemplateEditingTitleIndex] = useState(null);
-const [EditCustomTemplateEditedTitle, setEditCustomTemplateEditedTitle] = useState("");
-
-const EditCustomTemplateHandleEditClick = (index) => {
-  setEditCustomTemplateEditingTitleIndex(index);
-  setEditCustomTemplateEditedTitle(custome_chat_template[index].title);
-};
-
-const EditCustomTemplateHandleTitleChange = (e) => {
-  setEditCustomTemplateEditedTitle(e.target.value);
-};
-
-
-const EditCustomTemplateHandleSaveClick = async(index,id) => {
-  
-  let formData = {
-    title:EditCustomTemplateEditedTitle
-  }
-  const resp = await patchData(formData,BACKEND_URL+BACK_END_CUSTOM_CHAT_TEMPLATE+id+"/",AUTH_TOKEN)
-  if(resp.status==201){
-    get_first_custom_chat_template_title()
-    setEditCustomTemplateEditingTitleIndex(null);
-    notifysucces("Title updated")
-  }else{
-    notifyerror("something went wrong")
-  }
-};
-
-const handleDeleteCustomTemplate = (id) => {
-  setcustome_chat_template((prevdata) =>
-    prevdata.filter((cusdata) => cusdata.id !== id)
-  );
-};
-
-const delete_the_custom_template = async (id) => {
-  handleDeleteCustomTemplate(id)
-  const resp = await deleteData(BACKEND_URL+BACK_END_CUSTOM_CHAT_TEMPLATE + id + "/",AUTH_TOKEN)
-  notifyerror("Template deleted")
-}
-
-
-
-
-// ============brand Voice===========
-const [brandVoice,setbrandVoice]=useState(null)
-
-const get_brand_voice_for_chat = async()=>{
- const resp = await fetchData(BACKEND_URL+BACK_END_API_BRAND_VOICE,AUTH_TOKEN)
- if(resp.status==200){
-  setbrandVoice(resp.data.results)
- }
-}
-
-useEffect(()=>{
-  get_brand_voice_for_chat()
-},[])
-
-
-const [selectedSummarizes, setSelectedSummarizes] = useState([]);
-const [show_summarize_tone,set_show_summarize_tone] = useState(false);
-
-const handleBrandVoiceChange = (event) => {
-  const selectedBrandVoice = event.target.value;
-  const brandVoiceItem = brandVoice.find((item) => item.brand_voice === selectedBrandVoice);
-
-  if (event.target.checked) {
-    setSelectedSummarizes((prevSelectedSummarizes) => [
-      ...prevSelectedSummarizes,
-      {
-        value: brandVoiceItem.content_summarize,
-        label: selectedBrandVoice,
-      },
-    ]);
-  } else {
-    setSelectedSummarizes((prevSelectedSummarizes) =>
-      prevSelectedSummarizes.filter((summary) => summary.label !== selectedBrandVoice)
+      title: newTitleName,
+      description: newDescription,
+    };
+    const resp = await postData(
+      formData,
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE,
+      AUTH_TOKEN
     );
-  }
-};
+    if (resp.status == 201) {
+      notifysucces("Template created");
+      get_first_custom_chat_template_title();
+      setshow_create_input(false);
+      setNewTitleName("");
+      setNewDescription("");
+    } else {
+      notifyerror("try again");
+    }
+  };
 
-const handleDeleteClick = (label) => {
-  setSelectedSummarizes((prevSelectedSummarizes) =>
-    prevSelectedSummarizes.filter((summary) => summary.label !== label)
-  );
-};
+  const get_the_inner_value_of_custom_template = async (id) => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE + id + "/",
+      AUTH_TOKEN
+    );
+    if (resp.status == 200) {
+      setinnervalueofcustomechattemplate(resp.data.description);
+      setpreviousinnervalueofcustomechattemplate(resp.data.description);
+      setdescriptionid(resp.data.id);
+    }
+  };
 
+  // ====================Edit Custom Template==================
+  const [
+    EditCustomTemplateEditingTitleIndex,
+    setEditCustomTemplateEditingTitleIndex,
+  ] = useState(null);
+  const [EditCustomTemplateEditedTitle, setEditCustomTemplateEditedTitle] =
+    useState("");
 
-// search for chat template
-const [search_chat_template, setSearchChatTemplate] = useState("");
+  const EditCustomTemplateHandleEditClick = (index) => {
+    setEditCustomTemplateEditingTitleIndex(index);
+    setEditCustomTemplateEditedTitle(custome_chat_template[index].title);
+  };
 
+  const EditCustomTemplateHandleTitleChange = (e) => {
+    setEditCustomTemplateEditedTitle(e.target.value);
+  };
 
-const search_first_chat_template_title = async(search_data) => {
-  const resp = await fetchData(BACKEND_URL+BACK_END_API_FIRST_CHAT_TEMPLATE+"?search="+search_data,AUTH_TOKEN)
-  if(resp.status=200){
-    setChat_Template_Title(resp.data)
-  }
-}
+  const EditCustomTemplateHandleSaveClick = async (index, id) => {
+    let formData = {
+      title: EditCustomTemplateEditedTitle,
+    };
+    const resp = await patchData(
+      formData,
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE + id + "/",
+      AUTH_TOKEN
+    );
+    if (resp.status == 201) {
+      get_first_custom_chat_template_title();
+      setEditCustomTemplateEditingTitleIndex(null);
+      notifysucces("Title updated");
+    } else {
+      notifyerror("something went wrong");
+    }
+  };
 
-const handleChange = (event) => {
-  setSearchChatTemplate(event.target.value);
-  search_first_chat_template_title(event.target.value)
-};
+  const handleDeleteCustomTemplate = (id) => {
+    setcustome_chat_template((prevdata) =>
+      prevdata.filter((cusdata) => cusdata.id !== id)
+    );
+  };
+
+  const delete_the_custom_template = async (id) => {
+    handleDeleteCustomTemplate(id);
+    const resp = await deleteData(
+      BACKEND_URL + BACK_END_CUSTOM_CHAT_TEMPLATE + id + "/",
+      AUTH_TOKEN
+    );
+    notifyerror("Template deleted");
+  };
+
+  // ============brand Voice===========
+  const [brandVoice, setbrandVoice] = useState(null);
+
+  const get_brand_voice_for_chat = async () => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_API_BRAND_VOICE,
+      AUTH_TOKEN
+    );
+    if (resp.status == 200) {
+      setbrandVoice(resp.data.results);
+    }
+  };
+
+  useEffect(() => {
+    get_brand_voice_for_chat();
+  }, []);
+
+  const [selectedSummarizes, setSelectedSummarizes] = useState([]);
+  const [show_summarize_tone, set_show_summarize_tone] = useState(false);
+
+  const handleBrandVoiceChange = (event) => {
+    const selectedBrandVoice = event.target.value;
+    const brandVoiceItem = brandVoice.find(
+      (item) => item.brand_voice === selectedBrandVoice
+    );
+
+    if (event.target.checked) {
+      setSelectedSummarizes((prevSelectedSummarizes) => [
+        ...prevSelectedSummarizes,
+        {
+          value: brandVoiceItem.content_summarize,
+          label: selectedBrandVoice,
+        },
+      ]);
+    } else {
+      setSelectedSummarizes((prevSelectedSummarizes) =>
+        prevSelectedSummarizes.filter(
+          (summary) => summary.label !== selectedBrandVoice
+        )
+      );
+    }
+  };
+
+  const handleDeleteClick = (label) => {
+    setSelectedSummarizes((prevSelectedSummarizes) =>
+      prevSelectedSummarizes.filter((summary) => summary.label !== label)
+    );
+  };
+
+  // search for chat template
+  const [search_chat_template, setSearchChatTemplate] = useState("");
+
+  const search_first_chat_template_title = async (search_data) => {
+    const resp = await fetchData(
+      BACKEND_URL + BACK_END_API_FIRST_CHAT_TEMPLATE + "?search=" + search_data,
+      AUTH_TOKEN
+    );
+    if ((resp.status = 200)) {
+      setChat_Template_Title(resp.data);
+    }
+  };
+
+  const handleChange = (event) => {
+    setSearchChatTemplate(event.target.value);
+    search_first_chat_template_title(event.target.value);
+  };
 
   return (
     <>
-       
-      <div className="z-10 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
+      <div className="z-20 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
         <div className="flex-auto flex flex-col h-full">
-          <div className="sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
+          <div className="sm:w-full bg-white px-4 py-2 sm:px-10 sm:py-5 sm:min-h-[74px] border border-gray-200 flex gap-2">
             <div className="flex-1 text-xl font-semibold">
               <div>
-              {TitleOfChat
-              ?
-              <input
-                  className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                  type="text"
-                  placeholder="Title of Room"
-                  data-testid="EditableChatTitle"
-                  value={TitleOfChat}
-                  onChange={TitleChage}
-                  onKeyPress={TitleInputKeyPressed}
-                  onBlur={mousemovedawayfrominput}
-                />
-                :
-              <input
-                  className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                  type="text"
-                  placeholder="Title of Room"
-                  data-testid="EditableChatTitle"
-                  value="Loading new title ..."
-                />
-              }
+                {TitleOfChat ? (
+                  <input
+                    className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
+                    type="text"
+                    placeholder="Title of Room"
+                    data-testid="EditableChatTitle"
+                    value={TitleOfChat}
+                    onChange={TitleChage}
+                    onKeyPress={TitleInputKeyPressed}
+                    onBlur={mousemovedawayfrominput}
+                  />
+                ) : (
+                  <input
+                    className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
+                    type="text"
+                    placeholder="Title of Room"
+                    data-testid="EditableChatTitle"
+                    value="Loading new title ..."
+                  />
+                )}
               </div>
             </div>
             <button
@@ -763,9 +818,9 @@ const handleChange = (event) => {
             <div className="relative flex flex-col overflow-hidden h-full w-full bg-white grow max-w-[832px]">
               <div className="flex flex-col flex-auto h-full w-full">
                 <div className="flex-1 flex max-h-full overflow-x-hidden overflow-y-auto w-full">
-                 {/* =================chat data initially================== */}
+                  {/* =================chat data initially================== */}
 
-                 {AllChatText &&
+                  {AllChatText &&
                     (AllChatText.length > 0 ? (
                       <div
                         ref={chatContainerRef}
@@ -800,21 +855,25 @@ const handleChange = (event) => {
                               <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
                                 <RenderHtml htmldata={chat_data.content} />
                                 {/* ============all sorts of btn================ */}
-                                  <Differentbtn data={chat_data.content}/>
+                                <Differentbtn data={chat_data.content} />
                                 {/* ============all sorts of btn================ */}
                               </div>
                             </div>
                           </div>
                         ))}
-                        
-                        {CurrentAnswer.length > 0
-                          ? 
+
+                        {CurrentAnswer.length > 0 ? (
                           <>
                             {(() => {
                               let length_of_obj = CurrentAnswer.length;
-                              const data_ = renderHTMLDataForChatting(CurrentAnswer[length_of_obj - 1]['content']);
+                              const data_ = renderHTMLDataForChatting(
+                                CurrentAnswer[length_of_obj - 1]["content"]
+                              );
                               return CurrentAnswer.map((data, index) => (
-                                <div className="flex flex-col mb-3 mt-4" key={index}>
+                                <div
+                                  className="flex flex-col mb-3 mt-4"
+                                  key={index}
+                                >
                                   <div className="relative flex flex-col items-end">
                                     <div className="w-6 h-6 rounded-full order-last overflow-hidden">
                                       <img
@@ -841,26 +900,29 @@ const handleChange = (event) => {
                                       tabIndex={0}
                                       ref={divRef}
                                     >
-                                    {CurrentAnswer.length==length_of_obj
-                                    ?
-                                      <>
-                                        <Typed strings={[data_]} typeSpeed={5} showCursor={false}/>
-                                      </>
-                                    :
-                                        <RenderHtml htmldata={data["content"]} />
-                                    }
-                                    {/* ============all sorts of btn================ */}
-                                      <Differentbtn data={data_}/>
-                                    {/* ============all sorts of btn================ */}
+                                      {CurrentAnswer.length == length_of_obj ? (
+                                        <>
+                                          <Typed
+                                            strings={[data_]}
+                                            typeSpeed={5}
+                                            showCursor={false}
+                                          />
+                                        </>
+                                      ) : (
+                                        <RenderHtml
+                                          htmldata={data["content"]}
+                                        />
+                                      )}
+                                      {/* ============all sorts of btn================ */}
+                                      <Differentbtn data={data_} />
+                                      {/* ============all sorts of btn================ */}
                                     </div>
                                   </div>
                                 </div>
                               ));
                             })()}
                           </>
-                          : 
-                            null
-                          }
+                        ) : null}
 
                         {CurrentQuestion ? (
                           <div className="flex flex-col mb-3 mt-4">
@@ -954,66 +1016,77 @@ const handleChange = (event) => {
                         ) : null}
                       </div>
                     ) : (
-
                       <>
-                      <div
-                        ref={chatContainerRef}
-                        className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
-                      >
-                        {CurrentAnswerIni.length > 0
-                            ?
-                                <>
-                                {(() => {
-                              let length_of_obj = CurrentAnswerIni.length;
-                              const data_ = renderHTMLDataForChatting(CurrentAnswerIni[length_of_obj - 1]['content']);
-                              return CurrentAnswerIni.map((data, index) => (
-                                <div className="flex flex-col mb-3 mt-4" key={index}>
-                                  <div className="relative flex flex-col items-end">
-                                    <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                      <img
-                                        className="w-full h-full rounded-full"
-                                        src="default.png"
-                                        alt="User"
-                                      />
+                        <div
+                          ref={chatContainerRef}
+                          className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
+                        >
+                          {CurrentAnswerIni.length > 0 ? (
+                            <>
+                              {(() => {
+                                let length_of_obj = CurrentAnswerIni.length;
+                                const data_ = renderHTMLDataForChatting(
+                                  CurrentAnswerIni[length_of_obj - 1]["content"]
+                                );
+                                return CurrentAnswerIni.map((data, index) => (
+                                  <div
+                                    className="flex flex-col mb-3 mt-4"
+                                    key={index}
+                                  >
+                                    <div className="relative flex flex-col items-end">
+                                      <div className="w-6 h-6 rounded-full order-last overflow-hidden">
+                                        <img
+                                          className="w-full h-full rounded-full"
+                                          src="default.png"
+                                          alt="User"
+                                        />
+                                      </div>
+                                      <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
+                                        <RenderHtml
+                                          htmldata={data["question"]}
+                                        />
+                                      </div>
                                     </div>
-                                    <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                      <RenderHtml htmldata={data["question"]} />
+
+                                    <div className="relative flex flex-col">
+                                      <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
+                                        <img
+                                          className="w-full h-full rounded-full"
+                                          src="chat.png"
+                                          alt="ChatBot"
+                                        />
+                                      </div>
+                                      <div
+                                        className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                        tabIndex={0}
+                                        ref={divRef}
+                                      >
+                                        {CurrentAnswerIni.length ==
+                                        length_of_obj ? (
+                                          <>
+                                            <Typed
+                                              strings={[data_]}
+                                              typeSpeed={5}
+                                              showCursor={false}
+                                            />
+                                          </>
+                                        ) : (
+                                          <RenderHtml
+                                            htmldata={data["content"]}
+                                          />
+                                        )}
+                                        {/* ============all sorts of btn================ */}
+                                        <Differentbtn data={data["content"]} />
+                                        {/* ============all sorts of btn================ */}
+                                      </div>
                                     </div>
                                   </div>
+                                ));
+                              })()}
+                            </>
+                          ) : null}
 
-                                  <div className="relative flex flex-col">
-                                    <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                      <img
-                                        className="w-full h-full rounded-full"
-                                        src="chat.png"
-                                        alt="ChatBot"
-                                      />
-                                    </div>
-                                    <div
-                                      className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                      tabIndex={0}
-                                      ref={divRef}
-                                    >
-                                    {CurrentAnswerIni.length==length_of_obj
-                                    ?
-                                      <>
-                                      <Typed strings={[data_]} typeSpeed={5} showCursor={false}/>
-                                      </>
-                                    :
-                                      <RenderHtml htmldata={data["content"]} />
-                                    }
-                                    {/* ============all sorts of btn================ */}
-                                      <Differentbtn data={data["content"]}/>
-                                    {/* ============all sorts of btn================ */}
-                                    </div>
-                                  </div>
-                                </div>
-                              ));
-                            })()}
-                                </>
-                            : null}
-
-                        {CurrentQuestionIni ? (
+                          {CurrentQuestionIni ? (
                             <div className="flex flex-col mb-3 mt-4">
                               <div className="relative flex flex-col items-end">
                                 <div className="w-6 h-6 rounded-full order-last overflow-hidden">
@@ -1104,33 +1177,28 @@ const handleChange = (event) => {
                             </div>
                           ) : null}
 
-                          {AfterTypeDontShowIni
-                          ?
-                            null
-                          :
-                          <div className="flex flex-auto flex-col items-center justify-center">
-                            <div className="py-10 text-center">
-                              <img
-                                src="chat-hero.png"
-                                className="w-64 mb-8"
-                                alt="Chat Hero"
-                              />
-                              <h2 className="text-2xl font-bold mb-8">
-                                AI Chat
-                              </h2>
-                              <p className="text-sm font-medium leading-none max-w-[300px]">
-                                Choose a prompt below or write your own to start
-                                chatting with our Best AI.
-                              </p>
+                          {AfterTypeDontShowIni ? null : (
+                            <div className="flex flex-auto flex-col items-center justify-center">
+                              <div className="py-10 text-center">
+                                <img
+                                  src="chat-hero.png"
+                                  className="w-64 mb-8"
+                                  alt="Chat Hero"
+                                />
+                                <h2 className="text-2xl font-bold mb-8">
+                                  AI Chat
+                                </h2>
+                                <p className="text-sm font-medium leading-none max-w-[300px]">
+                                  Choose a prompt below or write your own to
+                                  start chatting with our Best AI.
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          }
-                      </div>
+                          )}
+                        </div>
                       </>
-
-                    ))
-                    }
-                 {/* ====================================================== */}
+                    ))}
+                  {/* ====================================================== */}
                 </div>
                 <div
                   ref={popRef}
@@ -1182,61 +1250,84 @@ const handleChange = (event) => {
 
                       <h3>Browse voice</h3>
                     </button>
-        {/* ==================Tone to show=================== */}
-        {show_summarize_tone
-        ?
-        <>
-        {selectedSummarizes.map((data,index)=>{
-          return (
-            <>
-              <div key={index} className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center">
-                  <div className="mr-2 w-3 h-3 flex items-center justify-center">
-                  <svg  xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 100 125" x="0px" y="0px">
-                    <path d="M12.54,71a33.93,33.93,0,0,0,6.29,3.3L17.18,92a2.5,2.5,0,0,0,2.26,2.72h.24a2.5,2.5,0,0,0,2.49-2.27L23.7,75.88c1.11.28,2.23.54,3.4.74a55.44,55.44,0,0,0,9.46.83q2.31,0,4.57-.21a9.78,9.78,0,0,0,8.61-12,10.6,10.6,0,0,1,.56-2.92L50.79,61a4.5,4.5,0,0,0-.26-3.56,4.41,4.41,0,0,0-2.72-2.21c-3.85-1.06-6.24-3.06-6.93-5.77A36.38,36.38,0,0,0,52.72,49a2.5,2.5,0,0,0,1.92-2.32L55,39.58a14.33,14.33,0,0,0,6-3.23,6.58,6.58,0,0,0,1.43-7.72,8,8,0,0,0-3.06-3.11,15,15,0,0,1-6.91-13.24,40.5,40.5,0,0,0,0-4.67,2.5,2.5,0,0,0-5,.34,35.3,35.3,0,0,1,0,4.1A19.91,19.91,0,0,0,56.59,29.7a4.25,4.25,0,0,1,1.31,1.11,1.61,1.61,0,0,1-.34,1.88A10.56,10.56,0,0,1,52.1,35.1,2.5,2.5,0,0,0,50,37.46l-.31,7a32.38,32.38,0,0,1-8.49,0,4.79,4.79,0,0,0-5.32,5.74c.56,2.67,2.6,7.42,10,9.67l-.3.86a13.87,13.87,0,0,0-.79,5.3,2.61,2.61,0,0,0,.06.31,4.79,4.79,0,0,1-.72,4,4.74,4.74,0,0,1-3.45,2A48.51,48.51,0,0,1,28,71.69a32.42,32.42,0,0,1-12.63-4.84A17,17,0,0,1,9.56,61a2.5,2.5,0,0,0-4.42,2.33A21.87,21.87,0,0,0,12.54,71Z"/>
-                    <path d="M60.38,61.69a2.5,2.5,0,1,0,2.68,4.22,12.4,12.4,0,0,0,4.22-16.36,2.5,2.5,0,1,0-4.39,2.4A7.39,7.39,0,0,1,60.38,61.69Z"/>
-                    <path d="M70.83,76a2.49,2.49,0,0,0,1.56-.55A25.64,25.64,0,0,0,80,45.73a2.5,2.5,0,0,0-4.62,1.91,20.62,20.62,0,0,1-6.16,23.88A2.5,2.5,0,0,0,70.83,76Z"/>
-                    <path d="M89.42,40.31A2.5,2.5,0,0,0,88,43.54a33.73,33.73,0,0,1-9.71,37.63A2.5,2.5,0,1,0,81.49,85,38.74,38.74,0,0,0,92.64,41.76,2.5,2.5,0,0,0,89.42,40.31Z"/>
-                  </svg>
-                    </div>
-                    <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
-                      {data.label}
-                    </div>
-                    <div className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
-                      onClick={() => handleDeleteClick(data.label)}>
-                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M14.87,14.87L1.13,1.13" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
-                          <path d="M1.13,14.87L14.87,1.13" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
-                        </svg>
-                    </div>
-              </div>
-          </>
-          )
-        })}
-        </>
-        :
-          null
-        }
-        {/* ==================Tone to show=================== */}
+                    {/* ==================Tone to show=================== */}
+                    {show_summarize_tone ? (
+                      <>
+                        {selectedSummarizes.map((data, index) => {
+                          return (
+                            <>
+                              <div
+                                key={index}
+                                className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center"
+                              >
+                                <div className="mr-2 w-3 h-3 flex items-center justify-center">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    data-name="Layer 1"
+                                    viewBox="0 0 100 125"
+                                    x="0px"
+                                    y="0px"
+                                  >
+                                    <path d="M12.54,71a33.93,33.93,0,0,0,6.29,3.3L17.18,92a2.5,2.5,0,0,0,2.26,2.72h.24a2.5,2.5,0,0,0,2.49-2.27L23.7,75.88c1.11.28,2.23.54,3.4.74a55.44,55.44,0,0,0,9.46.83q2.31,0,4.57-.21a9.78,9.78,0,0,0,8.61-12,10.6,10.6,0,0,1,.56-2.92L50.79,61a4.5,4.5,0,0,0-.26-3.56,4.41,4.41,0,0,0-2.72-2.21c-3.85-1.06-6.24-3.06-6.93-5.77A36.38,36.38,0,0,0,52.72,49a2.5,2.5,0,0,0,1.92-2.32L55,39.58a14.33,14.33,0,0,0,6-3.23,6.58,6.58,0,0,0,1.43-7.72,8,8,0,0,0-3.06-3.11,15,15,0,0,1-6.91-13.24,40.5,40.5,0,0,0,0-4.67,2.5,2.5,0,0,0-5,.34,35.3,35.3,0,0,1,0,4.1A19.91,19.91,0,0,0,56.59,29.7a4.25,4.25,0,0,1,1.31,1.11,1.61,1.61,0,0,1-.34,1.88A10.56,10.56,0,0,1,52.1,35.1,2.5,2.5,0,0,0,50,37.46l-.31,7a32.38,32.38,0,0,1-8.49,0,4.79,4.79,0,0,0-5.32,5.74c.56,2.67,2.6,7.42,10,9.67l-.3.86a13.87,13.87,0,0,0-.79,5.3,2.61,2.61,0,0,0,.06.31,4.79,4.79,0,0,1-.72,4,4.74,4.74,0,0,1-3.45,2A48.51,48.51,0,0,1,28,71.69a32.42,32.42,0,0,1-12.63-4.84A17,17,0,0,1,9.56,61a2.5,2.5,0,0,0-4.42,2.33A21.87,21.87,0,0,0,12.54,71Z" />
+                                    <path d="M60.38,61.69a2.5,2.5,0,1,0,2.68,4.22,12.4,12.4,0,0,0,4.22-16.36,2.5,2.5,0,1,0-4.39,2.4A7.39,7.39,0,0,1,60.38,61.69Z" />
+                                    <path d="M70.83,76a2.49,2.49,0,0,0,1.56-.55A25.64,25.64,0,0,0,80,45.73a2.5,2.5,0,0,0-4.62,1.91,20.62,20.62,0,0,1-6.16,23.88A2.5,2.5,0,0,0,70.83,76Z" />
+                                    <path d="M89.42,40.31A2.5,2.5,0,0,0,88,43.54a33.73,33.73,0,0,1-9.71,37.63A2.5,2.5,0,1,0,81.49,85,38.74,38.74,0,0,0,92.64,41.76,2.5,2.5,0,0,0,89.42,40.31Z" />
+                                  </svg>
+                                </div>
+                                <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
+                                  {data.label}
+                                </div>
+                                <div
+                                  className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
+                                  onClick={() => handleDeleteClick(data.label)}
+                                >
+                                  <svg
+                                    className="w-4 h-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path
+                                      d="M14.87,14.87L1.13,1.13"
+                                      fill="none"
+                                      stroke="#0D121C"
+                                      strokeWidth="1"
+                                      strokeLinecap="round"
+                                    ></path>
+                                    <path
+                                      d="M1.13,14.87L14.87,1.13"
+                                      fill="none"
+                                      stroke="#0D121C"
+                                      strokeWidth="1"
+                                      strokeLinecap="round"
+                                    ></path>
+                                  </svg>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })}
+                      </>
+                    ) : null}
+                    {/* ==================Tone to show=================== */}
                   </div>
-                  
-                  
+
                   <div className="inputbox relative">
-                  <textarea
-                        className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-hidden min-h-14"
-                        type="text"
-                        rows="1" // Start with one row initially
-                        placeholder="Ask or Search anything"
-                        value={ChatText || chatFill}
-                        onChange={(e) => {
-                          setChatText(e.target.value);
-                          adjustTextareaHeight(e.target);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            submitChatText();
-                          }
-                        }}
-                      />
+                    <textarea
+                      className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-hidden min-h-14"
+                      type="text"
+                      rows="1" // Start with one row initially
+                      placeholder="Ask or Search anything"
+                      value={ChatText || chatFill}
+                      onChange={(e) => {
+                        setChatText(e.target.value);
+                        adjustTextareaHeight(e.target);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          submitChatText();
+                        }
+                      }}
+                    />
                     <button
                       className="absolute top-1/2 right-4 -translate-y-1/2 w-6 h-6"
                       onClick={() => {
@@ -1319,8 +1410,8 @@ const handleChange = (event) => {
             <button
               type="button"
               className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full"
-              onClick={()=>{
-                create_new_room_for_chat()
+              onClick={() => {
+                create_new_room_for_chat();
               }}
             >
               <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -1377,170 +1468,193 @@ const handleChange = (event) => {
                 </div>
               </div>
             </div>
-      {/* =======Title side bar======== */}
+            {/* =======Title side bar======== */}
             <div className="w-full grow overflow-y-auto flex-1">
-              {ChatTitleForSideBar &&
-              <>
-              {ChatTitleForSideBar.map((data,index)=>{
-                  return (
-                    <div key={index} className="cursor-pointer group border-b border-gray-200 flex items-center h-13 bg-gray-100 mt-1 mb-1 hover: bg-[#ffffff]">
-                    <div className="p-4 flex flex-grow justify-between items-center truncate"
-                    >
-                      <div className="truncate text-ellipsis w-full"
-                      onClick={()=>{
-                        get_chat_data_from_side_div_when_click(BACKEND_URL+BACK_END_API_CHAT_DATA,data.id)
-                      }}>
-                        {editingIndex === index ? (
-                          <input
-                            className="text-ellipsis p-1 text-[20px] flex-grow text-xs font-semibold w-full truncate  outline-none focus:ring pointer-events-auto"
-                            aria-label="Chat title"
-                            value={ChatTitleForSideBar[index].title}
-                            onChange={(event) => handleInputChange(index, event)}
-                            onBlur={() => handleInputBlur(index)}
-                            onKeyPress={(event) => {
-                              if (event.key === 'Enter') {
-                                handleInputBlur(index);
-                              }
+              {ChatTitleForSideBar && (
+                <>
+                  {ChatTitleForSideBar.map((data, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="cursor-pointer group border-b border-gray-200 flex items-center h-13 mt-1 mb-1 hover: bg-white"
+                      >
+                        <div className="p-4 flex flex-grow justify-between items-center truncate">
+                          <div
+                            className="truncate text-ellipsis w-full"
+                            onClick={() => {
+                              get_chat_data_from_side_div_when_click(
+                                BACKEND_URL + BACK_END_API_CHAT_DATA,
+                                data.id
+                              );
                             }}
-                            autoFocus
-                          />
-                        ) : (
-                          <span className="p-1 w-full text-ellipsis flex-grow text-xs font-normal" aria-label="Chat title">
-                            {data.title}
-                          </span>
-                        )}
+                          >
+                            {editingIndex === index ? (
+                              <input
+                                className="text-ellipsis p-1 text-[20px] flex-grow text-xs font-semibold w-full truncate  outline-none focus:ring pointer-events-auto"
+                                aria-label="Chat title"
+                                value={ChatTitleForSideBar[index].title}
+                                onChange={(event) =>
+                                  handleInputChange(index, event)
+                                }
+                                onBlur={() => handleInputBlur(index)}
+                                onKeyPress={(event) => {
+                                  if (event.key === "Enter") {
+                                    handleInputBlur(index);
+                                  }
+                                }}
+                                autoFocus
+                              />
+                            ) : (
+                              <span
+                                className="p-1 w-full text-ellipsis flex-grow text-xs font-normal"
+                                aria-label="Chat title"
+                              >
+                                {data.title}
+                              </span>
+                            )}
+                          </div>
+                          <div className="sr-only group-hover:not-sr-only flex">
+                            {editingIndex === index ? (
+                              // Show Save button while editing
+                              <>
+                                <button
+                                  type="button"
+                                  className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                  aria-label="Edit conversation title"
+                                  onClick={() => handleInputBlur(index)}
+                                >
+                                  <svg
+                                    className="w-6 h-6 mt-2"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                                    version="1.1"
+                                    x="0px"
+                                    y="0px"
+                                    viewBox="0 0 100 125"
+                                    xmlSpace="preserve"
+                                  >
+                                    <polygon points="38.6,43.2 32.7,48.7 47.7,64.8 81.1,31.4 75.5,25.7 47.9,53.3 " />
+                                    <path d="M50,83.4c18.5,0,33.4-15,33.4-33.4h-8C75.4,64,64,75.4,50,75.4S24.6,64,24.6,50S36,24.6,50,24.6l0,0v-8  c-18.5,0-33.4,15-33.4,33.4S31.5,83.4,50,83.4L50,83.4z" />
+                                  </svg>
+                                </button>
+                              </>
+                            ) : (
+                              // Show Edit button when not editing
+                              <>
+                                <button
+                                  type="button"
+                                  className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                  aria-label="Edit conversation title"
+                                  onClick={() => handleEditClick(index)}
+                                >
+                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                    <svg
+                                      className="w-4 h-4"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path
+                                        d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                        fill="transparent"
+                                      />
+                                      <path
+                                        d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                  aria-label="Delete conversation"
+                                  onClick={() => {
+                                    // console.log(data.id)
+                                    const formData = {
+                                      trash: true,
+                                    };
+                                    _update_document_data(
+                                      formData,
+                                      data.id,
+                                      "Moved to trash"
+                                    );
+                                  }}
+                                >
+                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                    <svg
+                                      className="w-4 h-4"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path
+                                        d="M.86,4.28H15.14"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                      />
+                                      <path
+                                        d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M6.29,7.34v4.73"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M9.71,7.34v4.73"
+                                        fill="none"
+                                        stroke="#0D121C"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="sr-only group-hover:not-sr-only flex">
-                      {editingIndex === index ? (
-                      // Show Save button while editing
-                      <>
-                        <button
-                          type="button"
-                          className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                          aria-label="Edit conversation title"
-                          onClick={() => handleInputBlur(index)}
-                        >
-                          <svg className="w-6 h-6 mt-2" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125"  xmlSpace="preserve">
-                          <polygon points="38.6,43.2 32.7,48.7 47.7,64.8 81.1,31.4 75.5,25.7 47.9,53.3 "/>
-                          <path d="M50,83.4c18.5,0,33.4-15,33.4-33.4h-8C75.4,64,64,75.4,50,75.4S24.6,64,24.6,50S36,24.6,50,24.6l0,0v-8  c-18.5,0-33.4,15-33.4,33.4S31.5,83.4,50,83.4L50,83.4z"/>
-                        </svg>
-                        </button>
-                        
-                        </>
-                        ) : (
-              // Show Edit button when not editing
-              <>
-                <button
-                  type="button"
-                  className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                  aria-label="Edit conversation title"
-                  onClick={() => handleEditClick(index)}
-                >
-                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                  <svg
-                                    className="w-4 h-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path
-                                      d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                      fill="transparent"
-                                    />
-                                    <path
-                                      d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                    <path
-                                      d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                    </span>
-                </button>
-                <button
-                    type="button"
-                    className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                    aria-label="Delete conversation"
-                    onClick={()=>{
-                      // console.log(data.id)
-                        const formData = {
-                          trash: true
-                        }
-                        _update_document_data(formData, data.id, "Moved to trash")
-                    }}
-                  >
-                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                  <svg
-                                    className="w-4 h-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path
-                                      d="M.86,4.28H15.14"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                    />
-                                    <path
-                                      d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                    <path
-                                      d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                    <path
-                                      d="M6.29,7.34v4.73"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                    <path
-                                      d="M9.71,7.34v4.73"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth={1}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                                </span>
-                        </button>
+                    );
+                  })}
                 </>
-                      )}
-                      </div>
-                    </div>
-                    </div>
-                  )
-                })}
-              </>
-              }
-              
+              )}
             </div>
-      {/* =============== */}
+            {/* =============== */}
           </div>
         </div>
       </div>
-{/* =====================Browse prompts ============ */}
+      {/* =====================Browse prompts ============ */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -1579,14 +1693,14 @@ const handleChange = (event) => {
                 </svg>
               </span>
               <input
-                  type="search"
-                  className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
-                  placeholder='Try "Sales" or "Email"'
-                  autoComplete="off"
-                  data-hj-allow="true"
-                  value={search_chat_template} // Use the search_chat_template value here
-                  onChange={handleChange}
-                />
+                type="search"
+                className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
+                placeholder='Try "Sales" or "Email"'
+                autoComplete="off"
+                data-hj-allow="true"
+                value={search_chat_template} // Use the search_chat_template value here
+                onChange={handleChange}
+              />
             </div>
             <div
               onClick={handleClose}
@@ -1596,281 +1710,382 @@ const handleChange = (event) => {
             </div>
           </div>
           <div className="flex w-full items-start justify-start">
-           {/* =================the first template name================= */}
-           <div className="w-3/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 pt-3 pr-3">
-              
-              <div className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize hover:bg-blue-900 "
-              onClick={()=>{
-                set_show_only_custom(true)
-              }}>
+            {/* =================the first template name================= */}
+            <div className="w-3/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 pt-3 pr-3">
+              <div
+                className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize hover:bg-blue-900 "
+                onClick={() => {
+                  set_show_only_custom(true);
+                }}
+              >
                 Custom
               </div>
 
               <div className="my-4 opacity-40">
                 <div className="border-b border-purple-100 h-0 w-full" />
               </div>
-              {Chat_Template_Title &&
-              <>
-                {Chat_Template_Title.length>0
-                ?
-                  <>
-                  {Chat_Template_Title.map((data,index)=>{
-                      return (
-                        <>
-                        <div key={index}>
-                              <div  className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize bg-blue-900 hover:bg-blue-900"
-                              onClick={()=>{
-                              second_layer_template(data.id)
-                              set_show_only_custom(false)
-                            }}>
-                                {data.description}
-                              </div>  
-                        </div>
-                        </>
-                      )
-                    })}   
-                  </>
-                :
-                  null
-                }
-              </>
-              }
-              
-            </div>
-           {/* =================the first template name================= */}
-
-           
-           {/* ====================custome template===================== */}
-
-           {show_only_custom
-           ?
-            <>
-              <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
-              {show_create_input
-              ?
-                  <>
-                  <input
-                    type="text"
-                    className="mb-2 p-3 text-sm text-black border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0"
-                    placeholder="Title of Template"
-                    autoComplete="off"
-                    value={newTitleName}
-                    onChange={handleNewTitleNameChange}
-                  />
-                  </>
-                :
-                  <>
-                      <button type="button" className="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
-                      onClick={showinputtocreate}  
-                      >
-                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        + Create Custom template
-                      </span>
-                      </button>
-                  </>
-              }
-              {custome_chat_template &&
+              {Chat_Template_Title && (
                 <>
-                  {custome_chat_template.length>0
-                  ?
+                  {Chat_Template_Title.length > 0 ? (
                     <>
-                    
-                    {custome_chat_template.map((data,index)=>{
-                          return (
-                            <>
-                            <div key={index} className="w-full grow overflow-y-auto flex-1">
-                              <div className="cursor-pointer group border-b mb-1 break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800">
-                                <div className="flex flex-grow justify-between items-center truncate">
-                                  {EditCustomTemplateEditingTitleIndex === index ? (
-                                    <>
-                                    <div
-                                      className="truncate text-ellipsis w-full"
-                                    >
-                                      <input
-                                        type="text"
-                                        value={EditCustomTemplateEditedTitle}
-                                        onChange={EditCustomTemplateHandleTitleChange}
-                                      />
-                                      </div>
-                                      <div className="sr-only group-hover:not-sr-only flex">
-                                      <button 
-                                      className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                      onClick={() => {
-                                          EditCustomTemplateHandleSaveClick(index,data.id)
-                                      }}
-                                      >
-                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">     
-                                          <svg className="w-4 h-4"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#292D32"/>
-                                          </svg>
-                                        </span>
-                                      </button>
-                                      <button 
-                                      className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                      onClick={() => {
-                                        setEditCustomTemplateEditingTitleIndex(null)
-                                      }}
-                                      >
-                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                          <svg className="w-4 h-4 mt-[2px]" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" xmlnsSerif="http://www.serif.com/" viewBox="0 0 20 25" version="1.1" xmlSpace="preserve"  x="0px" y="0px" fillRule="evenodd" clipRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2">
-                                          <g transform="matrix(1,0,0,1,-350,-30)">
-                                              <path d="M360,42.472L367.528,50L370,47.528L362.472,40L370,32.472L367.528,30L360,37.528L352.472,30L350,32.472L357.528,40L350,47.528L352.472,50L360,42.472Z" fillRule="nonzero"/>
-                                          </g>
-                                        </svg>
-                                        </span>
-                                      </button>
-                                    </div>
-                                    </>
-                                  ) : (
-                                    <>
-                                    <div
-                                      className="truncate text-ellipsis w-full"
-                                      onClick={() => {
-                                        get_the_inner_value_of_custom_template(data.id);
-                                      }}
-                                    >
-                                      {data.title}
-                                    </div>
-                                    <div className="sr-only group-hover:not-sr-only flex">
-                                      <button
-                                        type="button"
-                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                        onClick={() => EditCustomTemplateHandleEditClick(index)}
-                                      >
-                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                          <path d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z" fill="transparent"></path>
-                                          <path d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                          <path d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        </svg>
-                                    </span>
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                        onClick={() => {
-                                          delete_the_custom_template(data.id)
-                                        }}
-                                      >
-                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                          <path d="M.86,4.28H15.14" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round"></path>
-                                          <path d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                          <path d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                          <path d="M6.29,7.34v4.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                          <path d="M9.71,7.34v4.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        </svg>
-                                    </span>
-                                      </button>
-                                    </div>
-                                    </>
-                                  )}
-                                </div>
+                      {Chat_Template_Title.map((data, index) => {
+                        return (
+                          <>
+                            <div key={index}>
+                              <div
+                                className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize bg-blue-900 hover:bg-blue-900"
+                                onClick={() => {
+                                  second_layer_template(data.id);
+                                  set_show_only_custom(false);
+                                }}
+                              >
+                                {data.description}
                               </div>
                             </div>
                           </>
-                          )
-                        })}
+                        );
+                      })}
                     </>
-                  :
-                    null
-                  }
+                  ) : null}
                 </>
-              }
-                
-              </div>
+              )}
+            </div>
+            {/* =================the first template name================= */}
+
             {/* ====================custome template===================== */}
-            </>
-           :
-            <>
-                {/* =================the second layer template name================= */}
+
+            {show_only_custom ? (
+              <>
                 <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
-                      
-                {second_layer_title &&
+                  {show_create_input ? (
                     <>
-                    {Chat_Template_Title.length>0
-                      ?
-                      <>
-                        {second_layer_title.map((data,index)=>{
+                      <input
+                        type="text"
+                        className="mb-2 p-3 text-sm text-black border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0"
+                        placeholder="Title of Template"
+                        autoComplete="off"
+                        value={newTitleName}
+                        onChange={handleNewTitleNameChange}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                        onClick={showinputtocreate}
+                      >
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                          + Create Custom template
+                        </span>
+                      </button>
+                    </>
+                  )}
+                  {custome_chat_template && (
+                    <>
+                      {custome_chat_template.length > 0 ? (
+                        <>
+                          {custome_chat_template.map((data, index) => {
                             return (
                               <>
-                                <div key={index} className="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
-                                onClick={()=>{
-                                    get_value_of_template(data.id)
-                                  }}>
-                                    {data.chat_first_step_template_name}
+                                <div
+                                  key={index}
+                                  className="w-full grow overflow-y-auto flex-1"
+                                >
+                                  <div className="cursor-pointer group border-b mb-1 break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800">
+                                    <div className="flex flex-grow justify-between items-center truncate">
+                                      {EditCustomTemplateEditingTitleIndex ===
+                                      index ? (
+                                        <>
+                                          <div className="truncate text-ellipsis w-full">
+                                            <input
+                                              type="text"
+                                              value={
+                                                EditCustomTemplateEditedTitle
+                                              }
+                                              onChange={
+                                                EditCustomTemplateHandleTitleChange
+                                              }
+                                            />
+                                          </div>
+                                          <div className="sr-only group-hover:not-sr-only flex">
+                                            <button
+                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                              onClick={() => {
+                                                EditCustomTemplateHandleSaveClick(
+                                                  index,
+                                                  data.id
+                                                );
+                                              }}
+                                            >
+                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                <svg
+                                                  className="w-4 h-4"
+                                                  viewBox="0 0 24 24"
+                                                  fill="none"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                  <path
+                                                    d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z"
+                                                    fill="#292D32"
+                                                  />
+                                                </svg>
+                                              </span>
+                                            </button>
+                                            <button
+                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                              onClick={() => {
+                                                setEditCustomTemplateEditingTitleIndex(
+                                                  null
+                                                );
+                                              }}
+                                            >
+                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                <svg
+                                                  className="w-4 h-4 mt-[2px]"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                                                  xmlnsSerif="http://www.serif.com/"
+                                                  viewBox="0 0 20 25"
+                                                  version="1.1"
+                                                  xmlSpace="preserve"
+                                                  x="0px"
+                                                  y="0px"
+                                                  fillRule="evenodd"
+                                                  clipRule="evenodd"
+                                                  strokeLinejoin="round"
+                                                  strokeMiterlimit="2"
+                                                >
+                                                  <g transform="matrix(1,0,0,1,-350,-30)">
+                                                    <path
+                                                      d="M360,42.472L367.528,50L370,47.528L362.472,40L370,32.472L367.528,30L360,37.528L352.472,30L350,32.472L357.528,40L350,47.528L352.472,50L360,42.472Z"
+                                                      fillRule="nonzero"
+                                                    />
+                                                  </g>
+                                                </svg>
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div
+                                            className="truncate text-ellipsis w-full"
+                                            onClick={() => {
+                                              get_the_inner_value_of_custom_template(
+                                                data.id
+                                              );
+                                            }}
+                                          >
+                                            {data.title}
+                                          </div>
+                                          <div className="sr-only group-hover:not-sr-only flex">
+                                            <button
+                                              type="button"
+                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                              onClick={() =>
+                                                EditCustomTemplateHandleEditClick(
+                                                  index
+                                                )
+                                              }
+                                            >
+                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                <svg
+                                                  className="w-4 h-4"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  viewBox="0 0 16 16"
+                                                >
+                                                  <path
+                                                    d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                                    fill="transparent"
+                                                  ></path>
+                                                  <path
+                                                    d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                  <path
+                                                    d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                </svg>
+                                              </span>
+                                            </button>
+                                            <button
+                                              type="button"
+                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                              onClick={() => {
+                                                delete_the_custom_template(
+                                                  data.id
+                                                );
+                                              }}
+                                            >
+                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                <svg
+                                                  className="w-4 h-4"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  viewBox="0 0 16 16"
+                                                >
+                                                  <path
+                                                    d="M.86,4.28H15.14"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                  ></path>
+                                                  <path
+                                                    d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                  <path
+                                                    d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                  <path
+                                                    d="M6.29,7.34v4.73"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                  <path
+                                                    d="M9.71,7.34v4.73"
+                                                    fill="none"
+                                                    stroke="#0D121C"
+                                                    strokeWidth="1"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  ></path>
+                                                </svg>
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
                                 </div>
                               </>
-                            )
-                          })}   
-                      </>
-                      :
-                        <>
-                          <LoadingPage/>
+                            );
+                          })}
                         </>
-                    }
+                      ) : null}
                     </>
-                    }
-
+                  )}
+                </div>
+                {/* ====================custome template===================== */}
+              </>
+            ) : (
+              <>
+                {/* =================the second layer template name================= */}
+                <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
+                  {second_layer_title && (
+                    <>
+                      {Chat_Template_Title.length > 0 ? (
+                        <>
+                          {second_layer_title.map((data, index) => {
+                            return (
+                              <>
+                                <div
+                                  key={index}
+                                  className="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
+                                  onClick={() => {
+                                    get_value_of_template(data.id);
+                                  }}
+                                >
+                                  {data.chat_first_step_template_name}
+                                </div>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <>
+                          <LoadingPage />
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
                 {/* =================the second layer template name================= */}
-            </>
-           }
+              </>
+            )}
 
-          {show_only_custom
-          ?
-          <>
-              {show_create_input
-              ?
-                <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-                      <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-                      
-                        <div className="editor-textarea h-full w-full">
+            {show_only_custom ? (
+              <>
+                {show_create_input ? (
+                  <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                    <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
+                      <div className="editor-textarea h-full w-full">
+                        <div
+                          style={{
+                            maxHeight: 400,
+                            minHeight: 300,
+                            height: "100%",
+                          }}
+                          className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
+                          id="custom-prompt-editor-preview"
+                        >
                           <div
-                            style={{ maxHeight: 400, minHeight: 300, height: "100%" }}
-                            className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
-                            id="custom-prompt-editor-preview"
+                            translate="no"
+                            className="ProseMirror [&_p]:py-1.5"
+                            contentEditable="false"
                           >
-                            <div
-                              translate="no"
-                              className="ProseMirror [&_p]:py-1.5"
-                              contentEditable="false"
-                            >
-                              {/* =============typing description=================== */}
-                                <textarea
-                                  className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
-                                  placeholder="Create your own template
+                            {/* =============typing description=================== */}
+                            <textarea
+                              className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
+                              placeholder="Create your own template
                                   Start typing..."
-                                  value={newDescription}
-                                  onChange={handleNewDescriptionChange}
-                                />
-                              {/* =============typing description=================== */}
-                            </div>
-                          </div>
-                          <div className="flex w-full flex-row justify-between">
-                            <div />
+                              value={newDescription}
+                              onChange={handleNewDescriptionChange}
+                            />
+                            {/* =============typing description=================== */}
                           </div>
                         </div>
+                        <div className="flex w-full flex-row justify-between">
+                          <div />
+                        </div>
                       </div>
-                </div>
-              :
-                <>
-                  {/* ====================Third layer which is value of chat template============ */}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* ====================Third layer which is value of chat template============ */}
 
-                  <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                    <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
                       <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-                      <span className="text-red-500 font-semibold text-[20px] sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
-                      Edit or Use ( Template )
-                      <div
-                        className="ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border-2 bg-transparent text-xs font-bold text-grey-200"
-                        role="button"
-                      >
-                        i
-                      </div>
-                    </span>
+                        <span className="text-red-500 font-semibold text-[20px] sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
+                          Edit or Use ( Template )
+                          <div
+                            className="ml-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border-2 bg-transparent text-xs font-bold text-grey-200"
+                            role="button"
+                          >
+                            i
+                          </div>
+                        </span>
                         <div className="editor-textarea h-full w-full">
                           <div
-                            style={{ maxHeight: 400, minHeight: 300, height: "100%" }}
+                            style={{
+                              maxHeight: 400,
+                              minHeight: 300,
+                              height: "100%",
+                            }}
                             className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
                             id="custom-prompt-editor-preview"
                           >
@@ -1880,18 +2095,15 @@ const handleChange = (event) => {
                               contentEditable="false"
                             >
                               {/* =============typing description=================== */}
-                              {innervalueofcustomechattemplate==''
-                              ?
-                                null
-                              :
-                              <textarea
-                                className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
-                                value={innervalueofcustomechattemplate}
-                                onChange={handleChangeDescriptions}
-                                placeholder="Your custome template
+                              {innervalueofcustomechattemplate == "" ? null : (
+                                <textarea
+                                  className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
+                                  value={innervalueofcustomechattemplate}
+                                  onChange={handleChangeDescriptions}
+                                  placeholder="Your custome template
                                 Start typing..."
-                              />
-                              }
+                                />
+                              )}
                               {/* =============typing description=================== */}
                             </div>
                           </div>
@@ -1901,15 +2113,15 @@ const handleChange = (event) => {
                         </div>
                       </div>
                     </div>
-                  {/* ====================Third layer which is value of chat template End========= */}
-                </>
-              }
+                    {/* ====================Third layer which is value of chat template End========= */}
+                  </>
+                )}
               </>
-          :
-            <>
-              {/* ====================Third layer which is value of chat template============ */}
+            ) : (
+              <>
+                {/* ====================Third layer which is value of chat template============ */}
 
-              <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
                   <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
                     <span className="text-red-500 sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
                       PREVIEW (Template)
@@ -1922,7 +2134,11 @@ const handleChange = (event) => {
                     </span>
                     <div className="editor-textarea h-full w-full">
                       <div
-                        style={{ maxHeight: 400, minHeight: 300, height: "100%" }}
+                        style={{
+                          maxHeight: 400,
+                          minHeight: 300,
+                          height: "100%",
+                        }}
                         className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
                         id="custom-prompt-editor-preview"
                       >
@@ -1931,11 +2147,9 @@ const handleChange = (event) => {
                           className="ProseMirror [&_p]:py-1.5"
                           contentEditable="false"
                         >
-                          {value_of_template_to_use &&
-                            <>
-                              {value_of_template_to_use}
-                            </>
-                          }
+                          {value_of_template_to_use && (
+                            <>{value_of_template_to_use}</>
+                          )}
                         </div>
                       </div>
                       <div className="flex w-full flex-row justify-between">
@@ -1944,71 +2158,71 @@ const handleChange = (event) => {
                     </div>
                   </div>
                 </div>
-              {/* ====================Third layer which is value of chat template End========= */}
-            </>
-          }
-
+                {/* ====================Third layer which is value of chat template End========= */}
+              </>
+            )}
           </div>
         </DialogContent>
         <DialogActions>
-        {show_create_input
-        ?
-        <>
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
-            onClick={()=>{
-              create_new_template()
-             }}
-          >
-            create
-          </button>
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
-            onClick={()=>{setshow_create_input(false)}}
-          >
-            Cancel
-          </button>
-        </>
-        :null}
-        {show_button_to_edit_text_area_description
-        ?
-        <>
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
-            onClick={()=>{
-              update_the_description()
-             }}
-          >
-            update
-          </button>
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
-            onClick={()=>{
-              setinnervalueofcustomechattemplate(previousinnervalueofcustomechattemplate)
-              setshow_button_to_edit_text_area_description(false)
-            }}
-          >
-           reset
-          </button>
-        </>
-        :null}
+          {show_create_input ? (
+            <>
+              <button
+                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
+                onClick={() => {
+                  create_new_template();
+                }}
+              >
+                create
+              </button>
+              <button
+                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
+                onClick={() => {
+                  setshow_create_input(false);
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : null}
+          {show_button_to_edit_text_area_description ? (
+            <>
+              <button
+                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
+                onClick={() => {
+                  update_the_description();
+                }}
+              >
+                update
+              </button>
+              <button
+                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
+                onClick={() => {
+                  setinnervalueofcustomechattemplate(
+                    previousinnervalueofcustomechattemplate
+                  );
+                  setshow_button_to_edit_text_area_description(false);
+                }}
+              >
+                reset
+              </button>
+            </>
+          ) : null}
 
-        {show_only_custom
-        ?
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
-            onClick={use_custome_text}
-          >
-            Use Prompt
-          </button>
-        :
-          <button
-            className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
-            onClick={use_choosen_text_to_question}
-          >
-            Use Prompt
-          </button>
-        }
+          {show_only_custom ? (
+            <button
+              className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
+              onClick={use_custome_text}
+            >
+              Use Prompt
+            </button>
+          ) : (
+            <button
+              className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
+              onClick={use_choosen_text_to_question}
+            >
+              Use Prompt
+            </button>
+          )}
         </DialogActions>
       </Dialog>
 
@@ -2109,14 +2323,12 @@ const handleChange = (event) => {
                   TONE
                 </div>
 
-                  <div className="flex">
-                  {brandVoice &&
-
-                  <>
-                    {brandVoice.length>0
-                    ?
-                      <>
-                      {brandVoice.map((data, index) => (
+                <div className="flex">
+                  {brandVoice && (
+                    <>
+                      {brandVoice.length > 0 ? (
+                        <>
+                          {brandVoice.map((data, index) => (
                             <div key={index}>
                               <ul className="py-1">
                                 <label className="flex text-center items-center rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 mx-4 px-4 py-2 text-sm cursor-pointer">
@@ -2126,65 +2338,63 @@ const handleChange = (event) => {
                                     id={data.id}
                                     className="form-checkbox focus:ring-blue-500 h-4 w-4 mr-2 text-blue-800 border-gray-300"
                                     value={data.brand_voice}
-                                    checked={selectedSummarizes.some((item) => item.label === data.brand_voice)}
+                                    checked={selectedSummarizes.some(
+                                      (item) => item.label === data.brand_voice
+                                    )}
                                     onChange={handleBrandVoiceChange}
-                    
                                   />
                                   <div className="truncate text-ellipsis max-w-[12rem] @md:max-w-[40rem]">
                                     {data.brand_voice}
                                   </div>
                                   <div className="ml-2">
-                              <svg
-                                className="w-4 h-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
-                              >
-                                <path
-                                  d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z"
-                                  fill="none"
-                                  stroke="#9CA3AF"
-                                  strokeWidth={1}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M6.57,7.17h1.71v3.96"
-                                  fill="none"
-                                  stroke="#9CA3AF"
-                                  strokeWidth={1}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M6.58,11.13h3.4"
-                                  fill="none"
-                                  stroke="#9CA3AF"
-                                  strokeWidth={1}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M8.29,4.25v.37"
-                                  fill="none"
-                                  stroke="#9CA3AF"
-                                  strokeWidth={1}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
+                                    <svg
+                                      className="w-4 h-4"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path
+                                        d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z"
+                                        fill="none"
+                                        stroke="#9CA3AF"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M6.57,7.17h1.71v3.96"
+                                        fill="none"
+                                        stroke="#9CA3AF"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M6.58,11.13h3.4"
+                                        fill="none"
+                                        stroke="#9CA3AF"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M8.29,4.25v.37"
+                                        fill="none"
+                                        stroke="#9CA3AF"
+                                        strokeWidth={1}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </div>
                                 </label>
                               </ul>
                             </div>
                           ))}
-                      </>
-                    :
-                      null
-                    }
-                  </>
-                  }
-                  </div>
-
+                        </>
+                      ) : null}
+                    </>
+                  )}
+                </div>
               </div>
               <div>
                 <div className="mx-4 text-gray-500 text-xs my-3 pb-2 border-b border-gray-200">
@@ -2283,9 +2493,9 @@ const handleChange = (event) => {
             <button
               type="button"
               className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 justify-end"
-              onClick={()=>{
-                set_show_summarize_tone(true)
-                handlePopoverClose()
+              onClick={() => {
+                set_show_summarize_tone(true);
+                handlePopoverClose();
               }}
             >
               <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -2296,11 +2506,9 @@ const handleChange = (event) => {
         </div>
       </Popover>
 
-      <Toaster/>
+      <Toaster />
 
-
-{/* =====================Browse prompts ============ */}
-
+      {/* =====================Browse prompts ============ */}
     </>
   );
 };
