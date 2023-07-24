@@ -35,8 +35,8 @@ import ResponseTemplate from "./ResponseTemplate";
 
 const SingleTemplate = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
-  const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateData, setTemplateData] = useState(null);
+  const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateResponseData, setTemplateResponseData] = useState(null);
 
   const [ProjectId, setProjectId] = useState(null);
@@ -49,7 +49,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [Outputlanguage, setOutputlanguage] = useState([]);
   const [OutputlanguageChoice, setOutputlanguageChoice] = useState("English");
 
-  const [inputs, setInputs] = useState([]);
+  // const [inputs, setInputs] = useState([]);
+  const [inputs, setInputs] = useState([{ key: "", value: "" }]);
+
   const [multipleInputForms, setMultipleInputForms] = useState({});
 
   const [ShowHideHistory, setShowHideHistory] = useState(false);
@@ -130,6 +132,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const handleClick = async (id_of_template) => {
     // console.log(TemplateData[0]["title"])
+    // console.log(inputs)
     // return true
     const divElement = document.getElementById(id_of_template);
     const inputElements = divElement.getElementsByTagName("input");
@@ -143,19 +146,20 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }, {});
     let isFormDataValid = true;
     formData["language"] =
-      "Generate whole text in " + OutputlanguageChoice + " Language";
+    "Generate whole text in " + OutputlanguageChoice + " Language";
     formData["output_results"] = ContentOutputNumber.toString();
     formData["generate"] = TemplateData[0]["title"];
-
+    formData["ids"] = TemplateData[0]["id"];
+    
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
-
+    
     // return true
     for (const [key, value] of Object.entries(formData)) {
-      if (value === "") {
+      if (key === "") {
         delete formData[key];
       }
     }
-
+  
     Object.entries(formData).forEach(([key, value_d]) => {
       if (key.match(keyToCheck)) {
         // Case-sensitive match
@@ -166,18 +170,30 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       }
     });
 
-    if (inputs.length > 0) {
-      formData["inputs"] = inputs;
-    }
+    // if (inputs.length > 0) {
+    //   formData["inputs"] = inputs;
+    // }
 
-    Object.entries(formData).forEach(([key, value__d]) => {
-      const trimmedValue__d = value__d.trim();
-      if (trimmedValue__d === "") {
-        delete formData[key]; // Remove the key from formData
-      }
-    });
+    // Object.entries(formData).forEach(([key, value__d]) => {
+    //   const trimmedValue__d = value__d.trim();
+    //   if (trimmedValue__d === "") {
+    //     delete formData[key]; // Remove the key from formData
+    //   }
+    // });
+
     if (value != null) {
       formData["tone"] = value.value;
+    }
+
+    const key_feature = inputs;
+    if (
+      key_feature.length === 1 &&
+      key_feature[0].key === "" &&
+      key_feature[0].value === ""
+    ) {} else {
+      if(Object.keys(key_feature).length != 0){
+        formData["key_feature"] = key_feature;
+      }
     }
 
     if (isFormDataValid) {
@@ -204,10 +220,12 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   //     console.log(ProjectId);
   //   }, [ProjectId]);
 
-  const get_history = async () => {
-    const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY, AUTH_TOKEN);
-    if ((resp.status = 200)) {
-      set_history_answer(resp.data);
+  const get_history = async (template_id) => {
+    if(template_id!=null){
+      const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY+"/"+template_id, AUTH_TOKEN);
+      if ((resp.status = 200)) {
+        set_history_answer(resp.data);
+      }
     }
   };
 
@@ -225,7 +243,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         }
       }
     }
-    get_history();
+    get_history(template_id);
   }, [TemplateData]);
 
   // useEffect(()=>{
@@ -251,10 +269,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     get_language();
   }, []);
 
-  const handleMultipleInputChange = (event, index) => {
-    const { value } = event.target;
+  const handleMultipleInputChange = (event, index, key) => {
     const newInputs = [...inputs];
-    newInputs[index] = value;
+    newInputs[index] = { key, value: event.target.value };
     setInputs(newInputs);
   };
 
@@ -330,6 +347,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     // console.log("options : ", options[0]["value"]);
     save_select_fields(options[0]["value"]);
   }, [options]);
+
+
+
+
 
   return (
     <>
@@ -475,13 +496,27 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                               placeholder={displayText(
                                                 index_inner
                                               )}
-                                              value={input}
+                                              value={input.value}
                                               onChange={(event) =>
                                                 handleMultipleInputChange(
                                                   event,
-                                                  index_inner
+                                                  index_inner,
+                                                  `key_${index_inner + 1}`
                                                 )
                                               }
+                                              // id={`example-${index_inner + 1}`}
+                                              // type="text"
+                                              // className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                              // placeholder={displayText(
+                                              //   index_inner
+                                              // )}
+                                              // value={input.value}
+                                              // onChange={(event) =>
+                                              //   handleMultipleInputChange(
+                                              //     event,
+                                              //     index_inner
+                                              //   )
+                                              // }
                                             />
                                           </div>
                                         </div>
@@ -515,13 +550,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                   </div>
                                 </div>
                               ))}
+      
 
                               {/* + button */}
                               <span className="self-end">
                                 <button
                                   type="button"
                                   className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                  onClick={handleAdd}
+                                  // onClick={handleAdd}
+                                  onClick={() => setInputs([...inputs, { key: "", value: "" }])}
                                 >
                                   +
                                 </button>
@@ -630,8 +667,17 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                       </div>
                     </div>
                   </div>
+                  <div className="flex justify-center">
+                    <button type="button"
+                      className="text-[#007A7A] font-semibold hover:text-green-600"
+                    onClick={()=>{
+                      navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
+                    }}>
+                      Save this  template as custom
+                    </button>
+                  </div>
                 </div>
-
+                 
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
                   <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
@@ -710,7 +756,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                     <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        get_history();
+                        get_history(template_id);
                         setShowHideHistory(false);
                         // setTemplateResponseData(null)
                       }}
@@ -722,7 +768,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                     <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        get_history();
+                        get_history(template_id);
                         setShowHideHistory(true);
                         // setTemplateResponseData(null)
                       }}

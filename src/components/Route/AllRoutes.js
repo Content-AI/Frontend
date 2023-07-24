@@ -20,6 +20,7 @@ import ListOfDocument from "../pages/Template/Document/ListOfDocument";
 import CreateNewContent from "../pages/CreateNewContent";
 import FolderData from "../pages/Projects/FolderData";
 import Brandvoice from "../pages/brandvoice/Brandvoice";
+import BuildcustomTemplate from "../pages/Template/BuildcustomTemplate/BuildcustomTemplate";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -98,6 +99,10 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route
               path="/template_data/:document_id"
               element={<EditDocuments AUTH_TOKEN={TOKEN} />}
+            />
+            <Route
+              path="/custome_template/:template_id"
+              element={<BuildcustomTemplate AUTH_TOKEN={TOKEN} />}
             />
 
             <Route path="/*" element={<Home />} />
