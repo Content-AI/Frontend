@@ -35,7 +35,9 @@ import { postData } from '../../../apis/apiService';
 
 const ResponseTemplate = (prop) => {
 
-    // console.log(prop)
+    // console.log("prop : ",prop)
+    // prop.r_custome=="user"
+
 
     const textRef = useRef(null);
     let navigate = useNavigate();
@@ -98,7 +100,7 @@ const ResponseTemplate = (prop) => {
             if(resp.status==201){
                 dispatch(_load_screen_(false))
                 dispatch(_message_(""))
-                navigate(`/template_data/${resp.data["id"]}?template_editing=edit_by_user&template=${template_id}`)
+                navigate(`/template_data/${resp.data["id"]}?template_editing=edit_by_user&template=${template_id}&custome=${prop.r_custome}`)
 
             }else{
                 notifyerror("something went wrong refresh page")

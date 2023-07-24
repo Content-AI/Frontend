@@ -6,7 +6,7 @@ import Editor from './EditorWithUseQuill';
 import { useParams } from 'react-router-dom';
 
 import { fetchData, patchData,postData } from "../../../../apis/apiService";
-import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_SELECT_FIELD,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
+import { BACKEND_URL, BACK_END_API_DOCUMENTS,BACK_END_API_CUSTOM_TEMPLATE,BACK_END_API_GET_CUSTOM_TEMPLATE,BACK_END_API_SELECT_FIELD,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +46,8 @@ export default function EditDocuments() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const templateValue = searchParams.get('template');
+
+  const custome = searchParams.get('custome');
 
 
   let TOKEN = useSelector(
@@ -147,13 +149,10 @@ export default function EditDocuments() {
 
   const get_document_content = async (document_id, templateValue) => {
     const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + document_id + "/", TOKEN)
-    const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_INNER_TEMPLATE + templateValue, TOKEN)
+
     try {
       if (resp.status == 200) {
         const res_data = resp.data?.document_content
-        // const formattedData = res_data.replace(/\n/g, '<br>');
-        // dispatch(setText(formattedData));
-        // setDelta(formattedData)
         const newDelta = {
           ops: [{ insert: res_data }],
         };
@@ -166,20 +165,36 @@ export default function EditDocuments() {
       } else {
         navigate("/template")
       }
-
-      if (resp_template_data.status == 200) {
-        setTemplateData(resp_template_data.data)
-      }else{
-        // navigate("/template")
-          const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
-          if(res_template.status==200){
-            setWholeTemplate(res_template.data)
-          }
-      }
     } catch (e) {
       notifyerror("something went wrong refresh page")
     }
 
+  }
+
+
+  const get_custom_template_data = async(template_id) => {
+    console.log('get_cusotm_template_data : ',template_id)
+    const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_GET_CUSTOM_TEMPLATE + templateValue, TOKEN)
+    if(resp_template_data.status == 200) {
+      setTemplateData(resp_template_data.data)
+    }else{
+      const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+      if(res_template.status==200){
+        setWholeTemplate(res_template.data)
+      }
+    }
+  }
+  const get_normal_template = async(template_id) => {
+    console.log('get_normal_template : ',template_id)
+    const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id, TOKEN)
+    if(resp_template_data.status == 200) {
+      setTemplateData(resp_template_data.data)
+    }else{
+      const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+      if(res_template.status==200){
+        setWholeTemplate(res_template.data)
+      }
+    }
   }
 
   const WholeTemplateApi = async() =>{
@@ -207,6 +222,11 @@ export default function EditDocuments() {
   useEffect(() => {
     if (document_id.length > 0) {
       get_document_content(document_id, templateValue)
+      if(custome=="user"){
+        get_custom_template_data(templateValue)
+      }else{
+        get_normal_template(templateValue)
+      }
       get_history(templateValue)
     }
   }, [])

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { BACKEND_URL,BACK_END_API_TEMPLATE ,BACK_END_API_CATEGORIES} from "../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_TEMPLATE ,BACK_END_API_CATEGORIES, BACK_END_API_CUSTOM_TEMPLATE} from "../../../apis/urls";
 import { fetchData } from "../../../apis/apiService";
 import LoadingPage from "../../LoadingPage";
 import { useNavigate } from "react-router-dom";
@@ -206,6 +206,12 @@ const Template = ({AUTH_TOKEN}) => {
   };
 
   const handleCategoryClick = (selectedCategory) => {
+    console.log("selectedCategory",selectedCategory)
+    if(selectedCategory=="custom"){
+      setCategoryTmp(["custom"]);
+      get_custome_template()
+      return true
+    }
     if (selectedCategory === "all") {
       if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
         // If only "All" is selected, deselect it
@@ -229,17 +235,18 @@ const Template = ({AUTH_TOKEN}) => {
     }
   };
 
+
   useEffect(() => {
     if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
       setSelectedCategories("All");
-    } else {
+    }else{
       setSelectedCategories(
         categoryTmp
-          .filter((category) => category !== "all")
-          .map(capitalizeFrontText)
-          .join(",")
-      );
-    }
+        .filter((category) => category !== "all")
+        .map(capitalizeFrontText)
+        .join(",")
+        );
+      }
   }, [categoryTmp]);
 
   const get_template_categories_new = async(url,token,category) =>{
@@ -251,12 +258,25 @@ const Template = ({AUTH_TOKEN}) => {
     }
   }
 
+
   useEffect(()=>{
     if(selectedCategories!=null){
-      console.log("selectedCategories ; ",selectedCategories)
-      get_template_categories_new(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,selectedCategories)
+      if(categoryTmp!="custom"){
+        get_template_categories_new(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,selectedCategories)
+      }
     }
   },[selectedCategories])
+
+
+
+  // =============get the custom template===========
+  const get_custome_template = async() =>{
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_CUSTOM_TEMPLATE,AUTH_TOKEN)
+    if(resp.status=200){
+      settemplateData(resp.data)
+    }
+  }
+
 
   return (
     <div className="w-full ">
@@ -294,21 +314,23 @@ const Template = ({AUTH_TOKEN}) => {
         {category.slice()
         .sort((a, b) => a.localeCompare(b)) // Sort the categories in ascending order
         .map((item, index) => (
-          <button
-            key={index}
-            className={clsx(
-              "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
-              {
-                "active text-white bg-blue border-blue": categoryTmp.includes(item),
-                "hover:bg-blue/10": !categoryTmp.includes(item),
-              }
-            )}
-            onClick={() => {
-              handleCategoryClick(item);
-            }}
-          >
-            {capitalizeFrontText(item)}
-          </button>
+          <>
+                <button
+                  key={index}
+                  className={clsx(
+                    "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
+                    {
+                      "active text-white bg-blue border-blue": categoryTmp.includes(item),
+                      "hover:bg-blue/10": !categoryTmp.includes(item),
+                    }
+                  )}
+                  onClick={() => {
+                    handleCategoryClick(item);
+                  }}
+                >
+                  {capitalizeFrontText(item)}
+                </button>
+          </>
         ))}
             </>
           :
@@ -327,7 +349,11 @@ const Template = ({AUTH_TOKEN}) => {
                 className="card flex p-6 border border-border rounded-xl cursor-pointer"
                 onClick={()=>{
                   // console.log(items.id)
-                  navigate(`/template/${items.id}`)
+                  if(items.custome=="user"){
+                    navigate(`/template/${items.id}?custom=user`)
+                  }else{
+                    navigate(`/template/${items.id}?custom=normal_user`)
+                  }
                 }}
               >
                 <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">

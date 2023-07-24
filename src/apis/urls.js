@@ -1,5 +1,5 @@
-BACKEND_URL = "http://localhost:8000"
-// BACKEND_URL = "https://copyai.pythonanywhere.com";
+// BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://copyai.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
@@ -21,9 +21,14 @@ export const BACK_API_FACEBOOK = "/v1/accounts/register/facebook/";
 
 export const BACK_API_SURVEY = "/v1/accounts/survey/data/";
 
+
 export const BACK_END_API_PROFILE = "/v1/auth/users/";
 
+
 export const BACK_END_API_TEMPLATE = "/v1/template/data";
+export const BACK_END_API_CUSTOM_TEMPLATE = "/v1/custom_template/create_get/";
+export const BACK_END_API_GET_CUSTOM_TEMPLATE = "/v1/custom_template/get_single_template/";
+export const BACK_END_API_EXAMPLE_VALUE = "/v1/custom_template/get_example_value/";
 
 export const BACK_END_API_INNER_TEMPLATE = "/v1/template/field?id=";
 

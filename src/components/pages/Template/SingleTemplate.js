@@ -8,6 +8,8 @@ import {
   BACK_END_API_INNER_TEMPLATE,
   BACK_END_API_RESPONSE,
   BACK_END_API_SELECT_FIELD,
+  BACK_END_API_GET_CUSTOM_TEMPLATE,
+  BACK_END_API_EXAMPLE_VALUE,
 } from "../../../apis/urls";
 import { fetchData, postData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
@@ -52,6 +54,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   // const [inputs, setInputs] = useState([]);
   const [inputs, setInputs] = useState([{ key: "", value: "" }]);
 
+
+
   const [multipleInputForms, setMultipleInputForms] = useState({});
 
   const [ShowHideHistory, setShowHideHistory] = useState(false);
@@ -68,6 +72,11 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const location = useLocation();
 
   const { template_id } = useParams();
+
+  const searchParams = new URLSearchParams(location.search);
+  const custom = searchParams.get('custom');
+
+  // console.log("custom : ",custom)
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
@@ -120,10 +129,17 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   };
 
   useEffect(() => {
-    get_inner_template_data(
-      BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id,
-      AUTH_TOKEN
-    );
+    if(custom=="user"){
+      get_inner_template_data(
+        BACKEND_URL + BACK_END_API_GET_CUSTOM_TEMPLATE+ template_id,
+        AUTH_TOKEN
+      );
+    }else{
+      get_inner_template_data(
+        BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id,
+        AUTH_TOKEN
+      );
+    }
   }, []);
 
   // useEffect(()=>{
@@ -349,6 +365,21 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   }, [options]);
 
 
+
+// =======Get the example value============
+
+const get_example_value_api = async() =>{
+  const resp = await fetchData(BACKEND_URL+BACK_END_API_EXAMPLE_VALUE+template_id,AUTH_TOKEN)
+  if(resp.status==200){
+    setInputs(resp.data)
+  }
+}
+
+useEffect(()=>{
+  if(custom=='user'){
+    get_example_value_api()  
+  }
+},[])
 
 
 
@@ -797,6 +828,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                             r_id={data["id"]}
                             r_time={data["created_at"]}
                             r_data={data["answer_response"]}
+                            r_custome={custom=="user"?"user":"normal_user"}
                           />
                         </div>
                       );
