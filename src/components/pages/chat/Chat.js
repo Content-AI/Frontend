@@ -89,7 +89,7 @@ const Chat = ({ AUTH_TOKEN }) => {
   const [chatFill, setChatFill] = useState("");
   const [ChatText, setChatText] = useState("");
   const [AllChatText, setAllChatText] = useState([]);
-  const [TitleOfChat, setTitleOfChat] = useState(null);
+  const [TitleOfChat, setTitleOfChat] = useState('');
   const [IdOfTopTitleChat, setIdOfTopTitleChat] = useState(null);
   const [AnswerOfChat, setAnswerOfChat] = useState("");
 
@@ -872,9 +872,8 @@ const Chat = ({ AUTH_TOKEN }) => {
         <div className="flex-auto flex flex-col h-full">
           <div className="sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
             <div className="flex-1 text-xl font-semibold">
-              <div>
-                {TitleOfChat ? (
-                  <input
+              <div>                  
+                <input
                     className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
                     type="text"
                     placeholder="Title of Room"
@@ -884,15 +883,6 @@ const Chat = ({ AUTH_TOKEN }) => {
                     onKeyPress={TitleInputKeyPressed}
                     onBlur={mousemovedawayfrominput}
                   />
-                ) : (
-                  <input
-                    className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                    type="text"
-                    placeholder="Title of Room"
-                    data-testid="EditableChatTitle"
-                    value="Loading new title ..."
-                  />
-                )}
               </div>
             </div>
             <button

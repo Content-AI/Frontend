@@ -310,7 +310,7 @@ const Navbar = () => {
                     </div>
                     <Link
                       className="pt-2 mt-4 block border-t border-border"
-                      to="/logout"
+                      to="/"
                       onClick={() => {
                         handleLinkClick("logout");
                         localStorage.clear();

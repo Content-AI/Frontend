@@ -698,15 +698,20 @@ useEffect(()=>{
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-center">
-                    <button type="button"
-                      className="text-[#007A7A] font-semibold hover:text-green-600"
-                    onClick={()=>{
-                      navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
-                    }}>
-                      Save this  template as custom
-                    </button>
-                  </div>
+                  {custom=="user"
+                  ?
+                    <div className="flex justify-center">
+                      <button type="button"
+                        className="text-[#007A7A] font-semibold hover:text-green-600"
+                      onClick={()=>{
+                        navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
+                      }}>
+                        Save this  template as custom
+                      </button>
+                    </div>
+                  :
+                      null
+                  }
                 </div>
                  
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
