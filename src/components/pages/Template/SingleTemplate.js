@@ -700,6 +700,8 @@ useEffect(()=>{
                   </div>
                   {custom=="user"
                   ?
+                      null
+                  :
                     <div className="flex justify-center">
                       <button type="button"
                         className="text-[#007A7A] font-semibold hover:text-green-600"
@@ -709,8 +711,6 @@ useEffect(()=>{
                         Save this  template as custom
                       </button>
                     </div>
-                  :
-                      null
                   }
                 </div>
                  
