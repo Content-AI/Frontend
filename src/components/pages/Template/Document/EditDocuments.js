@@ -26,7 +26,7 @@ import {_pre_len_text_,_now_len_text_} from '../../../../features/LengthOfEditor
 
 
 import Editor from "./EditorForDocuments/editor/Editor";
-import EditorTextParser from "./EditorForDocuments/editor-parser/EditorTextParser";
+// import EditorTextParser from "./EditorForDocuments/editor-parser/EditorTextParser";
 
 
 export default function EditDocuments() {
@@ -1169,7 +1169,7 @@ export default function EditDocuments() {
                     ?
                       <>
                       {editorData &&
-                        <div className="App">
+                        <div className="App p-10">
                           <Editor data={editorData} setData={seteditorData} />
                         </div>
                       }

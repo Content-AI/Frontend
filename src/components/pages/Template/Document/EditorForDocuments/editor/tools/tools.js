@@ -16,15 +16,15 @@ import Delimiter from "@editorjs/delimiter";
 import InlineCode from "@editorjs/inline-code";
 import SimpleImage from "@editorjs/simple-image";
 
+
 const CustomHeader = ({ data }) => {
   const { text, level } = data;
-  const HeadingTag = `h${level}`;
+  const HeadingTag = `h${Math.min(Math.max(1, level), 6)}`;
 
   return (
     <HeadingTag className="font-bold text-4xl">{text}</HeadingTag>
   );
 };
-
 
 export const EDITOR_JS_TOOLS = {
   // NOTE: Paragraph is default tool. Declare only when you want to change paragraph option.
@@ -44,15 +44,13 @@ export const EDITOR_JS_TOOLS = {
   delimiter: Delimiter,
   inlineCode: InlineCode,
   header: {
-      class: Header,
-      inlineToolbar: true,
-      shortcut: 'CMD+SHIFT+H',
-      config: {
-        placeholder: 'Enter a heading',
-        levels: [1, 2, 3, 4],
-        defaultLevel: 1,
-      },
-      render: CustomHeader, // Use the custom rendering function
+    class: Header,
+    inlineToolbar: true,
+    config: {
+      levels: [1, 2, 3, 4], // Add more levels if needed
+      defaultLevel: 2, // Set the default level for headings
+    },
+    render: ({ data }) => <CustomHeader data={data} />, // Render using your custom component
   },
   image: {
     class: Image,

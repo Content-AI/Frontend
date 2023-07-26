@@ -1328,7 +1328,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                           fill="currentColor"
                         ></path>
                       </svg>
-                      <h3>Browse prompts</h3>
+                      <p  className="text-[15px] font-semibold" >Browse prompts</p>
                     </button>
                     <button
                       className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
@@ -1354,7 +1354,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                         />
                       </svg>
 
-                      <h3>Browse voice</h3>
+                      <p  className="text-[15px] font-semibold" >Browse voice</p>
+
                     </button>
                     {/* ==================Tone to show=================== */}
                     {show_summarize_tone ? (
