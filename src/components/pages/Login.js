@@ -198,16 +198,16 @@ export default function Login() {
         <div className={open ? 'blur-sm' : ''}>
         <div className=" flex items-center flex-col  w-full p-4 sm:p-1">
             <div className='mt-[5%] items-center font-bold text-[25px] text-blue-800'>
-                <h1>Login or</h1>
+            <p className="text-[18px] font-semibold font-helv text-slate-500">Login or</p>
             </div>
             <div className='mt-1 items-center font-bold text-[25px] text-blue-800'>
-                <h1>Create an Account</h1>
+            <p className="text-[18px] font-semibold font-helv text-slate-500">Create an Account</p>
             </div>
             <div className='mt-5 items-center font-semibold text-slate-500'>
-                <h1>Sign in instantly using your existing accounts to get started quickly</h1>
+                <p className="text-[18px] font-semibold font-helv">Sign in instantly using your existing accounts to get started quickly</p>
             </div>
             <div className='mt-5 items-center font-semibold text-slate-500'>
-                <h1>By proceeding, you are agreeing to <a href="#" className='text-blue-600 font-semibold' >Terms of services</a> and <a href="#" className='text-blue-600 font-semibold' >Privacy Notice .</a></h1>
+            <p className="text-[18px] font-semibold">By proceeding, you are agreeing to <a href="#" className='text-blue-600 font-semibold' >Terms of services</a> and <a href="#" className='text-blue-600 font-semibold' >Privacy Notice .</a></p>
             </div>
         </div>
             <div className="flex justify-center items-center p-6 flex-col sm:flex-row">
@@ -263,7 +263,7 @@ export default function Login() {
                                         Sending token
                                     </button>
                                 :
-                                    <button className="w-full text-[15px] px-4 py-2 tracking-wide text-blue-800 bg-slate-200 font-bold transition-colors duration-200 transform rounded-md hover:bg-blue-600 focus:outline-none focus:bg-purple-600">
+                                    <button className="w-full text-[15px] px-4 py-2 tracking-wide text-blue-800 bg-slate-700 font-bold transition-colors duration-200 transform rounded-md hover:bg-blue-600 focus:outline-none focus:bg-purple-600">
                                         Continue
                                     </button>
                                 }
