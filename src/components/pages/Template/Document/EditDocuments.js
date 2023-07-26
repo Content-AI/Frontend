@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import QuillWrapper from './quillcomponent'
-import Editor from './EditorWithUseQuill';
+// import Editor from './EditorWithUseQuill';
 
 import { useParams } from 'react-router-dom';
 
@@ -25,6 +25,10 @@ import {_template_id_} from '../../../../features/LeftTemplateId';
 import {_pre_len_text_,_now_len_text_} from '../../../../features/LengthOfEditorWord';
 
 
+import Editor from "./EditorForDocuments/editor/Editor";
+import EditorTextParser from "./EditorForDocuments/editor-parser/EditorTextParser";
+
+
 export default function EditDocuments() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,6 +36,12 @@ export default function EditDocuments() {
   const [delta, setDelta] = useState({
     ops: [{ insert: " Loading ....." }]
   });
+
+
+  // ============the editor state============
+  const [editorData, seteditorData] = useState(null);
+  const [EditorContent,setEditorContent]=useState(null)
+
 
   const [dirtyInnerHTML, setDirtyInnerHTML] = useState("");
   // const [text, setText] = useState("");
@@ -153,10 +163,8 @@ export default function EditDocuments() {
     try {
       if (resp.status == 200) {
         const res_data = resp.data?.document_content
-        const newDelta = {
-          ops: [{ insert: res_data }],
-        };
-        setDelta(newDelta);
+        seteditorData(resp.data?.document_content);
+        // setDelta(newDelta);
         settitle(resp.data?.title)
         setDocumentId(resp.data.id)
         setLengthOfWord(resp.data?.document_content)
@@ -425,6 +433,41 @@ export default function EditDocuments() {
       await patchData(formData, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + document_id + "/", TOKEN)
     }
   };
+
+
+  // ===========get the document data=========
+
+  // useEffect(() => {
+
+  //   if (document_id.length > 0) {
+  //     get_document_content(document_id, templateValue)
+  //     if(custome=="user"){
+  //       get_custom_template_data(templateValue)
+  //     }else{
+  //       get_normal_template(templateValue)
+  //     }
+  //     get_history(templateValue)
+  //   }
+
+	// 	const fetchContent = async () => {
+	// 	  try {
+	// 		const response = await fetch('http://localhost:8000/v1/template/test');
+	// 		const data = await response.json();
+	// 		// console.log(data)
+	// 		// if (data.content) {
+	// 			// seteditorData(data);
+	// 		// }
+	// 	  } catch (error) {
+	// 		console.error('Failed to fetch data:', error);
+	// 	  }
+	// 	};
+	
+	// 	fetchContent();
+	//   }, []);
+
+	  // useEffect(()=>{
+		// console.log("data : ",editorData)
+	  // },[editorData])
 
 
   const LoaderDiv = () => {
@@ -1125,7 +1168,11 @@ export default function EditDocuments() {
                     {delta
                     ?
                       <>
-                        <Editor datas={delta} placeholder={"Write something..."} />
+                      {editorData &&
+                        <div className="App">
+                          <Editor data={editorData} setData={seteditorData} />
+                        </div>
+                      }
                       </>
                     :   
                       <LoaderDiv />
