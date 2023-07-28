@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Login from "../pages/Login";
@@ -9,7 +9,7 @@ import ThirdStep from "../pages/ThreeSteps/ThirdStep";
 import { useSelector, useDispatch } from "react-redux";
 
 import { _save_token_ } from "../../features/AuthenticationToken";
-import Profile from "../Profile/Profile";
+// import Profile from "../Profile/Profile";
 import Chat from "../pages/chat/Chat";
 import Template from "../pages/Template/Template";
 import SingleTemplate from "../pages/Template/SingleTemplate";
@@ -21,21 +21,40 @@ import CreateNewContent from "../pages/CreateNewContent";
 import FolderData from "../pages/Projects/FolderData";
 import Brandvoice from "../pages/brandvoice/Brandvoice";
 import BuildcustomTemplate from "../pages/Template/BuildcustomTemplate/BuildcustomTemplate";
+import Settings from "../Settings/Settings";
+
+import Billing from '../Settings/SettingsPages/Billing'
+import General from '../Settings/SettingsPages/General'
+import Profile from '../Settings/SettingsPages/Profile'
+import Team from '../Settings/SettingsPages/Team'
+import Usage from '../Settings/SettingsPages/Usage'
+import Integrations from '../Settings/SettingsPages/Integrations'
+
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
+  const [isSettings,set_isSettings] = useState(false);
 
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
+  useEffect(() => {
+    if(location.pathname.includes("/settings")){
+      set_isSettings(true)
+    }else{
+      set_isSettings(false)
+    }
+  }, [location]);
+
 
   return (
     <>
       {TOKEN ? (
-        <main className="flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white">
+        <>
+        <main className={`flex flex-col sm:ml-64 ${isSettings ? 'sm:mt-[40px]' : 'sm:mt-[74px]'} min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white`}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
+
             <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
             <Route
               path="/documents"
@@ -109,8 +128,16 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/Projects" element={<Projects AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/logout" element={<Logout />} />
+            <Route path="/settings/general" element={<General AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/billing" element={<Billing AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/profile" element={<Profile AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/integrations" element={<Integrations AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/team" element={<Team AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />
+
           </Routes>
         </main>
+          </>
       ) : (
         <Route path="/login" element={<Login />} />
       )}
