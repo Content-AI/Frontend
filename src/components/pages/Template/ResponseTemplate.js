@@ -1,5 +1,6 @@
 import React, {useRef, useState } from 'react';
 import RenderHtml from './RenderHtml'
+import RenderHtmlData from './RenderHtmlData'
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -208,7 +209,7 @@ const ResponseTemplate = (prop) => {
                     </div>
                 </div>
                 <div ref={textRef} className="w-full mt-2 mb-3 text-base font-medium leading-7 text-gray-800 whitespace-pre-wrap pre">
-                    <RenderHtml
+                    <RenderHtmlData
                         htmldata={prop.r_data}
                     />
                 </div>

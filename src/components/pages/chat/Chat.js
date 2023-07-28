@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 import RenderHtml from "../Template/RenderHtml";
 import RenderTemplate from "../Template/RenderTemplate";
+import RenderHtmlData from "../Template/RenderHtmlData";
 
 import { GrClose } from "react-icons/gr";
 
@@ -936,7 +937,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                <RenderHtml htmldata={chat_data.question} />
+                                <RenderHtmlData htmldata={chat_data.question} />
                               </div>
                             </div>
 
@@ -950,7 +951,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
-                                <RenderHtml htmldata={chat_data.content} />
+                                <RenderHtmlData htmldata={chat_data.content} />
                                 {/* ============all sorts of btn================ */}
                                 <Differentbtn
                                   all_data={chat_data}
@@ -983,7 +984,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                       />
                                     </div>
                                     <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                      <RenderHtml htmldata={data["question"]} />
+                                      <RenderHtmlData htmldata={data["question"]} />
                                     </div>
                                   </div>
 
@@ -1009,7 +1010,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                           />
                                         </>
                                       ) : (
-                                        <RenderHtml
+                                        <RenderHtmlData
                                           htmldata={data["content"]}
                                         />
                                       )}
@@ -1038,7 +1039,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                <RenderHtml htmldata={CurrentQuestion} />
+                                <RenderHtmlData htmldata={CurrentQuestion} />
                               </div>
                             </div>
 
@@ -1145,7 +1146,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         />
                                       </div>
                                       <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                        <RenderHtml
+                                        <RenderHtmlData
                                           htmldata={data["question"]}
                                         />
                                       </div>
@@ -1174,7 +1175,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                             />
                                           </>
                                         ) : (
-                                          <RenderHtml
+                                          <RenderHtmlData
                                             htmldata={data["content"]}
                                           />
                                         )}
@@ -1203,7 +1204,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   />
                                 </div>
                                 <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                  <RenderHtml htmldata={CurrentQuestionIni} />
+                                  <RenderHtmlData htmldata={CurrentQuestionIni} />
                                 </div>
                               </div>
 
