@@ -14,6 +14,8 @@ import ProjectOrFolderIdChoosen from '../features/ProjectOrFolderIdChoosen'
 import DocumentsData from '../features/DocumentsData'
 import FolderData from '../features/FolderData'
 import RepeatQuestionInChat from '../features/RepeatQuestionInChat'
+import Subscriptions from '../features/Subscriptions'
+import SubscriptionsData from '../features/SubscriptionsData'
 
 export const store = configureStore({
     reducer: {
@@ -32,6 +34,8 @@ export const store = configureStore({
         SetDocumentsData:DocumentsData,
         SetFolderData:FolderData,
         SetRepeatQuestionInChat:RepeatQuestionInChat,
+        SetSubscriptions:Subscriptions,
+        SetSubscriptionsData:SubscriptionsData,
     }
 })
 

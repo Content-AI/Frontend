@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BACKEND_URL,BACK_END_API_PROJECT_CHOOSE } from '../../apis/urls';
-import { fetchData } from '../../apis/apiService';
+import { BACKEND_URL,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS } from '../../apis/urls';
+import { fetchData, postData } from '../../apis/apiService';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import LoadingPage from "../LoadingPage";
+import toast, { Toaster } from 'react-hot-toast';
+import {
+  _message_
+} from "../../features/LoadingScreenMessage";
+import { _load_screen_ } from "../../features/LoadingScreen";
 
 import Select from 'react-select';
 
-import { useSelector, useDispatch } from "react-redux";
 import {
     _save_folder_id_
   } from "../../features/ProjectOrFolderIdChoosen";
@@ -19,9 +25,15 @@ const CreateNewContent = (props) => {
         navigate(-1);
     };
 
+    const notifyerror = (message) => toast.error(message);
+
+
     const [selectedValue, setSelectedValue] = useState('');
     const [SelectedOptions, setSelectedOptions] = useState(null);
 
+    let loading_page = useSelector(
+      (state) => state.SetLoadingScreen.LoadingScreen
+      );
 
     // const handleSelectChange = (event) => {
     //     setSelectedValue(event.target.value);
@@ -116,8 +128,33 @@ useEffect(() => {
   };
 }, []);
 
+
+const create_blank_document = async() => {
+  const formData = {
+    document_content: ""
+  }
+  const resp = await postData(formData,BACKEND_URL+BACK_END_API_DOCUMENTS+"/",props.AUTH_TOKEN)
+  try{
+    if(resp.status==201){
+        dispatch(_load_screen_(false))
+        dispatch(_message_(""))
+        navigate(`/template_data/${resp.data.id}?template_editing=edit_by_user&content=chat_content&redirect=from_blank_document`)
+
+
+    }else{
+        notifyerror("something went wrong refresh page")
+    }
+  }catch(e){
+      notifyerror("something went wrong refresh page")
+  }
+  }
+
   return (
     <>
+    {loading_page
+        ?
+            <LoadingPage message={"Creating Document"}/>
+        :
        <div className="fixed inset-0 z-40 overflow-y-auto backdrop-blur-sm" id="headlessui-dialog-:r27:" role="dialog" aria-modal="true" data-headlessui-state="open">
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                 <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
@@ -231,7 +268,10 @@ useEffect(() => {
                             <p className="text-sm font-normal text-gray-600">You have the option to produce a document for lengthy content, utilize a template for concise excerpts of specialized content, or employ our guided forms</p>
                         </div>
                         <div className="grid grid-cols-2 gap-6 p-6">
-                            <button className="p-4 ring-1 ring-gray-200 rounded-2xl text-left space-y-3 hover:ring-gray-300 active:ring-gray-400">
+                            <button className="p-4 ring-1 ring-gray-200 rounded-2xl text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
+                            onClick={()=>{
+                              create_blank_document()
+                            }}>
                                 <span className="flex items-center space-x-3">
                                     <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path d="M10,.71c-1.96,0-3.53,.06-5.17,.17-1.73,.12-3.11,1.5-3.22,3.24-.12,1.9-.18,3.86-.18,5.88s.06,3.98,.18,5.88c.11,1.74,1.49,3.12,3.22,3.24,1.63,.11,3.21,.17,5.17,.17s3.53-.06,5.17-.17c1.73-.12,3.11-1.5,3.22-3.24,.12-1.9,.18-3.86,.18-5.88,0-.82-.01-1.62-.03-2.42-.02-.7-.24-1.38-.66-1.95-1.29-1.76-2.34-2.87-4.05-4.19-.58-.45-1.28-.68-2-.7-.58-.01-1.18-.02-1.83-.02Z" fill="#8DA2FB" fillRule="evenodd"></path>
@@ -274,7 +314,8 @@ useEffect(() => {
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
+    }
     </>
   )
 }

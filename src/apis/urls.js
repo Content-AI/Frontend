@@ -84,3 +84,15 @@ export const BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE =
   "/v1/documents_data/doc_trash_delete/";
 export const BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID =
   "/v1/documents_data/doc_project_id_update/";
+
+
+export const BACK_END_API_SUBSCRIBE_CHECK ="/v1/subscription/subscribe-check/";
+
+export const BACK_END_API_SUBSCRIBE_USER ="/v1/subscription/first-create-account-stripe-app-create-session/";
+
+export const BACK_END_API_SUBCRIPTION_DETAILS ="/v1/subscription/subcription-details/";
+
+export const BACK_END_API_SUBCRIPTION_CHARGE ="/v1/subscription/charge/";
+
+export const BACK_END_API_SUBCRIPTION_DIRECT ="/v1/subscription/direct-create-account-stripe-app-create-session/";
+

@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { _delete_token_ } from "../../features/AuthenticationToken";
 import { _save_survey_ } from "../../features/ThreeSteps";
 import { _delete_user_profile } from "../../features/Fullprofile";
+import { _save_details_ } from "../../features/Subscriptions";
+import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from '../../apis/urls';
+
 import {
   _hide_nav_,
   _show_nav_,
@@ -30,6 +33,7 @@ import {
 
 import { FaBars, FaTimes, FaTrash } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { _save_sub_details_ } from "../../features/SubscriptionsData";
 
 import {
   CgFileDocument,
@@ -61,23 +65,28 @@ const Navbar = () => {
 
   const [isHovered, setHovered] = useState(false);
   const [isSettings,set_isSettings] = useState(false);
+  // const [subdetails,setsubdetails] = useState(null);
+
+  const [showpricingPopUpModal, setShowpricingPopUpModal] = React.useState(false);
+
 
   let PROFILE_DATA = useSelector((state) => state.SetFullProfile.Fullprofile);
 
   let NAV_BAR_CONDITION = useSelector(
     (state) => state.SetHideShowNavBarGlobalState.HideShowNavBarGlobalState
   );
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+  let TOKEN = useSelector(
+    (state) => state.SetAuthenticationToken.AuthenticationToken
+  );
 
-  const language = [
-    { value: "Eng", label: "Eng" },
-    { value: "France", label: "France" },
-  ];
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
 
-  const projects = [{ value: "Personal", label: "Personal" }];
 
   let url = [
     { name: "Home", link: "" },
@@ -91,11 +100,7 @@ const Navbar = () => {
     { title: "Chat", link: "/chat" },
     { title: "Projects", link: "/projects" },
     { title: "Recent Added", link: "/documents" },
-    { title: "Brand Voice", link: "/brand_voice" },
-    // { title: "Recipes", link: "/recipes" },
-    // { title: "Art", link: "/art" },
-    // { title: "Settings", link: "/settings", offset: true },
-    // { title: "Help", link: "/help" },
+    { title: "Brand Voice", link: "/brand_voice" }
   ];
 
 
@@ -108,6 +113,16 @@ const Navbar = () => {
     }
   }, [location]);
 
+  // =======sub deatils======
+  // const get_subcribe_data_of_user = async() =>{
+  //   const subscribe_detail_data = await fetchData(BACKEND_URL+BACK_END_API_SUBCRIPTION_DETAILS,TOKEN)
+  //   try{
+  //     dispatch(_save_sub_details_(subscribe_detail_data.data))
+  //   }catch(e){}
+  // }
+  // useEffect(()=>{
+  //   get_subcribe_data_of_user()
+  // },[])
 
   return (
     <>
@@ -146,30 +161,24 @@ const Navbar = () => {
               className="w-[50px] h-[50px] rounded-full"
             />
           </div>
-          <div className="lg:flex items-center gap-10 ml-auto hidden h-[74px]">
-            {/* <p className="relative font-sans text-[#36464E] text-sm font-medium rounded-full mr-1">
-              What's New
-              <span className="text-blue-600 absolute -top-[1px] -right-2">
-                <MdCircle size={10} />
-              </span>
-            </p>
-            <Select
-              options={language}
-              className="w-[80px] font-semibold text-[12px]"
-              defaultValue={language[0]}
-            /> */}
-            <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-[#334977] pl-3 pr-6 py-2.5 rounded-md">
-              <SealCheck classes="w-6 h-6" />
-              Upgrade to Pro
-            </button>
-          </div>
-          {/* <div className="lg:hidden p-2">
-            <Select
-              options={language}
-              className="mr-4 w-[80px] font-semibold text-[12px]"
-              defaultValue={language[0]}
-            />
-          </div> */}
+          {/* {subscriptions_details &&
+          ?
+            
+          :
+          } */}
+            <div className="lg:flex items-center gap-10 ml-auto hidden h-[74px]">
+              
+
+              <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-[#334977] pl-3 pr-6 py-2.5 rounded-md"
+                onClick={()=>{
+                  navigate("/settings/subscription_plan")
+                }}
+              >
+                <SealCheck classes="w-6 h-6" />
+                Upgrade to Pro
+              </button>
+
+            </div>
         </div>
         <div className="z-20 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
           <div className="flex items-center h-[74px] border-b border-border">
@@ -181,58 +190,9 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex flex-col">
-            {/* <div className="flex items-center justify-center mt-1">
-              <div className="shadow-sm">
-                <label
-                  htmlFor="Personal"
-                  className="cursor-pointer uppercase absolute ml-[0.75rem] mt-4 text-[14px] block text-sm  text-gray-800"
-                >
-                  Personal
-                </label>
-                <label
-                  htmlFor="Personal"
-                  className="cursor-pointer absolute font-bold ml-[0.75rem] mt-9 text-[14px] block text-sm  text-gray-800"
-                >
-                  Personal
-                </label>
-                <span className="cursor-pointer font-sans absolute mt-7 w-[20px] h-[20px] ml-[12rem]">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-full h-full"
-                  >
-                    <g clipPath="url(#clip0_512_3040)">
-                      <path
-                        d="M10.8909 8.99179C11.0786 8.80401 11.3331 8.69847 11.5986 8.69838C11.864 8.69828 12.1186 8.80365 12.3064 8.99129C12.4942 9.17893 12.5997 9.43347 12.5998 9.69893C12.5999 9.96439 12.4946 10.219 12.3069 10.4068L8.00691 14.7068C7.81938 14.8943 7.56507 14.9996 7.29991 14.9996C7.03475 14.9996 6.78044 14.8943 6.59291 14.7068L2.29291 10.4068C2.10527 10.2189 1.99996 9.96413 2.00015 9.69858C2.00033 9.43303 2.106 9.17843 2.29391 8.99079C2.48182 8.80315 2.73657 8.69783 3.00212 8.69802C3.26767 8.69821 3.52227 8.80388 3.70991 8.99179L7.29991 12.5828L10.8909 8.99179ZM10.8909 5.00779L7.29991 1.41679L3.70891 5.00779C3.52127 5.19556 3.26672 5.3011 3.00126 5.3012C2.73581 5.30129 2.48118 5.19593 2.29341 5.00829C2.10564 4.82065 2.00009 4.5661 2 4.30064C1.99991 4.03518 2.10527 3.78056 2.29291 3.59279L6.59291 -0.707214C6.78044 -0.894685 7.03475 -1 7.29991 -1C7.56507 -1 7.81938 -0.894685 8.00691 -0.707214L12.3069 3.59279C12.3998 3.68576 12.4735 3.79613 12.5238 3.91758C12.574 4.03904 12.5999 4.1692 12.5998 4.30064C12.5998 4.43208 12.5738 4.56223 12.5235 4.68364C12.4732 4.80506 12.3994 4.91538 12.3064 5.00829C12.2134 5.1012 12.1031 5.17488 11.9816 5.22514C11.8602 5.2754 11.73 5.30124 11.5986 5.3012C11.4671 5.30115 11.337 5.27521 11.2156 5.22487C11.0941 5.17453 10.9838 5.10076 10.8909 5.00779Z"
-                        fill="#36464E"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_512_3040">
-                        <rect width="14" height="14" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </span>
-                <input
-                  onClick={() => {
-                    console.log("change personal");
-                  }}
-                  type="select"
-                  id="project"
-                  name="project"
-                  value="Personal"
-                  // onChange={handleInputChange}
-                  className="cursor-pointer text-white block w-[15rem] h-[53px] text-[12px] font-bold px-4 py-2 mt-3  bg-white border rounded-md focus:outline-none focus:ring focus:ring-opacity-40"
-                  readOnly
-                />
-              </div>
-            </div> */}
+            
 
-            {/* <div className="flex flex-col my-3 h-[calc(100vh-20rem)] overflow-y-auto scrollbar-none"> */}
+
             <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
               {navURL.map((items, index) => {
                 const { title, link, offset } = items;
@@ -339,6 +299,9 @@ const Navbar = () => {
                           dispatch(_delete_token_(null));
                           dispatch(_save_survey_(null));
                           dispatch(_delete_user_profile(null));
+                          dispatch(_save_details_(null));
+                          dispatch(_save_sub_details_(null));
+                          window.location.replace("/login");
                         }}
                       >
                         <div
@@ -362,18 +325,56 @@ const Navbar = () => {
 
             <div className="flex flex-col bg-gray-100">
               {!isHovered && (
-                <div className="mb-4">
-                  <button
-                    onClick={() => {
-                      console.log("pricing");
-                    }}
-                    className="transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-5"
-                    // className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full h-[30px]"
-                  >
-                    <BsCheckCircle className="text-white" size={16} /> Upgrade to
-                    Pro
-                  </button>
-                </div>
+                <>
+                  {subscriptions_details
+                  ?
+                    <>
+                    <div className="mb-4">
+                    {subscriptions_details.user.trail_ends
+                    ?
+                      <div class="flex text-base justify-items-start items-center">
+                        <div>
+                            <svg class="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fill-rule="evenodd"></path>
+                              <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+                      </div>
+                    :
+                      null
+                    }
+                      <div className="mb-3">
+                      <button
+                        onClick={() => {
+                          console.log("pricing")
+                          setShowpricingPopUpModal(true)
+                        }}
+                        className="text-[25px] transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-2"
+                      >
+                        <span>View Details</span>
+                      </button>
+                    </div>
+                    </div>
+                    </>
+                  :
+                  <>
+                    {/* <div className="mb-4">
+                      <button
+                        onClick={() => {
+                          console.log("pricing");
+                        }}
+                        className="transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-5"
+                        // className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full h-[30px]"
+                      >
+                        <BsCheckCircle className="text-white" size={16} /> Upgrade to
+                        Pro
+                      </button>
+                    </div> */}
+                    <LoadingPage />
+                    </>
+                  }
+                </>
               )}
               <div className="bg-gray-100">
                 <Button
@@ -404,15 +405,11 @@ const Navbar = () => {
                       className="w-[40px] h-[40px] rounded-full"
                     />
                   )}
-                  <div className="ml-2 text-left">
+                  <div className="text-left ml-2 w-full">
                     <p className="text-xs font-sans font-bold text-black">
                       {PROFILE_DATA
-                        ? PROFILE_DATA.first_name || PROFILE_DATA.last_name
-                          ? PROFILE_DATA.last_name
-                            ? PROFILE_DATA.first_name +
-                              " " +
-                              PROFILE_DATA.last_name
-                            : PROFILE_DATA.first_name + " "
+                        ? PROFILE_DATA.first_name
+                            ? PROFILE_DATA.first_name +" " + "Workspace"
                           : "Personal Workspace"
                         : "Personal Workspace"}
                     </p>
@@ -420,7 +417,7 @@ const Navbar = () => {
                       Free plan
                     </p>
                   </div>
-                  <span className="w-4 h-4 ml-2">
+                  <span className="w-4 h-6 float-right ml-3">
                     <svg
                       width="14"
                       height="14"
@@ -855,10 +852,160 @@ const Navbar = () => {
             </div>
 
             {/* </div> */}
+
+
           </>
         ) : null}
       </>
     }
+    {showpricingPopUpModal ? (
+        <>
+        <div
+            className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative my-6">
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                  <div className="mb-4">
+                      <div class="flex text-base justify-items-start items-center">
+                        <div>
+                            <svg class="w-5 h-5 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fill-rule="evenodd"></path>
+                              <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg pl-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+                      </div>
+                    </div>
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowpricingPopUpModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                {/*body*/}
+                <div>
+            {/* ==================the message ============= */}
+
+        <div className="w-[90%] m-auto p-8">
+            <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
+               <div>
+               <svg className="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" x="0px" y="0px"><g data-name="01"><path d="M18.81,4.83a3.08,3.08,0,0,0-5.63,0L3.73,23.77a3.82,3.82,0,0,0,.16,3.69A3.13,3.13,0,0,0,6.54,29H25.46a3.13,3.13,0,0,0,2.65-1.54,3.82,3.82,0,0,0,.16-3.69Zm7.59,21.58a1.14,1.14,0,0,1-1,.59H6.54a1.14,1.14,0,0,1-1-.59,1.81,1.81,0,0,1-.07-1.75L15,5.72a1.09,1.09,0,0,1,2,0l9.46,18.94A1.81,1.81,0,0,1,26.41,26.41ZM16,20a3,3,0,1,0,3,3A3,3,0,0,0,16,20Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,16,24Zm-2.1-6.88a2.12,2.12,0,0,0,4.2,0l.76-4.81A2.12,2.12,0,0,0,16.75,10h-1.5a2.12,2.12,0,0,0-1.58.71,2.14,2.14,0,0,0-.52,1.69ZM15.25,12h1.5l.12.08-.76,4.81c0,.12-.21.17-.24,0l-.75-4.77-1,.16Z"/></g></svg>
+               </div>
+               <p class="text-sm font-normal text-gray-900">
+               You are currently subscribed to the {subscriptions_details.plan} plan, 
+               which provides you with unlimited word access. Once your trial period concludes, 
+               you will be automatically charged the specified amount for one {subscriptions_details.user.subscription_type} continued usage of the tool.
+               </p>
+            </div>
+            <div class="flex flex-col mb-5 mt-5 w-full border-b border-gray-200 pb-4 space-y-1">
+               <div class="text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
+               <div class="flex flex-row justify-between">
+                  <div class="text-gray-900">{subscriptions_details.user.plan}</div>
+                  <div class="text-sm text-gray-600">
+                  $
+                  {subscriptions_details.user.plan=="starter" &&  subscriptions_details.user.subscription_type=="monthly"
+                  ?
+                    subscriptions_details.charge_description.monthly_starter
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="starter" && subscriptions_details.user.subscription_type=="annually"
+                  ?
+                    subscriptions_details.charge_description.annaully_starter
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="monthly"
+                  ?
+                    subscriptions_details.charge_description.monthly_premium_mode
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="annually"
+                  ?
+                    subscriptions_details.charge_description.annaully_premium_mode
+                  :
+                    null
+                  }
+                  /month</div>
+               </div>
+            </div>
+            <div class="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
+               <div class="flex flex-row justify-between">
+                  <span class="text-xl font-bold text-gray-900 w-3/5">Plan total</span>
+                  <div class="flex flex-col items-end md:flex-row space-x-2"><span class="text-lg text-green-600 font-bold">$
+                  {subscriptions_details.user.plan=="starter" &&  subscriptions_details.user.subscription_type=="monthly"
+                  ?
+                    subscriptions_details.charge_description.monthly_starter
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="starter" && subscriptions_details.user.subscription_type=="annually"
+                  ?
+                    subscriptions_details.charge_description.annaully_starter
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="monthly"
+                  ?
+                    subscriptions_details.charge_description.monthly_premium_mode
+                  :
+                    null
+                  }
+                  {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="annually"
+                  ?
+                    subscriptions_details.charge_description.annaully_premium_mode
+                  :
+                    null
+                  }*</span></div>
+               </div>
+            </div>
+        </div>
+            {/* ==================the message ============= */}
+
+
+                </div>
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowpricingPopUpModal(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      setShowpricingPopUpModal(false)
+                        navigate("/settings/subscription_plan")
+                      }}
+                  >
+                    Change Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black">
+          </div>
+          </div>
+          </div>
+      </>
+      ) : null}
     </>
   );
 };

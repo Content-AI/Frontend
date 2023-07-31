@@ -7,6 +7,7 @@ import LoadingPage from "../../LoadingPage";
 import { useSelector, useDispatch } from "react-redux";
 import { _load_screen_ } from "../../../features/LoadingScreen";
 import RenderHtml from "../Template/RenderHtml";
+import RenderHtmlData from "../Template/RenderHtmlData";
 import toast, { Toaster } from 'react-hot-toast';
 import ListOfDocument from "../Template/Document/ListOfDocument";
 
@@ -174,19 +175,19 @@ const FolderData = (props) => {
                             {/* ====================Folder Name=================== */}
                             <div className="flex items-center justify-between pt-4">
                                 <div className="flex items-center justify-start">
-                                <h1 className="text-md mt-2 cursor-pointer pb-2">
+                                <p className="font-bold text-[15px] mt-2 cursor-pointer pb-2">
                                 <button type='button'
                                 onClick={()=>{
                                     navigate("/projects")
                                 }}>
                                     Folder
                                 </button>
-                                </h1>
+                                </p>
                                 <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-2 text-grey-600">
                                     <path fillRule="evenodd" clipRule="evenodd" d="M2.57478 0.661057C2.18426 0.270533 1.55109 0.270533 1.16057 0.661057C0.770045 1.05158 0.770045 1.68475 1.16057 2.07527L3.45346 4.36816L1.16057 6.66106C0.770045 7.05158 0.770045 7.68475 1.16057 8.07527C1.55109 8.4658 2.18426 8.4658 2.57478 8.07527L5.57478 5.07527C5.96531 4.68475 5.96531 4.05158 5.57478 3.66106L2.57478 0.661057Z" fill="currentColor"></path>
                                     <path d="M0.86768 7.41488V1.3768L4.02468 4.43587L0.86768 7.41488Z" fill="currentColor"></path>
                                 </svg>
-                                <h1 className="text-md mt-2 flex items-center pb-2">
+                                <p className="text-[15px] font-bold mt-2 flex items-center pb-2">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fillRule="evenodd" clipRule="evenodd" d="M6.33637 5.10954L6.93012 6H8.00037H10H12H13C13.5523 6 14 6.44771 14 7V12C14 12.5523 13.5523 13 13 13H3C2.44772 13 2 12.5523 2 12V4C2 3.44772 2.44772 3 3 3H4.39461C4.72894 3 5.04114 3.16707 5.22662 3.44523L6.33637 5.10954ZM12 4H13C14.6569 4 16 5.34315 16 7V12C16 13.6569 14.6569 15 13 15H3C1.34315 15 0 13.6569 0 12V4C0 2.34315 1.34315 1 3 1H4.39461C5.39758 1 6.3342 1.50121 6.89062 2.33568L8.00037 4H10H12Z" fill="currentColor"></path>
                                     </svg>
@@ -197,7 +198,7 @@ const FolderData = (props) => {
                                         :
                                             <div className="ml-2 animate-spin rounded-full h-4 w-4 border-t-4 border-blue-500"></div>
                                     }
-                                </h1>
+                                </p>
                                 </div>
                                 <div className="flex justify-end space-x-2">
                                 {/* ==================list grid========================== */}

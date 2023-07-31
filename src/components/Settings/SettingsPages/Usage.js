@@ -144,49 +144,51 @@ const Usage = () => {
   
   return (
     <>
-      <Settings/>    
-      <div class="max-w-4xl">
-      <div class="justify-flex-start mb-4 flex items-center">
-        <h2 class="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
-        {/* <div class="ml-4">
-          <div class="flex max-w-xl space-x-4 overflow-x-auto p-1" aria-label="Tabs"><button class="rounded-md bg-blue-100 px-3 py-1.5 text-sm font-normal text-blue-900" aria-current="page">All team</button><button class="rounded-md px-3 py-1.5 text-sm font-normal text-gray-500 hover:bg-gray-100">Individual</button></div>
+      <Settings/> 
+      <div className='m-auto'>
+   
+      <div className="max-w-4xl">
+      <div className="justify-flex-start mb-4 flex items-center">
+        <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
+        {/* <div className="ml-4">
+          <div className="flex max-w-xl space-x-4 overflow-x-auto p-1" aria-label="Tabs"><button className="rounded-md bg-blue-100 px-3 py-1.5 text-sm font-normal text-blue-900" aria-current="page">All team</button><button className="rounded-md px-3 py-1.5 text-sm font-normal text-gray-500 hover:bg-gray-100">Individual</button></div>
         </div> */}
       </div>
  
-      <div class="mb-6">
-        <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <div title="info about creation" class="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-            <dt class="flex items-center truncate text-sm font-medium text-gray-500">
+      <div className="mb-6">
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+            <dt className="flex items-center truncate text-sm font-medium text-gray-500">
               <div>Words generated</div>
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
             </dt>
-            <dd class="my-1 text-3xl font-semibold text-gray-900">3000</dd>
+            <dd className="my-1 text-3xl font-semibold text-gray-900">3000</dd>
           </div>
-          <div title="info about creation" class="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-            <dt class="flex items-center truncate text-sm font-medium text-gray-500">
+          <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+            <dt className="flex items-center truncate text-sm font-medium text-gray-500">
               <div>Active users</div>
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
             </dt>
-            <dd class="my-1 text-3xl font-semibold text-gray-900">1</dd>
+            <dd className="my-1 text-3xl font-semibold text-gray-900">1</dd>
           </div>
-          <div title="info about creation" class="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-            <dt class="flex items-center truncate text-sm font-medium text-gray-500">
+          <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+            <dt className="flex items-center truncate text-sm font-medium text-gray-500">
               <div>Templates</div>
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
             </dt>
-            <dd class="my-1 text-3xl font-semibold text-gray-900">1</dd>
+            <dd className="my-1 text-3xl font-semibold text-gray-900">1</dd>
           </div>
         </div>
       </div>
@@ -258,6 +260,7 @@ const Usage = () => {
           <Table />
       </div>
       
+    </div>
     </div>
 
     </>

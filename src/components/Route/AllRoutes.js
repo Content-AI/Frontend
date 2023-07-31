@@ -29,6 +29,7 @@ import Profile from '../Settings/SettingsPages/Profile'
 import Team from '../Settings/SettingsPages/Team'
 import Usage from '../Settings/SettingsPages/Usage'
 import Integrations from '../Settings/SettingsPages/Integrations'
+import Subscription from "../Settings/SettingsPages/Subscription";
 
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
@@ -133,7 +134,9 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/settings/profile" element={<Profile AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/integrations" element={<Integrations AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/team" element={<Team AUTH_TOKEN={TOKEN}/>} />
-            <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />
+            <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />            
+
+            <Route path="/settings/subscription_plan" element={<Subscription AUTH_TOKEN={TOKEN}/>} />            
 
           </Routes>
         </main>
