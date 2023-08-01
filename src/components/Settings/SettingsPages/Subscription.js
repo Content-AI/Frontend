@@ -75,6 +75,9 @@ const Subscription = (props) => {
     const [isRadioChecked, setisRadioChecked] = useState(true);
     const [startbtnLoading, setstartbtnLoading] = useState(false);
     
+    const [monthly_or_annyally_check, setmonthly_or_annyally_check] = useState("monthly");
+    const [plan_subscribe, setplan_subscribe] = useState("starter");
+    
     const [all_cost_data,setall_cost_data] = useState([{
         plan:"starter",
         actual_plan:"starter",
@@ -86,34 +89,10 @@ const Subscription = (props) => {
     const notifysucces = (message) => toast.success(message);
 
 
-
     const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
     const annually_plan=["Up to 5 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
     const enterprise_plan=["Collaborate with more than 5 users","Tailored AI Brand Voice","API access","Personalized onboarding & training","Dedicated accounnt manager"]
 
-    const handleCheckboxChangePlan = (event) => {
-        setIsCheckedPlan(event.target.checked);
-        // if(isCheckedPlan){
-        //     setall_cost_data(
-        //         [{
-        //             plan:"starter",
-        //             actual_plan:"starter",
-        //             cost:subscriptions_details.charge_description.monthly_starter,
-        //             monthly_anually:"monthly"
-        //         }]
-        //     )
-        // }else{
-        //     setall_cost_data(
-        //         [{
-        //             plan:"starter",
-        //             actual_plan:"starter",
-        //             cost:subscriptions_details.charge_description.annaully_starter,
-        //             monthly_anually:"anually"
-        //         }]
-        //     )
-
-        // }
-      };
 
       const request_subcription = async() =>{
         setstartbtnLoading(true)
@@ -139,6 +118,56 @@ const Subscription = (props) => {
           setstartbtnLoading(false)
         }
       }
+
+
+      const handleCheckboxChangePlan = (event,check_month_or_annually,plan_subscribe) => {
+          setIsCheckedPlan(event.target.checked);
+          if(isCheckedPlan){
+                if(plan_subscribe=="starter" && check_month_or_annually=="monthly"){
+                    setall_cost_data(
+                        [{
+                            plan:"starter",
+                            actual_plan:"starter",
+                            cost:subscriptions_details.charge_description.monthly_starter,
+                            monthly_anually:"monthly"
+                        }]
+                    )
+                }else{
+                    setall_cost_data(
+                        [{
+                            plan:"premium",
+                            actual_plan:"premium",
+                            cost:subscriptions_details.charge_description.monthly_premium_mode,
+                            monthly_anually:"monthly"
+                        }]
+                    )
+                }
+            }else{
+                
+                if(plan_subscribe=="starter"){
+                    setall_cost_data(
+                        [{
+                            plan:"starter",
+                            actual_plan:"starter",
+                            cost:subscriptions_details.charge_description.annaully_starter,
+                            monthly_anually:"annually"
+                        }]
+                    )
+                }
+                if(plan_subscribe=="premium"){
+                    setall_cost_data(
+                        [{
+                            plan:"premium",
+                            actual_plan:"premium",
+                            cost:subscriptions_details.charge_description.annaully_premium_mode,
+                            monthly_anually:"annually"
+                        }]
+                    )
+                }
+          }
+      };
+
+
 
   return (
     <>
@@ -180,6 +209,7 @@ const Subscription = (props) => {
                         <div className="">
                             <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer bg-gray-50"
                             onClick={()=>{
+
                                 if(isCheckedPlan){
                                     setall_cost_data(
                                         [{
@@ -189,6 +219,8 @@ const Subscription = (props) => {
                                             monthly_anually:"annually"
                                         }]
                                     )
+                                    setmonthly_or_annyally_check("annually")
+                                    setplan_subscribe("starter")
                                     // console.log(subscriptions_details.charge_description.annaully_starter)
                                 }else{
                                     setall_cost_data(
@@ -199,6 +231,9 @@ const Subscription = (props) => {
                                             monthly_anually:"monthly"
                                         }]
                                     )
+                                    setmonthly_or_annyally_check("monthly")
+                                    setplan_subscribe("starter")
+
                                     // console.log(subscriptions_details.charge_description.monthly_starter)
                                 }
                                 setisRadioChecked(true)
@@ -250,22 +285,32 @@ const Subscription = (props) => {
                                 </div>
                                 <div className="col-span-4 text-right">
                                     <div className="uppercase text-xs font-medium text-gray-600">Starts at</div>
-                                    <div><span className="text-lg font-semibold">$
+                                    <div>
                                     {isCheckedPlan
                                     ?
                                     <>
                                       {subscriptions_details &&
-                                        subscriptions_details.charge_description.annaully_starter
+                                        <>
+                                        <span className="text-lg font-semibold">$
+                                        {subscriptions_details.charge_description.annaully_starter}
+                                        </span>
+                                        <span className="text-xs text-gray-400 font-medium ml-2">/yearly</span>
+                                        </>
                                     }
                                     </>
                                     :
                                     <>
                                     {subscriptions_details &&
-                                        subscriptions_details.charge_description.monthly_starter
+                                        <>
+                                        <span className="text-lg font-semibold">$
+                                            {subscriptions_details.charge_description.monthly_starter}
+                                            </span>
+                                            <span className="text-xs text-gray-400 font-medium ml-2">/mo</span>
+                                        </>
                                     }
                                     </>
                                     }
-                                    </span><span className="text-xs text-gray-400 font-medium ml-2">/mo</span></div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer"
@@ -279,6 +324,8 @@ const Subscription = (props) => {
                                             monthly_anually:"annually"
                                         }]
                                     )
+                                    setmonthly_or_annyally_check("annaully")
+                                    setplan_subscribe("premium")
                                     // console.log(subscriptions_details.charge_description.annaully_boss_mode)
                                 }else{
                                     setall_cost_data(
@@ -289,6 +336,8 @@ const Subscription = (props) => {
                                             monthly_anually:"monthly"
                                         }]
                                     )
+                                    setmonthly_or_annyally_check("monthly")
+                                    setplan_subscribe("premium")
                                     // console.log(subscriptions_details.charge_description.monthly_boss_mode)
                                 }
                                 setisRadioChecked(false)
@@ -325,22 +374,32 @@ const Subscription = (props) => {
                                 </div>
                                 <div className="col-span-4 text-right">
                                     <div className="uppercase text-xs font-medium text-gray-600">Starts at</div>
-                                    <div><span className="text-lg font-semibold">$
+                                    <div>
                                     {isCheckedPlan
                                     ?
                                     <>
                                       {subscriptions_details &&
-                                        subscriptions_details.charge_description.annaully_premium_mode
+                                      <>
+                                        <span className="text-lg font-semibold">$
+                                        {subscriptions_details.charge_description.annaully_premium_mode}
+                                        </span>
+                                        <span className="text-xs text-gray-400 font-medium ml-2">/yearly</span>
+                                      </>
                                     }
                                     </>
                                     :
-                                    <>
-                                    {subscriptions_details &&
-                                        subscriptions_details.charge_description.monthly_premium_mode
+                                        <>
+                                            {subscriptions_details &&
+                                            <>
+                                                <span className="text-lg font-semibold">$
+                                                {subscriptions_details.charge_description.monthly_premium_mode}
+                                                </span>
+                                                <span className="text-xs text-gray-400 font-medium ml-2">/mo</span>
+                                            </>
+                                            }
+                                        </>
                                     }
-                                    </>
-                                    }
-                                    </span><span className="text-xs text-gray-400 font-medium ml-2">/mo</span></div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="grid grid-cols-12 gap-6 p-5">
@@ -443,7 +502,9 @@ const Subscription = (props) => {
                                     <ISwitch
                                     sx={{ m: 1 }}
                                     checked={isCheckedPlan}
-                                    onChange={handleCheckboxChangePlan}
+                                    onChange={(e)=>{
+                                        handleCheckboxChangePlan(e,monthly_or_annyally_check,plan_subscribe)
+                                    }}
                                     />
                                 }
                                 label=""
@@ -500,14 +561,14 @@ const Subscription = (props) => {
                                     <div>
                                     <div className="flex items-center">
                                         <div className="uppercase text-xs text-gray-500 mr-2 font-medium">Total</div>
-                                        {/* <span>
-                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                        <span title="Total cost of subcription">
+                                            <svg  className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                                 <path d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                                 <path d="M6.57,7.17h1.71v3.96" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                                 <path d="M6.58,11.13h3.4" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                                 <path d="M8.29,4.25v.37" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>
-                                        </span> */}
+                                        </span>
                                     </div>
                                     </div>
                                     <div className="text-sm text-gray-600">${all_cost_data &&
@@ -518,17 +579,17 @@ const Subscription = (props) => {
                                                 "39"
                                         }/mo</div>
                                 </div>
-                                <div className="flex justify-between items-center text-gray-800">
+                                {/* <div className="flex justify-between items-center text-gray-800">
                                     <div className="flex font-bold items-center py-4">
                                     <span className="mr-2 text-md">Due today</span>
-                                    {/* <span>
+                                    <span>
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                             <path d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                             <path d="M6.57,7.17h1.71v3.96" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                             <path d="M6.58,11.13h3.4" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                             <path d="M8.29,4.25v.37" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
-                                    </span> */}
+                                    </span>
                                     </div>
                                     <div className="font-bold text-xl"><span>${all_cost_data &&
                                             all_cost_data.length>0
@@ -537,7 +598,7 @@ const Subscription = (props) => {
                                             :
                                                 "39"
                                         }</span></div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="flex flex-col w-full mt-5">
                                 <div className="mb-5 text-sm text-center text-gray-500">Confirm your plan to end your trial now.</div>

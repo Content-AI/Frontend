@@ -28,6 +28,14 @@ const GoogleLoginSigup = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+
+
+  const searchParams = new URLSearchParams(location.search);
+  const subscription_type = searchParams.get('subscription_type');
+  const plan = searchParams.get('plan');
+
+
+
   const [token_of_gmail,set_token_of_gmail] = useState(null)
   const [wholePageLoading,setwholePageLoading]=useState(false)
 
@@ -49,7 +57,12 @@ const GoogleLoginSigup = () => {
             dispatch(_save_survey_(response.data.three_steps))
 
           }
-          navigate("/");
+        // if there is stripe data redirect to stripe
+          if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+            navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
+        }else{
+            navigate("/");
+        }
         }).catch((err)=>{
           // navigate("/login");
           try{

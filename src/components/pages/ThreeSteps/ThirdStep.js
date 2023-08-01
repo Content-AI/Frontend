@@ -17,11 +17,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { _save_token_ } from "../../../features/AuthenticationToken";
 import { BACKEND_URL, BACK_API_SURVEY } from "../../../apis/urls";
 import { _save_survey_ } from "../../../features/ThreeSteps";
+import LoadingPage from "../../LoadingPage";
 
 const ThirdStep = () => {
   let navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const searchParams = new URLSearchParams(location.search);
+  const subscription_type = searchParams.get('subscription_type');
+  const plan = searchParams.get('plan');
+  
+
 
   // console.log(location.state)
 
@@ -33,6 +40,7 @@ const ThirdStep = () => {
   const [data, setData] = useState("");
   const [datatext, setDatatext] = useState("");
   const [showModal, setShowModal] = React.useState(true);
+  const [LoadingPageSurvey, setLoadingPageSurvey] = React.useState(false);
 
   const handleToggle = (e) => {
     setIsSelected(!isSelected);
@@ -59,6 +67,7 @@ const ThirdStep = () => {
 
   const send_survey_data = async () => {
     // formData, url,ACCESS_TOKEN
+    setLoadingPageSurvey(true)
     const datas = {
       first_answer: location.state.first_answer,
       second_answer: location.state.second_answer,
@@ -72,6 +81,16 @@ const ThirdStep = () => {
     // console.log(response.data)
     dispatch(_save_survey_(false));
     localStorage.setItem("three_steps", false);
+    if(response.status==200){
+      if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+        // navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
+        window.location.replace(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`);
+      }else{
+        window.location.replace(`/`);
+        // navigate("/");
+      }
+    }
+    // setLoadingPageSurvey(false)
   };
 
   useEffect(() => {
@@ -81,6 +100,11 @@ const ThirdStep = () => {
   }, [data]);
 
   return (
+    <>
+    {LoadingPageSurvey
+    ?
+      <LoadingPage/>
+    :
     <>
       {showModal ? (
         <>
@@ -109,7 +133,12 @@ const ThirdStep = () => {
                 <button
                   className="flex items-center gap-3 font-normal text-blue text-sm"
                   onClick={() => {
-                    navigate("/second_step");
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+                    navigate(`/second_step?survey_data_second=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`)
+                      
+                    }else{
+                    navigate("/second_step?survey_data_second=by-for-user-clarification");
+                    }
                   }}
                 >
                   <span className="w-5 h-5">
@@ -136,7 +165,6 @@ const ThirdStep = () => {
                   sx={{ textTransform: "none" }}
                   onClick={() => {
                     send_survey_data();
-                    navigate("/");
                   }}
                 >
                   Get Started
@@ -147,6 +175,8 @@ const ThirdStep = () => {
           <div className="fixed inset-0 z-40 bg-white"></div>
         </>
       ) : null}
+      </>
+    }
       <Toaster />
     </>
   );

@@ -1,8 +1,32 @@
-import React from 'react'
+import React , {useEffect,useState} from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom'
+import { BACKEND_URL,BACK_END_API_CANCEL_SUBSCRIPTION } from '../../../apis/urls';
 import Settings from '../Settings'
-const Billing = () => {
+import { fetchData } from '../../../apis/apiService';
+import toast, { Toaster } from 'react-hot-toast';
+
+
+const Billing = (props) => {
   const navigate = useNavigate()
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
+  let list_token_generated_by_user = useSelector(
+    (state) => state.SetListTokenGeneratedByUser.ListTokenGeneratedByUser
+  );
+
+
+  const cancel_subscription = async() =>{
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION,props.AUTH_TOKEN)
+    if(resp.status==200){
+      notifysucces("subscription cancel")
+    }else{
+        notifysucces("something went wrong")
+      }
+    }
+
   return (
     <>
       <Settings/>
@@ -29,7 +53,7 @@ const Billing = () => {
                         Words Generated
                         </strong>
                         <strong className="font-medium text-black ml-[400px]">
-                        5,000 / *
+                        {list_token_generated_by_user.total} / *
                         </strong>
                       </div>
                         <div className="w-full max-w-xl">
@@ -103,10 +127,10 @@ const Billing = () => {
               </div>
           </div>
           <div className="space-y-2 py-8">
-              <h2 className="text-xl font-semibold text-gray-900">Delete account</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Cancel Subscription</h2>
               <p className="text-gray-500 text-sm">
                 <span className="block mb-2">
-                  Kindly take note that if you decide to delete your account, all your saved content will be delete.
+                  {/* Kindly take note that if you decide to delete your account, all your saved content will be delete. */}
                 </span>
               <button 
                 type="button" 

@@ -43,12 +43,17 @@ function App() {
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
 
+  const [ subcheck,setsubcheck]=useState(true)
+  const [ data_of_planning,setdata_of_planning]=useState([])
+
 
   const searchParams = new URLSearchParams(location.search);
+  const subscription_type = searchParams.get('subscription_type');
+  const plan = searchParams.get('plan');
+  
   const message_from_subscription = searchParams.get('message');
 
 
-  const [ subcheck,setsubcheck]=useState(true)
 
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
@@ -83,7 +88,13 @@ function App() {
       dispatch(_save_token_(localStorage.getItem("token")));
       dispatch(_load_screen_(false))
     }else{
-      navigate('/login')
+      // console.log("subscription_type : ",subscription_type)
+      // console.log("plan : ",plan)
+      if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+        navigate(`/login?subscription_type=${subscription_type}&plan=${plan}`)
+      }else{
+        navigate('/login?user=login_f')
+      }
       dispatch(_load_screen_(false))
     }
   }, []);
@@ -100,7 +111,13 @@ function App() {
           dispatch(_save_survey_(null));
           dispatch(_delete_user_profile(null));
           dispatch(_load_screen_(false))
-          navigate("/login")
+          // console.log("subscription_type : ",subscription_type)
+          // console.log("plan : ",plan)
+          if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+            navigate(`/login?subscription_type=${subscription_type}&plan=${plan}`)
+          }else{
+            navigate("/login?user=login_s")
+          }
         }
 
     }
@@ -145,10 +162,13 @@ function App() {
   }, [TOKEN]);
 
   useEffect(()=>{
-    // console.log("_save_survey_",_survey_data_)
     if(_survey_data_=="true"){
       setsubcheck(null)
-      navigate("/first_step?survey_data_first=by-for-user-clarification")
+      if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+        navigate(`/first_step?survey_data_first=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`)
+      }else{
+        navigate("/first_step?survey_data_first=by-for-user-clarification")
+      }
     }
   },[_survey_data_])
   
@@ -194,7 +214,7 @@ function App() {
           <LoadingPage/>
         :
           <>
-            <Login/>
+            <Login redirect_to_stripe_from_app={data_of_planning}/>
           </>
       }
       <Toaster/>

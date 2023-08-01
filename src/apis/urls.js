@@ -1,5 +1,5 @@
-// BACKEND_URL = "http://localhost:8000"
-BACKEND_URL = "https://copyai.pythonanywhere.com";
+BACKEND_URL = "http://localhost:8000"
+// BACKEND_URL = "https://copyai.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
@@ -98,4 +98,7 @@ export const BACK_END_API_SUBCRIPTION_DIRECT ="/v1/subscription/direct-create-ac
 
 
 export const BACK_END_API_TOKEN_GENERATED ="/v1/template/token_generated/";
+
+
+export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
 

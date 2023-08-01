@@ -49,6 +49,7 @@ import axios from 'axios';
 
 import FacebookLoginPage from './FacebookLoginPage'
 import GoogleOneTap from './GoogleOneTap';
+import { useLocation } from "react-router-dom";
 
 const style = {
     position: 'absolute',
@@ -64,11 +65,16 @@ const style = {
 
 export default function Login() {
 
+
     let navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
 
-    
+    const searchParams = new URLSearchParams(location.search);
+    const subscription_type = searchParams.get('subscription_type');
+    const plan = searchParams.get('plan');
+
 
     const [open, setOpen] = React.useState(false);
     const [popupgoogle,setpopupgoogle] = React.useState(false);
@@ -163,14 +169,20 @@ export default function Login() {
         setwholePageLoading(true)
         const url=BACKEND_URL+BACK_TOKEN_RECEIVE
         const response = await LoginData({"token":OTP},url);
-        // console.log(response)
+
         if(response.request.status==201){
             localStorage.setItem("token",  response.data.access);
             localStorage.setItem("refresh",  response.data.refresh);
             dispatch(_save_token_(response.data.access));
             dispatch(_save_survey_(response.data.three_steps))
             localStorage.setItem("three_steps",response.data.three_steps)
-            navigate("/");
+            
+            // if there is stripe data redirect to stripe
+            if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+                navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
+            }else{
+                navigate("/");
+            }
             return true
         }
         notifyerror("Invalid token")
