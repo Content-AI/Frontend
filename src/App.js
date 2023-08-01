@@ -19,6 +19,7 @@ import { _delete_token_ } from "./features/AuthenticationToken";
 import { _delete_user_profile } from "./features/Fullprofile";
 import { _save_details_ } from "./features/Subscriptions";
 import { _save_sub_details_ } from "./features/SubscriptionsData";
+import { _save_generated_token_ } from "./features/ListTokenGeneratedByUser";
 
 
 import { useNavigate } from "react-router-dom";
@@ -26,7 +27,7 @@ import Login from './components/pages/Login';
 import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
 import { fetchData } from './apis/apiService';
-import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
+import { BACK_END_API_PROFILE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
 import LoadingPage from './components/LoadingPage';
 import Subscription from './components/pages/Subscription/Subscription'
 import { useLocation } from "react-router-dom";
@@ -117,6 +118,13 @@ function App() {
 
   }
   
+  const get_token_generated_by_user = async() => {
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_TOKEN_GENERATED,TOKEN)
+    if(resp.status==200){
+      dispatch(_save_generated_token_(resp.data))
+    }
+  }
+
   const get_subcribe_data_of_user = async() =>{
     const subscribe_detail_data = await fetchData(BACKEND_URL+BACK_END_API_SUBCRIPTION_DETAILS,TOKEN)
     try{
@@ -129,6 +137,7 @@ function App() {
         get_profile_data()
         get_subscription_details()
         get_subcribe_data_of_user()
+        get_token_generated_by_user()
     }
     if (localStorage.getItem("three_steps")) {
       dispatch(_save_survey_(localStorage.getItem("three_steps")));

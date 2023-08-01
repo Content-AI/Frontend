@@ -16,6 +16,7 @@ import FolderData from '../features/FolderData'
 import RepeatQuestionInChat from '../features/RepeatQuestionInChat'
 import Subscriptions from '../features/Subscriptions'
 import SubscriptionsData from '../features/SubscriptionsData'
+import ListTokenGeneratedByUser from '../features/ListTokenGeneratedByUser'
 
 export const store = configureStore({
     reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
         SetRepeatQuestionInChat:RepeatQuestionInChat,
         SetSubscriptions:Subscriptions,
         SetSubscriptionsData:SubscriptionsData,
+        SetListTokenGeneratedByUser:ListTokenGeneratedByUser,
     }
 })
 
