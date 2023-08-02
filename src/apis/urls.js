@@ -101,4 +101,5 @@ export const BACK_END_API_TOKEN_GENERATED ="/v1/template/token_generated/";
 
 
 export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
+export const BACK_END_API_INVOICE_PORTAL ="/v1/subscription/invoices-portal/";
 

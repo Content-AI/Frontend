@@ -1,7 +1,7 @@
 import React , {useEffect,useState} from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom'
-import { BACKEND_URL,BACK_END_API_CANCEL_SUBSCRIPTION } from '../../../apis/urls';
+import { BACKEND_URL,BACK_END_API_CANCEL_SUBSCRIPTION,BACK_END_API_INVOICE_PORTAL } from '../../../apis/urls';
 import Settings from '../Settings'
 import { fetchData } from '../../../apis/apiService';
 import toast, { Toaster } from 'react-hot-toast';
@@ -9,6 +9,11 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const Billing = (props) => {
   const navigate = useNavigate()
+
+  const [showInvoice,setshowInvoice]=useState(false)
+  const [showBillsData,setshowBillsData]=useState(false)
+  
+  const [showCancelSubs,setshowCancelSubs]=useState(false)
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
@@ -19,12 +24,42 @@ const Billing = (props) => {
 
 
   const cancel_subscription = async() =>{
+    setshowCancelSubs(true)
     const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION,props.AUTH_TOKEN)
     if(resp.status==200){
       notifysucces("subscription cancel")
     }else{
-        notifysucces("something went wrong")
+      notifyerror("You haven't done payment yet")
       }
+      setshowCancelSubs(false)
+    }
+  const invoice_portal = async() =>{
+    setshowInvoice(true)
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_INVOICE_PORTAL,props.AUTH_TOKEN)
+    if(resp.status==200){
+      try{
+        window.location.replace(resp.data.message);
+      }catch(e){
+        notifyerror("something went wrong")
+      }
+    }else{
+      notifyerror("something went wrong")
+      }
+      // setshowInvoice(false)
+    }
+  const edit_detials = async() =>{
+    setshowBillsData(true)
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_INVOICE_PORTAL,props.AUTH_TOKEN)
+    if(resp.status==200){
+      try{
+        window.location.replace(resp.data.message);
+      }catch(e){
+        notifyerror("something went wrong")
+      }
+    }else{
+      notifyerror("something went wrong")
+      }
+      // setshowInvoice(false)
     }
 
   return (
@@ -81,11 +116,24 @@ const Billing = (props) => {
                         </div> */}
                         <div className="mb-1 font-medium text-gray-700 md:flex  md:justify-end">
                         <div className="mt-4 md:flex md:items-center  md:space-x-2">
-                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700 w-full md:w-auto">
-                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                            Edit payment details
-                            </span>
-                          </button>
+                        {showBillsData
+                    ?
+                        <button type="button" 
+                        disabled
+                          className="w-[150px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-gray-400">
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                          <div class="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                        </span></button>
+                    :
+                      <button type="button" 
+                        onClick={()=>{
+                          edit_detials()
+                          }} className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700 md:w-auto">
+                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                              Edit payment details
+                              </span>
+                            </button>
+                        }
                           <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
                           onClick={()=>{
                             navigate("/settings/subscription_plan")
@@ -108,9 +156,12 @@ const Billing = (props) => {
                       <div className="text-xl font-semibold tracking-tight text-black">Save more than 20%</div>
                       <div className="text-gray-500">Pay annually to save more than 20%!</div>
                     </div>
-                    <button type="button" 
-                    className="transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977]">
-                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">View details</span></button>
+                    
+                      <button type="button" 
+                      className="transition-all w-[150px] duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977]">
+                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                      View details
+                      </span></button>
                 </div>
               </div>
           </div>
@@ -120,10 +171,24 @@ const Billing = (props) => {
                     <h3 className="text-xl font-semibold text-gray-900">Invoices</h3>
                     <p className="text-gray-500 text-sm">View your payment history</p>
                 </div>
-                <button type="button" 
-                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-[#334977] text-white ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                View billing history</span></button>
+                {showInvoice
+                    ?
+                      <button type="button" 
+                      disabled
+                        className="w-[150px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-gray-400">
+                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                        Generating History
+                      </span></button>
+                    :
+                    <button type="button" 
+                      onClick={()=>{
+                                invoice_portal()
+                        }}
+                    className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-[#334977] text-white ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                      View billing history
+                    </span></button>
+                }
               </div>
           </div>
           <div className="space-y-2 py-8">
@@ -131,14 +196,32 @@ const Billing = (props) => {
               <p className="text-gray-500 text-sm">
                 <span className="block mb-2">
                   {/* Kindly take note that if you decide to delete your account, all your saved content will be delete. */}
+                  When cancelling the subscription, a one-time payment will be charged, regardless of whether you have chosen a yearly or monthly billing cycle.
                 </span>
-              <button 
-                type="button" 
-                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-red-600 text-white hover:bg-red-800 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                  Delete
-                </span>
-              </button>
+
+              {showCancelSubs
+              ?
+                <button 
+                  type="button"
+                  className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-red-500 text-white hover:bg-red-400 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                    <div class="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                  </span>
+                </button>
+                
+              :
+                <button 
+                  type="button" 
+                  onClick={()=>{
+                    cancel_subscription()
+                  }}
+                  className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-red-500 text-white hover:bg-red-400 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                    Cancel Subscription
+                  </span>
+                </button>
+              }
+
               </p>
           </div>
         </div>

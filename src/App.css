@@ -129,3 +129,10 @@ h6 {
 }
 
 
+
+
+/* styles.css or in your Tailwind CSS configuration */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
