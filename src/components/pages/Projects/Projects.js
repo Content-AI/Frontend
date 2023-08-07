@@ -56,15 +56,21 @@ const Projects = (props) => {
   let DocumentsData = useSelector(
     (state) => state.SetDocumentsData.DocumentsData
   );
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );	
+
 
   const get_folder_of_user = async () => {
-    const resp = await fetchData(
-      BACKEND_URL + BACK_END_API_PROJECTS,
-      props.AUTH_TOKEN
-    );
-    if ((resp.status = 200)) {
-      setFolderOfUser(resp.data);
-      dispatch(_save_folder_data_(resp.data));
+    if(ChosenWorkspaceId!=null){
+      const resp = await fetchData(
+        BACKEND_URL + BACK_END_API_PROJECTS+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],
+        props.AUTH_TOKEN
+      );
+      if ((resp.status = 200)) {
+        setFolderOfUser(resp.data);
+        dispatch(_save_folder_data_(resp.data));
+      }
     }
   };
 
@@ -124,6 +130,7 @@ const Projects = (props) => {
   const create_folder = async () => {
     let formData = {
       project_name: folderName,
+      workspace_id:ChosenWorkspaceId["Workspace_Id"]
     };
     const resp = await postData(
       formData,

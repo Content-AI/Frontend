@@ -6,6 +6,7 @@ import CreatableSelect from "react-select/creatable";
 import { fetchData,postData } from "../../../../apis/apiService";
 import toast, { Toaster } from "react-hot-toast";
 import LoadingPage from "../../../LoadingPage";
+import { useSelector, useDispatch } from "react-redux";
 
 const BuildcustomTemplate = (props) => {
     const navigate = useNavigate()
@@ -38,7 +39,9 @@ const BuildcustomTemplate = (props) => {
     const [fieldValues, setFieldValues] = useState([]);
     const [loading,setloading] = useState(false);
 
-    
+    let ChosenWorkspaceId = useSelector(
+      (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+      );
     const [inputs, setInputs] = useState([{ key: "", value: "" }]);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -155,7 +158,9 @@ const BuildcustomTemplate = (props) => {
     formData["language"] =
     formData["generate"] = TemplateData[0]["title"];
     formData["ids"] = TemplateData[0]["id"];
-    
+    formData["workspace_id"] = ChosenWorkspaceId["Workspace_Id"];
+
+
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
     
     // return true

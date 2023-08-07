@@ -29,6 +29,7 @@ const FirstStep = () => {
   const searchParams = new URLSearchParams(location.search);
   const subscription_type = searchParams.get('subscription_type');
   const plan = searchParams.get('plan');
+  const invitation_code = searchParams.get('invitation_code');
   
   const localOptions = [
     "Business Owner",
@@ -88,6 +89,15 @@ const FirstStep = () => {
                             },
                           }
                       );
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                        navigate(
+                          `/second_step?survey_data_second=by-for-user-clarification&invitation_code=${invitation_code}`,
+                          {
+                            state: {
+                              first_answer: data,
+                            },
+                          }
+                      );
                     }else{
                       navigate(
                         "/second_step?survey_data_second=by-for-user-clarification",
@@ -125,6 +135,15 @@ const FirstStep = () => {
                         },
                       }
                     );
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                        navigate(
+                          `/second_step?survey_data_second=by-for-user-clarification&invitation_code=${invitation_code}`,
+                          {
+                            state: {
+                              first_answer: data,
+                            },
+                          }
+                      );
                     }else{
                     navigate(
                     "/second_step?survey_data_second=by-for-user-clarification",

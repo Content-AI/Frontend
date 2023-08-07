@@ -121,6 +121,11 @@ const Chat = ({ AUTH_TOKEN }) => {
     (state) => state.SetRepeatQuestionInChat.RepeatQuestionInChat
   );
 
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );	
+
+
   const get_initial_chat = async (url, room_id) => {
     const resp = await fetchData(url + "/" + room_id + "/", AUTH_TOKEN);
     if (resp.status == 200 || resp.status == 201) {
@@ -289,7 +294,7 @@ const Chat = ({ AUTH_TOKEN }) => {
           ]);
           setChatText("");
         } else {
-          notifyerror("something went wrong");
+          // notifyerror("something went wrong");
         }
         setLoading(false);
         return true;
@@ -334,7 +339,7 @@ const Chat = ({ AUTH_TOKEN }) => {
         setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer, data]);
         setChatText("");
       } else {
-        notifyerror("something went wrong");
+        // notifyerror("something went wrong");
       }
     }
     // =================Initial chat with data or after there is some data==============================
@@ -839,7 +844,7 @@ const Chat = ({ AUTH_TOKEN }) => {
         setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer, data]);
         setChatText("");
       } else {
-        notifyerror("something went wrong");
+        // notifyerror("something went wrong");
       }
     }
     // =================Initial chat with data or after there is some data==============================

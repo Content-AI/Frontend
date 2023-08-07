@@ -27,6 +27,8 @@ const ThirdStep = () => {
   const searchParams = new URLSearchParams(location.search);
   const subscription_type = searchParams.get('subscription_type');
   const plan = searchParams.get('plan');
+  const invitation_code = searchParams.get('invitation_code');
+
   
 
 
@@ -85,6 +87,8 @@ const ThirdStep = () => {
       if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
         // navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
         window.location.replace(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`);
+      }else if(invitation_code!=null && invitation_code!=undefined){
+        window.location.replace(`/invitation_code/${invitation_code}&new=user`);
       }else{
         window.location.replace(`/`);
         // navigate("/");
@@ -136,6 +140,8 @@ const ThirdStep = () => {
                     if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
                     navigate(`/second_step?survey_data_second=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`)
                       
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                      navigate(`/second_step?survey_data_second=by-for-user-clarification&invitation_code=${invitation_code}`)
                     }else{
                     navigate("/second_step?survey_data_second=by-for-user-clarification");
                     }

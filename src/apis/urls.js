@@ -1,5 +1,5 @@
-BACKEND_URL = "http://localhost:8000"
-// BACKEND_URL = "https://copyai.pythonanywhere.com";
+// BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://copyai.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
@@ -102,4 +102,30 @@ export const BACK_END_API_TOKEN_GENERATED ="/v1/template/token_generated/";
 
 export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
 export const BACK_END_API_INVOICE_PORTAL ="/v1/subscription/invoices-portal/";
+
+// export const BACK_END_API_WORKSPACE ="/v1/team_members/workspace/";
+export const BACK_END_API_WORKSPACE ="/v1/team_members/team_members_list";
+
+export const BACK_END_API_WORKSPACE_USERS_LIST ="/v1/team_members/list_of_users_in_workshop/";
+
+export const BACK_END_API_INITIAL_WORKSPACE ="/v1/team_members/initial_work_shop_of_user";
+
+export const BACK_END_API_INVITE_WORKSHOP ="/v1/team_members/invite_to_workspace/";
+
+export const BACK_END_API_ACCEPT_INVITATION ="/v1/team_members/accept_invitation/";
+
+
+export const BACK_END_API_CHECK_ADMIN ="/v1/team_members/disable_invitation/";
+export const BACK_END_API_INVITE_GENERATE_LINK ="/v1/team_members/generate_link_for_users/";
+export const BACK_END_API_CHANGE_PERMISSION ="/v1/team_members/change_permission/";
+export const BACK_END_API_REMOVE_USER ="/v1/team_members/remove_member/";
+export const BACK_END_API_REMOVE_USER_FROM_DOC ="/v1/documents_data/remove_edit_permission_doc/";
+
+
+export const BACK_END_API_CAN_INVITE ="/v1/team_members/check_user_already_there_or_not/";
+export const BACK_END_API_DOCUMENTS_USERS ="/v1/team_members/doc_shared_to_user/";
+export const BACK_END_API_SEND_INVITATION ="/v1/team_members/invite_with_email_share_doc/";
+export const BACK_END_API_CHECK_PUBLIC_OR_NOT ="/v1/team_members/check_public_or_not/";
+export const BACK_END_API_MAKE_PUBLIC_OR_NOT ="/v1/team_members/make_workshop_public/";
+export const BACK_END_API_DOC_SHARED_TO_USER ="/v1/team_members/doc_shared_to_user/";
 

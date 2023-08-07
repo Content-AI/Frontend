@@ -17,6 +17,8 @@ import RepeatQuestionInChat from '../features/RepeatQuestionInChat'
 import Subscriptions from '../features/Subscriptions'
 import SubscriptionsData from '../features/SubscriptionsData'
 import ListTokenGeneratedByUser from '../features/ListTokenGeneratedByUser'
+import WorkspaceId from '../features/WorkspaceId'
+import ChosenWorkspaceId from '../features/ChosenWorkspaceId'
 
 export const store = configureStore({
     reducer: {
@@ -38,6 +40,8 @@ export const store = configureStore({
         SetSubscriptions:Subscriptions,
         SetSubscriptionsData:SubscriptionsData,
         SetListTokenGeneratedByUser:ListTokenGeneratedByUser,
+        SetWorkspaceId:WorkspaceId,
+        SetChosenWorkspaceId:ChosenWorkspaceId,
     }
 })
 

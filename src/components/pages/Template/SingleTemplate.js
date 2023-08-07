@@ -27,6 +27,7 @@ import RenderTemplate from "./RenderTemplate";
 import BouncingDotsLoader from "../../BouncingDotsLoader";
 import axios from "axios";
 import ResponseTemplate from "./ResponseTemplate";
+import { useSelector, useDispatch } from "react-redux";
 
 // import ReactMarkdown from 'react-markdown'
 // import rehypeKatex from 'rehype-katex'
@@ -70,6 +71,11 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [LoadingButton, setLoadingButton] = useState(false);
 
   const location = useLocation();
+
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );	
+
 
   const { template_id } = useParams();
 
@@ -146,6 +152,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   //     console.log(TemplateData)
   // },[TemplateData])
 
+
+
   const handleClick = async (id_of_template) => {
     // console.log(TemplateData[0]["title"])
     // console.log(inputs)
@@ -166,6 +174,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     formData["output_results"] = ContentOutputNumber.toString();
     formData["generate"] = TemplateData[0]["title"];
     formData["ids"] = TemplateData[0]["id"];
+    formData["workspace_id"] = ChosenWorkspaceId["Workspace_Id"];
     
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
     
@@ -238,10 +247,12 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const get_history = async (template_id) => {
     if(template_id!=null){
-      const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY+"/"+template_id, AUTH_TOKEN);
-      if ((resp.status = 200)) {
-        set_history_answer(resp.data);
-      }
+      if(ChosenWorkspaceId!=null){
+        const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY+"/"+template_id+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"], AUTH_TOKEN);
+        if ((resp.status = 200)) {
+          set_history_answer(resp.data);
+        }
+    }
     }
   };
 
@@ -744,7 +755,7 @@ useEffect(()=>{
                       />
                       <button
                         type="submit"
-                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm hover:from-purple-500 hover:to-blue-500 selectionRing active:from-purple-700 active:to-blue-700"
+                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
                         id="generateBtn1"
                         onClick={() => {
                           handleClick(TemplateData[0]["id"]);

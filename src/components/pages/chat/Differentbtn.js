@@ -70,17 +70,25 @@ const Differentbtn = (props) => {
     let COPIED_TEXT = useSelector(
         (state) => state.SetCopiedText.CopiedText
       );
+    
+      
+   let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );	
+
 
       const createDocumentForUser = async() =>{
         let formData = {}
         if(ProjectOrFolderIdChoosen){
             formData = {
                 document_content:props.data,
-                project_id:ProjectOrFolderIdChoosen
+                project_id:ProjectOrFolderIdChoosen,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
         }else{
             formData = {
                 document_content:props.data,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
 
         }

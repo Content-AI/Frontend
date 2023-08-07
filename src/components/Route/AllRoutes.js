@@ -30,11 +30,15 @@ import Team from '../Settings/SettingsPages/Team'
 import Usage from '../Settings/SettingsPages/Usage'
 import Integrations from '../Settings/SettingsPages/Integrations'
 import Subscription from "../Settings/SettingsPages/Subscription";
+import ChangeWorkSpace from "../pages/ChangeWorkSpace";
+import AcceptInvitationPage from "../pages/AcceptInvitationPage";
+import { BsWhatsapp } from "react-icons/bs";
 
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
   const [isSettings,set_isSettings] = useState(false);
+  const [show_invitation,setshow_invitation] = useState(false);
 
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
@@ -46,13 +50,36 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
       set_isSettings(false)
     }
   }, [location]);
+  useEffect(() => {
+    if(location.pathname.includes("/invitation")){
+      setshow_invitation(true)
+    }else{
+      setshow_invitation(false)
+    }
+  }, []);
 
 
   return (
     <>
       {TOKEN ? (
         <>
-        <main className={`flex flex-col sm:ml-64 ${isSettings ? 'sm:mt-[40px]' : 'sm:mt-[74px]'} min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white`}>
+        <main 
+            className={` 
+            ${isSettings
+              ? 
+                ' flex flex-col sm:ml-64 sm:mt-[40px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white ' 
+              :
+                show_invitation
+                ?
+                  null
+                :
+                  ' flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white '
+                }
+              </>
+              }
+              `
+              }
+        >
           <Routes>
             <Route path="/" element={<Home />} />
 
@@ -72,9 +99,14 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
               element={<CreateNewContent AUTH_TOKEN={TOKEN} />}
             />
             <Route
+              path="/change-work-space"
+              element={<ChangeWorkSpace AUTH_TOKEN={TOKEN} />}
+            />
+            <Route
               path="/folder_of_user/:folder_id"
               element={<FolderData AUTH_TOKEN={TOKEN} />}
             />
+            
 
             <Route
               path="/trash"
@@ -136,7 +168,12 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/settings/team" element={<Team AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />            
 
-            <Route path="/settings/subscription_plan" element={<Subscription AUTH_TOKEN={TOKEN}/>} />            
+            <Route path="/settings/subscription_plan" element={<Subscription AUTH_TOKEN={TOKEN}/>} />
+
+            <Route
+              path="/invitation/:invitation_id"
+              element={<AcceptInvitationPage AUTH_TOKEN={TOKEN} />}
+            />
 
           </Routes>
         </main>

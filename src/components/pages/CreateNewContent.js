@@ -12,6 +12,8 @@ import { _load_screen_ } from "../../features/LoadingScreen";
 
 import Select from 'react-select';
 
+
+
 import {
     _save_folder_id_
   } from "../../features/ProjectOrFolderIdChoosen";
@@ -24,6 +26,10 @@ const CreateNewContent = (props) => {
     const handleGoBack = () => {
         navigate(-1);
     };
+
+    let ChosenWorkspaceId = useSelector(
+      (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+      );	
 
     const notifyerror = (message) => toast.error(message);
 
@@ -45,10 +51,13 @@ const CreateNewContent = (props) => {
     ]);
 
     const get_project_data = async() => {
-        const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
-        if(resp.status==200){
-            setSelectedOptions(resp.data)
-            setoptions(resp.data)
+
+      if(ChosenWorkspaceId!=null){
+          const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],props.AUTH_TOKEN)
+          if(resp.status==200){
+              setSelectedOptions(resp.data)
+              setoptions(resp.data)
+          }
         }
     }
       useEffect(()=>{
@@ -131,8 +140,10 @@ useEffect(() => {
 
 const create_blank_document = async() => {
   const formData = {
-    document_content: ""
+    document_content: "lslsllsls",
+    workspace_id:ChosenWorkspaceId["Workspace_Id"]
   }
+  
   const resp = await postData(formData,BACKEND_URL+BACK_END_API_DOCUMENTS+"/",props.AUTH_TOKEN)
   try{
     if(resp.status==201){
@@ -155,7 +166,7 @@ const create_blank_document = async() => {
         ?
             <LoadingPage message={"Creating Document"}/>
         :
-       <div className="fixed inset-0 z-40 overflow-y-auto backdrop-blur-sm" id="headlessui-dialog-:r27:" role="dialog" aria-modal="true" data-headlessui-state="open">
+       <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:r27:" role="dialog" aria-modal="true" data-headlessui-state="open">
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                 <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
                 <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[640px] opacity-100 translate-y-0 sm:scale-100">
@@ -163,103 +174,100 @@ const create_blank_document = async() => {
                         <div className="-m-6 divide-y divide-gray-200">
                         <div className="p-6 space-y-4">
                             <div className="space-y-1">
-                                <h1 className="mb-2 text-lg font-semibold text-gray-900">Get started with new content powered by  <b>Web Central</b></h1>
+                                <h1 className="mb-2 text-lg font-semibold text-gray-900">Get started with new content powered by  <b> AI</b></h1>
                                 <div className="flex">
                                     <div className="w-64 mt-2">
                                     {/* ============select field================= */}
-
-    <div className="w-64" ref={dropdownRef}>
-      <div className="relative inline-block text-left w-full">
-        <button
-          className="flex items-center justify-between w-full px-4 py-2 truncate transition-all duration-150 bg-white rounded-md group active:ring-gray-400 hover:ring-gray-300 ring-1 ring-gray-200"
-          aria-label="Select a campaign"
-          onClick={() => setShowDropdown((prevState) => !prevState)}
-        >
-          <span className="items-start block truncate">
-            <span className="block text-sm text-left text-gray-600 truncate">
-              {/* {selectedOptionFolder} */}
-              {/* {showToUser} */}
-              {capitalizeFrontText(showToUser)}
-            </span>
-          </span>
-          <span className="ml-3 -mr-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              aria-hidden="true"
-              className="w-5 h-5 text-gray-400 group-hover:text-gray-600"
-            >
-              <path d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </span>
-        </button>
-        {showDropdown && (
-          <div className="border border-green-300 origin-top absolute left-0 z-50 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none w-full !min-w-0 transform opacity-100">
-            <div className="px-4 py-3">
-              <div className="space-y-1.5 w-full">
-                <label htmlFor="search-projects" className="sr-only">
-                  <span className="flex items-center space-x-1">
-                    <span>Search projects</span>
-                  </span>
-                </label>
-                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                  <div className="flex items-center grow gap-2 py-1.5">
-                    <div className="flex gap-1 grow">
-                      <input
-                        id="search-projects"
-                        type="text"
-                        className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                        placeholder="Search"
-                        autoComplete="off"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ul className="py-1 max-h-[12.875rem] overflow-y-auto">
-              {filteredOptions.map((option) => (
-                <li key={option.value}>
-                  <button
-                    className="text-left w-full relative text-gray-700 hover:bg-gray-200 hover:text-gray-900 truncate px-4 py-2 text-sm  pr-8"
-                    onClick={() => {
-                      handleOptionClick(option.value);
-                      handleSelectOption(option.label);
-                    }}
-                  >
-                  <span className="flex-grow">{capitalizeFrontText(option.label)}</span>
-                  {option.label=="default"
-                  ?
-                  <svg className='w-6 h-6 float-right' xmlns-dc="http://purl.org/dc/elements/1.1/" xmlns-cc="http://creativecommons.org/ns#" xmlns-rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns-svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16.933333 21.1666675" x="0px" y="0px">
-                    <g transform="translate(0,-280.06665)">
-                        <path transform="matrix(0.26458334,0,0,0.26458334,0,280.06665)" d="m 58,21.998047 c -38.666667,28.001301 -19.333333,14.000651 0,0 z M 6.0019531,14.001953 H 18.927734 l 1.335938,2.001953 H 8.0019531 v 17.123047 0.002 l -2,9.330078 z m 6.0019529,5.994141 h 41.994141 v 2.001953 H 12.003906 Z m 1.615235,6.001953 H 57.341797 L 50.492188,49.996094 H 8.4746094 Z" className="text-black font-normal text-base leading-normal font-sans font-normal tracking-normal text-left whitespace-normal"/>
-                    </g>
-                  </svg>
-                  :
-                    null
-                  }
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              id="newProject"
-              className="text-left w-full text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-4 py-2 rounded-b-md"
-              onClick={handleNewCampaignClick}
-            >
-              + Create Folder
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-
-
+                                      <div className="w-64" ref={dropdownRef}>
+                                        <div className="relative inline-block text-left w-full">
+                                          <button
+                                            className="flex items-center justify-between w-full px-4 py-2 truncate transition-all duration-150 bg-white rounded-md group active:ring-gray-400 hover:ring-gray-300 ring-1 ring-gray-200"
+                                            aria-label="Select a campaign"
+                                            onClick={() => setShowDropdown((prevState) => !prevState)}
+                                          >
+                                            <span className="items-start block truncate">
+                                              <span className="block text-sm text-left text-gray-600 truncate">
+                                                {/* {selectedOptionFolder} */}
+                                                {/* {showToUser} */}
+                                                {capitalizeFrontText(showToUser)}
+                                              </span>
+                                            </span>
+                                            <span className="ml-3 -mr-1">
+                                              <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth="2"
+                                                stroke="currentColor"
+                                                aria-hidden="true"
+                                                className="w-5 h-5 text-gray-400 group-hover:text-gray-600"
+                                              >
+                                                <path d="M19 9l-7 7-7-7"></path>
+                                              </svg>
+                                            </span>
+                                          </button>
+                                          {showDropdown && (
+                                            <div className="border border-green-300 origin-top absolute left-0 z-50 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none w-full !min-w-0 transform opacity-100">
+                                              <div className="px-4 py-3">
+                                                <div className="space-y-1.5 w-full">
+                                                  <label htmlFor="search-projects" className="sr-only">
+                                                    <span className="flex items-center space-x-1">
+                                                      <span>Search projects</span>
+                                                    </span>
+                                                  </label>
+                                                  <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                    <div className="flex items-center grow gap-2 py-1.5">
+                                                      <div className="flex gap-1 grow">
+                                                        <input
+                                                          id="search-projects"
+                                                          type="text"
+                                                          className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                          placeholder="Search"
+                                                          autoComplete="off"
+                                                          value={searchText}
+                                                          onChange={(e) => setSearchText(e.target.value)}
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <ul className="py-1 max-h-[12.875rem] overflow-y-auto">
+                                                {filteredOptions.map((option) => (
+                                                  <li key={option.value}>
+                                                    <button
+                                                      className="text-left w-full relative text-gray-700 hover:bg-gray-200 hover:text-gray-900 truncate px-4 py-2 text-sm  pr-8"
+                                                      onClick={() => {
+                                                        handleOptionClick(option.value);
+                                                        handleSelectOption(option.label);
+                                                      }}
+                                                    >
+                                                    <span className="flex-grow">{capitalizeFrontText(option.label)}</span>
+                                                    {option.label=="default"
+                                                    ?
+                                                    <svg className='w-6 h-6 float-right' xmlns-dc="http://purl.org/dc/elements/1.1/" xmlns-cc="http://creativecommons.org/ns#" xmlns-rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns-svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16.933333 21.1666675" x="0px" y="0px">
+                                                      <g transform="translate(0,-280.06665)">
+                                                          <path transform="matrix(0.26458334,0,0,0.26458334,0,280.06665)" d="m 58,21.998047 c -38.666667,28.001301 -19.333333,14.000651 0,0 z M 6.0019531,14.001953 H 18.927734 l 1.335938,2.001953 H 8.0019531 v 17.123047 0.002 l -2,9.330078 z m 6.0019529,5.994141 h 41.994141 v 2.001953 H 12.003906 Z m 1.615235,6.001953 H 57.341797 L 50.492188,49.996094 H 8.4746094 Z" className="text-black font-normal text-base leading-normal font-sans font-normal tracking-normal text-left whitespace-normal"/>
+                                                      </g>
+                                                    </svg>
+                                                    :
+                                                      null
+                                                    }
+                                                    </button>
+                                                  </li>
+                                                ))}
+                                              </ul>
+                                              <button
+                                                id="newProject"
+                                                className="text-left w-full text-sm font-bold text-gray-700 hover:bg-gray-100 hover:text-gray-900 px-4 py-2 rounded-b-md"
+                                                onClick={handleNewCampaignClick}
+                                              >
+                                                + Create Folder
+                                              </button>
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
                                     {/* ========================================= */}
                                     </div>
                                     

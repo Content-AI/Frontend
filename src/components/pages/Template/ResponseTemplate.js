@@ -34,6 +34,8 @@ import LoadingPage from '../../LoadingPage';
 import { BACKEND_URL,BACK_END_API_DOCUMENTS } from '../../../apis/urls';
 import { postData } from '../../../apis/apiService';
 
+
+
 const ResponseTemplate = (prop) => {
 
     // console.log("prop : ",prop)
@@ -62,6 +64,10 @@ const ResponseTemplate = (prop) => {
         (state) => state.SetCopiedText.CopiedText
       );
 
+    let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );
+
     const handleCopyClick = () => {
       const textToCopy = textRef.current.innerText;
       navigator.clipboard.writeText(textToCopy);
@@ -87,11 +93,13 @@ const ResponseTemplate = (prop) => {
         if(ProjectOrFolderIdChoosen){
             formData = {
                 document_content:prop.r_data,
-                project_id:ProjectOrFolderIdChoosen
+                project_id:ProjectOrFolderIdChoosen,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
         }else{
             formData = {
                 document_content:prop.r_data,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
 
         }

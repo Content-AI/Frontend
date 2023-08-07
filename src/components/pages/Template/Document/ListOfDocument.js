@@ -8,11 +8,12 @@ import RenderHtml from "../RenderHtml";
 import LoadingPage from "../../../LoadingPage";
 import { useSelector, useDispatch } from "react-redux";
 
+
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
 
 const ListOfDocument = (props) => {
 
-  // console.log("props :",props)
+  
 
   const navigate = useNavigate();
   const popupRef = useRef(null);
@@ -50,13 +51,15 @@ const ListOfDocument = (props) => {
     (state) => state.SetFolderData.FolderData
   );
 
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+  );
 
-  // console.log(props.SHOW)
-
-  const get_all_user_doc = async () => {
+  const get_all_user_doc = async (chosen_workspace) => {
+    // const chosen_workspace=localStorage.getItem('chose_workspace')
     if(props.SHOW=="trash"){
 
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/", props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
@@ -64,7 +67,8 @@ const ListOfDocument = (props) => {
       }
     }
     if(props.SHOW=="active"){
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
+
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
@@ -72,18 +76,22 @@ const ListOfDocument = (props) => {
       }
     }
   }
-  const initial_get_all_user_doc = async () => {
+  const initial_get_all_user_doc = async (chosen_workspace) => {
+    // const chosen_workspace=localStorage.getItem('chose_workspace')
     setLoadingData(true)
     if(props.SHOW=="trash"){
-        const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/", props.AUTH_TOKEN)
-        if (resp.status == 200) {
-          setdocumentData(resp.data.results)
-        } else {
-          notifyerror("something went wrong")
-        }
+
+
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+      if (resp.status == 200) {
+        setdocumentData(resp.data.results)
+      } else {
+        notifyerror("something went wrong")
+      }
     }
     if(props.SHOW=="active"){
-    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/", props.AUTH_TOKEN)
+
+    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
     if (resp.status == 200) {
       setdocumentData(resp.data.results)
     } else {
@@ -118,7 +126,7 @@ const ListOfDocument = (props) => {
     const resp = await patchData(data,BACK_END_MULTIPLE_SELECT_FOR_TRASH, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
     if (resp.status == 201) {
       notifysuccess(message)
-      get_all_user_doc()
+      get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
       setSelectedItems([])
       setRenameDiv(false)
     } else {
@@ -157,13 +165,17 @@ const ListOfDocument = (props) => {
   })
 
   useEffect(() => {
-    initial_get_all_user_doc()
+    if(ChosenWorkspaceId){
+      initial_get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
+    }
   }, [ActiveOrTrash])
 
 
   const search_from_api = async (search_text) => {
     if(props.SHOW=="trash"){
-      const resp = await fetchData(BACKEND_URL +BACK_END_API_DOCUMENTS_PATCH+ "/?search="+search_text, props.AUTH_TOKEN)
+
+      // const chosen_workspace=localStorage.getItem('chose_workspace')
+      const resp = await fetchData(BACKEND_URL +BACK_END_API_DOCUMENTS_PATCH+ "/?workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
       if (resp.status == 200) {
         if(resp.data.results.length>0){
           setdocumentData(resp.data.results)
@@ -174,7 +186,8 @@ const ListOfDocument = (props) => {
 
     }
     if(props.SHOW=='active'){
-    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?search="+search_text, props.AUTH_TOKEN)
+
+    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
     if (resp.status == 200) {
       if(resp.data.results.length>0){
         setdocumentData(resp.data.results)
@@ -189,7 +202,7 @@ const ListOfDocument = (props) => {
     setSearchText(event.target.value)
     search_from_api(searchText)
     if(searchText.length<=0){
-      get_all_user_doc()
+      get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
     }
   };
 
@@ -210,7 +223,7 @@ const ListOfDocument = (props) => {
   }
 
   const get_project_data = async() => {
-    const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],props.AUTH_TOKEN)
     if(resp.status==200){
         setSelectedOptions(resp.data)
     }
@@ -269,7 +282,7 @@ const handleItemSelection = (id) => {
 };
 
 const handleSelectButton = () => {
-  console.log(selectedItems);
+
 };
 
 const handleCheckboxChange = (id) => {
@@ -318,7 +331,7 @@ const permanently_delete_multiple_data = async (data, message) => {
 const update_folder_bulk = async(formData, message) =>{
     const resp = await postData(formData, BACKEND_URL + BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID, props.AUTH_TOKEN)
     if(resp.status=201){
-      get_all_user_doc()
+      get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
       setSelectedItems([])
       notifysuccess(message)
     }else{
@@ -576,7 +589,7 @@ const update_folder_bulk = async(formData, message) =>{
                           </td>
                             <td className="w-12 px-3.5 py-3.5" title={"open "+ data.title}
                             onClick={() => {
-                              // console.log(data.id)
+                              
                               navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                             }}>
                               <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

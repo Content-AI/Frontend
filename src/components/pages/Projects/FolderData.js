@@ -37,6 +37,9 @@ const FolderData = (props) => {
     const {folder_id} = useParams()
 
 
+    let ChosenWorkspaceId = useSelector(
+        (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+        );	
     
   const notifyerror = (message) => toast.error(message);
   const notifysuccess = (message) => toast.success(message);
@@ -149,11 +152,14 @@ const FolderData = (props) => {
       };
     
     const get_project_data = async() => {
-        const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE,props.AUTH_TOKEN)
-        if(resp.status==200){
-            setSelectedOptions(resp.data)
+        if(ChosenWorkspaceId!=null){
+            const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],props.AUTH_TOKEN)
+            if(resp.status==200){
+                setSelectedOptions(resp.data)
+            }
         }
     }
+
       useEffect(()=>{
         get_project_data()
       },[])

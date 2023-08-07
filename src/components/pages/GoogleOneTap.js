@@ -34,6 +34,7 @@ const GoogleOneTap = () => {
     const searchParams = new URLSearchParams(location.search);
     const subscription_type = searchParams.get('subscription_type');
     const plan = searchParams.get('plan');
+    const invitation_code = searchParams.get('invitation_code');
 
     const notifysuccess = (message) => toast.success(message);
     const notifyerr = (message) => toast.error(message);
@@ -88,11 +89,13 @@ const GoogleOneTap = () => {
           }
           dispatch(_load_screen_(false))
                       
-          // if there is stripe data redirect to stripe
+          
           if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
-              navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
+            navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
+          }else if(invitation_code!=null && invitation_code!=undefined){
+            navigate(`/invitation/${invitation_code}`)
           }else{
-              navigate("/");
+            navigate("/");
           }
 
         }).catch((err)=>{
