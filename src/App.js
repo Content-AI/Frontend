@@ -45,7 +45,7 @@ function App() {
 
   const [ subcheck,setsubcheck]=useState(true)
   const [ data_of_planning,setdata_of_planning]=useState([])
-  // const [invitation_code, setinvitation_code] = useState(null);
+  const [invitation_code_show, setinvitation_code_show] = useState(false);
 
 
   const searchParams = new URLSearchParams(location.search);
@@ -54,7 +54,6 @@ function App() {
   const invitation_code = searchParams.get('invitation_code');
   
   const message_from_subscription = searchParams.get('message');
-
 
 
   let TOKEN = useSelector(
@@ -74,14 +73,11 @@ function App() {
   );
 
 
-  // useEffect(() => {
-  //   console.log("rendered 2")
-  //   if(location.pathname.includes("/invitation")){
-  //         const pathnameParts = window.location.pathname.split('/');
-  //         const lastPathname = pathnameParts[pathnameParts.length - 1];
-  //         setinvitation_code(lastPathname);
-  //   }
-  // }, [location]);
+  useEffect(() => {
+    if(location.pathname.includes("/invitation")){
+      setinvitation_code_show(true);
+    }
+  }, []);
 
 
   // useEffect(()=>{
@@ -264,11 +260,24 @@ function App() {
         <>
             {subcheck
             ?
-              <>
-                <Subscription _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-                <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-                <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
-              </>
+            <>
+              {invitation_code_show
+              ?
+                <>
+                  <div>
+                    <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+                    <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+                  </div>
+                </>
+              :
+                <>
+                  <Subscription _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+                  <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+                  <AllRoutes _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>
+                </>
+              }
+            </>
+
             :
               <div>
                 <Navbar _TOKEN_FOR_VALIDATION_NAVBAR_={TOKEN}/>

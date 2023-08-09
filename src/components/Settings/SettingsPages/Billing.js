@@ -27,9 +27,10 @@ const Billing = (props) => {
     setshowCancelSubs(true)
     const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION,props.AUTH_TOKEN)
     if(resp.status==200){
+      console.log(resp.data)
       notifysucces("subscription cancel")
     }else{
-      notifyerror("You haven't done payment yet")
+      notifyerror("Your subscription is already canceled")
       }
       setshowCancelSubs(false)
     }

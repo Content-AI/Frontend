@@ -132,7 +132,7 @@ const Home = () => {
             <tr>
               <td className="px-6 py-4">Generate your first blog post</td>
               <td className="px-6 py-4 text-right">
-                <button className="inline-flex items-center justify-center text-white bg-blue px-3 py-1.5 gap-x-2 rounded-md">
+                <button className="inline-flex items-center justify-center text-white bg-[#304572] px-3 py-1.5 gap-x-2 rounded-md">
                   <span>Try it</span>
                   <svg
                     width="14"
@@ -160,7 +160,7 @@ const Home = () => {
             <tr>
               <td>Watch introduction video</td>
               <td>
-                <button className="inline-flex items-center justify-center text-white bg-blue px-3 py-1.5 gap-x-2 rounded-md">
+                <button className="inline-flex items-center justify-center text-white bg-[#304572]  px-3 py-1.5 gap-x-2 rounded-md">
                   <span>Play Video</span>
                   <svg
                     width="14"

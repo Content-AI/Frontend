@@ -8,8 +8,10 @@ import RenderHtml from "../RenderHtml";
 import LoadingPage from "../../../LoadingPage";
 import { useSelector, useDispatch } from "react-redux";
 
-
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
+
+
+
 
 const ListOfDocument = (props) => {
 
@@ -28,6 +30,12 @@ const ListOfDocument = (props) => {
   const [inputText, setInputText] = useState("");
   const [LoadingData, setLoadingData] = useState(true);
   const [searchText, setSearchText] = useState('');
+  
+  
+  const [totalPages, settotalPages] = useState(2);
+  const [pagesToShow, setpagesToShow] = useState(5);
+  const [showpagination,setshowpagination] = useState(false);
+
   
   const [ActiveOrTrash,setActiveOrTrash] = useState(null);
   
@@ -59,7 +67,7 @@ const ListOfDocument = (props) => {
     // const chosen_workspace=localStorage.getItem('chose_workspace')
     if(props.SHOW=="trash"){
 
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH+"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
@@ -68,7 +76,7 @@ const ListOfDocument = (props) => {
     }
     if(props.SHOW=="active"){
 
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
@@ -80,24 +88,40 @@ const ListOfDocument = (props) => {
     // const chosen_workspace=localStorage.getItem('chose_workspace')
     setLoadingData(true)
     if(props.SHOW=="trash"){
+      if(ChosenWorkspaceId!=null){
+        const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH+"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+        if (resp.status == 200) {
+          setdocumentData(resp.data.results)
+          settotalPages(Math.ceil(resp.data.count / 5))
+          if(resp.data.count>0){
+            setshowpagination(true)
+          }
 
-
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
-      if (resp.status == 200) {
-        setdocumentData(resp.data.results)
-      } else {
-        notifyerror("something went wrong")
+        } else {
+          notifyerror("something went wrong")
+        }
       }
+
     }
     if(props.SHOW=="active"){
 
-    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
-    if (resp.status == 200) {
-      setdocumentData(resp.data.results)
-    } else {
-      notifyerror("something went wrong")
-    }
-  }
+      if(ChosenWorkspaceId!=null){
+      
+        const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+        if (resp.status == 200) {
+          setdocumentData(resp.data.results)
+          settotalPages(Math.ceil(resp.data.count / 5))
+          if(resp.data.count>0){
+            setshowpagination(true)
+          }
+
+        } else {
+          notifyerror("something went wrong")
+        }
+      }
+    
+      }
+
     setLoadingData(false)
   }
 
@@ -165,7 +189,7 @@ const ListOfDocument = (props) => {
   })
 
   useEffect(() => {
-    if(ChosenWorkspaceId){
+    if(ChosenWorkspaceId!=null){
       initial_get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
     }
   }, [ActiveOrTrash])
@@ -175,27 +199,33 @@ const ListOfDocument = (props) => {
     if(props.SHOW=="trash"){
 
       // const chosen_workspace=localStorage.getItem('chose_workspace')
-      const resp = await fetchData(BACKEND_URL +BACK_END_API_DOCUMENTS_PATCH+ "/?workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
-      if (resp.status == 200) {
-        if(resp.data.results.length>0){
-          setdocumentData(resp.data.results)
+      if(ChosenWorkspaceId!=null){
+        const resp = await fetchData(BACKEND_URL +BACK_END_API_DOCUMENTS_PATCH+"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
+        if (resp.status == 200) {
+          if(resp.data.results.length>0){
+            setdocumentData(resp.data.results)
+          }
+        } else {
+          notifyerror("something went wrong")
         }
-      } else {
-        notifyerror("something went wrong")
       }
 
     }
     if(props.SHOW=='active'){
 
-    const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS + "/?workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
-    if (resp.status == 200) {
-      if(resp.data.results.length>0){
-        setdocumentData(resp.data.results)
+      if(ChosenWorkspaceId!=null){
+        
+        const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"]+"&search="+search_text, props.AUTH_TOKEN)
+        if (resp.status == 200) {
+          if(resp.data.results.length>0){
+            setdocumentData(resp.data.results)
+          }
+        } else {
+          notifyerror("something went wrong")
+        }
       }
-    } else {
-      notifyerror("something went wrong")
-    }
   }
+
   }
 
   const handleSearchText = (event) => {
@@ -223,10 +253,12 @@ const ListOfDocument = (props) => {
   }
 
   const get_project_data = async() => {
+    if(ChosenWorkspaceId!=null){
     const resp = await fetchData(BACKEND_URL+BACK_END_API_PROJECT_CHOOSE+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],props.AUTH_TOKEN)
     if(resp.status==200){
         setSelectedOptions(resp.data)
     }
+  }
 }
   useEffect(()=>{
     get_project_data()
@@ -341,23 +373,58 @@ const update_folder_bulk = async(formData, message) =>{
 }
 
 
+
+// ==============pagination of list data ==========
+
+const [currentPage, setCurrentPage] = useState(1);
+
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages) {
+    setCurrentPage(page);
+  }
+};
+
+const goToNextPage = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+  }
+};
+
+const goToPreviousPage = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+};
+
+const getVisiblePageNumbers = () => {
+  const halfPagesToShow = Math.floor(pagesToShow / 2);
+  const firstVisiblePage = Math.max(currentPage - halfPagesToShow, 1);
+  const lastVisiblePage = Math.min(firstVisiblePage + pagesToShow - 1, totalPages);
+  return Array.from({ length: lastVisiblePage - firstVisiblePage + 1 }, (_, index) => firstVisiblePage + index);
+};
+
+useEffect(()=>{
+  setshowpagination(false)
+  initial_get_all_user_doc()
+},[currentPage])
+
   return (
     <>
       {LoadingData
       ?
         <LoadingPage/>
       :
-      <div className="space-y-8 px-4 md:px-10" ref={popupRef}>
+      <div className="space-y-8 px-4 md:px-10 " ref={popupRef}>
         {props.SHOW=="trash"
         ?
         <>
-        <div className="flex">
+        <div className="flex ">
             <div>
               <h1 className="text-[35px] font-bold">Trash </h1>
             </div>
             <div >
             {/* delete svg */}
-            <svg className="w-4 h-4 mt-10" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 388.245 485.30625"  xmlSpace="preserve">
+            <svg className="w-4 h-4 mt-10 " xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 388.245 485.30625"  xmlSpace="preserve">
               <g>
                   <path  d="M107.415,388.245h173.334c21.207,0,38.342-17.159,38.342-38.342V80.928H69.097v268.975   C69.097,371.086,86.264,388.245,107.415,388.245z M253.998,129.643c0-7.178,5.796-13.03,13.006-13.03   c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038c-7.21,0-13.006-5.828-13.006-13.038V129.643z    M181.491,129.643c0-7.178,5.804-13.03,13.006-13.03c7.178,0,13.006,5.853,13.006,13.03v208.311c0,7.21-5.828,13.038-13.006,13.038   c-7.202,0-13.006-5.828-13.006-13.038C181.491,337.954,181.491,129.643,181.491,129.643z M109.025,129.643   c0-7.178,5.796-13.03,12.973-13.03s13.038,5.853,13.038,13.03v208.311c0,7.21-5.861,13.038-13.038,13.038   c-7.178,0-12.973-5.828-12.973-13.038V129.643z" fill="#010002"/>
                   <path  d="M294.437,20.451h-52.779C240.39,8.966,230.75,0,218.955,0h-49.682   c-11.86,0-21.476,8.966-22.736,20.451H93.792c-25.865,0-46.756,20.955-46.902,46.756h294.466   C341.258,41.407,320.335,20.451,294.437,20.451z" fill="#010002"/>
@@ -369,6 +436,7 @@ const update_folder_bulk = async(formData, message) =>{
         </>
         :
         null}
+
         <div className="space-y-4">
 
         {documentData &&
@@ -406,7 +474,6 @@ const update_folder_bulk = async(formData, message) =>{
                         </div>
                       </div>
                       </>
-                      
                     </div>
                   </div>
                   <div>
@@ -417,7 +484,7 @@ const update_folder_bulk = async(formData, message) =>{
                               {selectedItems.length>0
                               ?
                               <>
-                                <button id="selectButton" onClick={()=>{
+                                <button  onClick={()=>{
                                   const formData = {
                                           id:selectedItems,
                                           trash:false
@@ -527,7 +594,7 @@ const update_folder_bulk = async(formData, message) =>{
                             onClick={() => {
                               navigate("/template")
                             }}
-                            type="button" className="relative w-[300px] rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-0">
+                            type="button" className="relative w-[300px] rounded-md bg-[#334977] text-white px-3 py-1.5 text-sm font-semibold  shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-0">
                             <span className="mx-auto flex select-none items-center justify-center space-x-2"><div>Create template</div></span>
                           </button>
                         </div>
@@ -1030,7 +1097,8 @@ const update_folder_bulk = async(formData, message) =>{
                       </div>
                     </>
                     :
-                    null}
+                    null
+                    }
                           
                             
                         </div>
@@ -1165,9 +1233,51 @@ const update_folder_bulk = async(formData, message) =>{
             ) : null}
           
         </div>
-        {/* <Toaster /> */}
       </div>
       }
+
+      {/* ===========pagination================== */}
+      {showpagination
+      ?
+        <>
+        <div className="flex items-center justify-center mt-9">
+        <button
+          onClick={goToPreviousPage}
+          disabled={currentPage === 1}
+          className={`text-gray-600 ${currentPage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          Previous
+        </button>
+        <div className="flex items-center mx-4">
+          {getVisiblePageNumbers().map((page) => (
+            <button
+              key={page}
+              onClick={() => goToPage(page)}
+              className={`px-4 py-2 rounded-md mx-1 ${
+                currentPage === page
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={goToNextPage}
+          disabled={currentPage === totalPages}
+          className={`text-gray-600 ${currentPage === totalPages ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          Next
+        </button>
+        </div>
+        </>
+      :
+        null
+      }
+                                               
+      {/* ===========pagination================== */}
+
     </>
   );
 };

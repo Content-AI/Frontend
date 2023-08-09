@@ -1,4 +1,4 @@
-import React , {useEffect,useState} from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,7 +13,7 @@ import { _save_survey_ } from "../../../features/ThreeSteps";
 import { _delete_user_profile } from "../../../features/Fullprofile";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-
+import ChangeWorkSpace from '../ChangeWorkSpace';
 
 import {
   MdLogout,
@@ -84,6 +84,8 @@ const Subscription = (props) => {
     const [wholePageLoading,setwholePageLoading] = useState(false);
     const [startbtnLoading,setstartbtnLoading] = useState(false);
     const [premiumbtnLoading,setpremiumbtnLoading] = useState(false);
+    
+    const [switch_workspace,setswitch_workspace] = useState(false);
 
 
     const location = useLocation();
@@ -191,6 +193,8 @@ const Subscription = (props) => {
         }
       }
 
+
+
   return (
   <>
   {wholePageLoading
@@ -212,7 +216,9 @@ const Subscription = (props) => {
             <>
           <section className="flex flex-col justify-center antialiased bg-gray-100 text-gray-600 min-h-screen p-4">
                   
-                  <div className="max-w-5xl p-5">
+
+                  <div className="max-w-5xl p-5 mt-6">
+                  
 
                       <h2 className="text-3xl text-gray-800 mt-[40px] mr-[100px] font-bold text-center mb-4">Plans</h2>
                         <div className='w-[100px] float-right'>
@@ -237,6 +243,36 @@ const Subscription = (props) => {
                         </div>
                           </button>
                         </div>
+                        
+                        {switch_workspace
+                        ?
+                          <>
+                            {/* ====================close switch workspace================ */}
+                              <ChangeWorkSpace/>
+                            {/* ====================close switch workspace================ */}
+                          </>
+                        :
+                          null
+                        }
+                        
+
+                        <div className='float-right'>
+                          <button
+                            className='bg-[#223358] rounded-r-sm'
+                            onClick={() => {
+                              setswitch_workspace(true)
+                            }}
+                          >
+                        <div
+                          className="py-2 px-3 flex items-center text-white font-semibold"
+                        >
+                          <div>
+                            <p className="text-sm font-helv">Switch Work Space</p>
+                          </div>
+                        </div>
+                          </button>
+                        </div>
+
                       <div className="flex justify-center">
                           <div className="flex items-center space-x-3 mb-8">
                           <div className="text-sm text-gray-500 font-medium min-w-[120px] text-right">Monthly</div>

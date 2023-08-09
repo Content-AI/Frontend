@@ -140,7 +140,7 @@ useEffect(() => {
 
 const create_blank_document = async() => {
   const formData = {
-    document_content: "lslsllsls",
+    document_content: "",
     workspace_id:ChosenWorkspaceId["Workspace_Id"]
   }
   
@@ -166,7 +166,7 @@ const create_blank_document = async() => {
         ?
             <LoadingPage message={"Creating Document"}/>
         :
-       <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:r27:" role="dialog" aria-modal="true" data-headlessui-state="open">
+       <div className="fixed inset-0 z-40 overflow-y-auto">
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                 <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
                 <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[640px] opacity-100 translate-y-0 sm:scale-100">

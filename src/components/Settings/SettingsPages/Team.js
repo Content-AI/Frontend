@@ -129,8 +129,8 @@ const Team = () => {
 
     if(resp.status==200){
       notifysucces("Users are invited")
-      // setEmail('')
-      // setEmails([])
+      setEmail('')
+      setEmails([])
     }else{
       notifyerror("Invitation failed")
     }

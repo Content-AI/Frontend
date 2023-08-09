@@ -7,7 +7,7 @@ import { _save_survey_ } from "../../features/ThreeSteps";
 import { _delete_user_profile } from "../../features/Fullprofile";
 import { _save_details_ } from "../../features/Subscriptions";
 import { _chosen_workspace_id_ } from "../../features/ChosenWorkspaceId";
-import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from '../../apis/urls';
+import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL } from '../../apis/urls';
 
 import {
   _hide_nav_,
@@ -954,11 +954,11 @@ const Navbar = () => {
                   <div class="text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
                   <div class="flex flex-row justify-between">
                       <div class="text-gray-900">{subscriptions_details.user.plan}</div>
-                      $
+                      
                       {subscriptions_details.user.plan=="starter" &&  subscriptions_details.user.subscription_type=="monthly"
                       ?
                           <div class="text-sm text-gray-600">
-                            {subscriptions_details.charge_description.monthly_starter}
+                          ${subscriptions_details.charge_description.monthly_starter}
                             /month
                           </div>
                       :
@@ -967,7 +967,7 @@ const Navbar = () => {
                       {subscriptions_details.user.plan=="starter" && subscriptions_details.user.subscription_type=="annually"
                       ?
                           <div class="text-sm text-gray-600">
-                            {subscriptions_details.charge_description.annaully_starter}
+                          ${subscriptions_details.charge_description.annaully_starter}
                             /year
                           </div>
                       :
@@ -976,7 +976,7 @@ const Navbar = () => {
                       {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="monthly"
                       ?
                           <div class="text-sm text-gray-600">
-                            {subscriptions_details.charge_description.monthly_premium_mode}
+                          ${subscriptions_details.charge_description.monthly_premium_mode}
                             /month
                           </div>
                       :
@@ -985,7 +985,7 @@ const Navbar = () => {
                       {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="annually"
                       ?
                           <div class="text-sm text-gray-600">
-                            {subscriptions_details.charge_description.annaully_premium_mode}
+                          ${subscriptions_details.charge_description.annaully_premium_mode}
                             /year
                           </div>
                         
@@ -1040,7 +1040,7 @@ const Navbar = () => {
                         Close
                       </button>
                       <button
-                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        className="bg-[#334977] text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="button"
                         onClick={() => {
                           setShowpricingPopUpModal(false)

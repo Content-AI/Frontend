@@ -88,7 +88,7 @@ const ThirdStep = () => {
         // navigate(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`)
         window.location.replace(`/subscribe_by_user?subscription_type=${subscription_type}&plan=${plan}`);
       }else if(invitation_code!=null && invitation_code!=undefined){
-        window.location.replace(`/invitation_code/${invitation_code}&new=user`);
+        window.location.replace(`/invitation/${invitation_code}&new=user`);
       }else{
         window.location.replace(`/`);
         // navigate("/");

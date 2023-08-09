@@ -197,7 +197,7 @@ const Projects = (props) => {
         <div>
           <div className="cardwrap grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
             <div
-              className="flex flex-col items-center justify-center text-white bg-blue min-h-[144px] rounded-xl cursor-pointer hover:border hover:shadow-lg focus:ring-gray-400 focus:shadow-xl duration-150  hover:ring-gray-300 hover:ring-2"
+              className="flex flex-col items-center justify-center bg-[#334977] text-white min-h-[144px] rounded-xl cursor-pointer hover:border hover:shadow-lg focus:ring-gray-400 focus:shadow-xl duration-150  hover:ring-gray-300 hover:ring-2"
               onClick={() => {
                 navigate("/create_new_content");
               }}
@@ -237,7 +237,7 @@ const Projects = (props) => {
           <div className="flex items-center gap-4 ml-auto">
             <div className="selectopt relative w-40">
               <button
-                className="flex items-center text-sm leading-none font-bold bg-white px-3 py-2 gap-2 border border-border rounded-md"
+                className="flex items-center text-sm leading-none font-bold bg-[#334977] text-white px-3 py-2 gap-2 border border-border rounded-md"
                 onClick={() => {
                   setPopUpModelToCreateFolder(true);
                 }}
@@ -249,25 +249,25 @@ const Projects = (props) => {
                     viewBox="0 0 14 14"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-full h-full"
+                    className="w-full h-full "
                   >
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M2.33398 2.33317C2.17927 2.33317 2.0309 2.39463 1.92151 2.50402C1.81211 2.61342 1.75065 2.76179 1.75065 2.9165V11.0832C1.75065 11.2379 1.81211 11.3863 1.92151 11.4956C2.0309 11.605 2.17928 11.6665 2.33398 11.6665H11.6673C11.822 11.6665 11.9704 11.605 12.0798 11.4956C12.1892 11.3863 12.2507 11.2379 12.2507 11.0832V4.6665C12.2507 4.51179 12.1892 4.36342 12.0798 4.25402C11.9704 4.14463 11.822 4.08317 11.6673 4.08317H6.41732C6.22228 4.08317 6.04014 3.98569 5.93196 3.82341L4.93846 2.33317H2.33398ZM1.09655 1.67907C1.42474 1.35088 1.86986 1.1665 2.33398 1.1665H5.25065C5.44569 1.1665 5.62783 1.26398 5.73601 1.42626L6.72951 2.9165H11.6673C12.1314 2.9165 12.5766 3.10088 12.9048 3.42907C13.2329 3.75726 13.4173 4.20237 13.4173 4.6665V11.0832C13.4173 11.5473 13.2329 11.9924 12.9048 12.3206C12.5766 12.6488 12.1314 12.8332 11.6673 12.8332H2.33398C1.86986 12.8332 1.42474 12.6488 1.09655 12.3206C0.768359 11.9924 0.583984 11.5473 0.583984 11.0832V2.9165C0.583984 2.45238 0.768359 2.00726 1.09655 1.67907Z"
-                      fill="black"
+                      fill="white"
                     />
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M6.99935 5.8335C7.32152 5.8335 7.58268 6.09466 7.58268 6.41683V9.91683C7.58268 10.239 7.32152 10.5002 6.99935 10.5002C6.67718 10.5002 6.41602 10.239 6.41602 9.91683V6.41683C6.41602 6.09466 6.67718 5.8335 6.99935 5.8335Z"
-                      fill="black"
+                      fill="white"
                     />
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M4.66602 8.16683C4.66602 7.84466 4.92718 7.5835 5.24935 7.5835H8.74935C9.07151 7.5835 9.33268 7.84466 9.33268 8.16683C9.33268 8.489 9.07151 8.75016 8.74935 8.75016H5.24935C4.92718 8.75016 4.66602 8.489 4.66602 8.16683Z"
-                      fill="black"
+                      fill="white"
                     />
                   </svg>
                 </span>
@@ -773,7 +773,12 @@ const Projects = (props) => {
 
       {PopUpModelToCreateFolder ? (
         <>
-          <div className="fixed top-0 left-0 w-screen h-screen backdrop-blur backdrop-filter bg-opacity-30 z-50">
+          {/* <div className="fixed top-0 left-0 w-screen h-screen backdrop-blur-sm backdrop-filter bg-opacity-20 z-50"> */}
+          <div className="fixed inset-0 z-40 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
+
+                
             <div
               className="fixed inset-0 overflow-y-auto z-50"
               id="headlessui-dialog-1749"
@@ -829,7 +834,7 @@ const Projects = (props) => {
                         <div className="mb-3 flex flex-1 flex-col justify-between lg:flex-row">
                           <label
                             htmlFor="folder-name"
-                            className="text-sm font-bold text-grey-700 !font-light w-100"
+                            className="text-sm  text-grey-700 !font-light w-100"
                           >
                             Folder Name
                           </label>
@@ -851,7 +856,7 @@ const Projects = (props) => {
                       <div className="flex flex-col items-center justify-center align-middle">
                         <button
                           tabIndex="0"
-                          className="focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring-2 bg-purple-800 text-white my-4 h-10 w-40 justify-center"
+                          className="bg-[#334977] text-white focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring- my-4 h-10 w-40 justify-center"
                           onClick={() => {
                             create_folder();
                           }}
@@ -883,6 +888,7 @@ const Projects = (props) => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </>
       ) : null}

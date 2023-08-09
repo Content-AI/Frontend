@@ -515,6 +515,7 @@ export default function EditDocuments() {
     };
   
     const handleEmailKeyDown = async(event) => {
+      setsendinginvitation(true)
       if (event.key === 'Enter') {
         
         const fromData= {
@@ -532,13 +533,15 @@ export default function EditDocuments() {
             event.preventDefault();
             setEmails([...emails, email.trim()]);
             setEmail('');
+            setsendinginvitation(false)
         }else{
 
-          if(resp.response.data.message=="1"){
-              notifyerror("User not found")
-          }else{
-            notifyerror("Already a member")
-          }
+          // if(resp.response.data.message=="1"){
+          //     notifyerror("User not found")
+          // }else{
+            notifyerror("User not a member of Workspace")
+          // }
+          setsendinginvitation(false)
         }
 
       }
@@ -565,6 +568,7 @@ export default function EditDocuments() {
 
   // ======send invitation==============
   const send_invitation = async() =>{
+    setsendinginvitation(true)
     const formData={
         document_id:document_id,
         email:emails
@@ -574,8 +578,10 @@ export default function EditDocuments() {
       setEmails([])
       setEmail('')
       notifysucces("Users Invited")
+      setsendinginvitation(false)
     }else{
-      notifyerror("Something went wrong")
+      notifyerror("User is not member of workspace")
+      setsendinginvitation(false)
     }
   }
 
@@ -952,12 +958,13 @@ export default function EditDocuments() {
                                 {emails.length>0
                                 ?
                                 <>
-                                    <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                      onClick={()=>{
-                                        send_invitation()
-                                      }}>
-                                        Send invite
-                                      </button>
+                                
+                                <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                  onClick={()=>{
+                                    send_invitation()
+                                  }}>
+                                    Send invite
+                                  </button>
                                   </>
                                 :
                                   <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
