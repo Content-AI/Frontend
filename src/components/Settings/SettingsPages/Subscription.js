@@ -82,7 +82,8 @@ const Subscription = (props) => {
         plan:"starter",
         actual_plan:"starter",
         cost:78,
-        monthly_anually:"monthly"
+        monthly_anually:"monthly",
+        plan_time:"monthly"
     }]);
     
     const notifyerror = (message) => toast.error(message);
@@ -98,7 +99,8 @@ const Subscription = (props) => {
         setstartbtnLoading(true)
         const formData = {
           "plan":all_cost_data[0]["actual_plan"],
-          "monthly_annually":all_cost_data[0]["monthly_anually"]
+          "monthly_annually":all_cost_data[0]["monthly_anually"],
+          "plan_time":all_cost_data[0]["plan_time"],
         }
 
         // console.log(formData)
@@ -129,7 +131,8 @@ const Subscription = (props) => {
                             plan:"starter",
                             actual_plan:"starter",
                             cost:subscriptions_details.charge_description.monthly_starter,
-                            monthly_anually:"monthly"
+                            monthly_anually:"monthly",
+                            plan_time:"monthly"
                         }]
                     )
                 }else{
@@ -138,7 +141,8 @@ const Subscription = (props) => {
                             plan:"premium",
                             actual_plan:"premium",
                             cost:subscriptions_details.charge_description.monthly_premium_mode,
-                            monthly_anually:"monthly"
+                            monthly_anually:"monthly",
+                            plan_time:"monthly"
                         }]
                     )
                 }
@@ -150,7 +154,8 @@ const Subscription = (props) => {
                             plan:"starter",
                             actual_plan:"starter",
                             cost:subscriptions_details.charge_description.annaully_starter,
-                            monthly_anually:"annually"
+                            monthly_anually:"annually",
+                            plan_time:"yearly"
                         }]
                     )
                 }
@@ -160,7 +165,8 @@ const Subscription = (props) => {
                             plan:"premium",
                             actual_plan:"premium",
                             cost:subscriptions_details.charge_description.annaully_premium_mode,
-                            monthly_anually:"annually"
+                            monthly_anually:"annually",
+                            plan_time:"yearly"
                         }]
                     )
                 }
@@ -216,7 +222,8 @@ const Subscription = (props) => {
                                             plan:"starter",
                                             actual_plan:"starter",
                                             cost:subscriptions_details.charge_description.annaully_starter,
-                                            monthly_anually:"annually"
+                                            monthly_anually:"annually",
+                                            plan_time:"yearly"
                                         }]
                                     )
                                     setmonthly_or_annyally_check("annually")
@@ -228,7 +235,8 @@ const Subscription = (props) => {
                                             plan:"starter",
                                             actual_plan:"starter",
                                             cost:subscriptions_details.charge_description.monthly_starter,
-                                            monthly_anually:"monthly"
+                                            monthly_anually:"monthly",
+                                            plan_time:"monthly"
                                         }]
                                     )
                                     setmonthly_or_annyally_check("monthly")
@@ -305,7 +313,7 @@ const Subscription = (props) => {
                                         <span className="text-lg font-semibold">$
                                             {subscriptions_details.charge_description.monthly_starter}
                                             </span>
-                                            <span className="text-xs text-gray-400 font-medium ml-2">/mo</span>
+                                            <span className="text-xs text-gray-400 font-medium ml-2">/monthly</span>
                                         </>
                                     }
                                     </>
@@ -321,7 +329,8 @@ const Subscription = (props) => {
                                             plan:"Premium mode",
                                             actual_plan:"premium",
                                             cost:subscriptions_details.charge_description.annaully_premium_mode,
-                                            monthly_anually:"annually"
+                                            monthly_anually:"annually",
+                                            plan_time:"yearly"
                                         }]
                                     )
                                     setmonthly_or_annyally_check("annaully")
@@ -333,7 +342,8 @@ const Subscription = (props) => {
                                             plan:"Premium mode",
                                             actual_plan:"premium",
                                             cost:subscriptions_details.charge_description.monthly_premium_mode,
-                                            monthly_anually:"monthly"
+                                            monthly_anually:"monthly",
+                                            plan_time:"monthly"
                                         }]
                                     )
                                     setmonthly_or_annyally_check("monthly")
@@ -394,7 +404,7 @@ const Subscription = (props) => {
                                                 <span className="text-lg font-semibold">$
                                                 {subscriptions_details.charge_description.monthly_premium_mode}
                                                 </span>
-                                                <span className="text-xs text-gray-400 font-medium ml-2">/mo</span>
+                                                <span className="text-xs text-gray-400 font-medium ml-2">/monthly</span>
                                             </>
                                             }
                                         </>
@@ -478,7 +488,7 @@ const Subscription = (props) => {
                                     </div>
                                     </div>
                                 </div>
-                                <div className="text-sm text-gray-600 mb-10 pt-2">1 seats are included. You may add up to 0 additional seats for $49/mo per seat.</div>
+                                <div className="text-sm text-gray-600 mb-10 pt-2">1 seats are included. You may add up to 0 additional seats for $49/monthly per seat.</div>
                                 <div className="text-sm mb-3">Your account currently has&nbsp;<span className="rounded-md bg-gray-50 px-3 py-1 font-medium">1 occupied seat</span></div>
                                 <div></div>
                                 <div className="text-sm mt-3">Go to <a className="text-blue-500 underline hover:cursor-pointer" href="/settings/team">team settings</a> to add or remove team members.</div>
@@ -548,14 +558,18 @@ const Subscription = (props) => {
                                         }
                                     </div>
                                     </div>
-                                    <div className="text-sm text-gray-600">$
+                                    <div className="text-sm text-gray-600">
                                     {all_cost_data &&
                                             all_cost_data.length>0
                                             ?
-                                                all_cost_data[0]["cost"]
+                                            <>
+                                              <p className='text-[13px]'>
+                                              ${all_cost_data[0]["cost"]}/{all_cost_data[0]["plan_time"]}
+                                              </p>
+                                            </>
                                             :
                                                 "39"
-                                        }/mo</div>
+                                        }</div>
                                 </div>
                                 <div className="py-4 flex justify-between items-center border-b border-gray-200">
                                     <div>
@@ -571,13 +585,16 @@ const Subscription = (props) => {
                                         </span>
                                     </div>
                                     </div>
-                                    <div className="text-sm text-gray-600">${all_cost_data &&
+                                    <div className="text-sm text-gray-600">
+                                    {all_cost_data &&
                                             all_cost_data.length>0
                                             ?
-                                                all_cost_data[0]["cost"]
+                                              <p className='text-[13px]'>
+                                              ${all_cost_data[0]["cost"]}/{all_cost_data[0]["plan_time"]}
+                                              </p>
                                             :
                                                 "39"
-                                        }/mo</div>
+                                        }</div>
                                 </div>
                                 {/* <div className="flex justify-between items-center text-gray-800">
                                     <div className="flex font-bold items-center py-4">
