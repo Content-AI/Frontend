@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_user_profile } from '../../../features/Fullprofile';
 
-import { BACK_END_API_PROFILE,BACKEND_URL } from '../../../apis/urls';
+import { BACK_END_API_PROFILE_UPDATE,BACKEND_URL } from '../../../apis/urls';
 import { patchData } from '../../../apis/apiService';
 import Settings from '../Settings';
 
@@ -71,7 +71,7 @@ const Profile = () => {
             last_name:lastName,
             email:EmailUser
         }
-        const response = await patchData(data,BACKEND_URL+BACK_END_API_PROFILE+PROFILE_DATA?.id+"/",TOKEN)
+        const response = await patchData(data,BACKEND_URL+BACK_END_API_PROFILE_UPDATE+PROFILE_DATA?.id+"/",TOKEN)
         if(response.status==200){
             dispatch(_save_user_profile(response.data))
             notifysucces("profile saved")

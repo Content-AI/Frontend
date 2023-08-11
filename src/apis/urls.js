@@ -22,7 +22,8 @@ export const BACK_API_FACEBOOK = "/v1/accounts/register/facebook/";
 export const BACK_API_SURVEY = "/v1/accounts/survey/data/";
 
 
-export const BACK_END_API_PROFILE = "/v1/auth/users/";
+export const BACK_END_API_PROFILE = "/v1/accounts/users_data/";
+export const BACK_END_API_PROFILE_UPDATE = "/v1/auth/users/";
 
 
 export const BACK_END_API_TEMPLATE = "/v1/template/data";
