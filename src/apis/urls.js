@@ -1,5 +1,5 @@
-// BACKEND_URL = "http://localhost:8000"
-BACKEND_URL = "https://copyai.pythonanywhere.com";
+BACKEND_URL = "http://localhost:8000"
+// BACKEND_URL = "https://copyai.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
@@ -100,7 +100,12 @@ export const BACK_END_API_SUBCRIPTION_DIRECT ="/v1/subscription/direct-create-ac
 export const BACK_END_API_TOKEN_GENERATED ="/v1/template/token_generated/";
 
 
-export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
+// export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
+
+export const BACK_END_API_CANCEL_SUBSCRIPTION_FINAL ="/v1/subscription/cancel-subscription-final/";
+export const BACK_END_API_CANCEL_SUBSCRIPTION_FINAL_FEEDBACK ="/v1/subscription/cancel-subscription-data-feedback/";
+export const BACK_END_API_TIMES_REMANING ="/v1/subscription/times-remaining/";
+
 export const BACK_END_API_INVOICE_PORTAL ="/v1/subscription/invoices-portal/";
 
 // export const BACK_END_API_WORKSPACE ="/v1/team_members/workspace/";

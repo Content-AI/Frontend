@@ -48,6 +48,11 @@ const Team = () => {
   );
 
 
+  let PROFILE_DATA = useSelector(
+    (state) =>state.SetFullProfile.Fullprofile
+  );
+
+
   const get_workshop_user_list = async() =>{
     const resp = await fetchData(BACKEND_URL+BACK_END_API_WORKSPACE_USERS_LIST+ChosenWorkspaceId["Workspace_Id"],TOKEN)
     if(resp.status=200){
@@ -309,6 +314,8 @@ const Team = () => {
   };
 
 
+
+
   return (
     <>
       <Settings/>
@@ -424,6 +431,18 @@ const Team = () => {
                       </div>
                     </td>
                     <td className="hidden sm:table-cell">
+                      {PROFILE_DATA.email==data["team_member_user"]["email"]
+                      ?
+                      <>
+                        <SelectField
+                            options={[
+                              { label: 'Admin', value: 'Admin' },
+                            ]}
+                            role_of_user={workspacelist[index]["admin_or_not"]?"Admin":"Member"}
+                          />
+                      </>
+                      :
+                        <>
                           <SelectField
                               options={[
                                 { label: 'Admin', value: 'Admin' },
@@ -434,26 +453,36 @@ const Team = () => {
                               role_of_user={workspacelist[index]["admin_or_not"]?"Admin":"Member"}
                               data_index={index}
                             />
+                        </>
+                      }
                     </td>
                     <td className="hidden sm:table-cell">
                     {data["team_member_user"]["created_at"]}
                     </td>
                     <td className="hidden sm:table-cell text-blue-500">
-                    {ChosenWorkspaceId["admin_or_not"]==true
-                        ?
-                        <>
-                          <button
-                          onClick={()=>{
-                            const formData={}
-                            formData["id"]=data.id
-                            remove_user(formData)
-                          }}>
-                            Remove
-                          </button>
-                        </>
-                      :
+                      
+                    {PROFILE_DATA.email==data["team_member_user"]["email"]
+                      ?
                         null
-                      }
+                      :
+                        <>
+                          {ChosenWorkspaceId["admin_or_not"]==true
+                              ?
+                              <>
+                                <button
+                                onClick={()=>{
+                                  const formData={}
+                                  formData["id"]=data.id
+                                  remove_user(formData)
+                                }}>
+                                  Remove
+                                </button>
+                              </>
+                            :
+                              null
+                            }
+                        </>
+                    }
                     </td>
                   </tr>
                 ))}
@@ -548,7 +577,7 @@ const Team = () => {
                                           </div>
                                           <input
                                             type="email"
-                                            placeholder="Enter email"
+                                            placeholder="Enter email ( press enter to add email )"
                                             value={email}
                                             onChange={handleEmailChange}
                                             onKeyDown={handleEmailKeyDown}
@@ -562,23 +591,30 @@ const Team = () => {
                                         <>
                                           {sendinginvitation
                                             ?
-                                              <button className="bg-gray-400  text-white font-bold py-2 px-4 rounded-sm w-[200px]">
+                                            <div className='mt-4 mb-4'>
+                                              <button className="bg-gray-400  text-white font-bold py-2 px-4 rounded-lg w-[200px]">
                                                 Sending Invitation
                                               </button>
+                                            </div>
                                             :
-                                              <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-sm w-[200px]"
+                                            <div className='mt-4 mb-4'>
+
+                                              <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-lg w-[200px]"
                                               onClick={()=>{
                                                 send_invitation()
                                               }}>
                                                 Send invite
                                               </button>
+                                                </div>
                                             }
                                           </>
                                         :
-                                          <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-sm w-[200px]"
+                                        <div className='mt-4 mb-4'>
+                                          <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-lg w-[200px]"
                                           disabled>
                                             Send invite
                                           </button>
+                                            </div>
                                       }
                                       </>
                                       }                                      

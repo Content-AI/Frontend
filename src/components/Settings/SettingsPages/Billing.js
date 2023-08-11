@@ -1,11 +1,13 @@
 import React , {useEffect,useState} from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom'
-import { BACKEND_URL,BACK_END_API_CANCEL_SUBSCRIPTION,BACK_END_API_INVOICE_PORTAL } from '../../../apis/urls';
+import { BACKEND_URL,BACK_END_API_CANCEL_SUBSCRIPTION_FINAL,BACK_END_API_TIMES_REMANING,BACK_END_API_CANCEL_SUBSCRIPTION_FINAL_FEEDBACK,BACK_END_API_INVOICE_PORTAL } from '../../../apis/urls';
 import Settings from '../Settings'
 import { fetchData } from '../../../apis/apiService';
 import toast, { Toaster } from 'react-hot-toast';
-
+import { CSSTransition } from 'react-transition-group';
+import './CancelSubs.css'
+import './AlreadyCancel.css'
 
 const Billing = (props) => {
   const navigate = useNavigate()
@@ -23,17 +25,7 @@ const Billing = (props) => {
   );
 
 
-  const cancel_subscription = async() =>{
-    setshowCancelSubs(true)
-    const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION,props.AUTH_TOKEN)
-    if(resp.status==200){
-      console.log(resp.data)
-      notifysucces("subscription cancel")
-    }else{
-      notifyerror("Your subscription is already canceled")
-      }
-      setshowCancelSubs(false)
-    }
+
   const invoice_portal = async() =>{
     setshowInvoice(true)
     const resp = await fetchData(BACKEND_URL+BACK_END_API_INVOICE_PORTAL,props.AUTH_TOKEN)
@@ -62,6 +54,140 @@ const Billing = (props) => {
       }
       // setshowInvoice(false)
     }
+
+
+    // =========the subscription cancel=========
+
+    const [statusMessage,setstatusMessage]=useState(null)
+    const [trialExpirationDate,settrialExpirationDate]=useState(null)
+
+
+
+    const cancel_subscription_feedback = async() =>{
+      setshowCancelSubs(true)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION_FINAL_FEEDBACK,props.AUTH_TOKEN)
+      if(resp.status==200){
+        // console.log(resp.data)
+        // notifysucces("subscription cancel")
+        openDialog()
+        setstatusMessage(resp.status)
+        setshowCancelSubs(false)
+      }else{
+        // notifyerror("Your subscription is already canceled")
+          setstatusMessage(resp.status)
+          const resp_inner = await fetchData(BACKEND_URL+BACK_END_API_TIMES_REMANING,props.AUTH_TOKEN)
+          if(resp_inner.status==200){
+            setshowCancelSubs(false)
+            try{
+              settrialExpirationDate(resp_inner.data.end_at)
+              if(resp_inner.data.end_at == null){
+                settrialExpirationDate(resp_inner.data.trail_ends)
+              }
+            }catch(e){
+              settrialExpirationDate(resp_inner.data.trail_ends)
+            }
+            openAlreadyCancelDialog("You Already Unsubscribe")
+          }else{
+            setshowCancelSubs(false)
+          }
+        }
+      }
+    
+      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [subscriptionReasons, setSubscriptionReasons] = useState({
+        cancelReason: "",
+        additionalComments: ""
+      });
+    
+      const openDialog = () => {
+        setIsDialogOpen(true);
+      };
+    
+      const closeDialog = (statusMessage) => {
+        setIsDialogOpen(false);
+        setSubscriptionReasons({
+          cancelReason: "",
+          additionalComments: ""
+        });
+        if(statusMessage==200){
+          notifysucces("subscription cancel")
+        }else{
+          notifyerror("Your subscription is already canceled")
+        }
+      };
+    
+      const handleInputChangeCancelSubscription = (event) => {
+        const { name, value } = event.target;
+        setSubscriptionReasons((prevReasons) => ({
+          ...prevReasons,
+          [name]: value
+        }));
+      };
+      // const handleInputChange = (event) => {
+      //   const { name, value } = event.target;
+      //   setSubscriptionReasons((prevReasons) => ({
+      //     ...prevReasons,
+      //     [name]: value,
+      //   }));
+      // };
+
+
+      const handleFormSubmit = (event) => {
+        event.preventDefault();
+        // Perform any actions with the collected subscription reasons
+        console.log("Cancel Reason:", subscriptionReasons.cancelReason);
+        console.log("Additional Comments:", subscriptionReasons.additionalComments);
+        closeDialog(statusMessage);
+      };
+
+
+
+// =========Already cancel==========
+const [isAlreadyCancel, setIsAlreadyCancel] = useState(false);
+const [newTimeRemainingReasons, setNewTimeRemainingReasons] = useState({
+  cancelReason: "",
+  additionalComments: ""
+});
+
+
+useEffect(() => {
+  if (isAlreadyCancel) {
+    document.body.style.overflow = "hidden"; // Prevent scrolling when the dialog is open
+  } else {
+    document.body.style.overflow = ""; // Restore scrolling when the dialog is closed
+  }
+}, [isAlreadyCancel]);
+
+const openAlreadyCancelDialog = () => {
+  setIsAlreadyCancel(true);
+};
+
+const closeNewDialog = () => {
+  setIsAlreadyCancel(false);
+  setNewTimeRemainingReasons({
+    cancelReason: "",
+    additionalComments: ""
+  });
+};
+
+const handleNewInputChange = (event) => {
+  const { name, value } = event.target;
+  setNewTimeRemainingReasons((prevReasons) => ({
+    ...prevReasons,
+    [name]: value
+  }));
+};
+
+const handleNewFormSubmit = (event) => {
+  event.preventDefault();
+  // Perform any actions with the collected subscription reasons
+  console.log("Cancel Reason:", newTimeRemainingReasons.cancelReason);
+  console.log(
+    "Additional Comments:",
+    newTimeRemainingReasons.additionalComments
+  );
+  closeNewDialog();
+};
 
   return (
     <>
@@ -183,7 +309,7 @@ const Billing = (props) => {
                     :
                     <button type="button" 
                       onClick={()=>{
-                                invoice_portal()
+                          invoice_portal()
                         }}
                     className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-[#334977] text-white ring-1 ring-gray-200 hover:ring-2 active:ring-1">
                     <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -212,11 +338,12 @@ const Billing = (props) => {
                 
               :
                 <button 
-                  type="button" 
+                  type="button"
                   onClick={()=>{
-                    cancel_subscription()
+                    cancel_subscription_feedback()
+                    // openDialog()
                   }}
-                  className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                  className="w-[200px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     Cancel Subscription
                   </span>
@@ -226,7 +353,151 @@ const Billing = (props) => {
               </p>
           </div>
         </div>
-    </>
+
+        {/* ======cancel subscription dialog box========= */}
+        <div className="relative z-10">
+
+      <CSSTransition
+        in={isDialogOpen}
+        timeout={500} // Adjust the duration of the transition
+        classNames="dialog"
+        unmountOnExit
+      >
+         <div className="fixed inset-0 flex justify-center items-center bg-slate-50 bg-opacity-60 z-20">
+          <div className="bg-white w-[600px] p-6 rounded shadow-lg">
+            <h2 className="text-2xl font-semibold mb-4">Cancel Subscription</h2>
+            <form onSubmit={handleFormSubmit}>
+              <div className="mb-6 ">
+                <label className="block text-lg font-medium mb-2 text-[#4B5563]">
+                  Why are you canceling the subscription?
+                </label>
+                <label className="flex items-center mb-3">
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value="Not satisfied with the service"
+                    onChange={handleInputChangeCancelSubscription}
+                    className="mr-2 text-red-500"
+                  />
+                  <span className="text-[#4B5563]">
+                    Not satisfied with the service
+                  </span>
+                </label>
+                <label className="flex items-center mb-3">
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value="Found an alternative"
+                    onChange={handleInputChangeCancelSubscription}
+                    className="mr-2 text-red-500"
+                  />
+                  <span className="text-[#4B5563]">Found an alternative</span>
+                </label>
+                <label className="flex items-center mb-3">
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value="Service features not meeting requirements"
+                    onChange={handleInputChangeCancelSubscription}
+                    className="mr-2 text-red-500"
+                  />
+                  <span className="text-[#4B5563]">
+                    Service features not meeting requirements
+                  </span>
+                </label>
+                <label className="flex items-center mb-3">
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value="Financial reasons"
+                    onChange={handleInputChangeCancelSubscription}
+                    className="mr-2 text-red-500 "
+                  />
+                  <span className="text-[#4B5563]">Financial reasons</span>
+                </label>
+                {/* Add more reasons here */}
+              </div>
+              <div className="mb-6">
+                <label className="block text-lg font-medium mb-2">
+                  Additional Comments (optional)
+                </label>
+                <textarea
+                  name="additionalComments"
+                  onChange={handleInputChangeCancelSubscription}
+                  className="border p-3 w-full rounded font-helvetica"
+                  rows="4"
+                ></textarea>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={()=>{
+                      closeDialog(statusMessage)
+                    }}
+                  className="bg-red-500 mr-2 hover:bg-red-600 text-white py-2 px-4 rounded"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  // className=" text-gray-600 hover:text-gray-800"
+                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                >
+                  Confirm Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </CSSTransition>
+    </div>
+  
+  
+      {/* ======cancel subscription dialog box========= */}
+
+      {/* ========Already cancel subscription======= */}
+      <div className="relative z-10">
+
+      <CSSTransition
+        in={isAlreadyCancel}
+        timeout={500} // Adjust the duration of the transition
+        classNames="new-dialog"
+        unmountOnExit
+      >
+         <div className="fixed inset-0 flex justify-center items-center bg-slate-50 bg-opacity-60 z-20">
+          <div className="new-dialog-box">
+            <h2 className="text-2xl font-semibold mb-4">Subscription Details</h2>
+            <div className="mb-4">
+              <p className="text-gray-700 text-sm text-[20px] items-center">
+                Expires on {trialExpirationDate && trialExpirationDate}.
+              </p>
+            </div>
+            <form onSubmit={handleNewFormSubmit}>
+              {/* Add radio buttons and additional comments here */}
+              <div className="flex justify-end mt-6">
+                {/* <button
+                  type="button"
+                  onClick={closeNewDialog}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded mr-2"
+                >
+                  Cancel
+                </button> */}
+                <button
+                  type="submit"
+                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300 ease-in-out transform hover:scale-105"
+                >
+                  Close
+                  {/* <span className="animate-cross text-xl">&#10060;</span> */}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </CSSTransition>
+    </div>
+  
+      {/* ========Already cancel subscription======= */}
+        </>
   )
 }
 

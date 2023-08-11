@@ -76,7 +76,7 @@ const ListOfDocument = (props) => {
     }
     if(props.SHOW=="active"){
 
-      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&?workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
