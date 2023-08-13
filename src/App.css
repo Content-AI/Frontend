@@ -137,3 +137,35 @@ h6 {
   100% { transform: rotate(360deg); }
 }
 
+
+
+
+/* dark mode */
+/* App.css */
+
+:root {
+  --primary-bg-color: #fff;
+  --primary-text-color: #333;
+  --secondary-bg-color: #f2f2f2;
+  --secondary-text-color: #666;
+}
+
+.dark {
+  --primary-bg-color: #333;
+  --primary-text-color: #fff;
+  --secondary-bg-color: #444;
+  --secondary-text-color: #888;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: var(--secondary-bg-color);
+  padding: 20px;
+  color: var(--secondary-text-color);
+}
+

@@ -39,6 +39,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Typed from "react-typed";
 import LoadingPage from "../../LoadingPage";
 import { _save_ask_question_again_ } from "../../../features/RepeatQuestionInChat";
+import { _save_details_ } from "../../../features/Subscriptions";
 
 const buttonTags = [
   "All",
@@ -74,6 +75,9 @@ const Chat = ({ AUTH_TOKEN }) => {
   const chatLoadingRef = useRef(null);
 
   const divRef = useRef(null);
+
+  let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
+
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
@@ -125,6 +129,10 @@ const Chat = ({ AUTH_TOKEN }) => {
     (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
     );	
 
+
+  let subscriptions_check = useSelector(
+    (state) => state.SetSubscriptions.Subscriptions
+  );
 
   const get_initial_chat = async (url, room_id) => {
     const resp = await fetchData(url + "/" + room_id + "/", AUTH_TOKEN);
@@ -293,6 +301,10 @@ const Chat = ({ AUTH_TOKEN }) => {
             data,
           ]);
           setChatText("");
+          if(resp.data[0]["content"]=="upgrade a plan"){
+            
+            dispatch(_save_details_(upgrade_plan))
+          }
         } else {
           // notifyerror("something went wrong");
         }
@@ -338,6 +350,9 @@ const Chat = ({ AUTH_TOKEN }) => {
         };
         setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer, data]);
         setChatText("");
+        if(resp.data[0]["content"]=="upgrade a plan"){
+          dispatch(_save_details_(upgrade_plan))
+        }
       } else {
         // notifyerror("something went wrong");
       }
@@ -800,6 +815,10 @@ const Chat = ({ AUTH_TOKEN }) => {
             data,
           ]);
           setChatText("");
+          if(resp.data[0]["content"]=="upgrade a plan"){
+            
+            dispatch(_save_details_(upgrade_plan))
+          }
         } else {
           notifyerror("something went wrong");
         }

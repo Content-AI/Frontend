@@ -22,6 +22,8 @@ import ResponseTemplate from "../ResponseTemplate";
 import BouncingDotsLoader from "../../../BouncingDotsLoader";
 import WholeTemplateRender from "./WholeTemplateRender";
 import {_template_id_} from '../../../../features/LeftTemplateId';
+import { _save_details_ } from "../../../../features/Subscriptions";
+
 import {_pre_len_text_,_now_len_text_} from '../../../../features/LengthOfEditorWord';
 
 import { Transition } from "@headlessui/react";
@@ -34,6 +36,9 @@ export default function EditDocuments() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const ref = useRef();
+
+  let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
+
   
   const [delta, setDelta] = useState({
     ops: [{ insert: " Loading ....." }]
@@ -351,6 +356,10 @@ export default function EditDocuments() {
         setHoverBtnColor(false)
         const res_of_template =  await postData(formData,BACKEND_URL+BACK_END_API_RESPONSE,TOKEN)
         if(res_of_template.status==200){
+          if(res_of_template.data.data[0]["content"]=="upgrade your plan"){
+            dispatch(_save_details_(upgrade_plan))
+            navigate("/")
+          }
           setTemplateResponseData(res_of_template.data.data)
             // console.log(res_of_template.data)
         setProjectId(res_of_template.data.project_id)

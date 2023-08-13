@@ -28,6 +28,8 @@ import BouncingDotsLoader from "../../BouncingDotsLoader";
 import axios from "axios";
 import ResponseTemplate from "./ResponseTemplate";
 import { useSelector, useDispatch } from "react-redux";
+import { _save_details_ } from "../../../features/Subscriptions";
+
 
 // import ReactMarkdown from 'react-markdown'
 // import rehypeKatex from 'rehype-katex'
@@ -38,6 +40,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 const SingleTemplate = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
+
+
   const [TemplateData, setTemplateData] = useState(null);
   const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateResponseData, setTemplateResponseData] = useState(null);
@@ -229,10 +236,13 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         AUTH_TOKEN
       );
       if (res_of_template.status == 200) {
-        // console.log(res_of_template.data)
+        if(res_of_template.data.data[0]["content"]=="upgrade your plan"){
+          dispatch(_save_details_(upgrade_plan))
+        }
         setTemplateResponseData(res_of_template.data.data);
         setProjectId(res_of_template.data.project_id);
         setLoadingButton(false);
+
       } else {
         notifyerror("Try again");
         setLoadingButton(false);
