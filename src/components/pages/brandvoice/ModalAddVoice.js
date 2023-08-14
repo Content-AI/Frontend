@@ -71,7 +71,15 @@ const ModalAddVoice = (props) => {
             setresponse(true)
             setresponseData(resp.data)
             }else{
-            notifyerror("something went wrong")
+                try{
+                    if(resp.response.data.message=="That's limit for trail"){
+                        notifyerror("upgrade plan")
+                    }
+                }catch(e){
+                    notifyerror("something went wrong")
+                }
+                setanalyzingdata(false)
+                setresponse(false)
         }
         setshowTextInputBox(false)
       }

@@ -6,8 +6,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { fetchData, postData,patchData } from '../../../apis/apiService';
 import { BACKEND_URL,BACK_END_API_BRAND_VOICE } from '../../../apis/urls';
 import EditBrandVoice from './EditBrandVoice';
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 const Brandvoice = (props) => {
+
+  const navigate = useNavigate()
 
   const [showAddVoiceModal,setshowAddVoiceModal]=useState(false)
   const [BrandVoiceData,setBrandVoiceData]=useState(null)
@@ -31,6 +35,9 @@ const Brandvoice = (props) => {
   },[showAddVoiceModal,Edit_BrandVoice])
 
 
+  let Subscriptions = useSelector(
+    (state) =>state.SetSubscriptions.Subscriptions
+  );
   
   const handleDelete = (id) => {
     setBrandVoiceData((prevBrandVoice) =>
@@ -80,22 +87,99 @@ const Brandvoice = (props) => {
               }
             </>
           }
+
+          {Subscriptions &&
+                  Subscriptions.status=="trial"
+                  ?
+                    BrandVoiceData &&
+                      <div className="mt-4 md:mt-0">                 
+                        <div class="w-full pb-4">
+                          <div class="flex items-center gap-1 h-[40px] p-4 w-full rounded-md text-sm bg-red-300 text-black">
+                            <span class="font-semibold">
+                              You have {3-BrandVoiceData.length} Voices remaining.
+                            </span>
+                            <span class="flex gap-1">
+                            <span>
+                              Need more?
+                              </span>
+                              <button class="font-semibold underline underline-offset-2 cursor-pointer"
+                              onClick={()=>{
+                                navigate("/settings/subscription_plan")
+                              }}>
+                              Upgrade now
+                              </button>
+                              </span>
+                          </div>
+                        </div>
+                      </div>
+                  :
+                    null
+                }
+
             <div className="md:flex flex-row justify-between items-center mb-8 w-full">
+            
               <div className="flex flex-col md:w-4/12">
                   <h2 className="text-xl font-semibold">Your Brand voices</h2>
                   <p className="text-sm text-gray-600 font-normal">Help AI model learn how your brand communicates.</p>
               </div>
-              <div className="mt-4 md:mt-0">
-                  <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
-                    onClick={()=>{
-                      setshowAddVoiceModal(true)
-                    }}
-                  >
-                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
-                        Add Brand Voice
-                    </span>
-                  </button>
-              </div>
+
+
+              {Subscriptions &&
+              <>
+                  {Subscriptions.status=="trial"
+                  ?
+                  <>
+                  {BrandVoiceData &&
+                    <>
+                      {BrandVoiceData.length>=3
+                      ?                        
+                      <>
+                        <div className="mt-4 md:mt-0">
+                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-slate-300 ring-0  hover:ring-2 active:ring-0 my-2"
+                          disabled
+                          >
+                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
+                                Add Brand Voice
+                            </span>
+                          </button>
+                        </div>
+                      </>
+                      :
+                      <>
+                        <div className="mt-4 md:mt-0">
+                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                            onClick={()=>{
+                              setshowAddVoiceModal(true)
+                            }}
+                          >
+                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
+                                Add Brand Voice
+                            </span>
+                          </button>
+                        </div>
+                      </>
+                      }
+                    </>
+                  }
+                  </>
+                  :
+                  <>
+                    <div className="mt-4 md:mt-0">
+                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                        onClick={()=>{
+                          setshowAddVoiceModal(true)
+                        }}
+                      >
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">                        
+                            Add Brand Voice
+                        </span>
+                      </button>
+                  </div>
+                  </>
+                  }
+                </>
+              }
+              
             </div>
             {BrandVoiceData &&
             <>

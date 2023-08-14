@@ -9,10 +9,14 @@ import {fetchData,postData} from '../../../apis/apiService'
 import { Transition } from "@headlessui/react";
 import LoadingPage from '../../LoadingPage';
 // import SelectFields from './SelectField'
+import ProgressBar from "./ProgressBar";
+
 
 const Team = () => {
   const navigate=useNavigate()
   const divRef = useRef(null);
+
+  const [progressValue, setProgressValue] = useState(2);
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
@@ -51,6 +55,13 @@ const Team = () => {
   let PROFILE_DATA = useSelector(
     (state) =>state.SetFullProfile.Fullprofile
   );
+  let Subscriptions = useSelector(
+    (state) =>state.SetSubscriptions.Subscriptions
+  );
+  
+  // useEffect(()=>{
+  //   console.log('Subscriptions',Subscriptions.status)
+  // },[])
 
 
   const get_workshop_user_list = async() =>{
@@ -338,41 +349,145 @@ const Team = () => {
         <span className="mb-3"></span>
         <div className="mb-6 flex flex-row content-start justify-between gap-6">
           <div className="flex grow flex-col gap-2">
-            <span className="font-bold">
-            {workspacelist &&
-              workspacelist[0]["member_no"]} team member. </span>
+
+            {Subscriptions &&
+              <>
+              {Subscriptions.status=="trial"
+              ? 
+                <>
+                {workspacelist &&
+                <div className="container mt-3 w-[300px]">
+                  <ProgressBar value={workspacelist[0]["member_no"]} maxValue={5} />
+                  <span className="font-bold">
+                   Out of 5 member. 
+                   <p>
+                   {workspacelist &&
+                        workspacelist[0]["member_no"]+" "
+                   }
+                     team member already exists.
+                   </p>
+
+                  </span>
+                </div>
+                }
+                </>
+              :
+                <>
+                  
+                </>
+                
+              }
+            </>
+
+            }
+            {Subscriptions &&
+              <>
+              {Subscriptions.status=="trial"
+              ? 
+                <>
+                {workspacelist &&
+                <>
+                  {
+                    workspacelist[0]["member_no"]>=5
+                  ?
+                  <>
+                    <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                   >
+                        <span className="mx-auto flex select-none items-center justify-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                          </svg>
+                          <div>Invite disable</div>
+                          
+                        </span>
+                      </button>
+                      <span class="flex gap-1">
+                        <button class="font-semibold underline underline-offset-2 cursor-pointer"
+                        onClick={()=>{
+                          navigate("/settings/subscription_plan")
+                        }}>
+                        Upgrade now
+                        </button>
+                        </span>
+                  </>
+                  :
+                  <>
+                {invite_check
+                  ?
+                    <>
+                      <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
+                        onClick={()=>{
+                          invite_modal()
+                        }}
+                      >
+                        <span className="mx-auto flex select-none items-center justify-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                          </svg>
+                          <div>Invite team members</div>
+                        </span>
+                      </button>
+                    </>
+                  :
+                  <>
+                    <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                    title="Contact Your admin">
+                        <span className="mx-auto flex select-none items-center justify-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                          </svg>
+                          <div>Invite disable</div>
+                        </span>
+                      </button>
+                    </>
+                  }
+                </>
+                  }
+                </>
+                }
+                </>
+              :
+                <>
+                {invite_check
+                  ?
+                    <>
+                      <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
+                        onClick={()=>{
+                          invite_modal()
+                        }}
+                      >
+                        <span className="mx-auto flex select-none items-center justify-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                          </svg>
+                          <div>Invite team members</div>
+                        </span>
+                      </button>
+                    </>
+                  :
+                  <>
+                    <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                    title="Contact Your admin">
+                        <span className="mx-auto flex select-none items-center justify-center space-x-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
+                          </svg>
+                          <div>Invite disable</div>
+                        </span>
+                      </button>
+                    </>
+                  }
+                </>
+                
+              }
+            </>
+
+            }
             {/* <div>
               <span>Need more seats? <span className="cursor-pointer font-semibold text-indigo-600 underline underline-offset-2">Upgrade now</span></span>
             </div> */}
-            {invite_check
-            ?
-              <>
-                <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
-                  onClick={()=>{
-                    invite_modal()
-                  }}
-                >
-                  <span className="mx-auto flex select-none items-center justify-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
-                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
-                    </svg>
-                    <div>Invite team members</div>
-                  </span>
-                </button>
-              </>
-            :
-            <>
-              <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
-              title="Contact Your admin">
-                  <span className="mx-auto flex select-none items-center justify-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="h-5 w-5">
-                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
-                    </svg>
-                    <div>Invite disable</div>
-                  </span>
-                </button>
-              </>
-            }
+
+
           </div>
           <div className="basis-1/2">
             <div className="w-full space-y-1.5">
