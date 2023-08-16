@@ -140,18 +140,20 @@ const Integrations = () => {
                 </span>
               </div>
           </section>
-          <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded">
+
+          {/* <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded"> */}
+          <section className="p-6 mb-3  shadow-sm rounded">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
                 <span className="flex flex-col flex-grow mr-2">
                     <span className="flex items-center mb-1 text-lg font-medium text-gray-900" id="headlessui-label-:R5fa36:">
-                      Language Translation
+                      {/* Language Translation */}
                     </span>
                     <span className="text-sm text-gray-500" id="headlessui-description-:R9fa36:">
-                    Effortlessly translate your content into multiple languages with just one click
+                    {/* Effortlessly translate your content into multiple languages with just one click */}
                     </span>
                 </span>
                       {/* ======swip===== */}
-                      <FormGroup>
+                      {/* <FormGroup>
                       <FormControlLabel
                         control={
                           <ISwitch
@@ -162,39 +164,40 @@ const Integrations = () => {
                         }
                         label=""
                       />
-                    </FormGroup>
+                    </FormGroup> */}
                       
                     {/* ======swip===== */}
               </div>
               <div className="flex flex-col md:items-end justify-between mt-4 md:flex-row md:space-x-2">
                 <label className="text-sm space-y-2">
-                    <span>Input language</span>
-                    <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
+                    {/* <span>Input language</span> */}
+                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
                       <option value="EN" selected="">English</option>
                       <option value="FR">France</option>
-                    </select>
+                    </select> */}
                 </label>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="flex-shrink-0 text-gray-500 box-content w-4 self-center px-1 py-3 transform rotate-90 md:rotate-0 md:self-end">
+                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="flex-shrink-0 text-gray-500 box-content w-4 self-center px-1 py-3 transform rotate-90 md:rotate-0 md:self-end">
                     <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                </svg>
+                </svg> */}
                 <label className="text-sm space-y-2">
-                    <span>Output language</span>
-                    <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
+                    {/* <span>Output language</span> */}
+                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
                       <option value="EN-US" selected="">English (American)</option>
                       <option value="EN-GB">English (British)</option>
                       <option value="FR">France</option>
-                    </select>
+                    </select> */}
                 </label>
                 <label className="text-sm space-y-2 flex-shrink-0 md:pl-4 opacity-60">
-                    <span>Formality</span>
-                    <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate" disabled="">
+                    {/* <span>Formality</span> */}
+                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate" disabled="">
                       <option value="default" selected="">Default</option>
                       <option value="less">Less formal</option>
                       <option value="more">More formal</option>
-                    </select>
+                    </select> */}
                 </label>
               </div>
           </section>
+          
         </div>
         </div>
     </>

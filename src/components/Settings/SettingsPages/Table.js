@@ -30,7 +30,7 @@ const Table = (props) => {
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
           {tableData.map((data,index)=>{
             return (
-                <tr>
+                <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black ">{data.user}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{data.creditsUsed}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{data.templates}</td>

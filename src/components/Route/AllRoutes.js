@@ -34,6 +34,7 @@ import ChangeWorkSpace from "../pages/ChangeWorkSpace";
 import AcceptInvitationPage from "../pages/AcceptInvitationPage";
 import { BsWhatsapp } from "react-icons/bs";
 
+import Help from "../pages/Help/Help";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -97,6 +98,10 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route
               path="/create_new_content"
               element={<CreateNewContent AUTH_TOKEN={TOKEN} />}
+            />
+            <Route
+              path="/help"
+              element={<Help AUTH_TOKEN={TOKEN} />}
             />
             <Route
               path="/change-work-space"

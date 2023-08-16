@@ -249,7 +249,7 @@ const handleNewFormSubmit = (event) => {
                         disabled
                           className="w-[150px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-gray-400">
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <div class="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                          <div className="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
                         </span></button>
                     :
                       <button type="button" 
@@ -332,7 +332,7 @@ const handleNewFormSubmit = (event) => {
                   type="button"
                   className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                    <div class="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
                   </span>
                 </button>
                 

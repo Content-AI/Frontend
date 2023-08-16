@@ -317,8 +317,11 @@ const Navbar = () => {
                               <MdHelp size={18} />
                             </div>
                             <div>
-                              <p className="text-sm font-helv">Help</p>
-                            </div>
+
+                            <Link to="/help">
+                                    <p className="text-sm  ml-[10px] font-helv">Help</p>
+                            </Link> 
+                          </div>
                           </div>
                           <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                             <div className="mr-2">
@@ -380,24 +383,24 @@ const Navbar = () => {
                         <div className="mb-4">
                         {subscriptions_details.user.trail_ends
                         ?
-                          <div class="flex text-base justify-items-start items-center">
+                          <div className="flex text-base justify-items-start items-center">
                             <div>
-                                <svg class="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                  <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fill-rule="evenodd"></path>
-                                  <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fill-rule="evenodd"></path>
+                                <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                  <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
+                                  <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                 </svg>
                             </div>
-                            <span class="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+                            <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
                           </div>
                         :
-                          <div class="flex text-base justify-items-start items-center">
+                          <div className="flex text-base justify-items-start items-center">
                               <div>
-                                  <svg class="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                    <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fill-rule="evenodd"></path>
-                                    <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fill-rule="evenodd"></path>
+                                  <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
+                                    <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                   </svg>
                               </div>
-                              <span class="text-sm pl-2 mb-2">Your current plans</span>
+                              <span className="text-sm pl-2 mb-2">Your current plans</span>
                             </div>
                         }
                           <div className="mb-3">
@@ -779,7 +782,9 @@ const Navbar = () => {
                                   <MdHelp size={25} />
                                 </div>
                                 <div>
-                                  <p className="text-sm  ml-[10px] font-helv">Help</p>
+                                  <Link to="/help">
+                                    <p className="text-sm  ml-[10px] font-helv">Help</p>
+                                  </Link>
                                 </div>
                               </div>
                               <div className="flex mb-4  hover:text-blue-500 cursor-pointer">
@@ -931,14 +936,14 @@ const Navbar = () => {
                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                       <h3 className="text-3xl font-semibold">
                       <div className="mb-4">
-                          <div class="flex text-base justify-items-start items-center">
+                          <div className="flex text-base justify-items-start items-center">
                             <div>
-                                <svg class="w-5 h-5 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                  <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fill-rule="evenodd"></path>
-                                  <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fill-rule="evenodd"></path>
+                                <svg className="w-5 h-5 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                  <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
+                                  <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                 </svg>
                             </div>
-                            <span class="text-lg pl-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+                            <span className="text-lg pl-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
                           </div>
                         </div>
                       </h3>
@@ -948,24 +953,24 @@ const Navbar = () => {
                 {/* ==================the message ============= */}
 
             <div className="w-[90%] m-auto p-8">
-                <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
+                <div className="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
                   <div>
                   <svg className="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" x="0px" y="0px"><g data-name="01"><path d="M18.81,4.83a3.08,3.08,0,0,0-5.63,0L3.73,23.77a3.82,3.82,0,0,0,.16,3.69A3.13,3.13,0,0,0,6.54,29H25.46a3.13,3.13,0,0,0,2.65-1.54,3.82,3.82,0,0,0,.16-3.69Zm7.59,21.58a1.14,1.14,0,0,1-1,.59H6.54a1.14,1.14,0,0,1-1-.59,1.81,1.81,0,0,1-.07-1.75L15,5.72a1.09,1.09,0,0,1,2,0l9.46,18.94A1.81,1.81,0,0,1,26.41,26.41ZM16,20a3,3,0,1,0,3,3A3,3,0,0,0,16,20Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,16,24Zm-2.1-6.88a2.12,2.12,0,0,0,4.2,0l.76-4.81A2.12,2.12,0,0,0,16.75,10h-1.5a2.12,2.12,0,0,0-1.58.71,2.14,2.14,0,0,0-.52,1.69ZM15.25,12h1.5l.12.08-.76,4.81c0,.12-.21.17-.24,0l-.75-4.77-1,.16Z"/></g></svg>
                   </div>
-                  <p class="text-sm font-normal text-gray-900">
+                  <p className="text-sm font-normal text-gray-900">
                   You are currently subscribed to the {subscriptions_details.plan} plan, 
                   which provides you with unlimited word access. Once your trial period concludes, 
                   you will be automatically charged the specified amount for one {subscriptions_details.user.subscription_type} continued usage of the tool.
                   </p>
                 </div>
-                <div class="flex flex-col mb-5 mt-5 w-full border-b border-gray-200 pb-4 space-y-1">
-                  <div class="text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
-                  <div class="flex flex-row justify-between">
-                      <div class="text-gray-900">{subscriptions_details.user.plan}</div>
+                <div className="flex flex-col mb-5 mt-5 w-full border-b border-gray-200 pb-4 space-y-1">
+                  <div className="text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
+                  <div className="flex flex-row justify-between">
+                      <div className="text-gray-900">{subscriptions_details.user.plan}</div>
                       
                       {subscriptions_details.user.plan=="starter" &&  subscriptions_details.user.subscription_type=="monthly"
                       ?
-                          <div class="text-sm text-gray-600">
+                          <div className="text-sm text-gray-600">
                           ${subscriptions_details.charge_description.monthly_starter}
                             /month
                           </div>
@@ -974,7 +979,7 @@ const Navbar = () => {
                       }
                       {subscriptions_details.user.plan=="starter" && subscriptions_details.user.subscription_type=="annually"
                       ?
-                          <div class="text-sm text-gray-600">
+                          <div className="text-sm text-gray-600">
                           ${subscriptions_details.charge_description.annaully_starter}
                             /year
                           </div>
@@ -983,7 +988,7 @@ const Navbar = () => {
                       }
                       {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="monthly"
                       ?
-                          <div class="text-sm text-gray-600">
+                          <div className="text-sm text-gray-600">
                           ${subscriptions_details.charge_description.monthly_premium_mode}
                             /month
                           </div>
@@ -992,7 +997,7 @@ const Navbar = () => {
                       }
                       {subscriptions_details.user.plan=="premium" && subscriptions_details.user.subscription_type=="annually"
                       ?
-                          <div class="text-sm text-gray-600">
+                          <div className="text-sm text-gray-600">
                           ${subscriptions_details.charge_description.annaully_premium_mode}
                             /year
                           </div>
@@ -1003,10 +1008,10 @@ const Navbar = () => {
                       
                   </div>
                 </div>
-                <div class="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
-                  <div class="flex flex-row justify-between">
-                      <span class="text-xl font-bold text-gray-900 w-3/5">Plan total</span>
-                      <div class="flex flex-col items-end md:flex-row space-x-2"><span class="text-lg text-green-600 font-bold">$
+                <div className="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
+                  <div className="flex flex-row justify-between">
+                      <span className="text-xl font-bold text-gray-900 w-3/5">Plan total</span>
+                      <div className="flex flex-col items-end md:flex-row space-x-2"><span className="text-lg text-green-600 font-bold">$
                       {subscriptions_details.user.plan=="starter" &&  subscriptions_details.user.subscription_type=="monthly"
                       ?
                         subscriptions_details.charge_description.monthly_starter

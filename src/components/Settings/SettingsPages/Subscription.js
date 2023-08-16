@@ -277,8 +277,7 @@ const Subscription = (props) => {
                                     <div className="text-sm text-gray-600">
                                     {monthly_plan.map((data,index)=>{
                                         return (
-                                            <>
-                                            <div className="flex items-center">
+                                            <div className="flex items-center" key={index}>
                                                 <div className="w-4 h-4 items-center">
                                                     <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M4 9L6.90909 12C8.278 8.06771 9.41805 6.34218 12 4" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -286,7 +285,6 @@ const Subscription = (props) => {
                                                 </div>
                                                 <span className="ml-2">{data}</span>
                                             </div>
-                                            </>
                                         )
                                     })}
                                     </div>
@@ -370,7 +368,7 @@ const Subscription = (props) => {
                                     <div className="text-sm text-gray-600">
                                     {annually_plan.map((data,index)=>{
                                         return (
-                                                <div className="flex items-center">
+                                                <div className="flex items-center" key={index}>
                                                     <div className="w-4 h-4 items-center">
                                                         <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M4 9L6.90909 12C8.278 8.06771 9.41805 6.34218 12 4" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -439,7 +437,7 @@ const Subscription = (props) => {
                                     </div>
                                     {enterprise_plan.map((data,index)=>{
                                         return (
-                                            <div className="flex items-center">
+                                            <div className="flex items-center" key={index}>
                                                 <div className="w-4 h-4 items-center">
                                                     <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M4 9L6.90909 12C8.278 8.06771 9.41805 6.34218 12 4" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>

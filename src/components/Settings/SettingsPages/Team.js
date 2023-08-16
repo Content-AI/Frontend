@@ -4,7 +4,7 @@ import Pagination from './Pagination';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import toast,{ Toaster } from 'react-hot-toast';
-import {BACKEND_URL,BACK_END_API_CHANGE_PERMISSION,BACK_END_API_REMOVE_USER,BACK_END_API_INVITE_GENERATE_LINK,BACK_END_API_INVITE_WORKSHOP,BACK_END_API_CHECK_ADMIN,BACK_END_API_WORKSPACE_USERS_LIST} from '../../../apis/urls'
+import {BACKEND_URL,BACK_END_API_REMOVE_INVITE_WORKSHOP,BACK_END_API_CHANGE_PERMISSION,BACK_END_API_PENDING_INVITE_WORKSHOP,BACK_END_API_REMOVE_USER,BACK_END_API_INVITE_GENERATE_LINK,BACK_END_API_INVITE_WORKSHOP,BACK_END_API_CHECK_ADMIN,BACK_END_API_WORKSPACE_USERS_LIST} from '../../../apis/urls'
 import {fetchData,postData} from '../../../apis/apiService'
 import { Transition } from "@headlessui/react";
 import LoadingPage from '../../LoadingPage';
@@ -39,6 +39,8 @@ const Team = () => {
   const [workspacelist,setworkspacelist]=useState(null)
   const [invite_check,setinvite_check]=useState(false)
   const [initial_invitation_link,set_initial_invitation_link]=useState(null)
+  
+  const [pending_invitation,set_pending_invitation]=useState(null)
 
   let WorkspaceId = useSelector(
       (state) => state.SetWorkspaceId.WorkspaceId
@@ -68,6 +70,10 @@ const Team = () => {
     const resp = await fetchData(BACKEND_URL+BACK_END_API_WORKSPACE_USERS_LIST+ChosenWorkspaceId["Workspace_Id"],TOKEN)
     if(resp.status=200){
       setworkspacelist(resp.data)
+    }
+    const resp_pending_invitation = await fetchData(BACKEND_URL+BACK_END_API_PENDING_INVITE_WORKSHOP+ChosenWorkspaceId["Workspace_Id"],TOKEN)
+    if(resp_pending_invitation.status=200){
+      set_pending_invitation(resp_pending_invitation.data)
     }
     const resp_check = await fetchData(BACKEND_URL+BACK_END_API_CHECK_ADMIN+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],TOKEN)
     if(resp_check.status==200){
@@ -240,6 +246,8 @@ const Team = () => {
       setIsOpen(false);
     };
   
+
+
     return (
       <div className="">
         <div>
@@ -279,6 +287,10 @@ const Team = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <div className="origin-top-left absolute z-10 mt-2 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+
+
+
+
             {options.map((option, index) => (
               <div key={option.value} role="none">
                 <button
@@ -310,6 +322,9 @@ const Team = () => {
                 </button>
               </div>
             ))}
+
+
+
           </div>
         </Transition>
       </div>
@@ -325,7 +340,38 @@ const Team = () => {
   };
 
 
+  // ==========pending and team member list============
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('Team Member');
 
+  const menuItems = ['Team Member', 'Pending Members'];
+
+  const handleMenuItemSelect = (item) => {
+    setSelectedItem(item);
+    setIsDropdownOpen(false);
+  };
+
+  const get_invitation_member= async(id) => {
+
+  const resp_pending_invitation = await fetchData(BACKEND_URL+BACK_END_API_PENDING_INVITE_WORKSHOP+ChosenWorkspaceId["Workspace_Id"],TOKEN)
+  if(resp_pending_invitation.status=200){
+    set_pending_invitation(resp_pending_invitation.data)
+  }
+}
+
+  const remove_invitation_member= async(id) => {
+    setloadingpage(true)
+    const resp=await fetchData(BACKEND_URL+BACK_END_API_REMOVE_INVITE_WORKSHOP+id,TOKEN)
+    if(resp.status==200){
+      notifysucces("Invitation removed")
+      get_invitation_member()
+      setloadingpage(false)
+      
+    }else{
+      notifyerror("something went wrong")
+      setloadingpage(false)
+    }
+  }
 
   return (
     <>
@@ -401,8 +447,8 @@ const Team = () => {
                           
                         </span>
                       </button>
-                      <span class="flex gap-1">
-                        <button class="font-semibold underline underline-offset-2 cursor-pointer"
+                      <span className="flex gap-1">
+                        <button className="font-semibold underline underline-offset-2 cursor-pointer"
                         onClick={()=>{
                           navigate("/settings/subscription_plan")
                         }}>
@@ -508,13 +554,66 @@ const Team = () => {
             </div>
           </div>
         </div>
+        <div>
+
+      {/* =====choose pending or see team member================= */}
+        <div className="relative inline-block text-left w-[180px]  mt-4 mb-4">
+          <div>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              type="button"
+              className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {selectedItem}
+              <svg
+                className="-mr-1 ml-2 h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6.293 6.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          {isDropdownOpen && (
+            <div className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div className="py-1">
+                {menuItems.map((item,index) => (
+                  <button
+                    key={item}
+                    onClick={() => handleMenuItemSelect(item)}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          </div>
+      {/* =====choose pending or see team member================= */}
+        </div>
         <div className="mb-10 ring-1 ring-gray-200 md:rounded-lg">
           <table className="min-w-full">
             <thead className="bg-slate-200">
               <tr>
                 <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold uppercase text-gray-700">Member</th>
-                <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Role</th>
-                <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Joined</th>
+                {selectedItem=="Team Member"
+                ?
+                <>
+                  <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Role</th>
+                  <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Joined</th>
+                </>
+                :
+                <>
+                  <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Invite at</th>
+                </>
+                }
                 <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"><span className="sr-only">Edit</span></th>
               </tr>
             </thead>
@@ -525,88 +624,141 @@ const Team = () => {
               {ChosenWorkspaceId["admin_or_not"]==true
               ?
                 <>
-                {workspacelist.map((data, index) => (
-                  <tr>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0">
-                          <img
-                            className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
-                            src="/default.png"
-                          />
-                        </div>
-                        <div className="ml-4 truncate">
-                          <div className="truncate font-medium leading-5 text-gray-900">
-                          {data["team_member_user"]["first_name"]}
+                {selectedItem=="Team Member"
+                ?
+                <>
+                  {workspacelist.map((data, index) => (
+                    <tr key={index}>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                        <div className="flex items-center">
+                          <div className="h-10 w-10 flex-shrink-0">
+                            <img
+                              className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
+                              src="/default.png"
+                            />
                           </div>
-                          <div className="truncate text-sm leading-5 text-gray-500" >
-                          {data["team_member_user"]["email"]}
+                          <div className="ml-4 truncate">
+                            <div className="truncate font-medium leading-5 text-gray-900">
+                            {data["team_member_user"]["first_name"]}
+                            </div>
+                            <div className="truncate text-sm leading-5 text-gray-500" >
+                            {data["team_member_user"]["email"]}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="hidden sm:table-cell">
-                      {PROFILE_DATA.email==data["team_member_user"]["email"]
-                      ?
-                      <>
-                        <SelectField
-                            options={[
-                              { label: 'Admin', value: 'Admin' },
-                            ]}
-                            role_of_user={workspacelist[index]["admin_or_not"]?"Admin":"Member"}
-                          />
-                      </>
-                      :
+                      </td>
+                      <td className="hidden sm:table-cell">
+                        {PROFILE_DATA.email==data["team_member_user"]["email"]
+                        ?
                         <>
                           <SelectField
                               options={[
                                 { label: 'Admin', value: 'Admin' },
-                                { label: 'Member', value: 'Member' },
                               ]}
-                              defaultValue={selectedRoles[index]}
-                              onSelect={(value) => handleSelectData(index, value)}
                               role_of_user={workspacelist[index]["admin_or_not"]?"Admin":"Member"}
-                              data_index={index}
                             />
                         </>
+                        :
+                          <>
+                            <SelectField
+                                options={[
+                                  { label: 'Admin', value: 'Admin' },
+                                  { label: 'Member', value: 'Member' },
+                                ]}
+                                defaultValue={selectedRoles[index]}
+                                onSelect={(value) => handleSelectData(index, value)}
+                                role_of_user={workspacelist[index]["admin_or_not"]?"Admin":"Member"}
+                                data_index={index}
+                              />
+                          </>
+                        }
+                      </td>
+                      <td className="hidden sm:table-cell">
+                      {data["team_member_user"]["created_at"]}
+                      </td>
+                      <td className="hidden sm:table-cell text-blue-500">
+                        
+                      {PROFILE_DATA.email==data["team_member_user"]["email"]
+                        ?
+                          null
+                        :
+                          <>
+                            {ChosenWorkspaceId["admin_or_not"]==true
+                                ?
+                                <>
+                                  <button
+                                  onClick={()=>{
+                                    const formData={}
+                                    formData["id"]=data.id
+                                    remove_user(formData)
+                                  }}>
+                                    Remove
+                                  </button>
+                                </>
+                              :
+                                null
+                              }
+                          </>
                       }
-                    </td>
-                    <td className="hidden sm:table-cell">
-                    {data["team_member_user"]["created_at"]}
-                    </td>
-                    <td className="hidden sm:table-cell text-blue-500">
-                      
-                    {PROFILE_DATA.email==data["team_member_user"]["email"]
-                      ?
-                        null
-                      :
-                        <>
-                          {ChosenWorkspaceId["admin_or_not"]==true
-                              ?
-                              <>
-                                <button
-                                onClick={()=>{
-                                  const formData={}
-                                  formData["id"]=data.id
-                                  remove_user(formData)
-                                }}>
-                                  Remove
-                                </button>
-                              </>
-                            :
-                              null
-                            }
-                        </>
-                    }
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  ))}
+                </>
+                :
+                <>  
+                  {pending_invitation.map((data,index)=>{
+                    return (
+                      <tr key={index}>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                          <div className="flex items-center">
+                            <div className="h-10 w-10 flex-shrink-0">
+                              <img
+                                className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
+                                src="/default.png"
+                              />
+                            </div>
+                            <div className="ml-4 truncate">
+                              <div className="truncate font-medium leading-5 text-gray-900">
+                              </div>
+                              <div className="truncate text-sm leading-5 text-gray-500" >
+                              {data["email"]}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        
+                        <td className="hidden sm:table-cell">
+                        {data["created_at"]}
+                        </td>
+
+                        <td className="hidden sm:table-cell text-blue-500">
+                              {ChosenWorkspaceId["admin_or_not"]==true
+                                  ?
+                                  <>
+                                    <button
+                                    onClick={()=>{
+                                      remove_invitation_member(data.id)
+                                    }}>
+                                      Remove
+                                    </button>
+                                  </>
+                                :
+                                  null
+                                }
+
+                        </td>
+                    </tr>
+                    )
+                  })}
+                </>
+                  
+                }
                 </>
               :
               <>
                 {workspacelist.map((data,index)=>{
                     return (
-                        <tr>
+                        <tr key={index}>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">

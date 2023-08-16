@@ -118,6 +118,8 @@ export const BACK_END_API_WORKSPACE_USERS_LIST ="/v1/team_members/list_of_users_
 export const BACK_END_API_INITIAL_WORKSPACE ="/v1/team_members/initial_work_shop_of_user";
 
 export const BACK_END_API_INVITE_WORKSHOP ="/v1/team_members/invite_to_workspace/";
+export const BACK_END_API_PENDING_INVITE_WORKSHOP ="/v1/team_members/pending_invites/";
+export const BACK_END_API_REMOVE_INVITE_WORKSHOP ="/v1/team_members/remove_pending_invites/";
 
 export const BACK_END_API_ACCEPT_INVITATION ="/v1/team_members/accept_invitation/";
 

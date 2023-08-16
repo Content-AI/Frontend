@@ -137,8 +137,8 @@ const Usage = () => {
               <dt className="flex items-center truncate text-sm font-medium text-gray-500">
                 <div>Words generated</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
               </dt>
@@ -148,8 +148,8 @@ const Usage = () => {
               <dt className="flex items-center truncate text-sm font-medium text-gray-500">
                 <div>Active users</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
               </dt>
@@ -159,8 +159,8 @@ const Usage = () => {
               <dt className="flex items-center truncate text-sm font-medium text-gray-500">
                 <div>Templates</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
               </dt>
@@ -234,9 +234,9 @@ const Usage = () => {
         
       {/* =========chart============ */}
         
-        <div className='mt-[40px]'>
+        {/* <div className='mt-[40px]'>
             <Table total_data={list_token_generated_by_user}/>
-        </div>
+        </div> */}
         
       </div>
         </div>
