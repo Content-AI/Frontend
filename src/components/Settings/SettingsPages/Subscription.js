@@ -11,6 +11,20 @@ import LoadingPage from '../../LoadingPage';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLocation } from "react-router-dom";
 
+import { Link } from "react-router-dom";
+import { _delete_token_ } from '../../../features/AuthenticationToken';
+import { _save_survey_ } from "../../../features/ThreeSteps";
+import { _delete_user_profile } from "../../../features/Fullprofile";
+import { _save_details_ } from "../../../features/Subscriptions";
+import { _chosen_workspace_id_ } from "../../../features/ChosenWorkspaceId";
+import { _save_sub_details_ } from "../../../features/SubscriptionsData";
+
+
+
+import {
+    MdLogout,
+  } from "react-icons/md";
+
 
 const ISwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -67,6 +81,8 @@ const Subscription = (props) => {
 
     const navigate = useNavigate()
     const location = useLocation();
+    const dispatch = useDispatch();
+
 
     let subscriptions_details = useSelector(
         (state) => state.SetSubscriptionsData.SubscriptionsData
@@ -91,15 +107,15 @@ const Subscription = (props) => {
     
     const notifyerror = (message) => toast.error(message);
     const notifysucces = (message) => toast.success(message);
-    const notifymessage = (message) =>
-    toast(message, {
-      icon: "🔔",
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+    // const notifymessage = (message) =>
+    // toast(message, {
+    //   icon: "🔔",
+    //   style: {
+    //     borderRadius: "10px",
+    //     background: "#333",
+    //     color: "#fff",
+    //   },
+    // });
 
 
     const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
@@ -194,7 +210,7 @@ const Subscription = (props) => {
 
     useEffect(()=>{
         if(message=="upgrade"){
-            notifymessage("Upgrade your plan")
+            // notifymessage("Upgrade your plan")
         }
     },[message])
 
@@ -218,7 +234,28 @@ const Subscription = (props) => {
             <div className="min-h-screen min-w-screen bg-gray-50 pb-[150px]">
             {message=="upgrade"
             ?
-                null
+                <>
+                <Link
+                    className="pt-2 ml-4 block  border-border w-[80px]"
+                    to="/"
+                    onClick={() => {
+                        localStorage.clear();
+                        dispatch(_delete_token_(null));
+                        dispatch(_save_survey_(null));
+                        dispatch(_delete_user_profile(null));
+                        dispatch(_save_details_(null));
+                        dispatch(_save_sub_details_(null));
+                        window.location.replace("/login");
+                    }}
+                    >
+                    <div className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                        <div>
+                        <p className="text-sm font-helv">Logout</p>
+                        </div>
+                    </div>
+                    </Link>
+
+                </>
             :
                 <>
                     <div className="flex jusitfy-start pt-10 pb-5 px-5 lg:px-10">

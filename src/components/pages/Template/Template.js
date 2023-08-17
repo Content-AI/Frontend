@@ -406,7 +406,7 @@ const Template = ({AUTH_TOKEN}) => {
           })} */}
         </div>
       </div>
-      <Toaster/>
+      {/* <Toaster/> */}
     </div>
   );
 };

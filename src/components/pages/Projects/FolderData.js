@@ -741,7 +741,7 @@ const FolderData = (props) => {
                     </div>
                 </>
             ) : null}
-            <Toaster/>
+            {/* <Toaster/> */}
         </div>
     }
     </>
