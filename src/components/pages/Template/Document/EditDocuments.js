@@ -357,8 +357,10 @@ export default function EditDocuments() {
         const res_of_template =  await postData(formData,BACKEND_URL+BACK_END_API_RESPONSE,TOKEN)
         if(res_of_template.status==200){
           if(res_of_template.data.data[0]["content"]=="upgrade your plan"){
-            dispatch(_save_details_(upgrade_plan))
-            navigate("/")
+            // dispatch(_save_details_(upgrade_plan))
+            // navigate("/")
+            navigate("/settings/subscription_plan?message=upgrade")
+
           }
           setTemplateResponseData(res_of_template.data.data)
             // console.log(res_of_template.data)

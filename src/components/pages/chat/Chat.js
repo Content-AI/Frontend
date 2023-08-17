@@ -351,7 +351,8 @@ const Chat = ({ AUTH_TOKEN }) => {
         setCurrentAnswer((CurrentAnswer) => [...CurrentAnswer, data]);
         setChatText("");
         if(resp.data[0]["content"]=="upgrade a plan"){
-          dispatch(_save_details_(upgrade_plan))
+          // dispatch(_save_details_(upgrade_plan))
+          navigate("/settings/subscription_plan?message=upgrade")
         }
       } else {
         // notifyerror("something went wrong");
