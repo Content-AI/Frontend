@@ -147,6 +147,17 @@ const Navbar = () => {
   //   get_subcribe_data_of_user()
   // },[])
 
+  let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
+
+  useEffect(()=>{
+    if(subscriptions_details){
+      if(subscriptions_details.user.trail_ends=="0 days"){
+        navigate("/settings/subscription_plan?message=upgrade")
+        // dispatch(_save_details_(upgrade_plan))
+      }
+    }
+  },[subscriptions_details])
+
   return (
     <>
     {show_invitation
