@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { BACKEND_URL,BACK_END_API_DOWNLOAD_FILE,BACK_END_MULTIPLE_SELECT_FOR_TRASH,BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID,BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_FAV,BACK_END_API_DOWNLOAD_FILE,BACK_END_MULTIPLE_SELECT_FOR_TRASH,BACK_END_MULTIPLE_SELECT_FOR_UPDATE_PROJECT_ID,BACK_END_MULTIPLE_SELECT_FOR_TRASH_PERMANENTLY_DELETE, BACK_END_API_DOCUMENTS,BACK_END_API_PROJECT_CHOOSE,BACK_END_API_DOCUMENTS_PATCH } from "../../../../apis/urls";
 import { fetchData, patchData, postData } from "../../../../apis/apiService";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import RenderHtml from "../RenderHtml";
 import LoadingPage from "../../../LoadingPage";
 import { useSelector, useDispatch } from "react-redux";
+import { _fav_data_ } from "../../../../features/Favorite";
 
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
-
-
 
 
 const ListOfDocument = (props) => {
@@ -408,6 +407,48 @@ useEffect(()=>{
   initial_get_all_user_doc()
 },[currentPage])
 
+
+
+// =========Add to Fav======
+
+const get_fav_doc = async()=>{
+  const resp = await fetchData(BACKEND_URL + BACK_END_API_FAV, props.AUTH_TOKEN)
+  if(resp.status=-200){
+    dispatch(_fav_data_(resp.data))
+  }
+}
+
+const add_to_fav = async(id) =>{
+  const formData={
+      "id":id,
+      "fav":true
+  }
+  const resp = await postData(formData,BACKEND_URL + BACK_END_API_FAV, props.AUTH_TOKEN)
+  if(resp.status==201){
+    notifysuccess("Added to Favorite")
+    setOpenPopupIndex(null);
+    get_fav_doc()
+    get_all_user_doc()
+  }else{
+    notifyerror("something went wrong")
+  }
+}
+const remove_to_fav = async(id) =>{
+  const formData={
+      "id":id,
+      "fav":false
+  }
+  const resp = await postData(formData,BACKEND_URL + BACK_END_API_FAV, props.AUTH_TOKEN)
+  if(resp.status==201){
+    notifysuccess("Removed from Favorite")
+    setOpenPopupIndex(null);
+    get_fav_doc()
+    get_all_user_doc()
+  }else{
+    notifyerror("something went wrong")
+  }
+}
+
   return (
     <>
       {LoadingData
@@ -732,13 +773,31 @@ useEffect(()=>{
                                       <>
                                         {openPopupIndex === index && (
                                           <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+
                                             <div role="none">
-                                              <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
+                                            {data.favorite
+                                            ?
+                                              <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                onClick={()=>{
+                                                  remove_to_fav(data.id)
+                                                }}>
+                                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                                    <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9df356" fillRule="evenodd" role="none"></path>
+                                                  </svg>
+                                                  <span role="none">Remove from favorites</span>
+                                                </button>
+                                            :
+                                              <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              onClick={()=>{
+                                                add_to_fav(data.id)
+                                              }}>
                                                 <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
                                                   <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
                                                 </svg>
                                                 <span role="none">Add to favorites</span>
                                               </button>
+                                              
+                                            }
                                               <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                 onClick={() => {
                                                   setRenameDiv(true)
@@ -797,6 +856,7 @@ useEffect(()=>{
                                               </button>
 
                                             </div>
+
                                             <div role="none">
                                               <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                 onClick={() => {

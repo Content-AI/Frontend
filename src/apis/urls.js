@@ -1,6 +1,6 @@
-// BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "http://localhost:8000"
 // BACKEND_URL = "https://copyai.pythonanywhere.com";
-BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+// BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
@@ -137,4 +137,7 @@ export const BACK_END_API_SEND_INVITATION ="/v1/team_members/invite_with_email_s
 export const BACK_END_API_CHECK_PUBLIC_OR_NOT ="/v1/team_members/check_public_or_not/";
 export const BACK_END_API_MAKE_PUBLIC_OR_NOT ="/v1/team_members/make_workshop_public/";
 export const BACK_END_API_DOC_SHARED_TO_USER ="/v1/team_members/doc_shared_to_user/";
+
+
+export const BACK_END_API_FAV ="/v1/template/favorite/";
 

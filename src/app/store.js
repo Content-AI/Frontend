@@ -19,6 +19,7 @@ import SubscriptionsData from '../features/SubscriptionsData'
 import ListTokenGeneratedByUser from '../features/ListTokenGeneratedByUser'
 import WorkspaceId from '../features/WorkspaceId'
 import ChosenWorkspaceId from '../features/ChosenWorkspaceId'
+import Favorite from '../features/Favorite'
 
 export const store = configureStore({
     reducer: {
@@ -42,6 +43,7 @@ export const store = configureStore({
         SetListTokenGeneratedByUser:ListTokenGeneratedByUser,
         SetWorkspaceId:WorkspaceId,
         SetChosenWorkspaceId:ChosenWorkspaceId,
+        SetFavorite:Favorite,
     }
 })
 

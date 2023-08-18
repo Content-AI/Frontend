@@ -18,6 +18,8 @@ import { _delete_user_profile } from "../../../features/Fullprofile";
 import { _save_details_ } from "../../../features/Subscriptions";
 import { _chosen_workspace_id_ } from "../../../features/ChosenWorkspaceId";
 import { _save_sub_details_ } from "../../../features/SubscriptionsData";
+import ChangeWorkSpace from '../../pages/ChangeWorkSpace';
+
 
 
 
@@ -204,6 +206,8 @@ const Subscription = (props) => {
 
 
     //   ======upgrade plan redirect if trail finish=======
+    const [switch_workspace,setswitch_workspace] = useState(false);
+
 
     const searchParams = new URLSearchParams(location.search);
     const message = searchParams.get('message');
@@ -235,7 +239,24 @@ const Subscription = (props) => {
             {message=="upgrade"
             ?
                 <>
-                <Link
+                <div className='flex'>
+                    <div className='mt-2'>
+                        <button
+                                className='bg-[#223358] rounded-r-sm ml-2'
+                                onClick={() => {
+                                    setswitch_workspace(true)
+                                }}
+                                >
+                            <div
+                                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1"                            >
+                                <div>
+                                <p className="text-sm font-helv">Switch Work Space</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <Link
                     className="pt-2 ml-4 block  border-border w-[80px]"
                     to="/"
                     onClick={() => {
@@ -254,6 +275,7 @@ const Subscription = (props) => {
                         </div>
                     </div>
                     </Link>
+                </div>
 
                 </>
             :
@@ -270,7 +292,16 @@ const Subscription = (props) => {
                     </div>
                 </>
             }
-            
+            {switch_workspace
+                ?
+                    <>
+                    {/* ====================close switch workspace================ */}
+                        <ChangeWorkSpace/>
+                    {/* ====================close switch workspace================ */}
+                    </>
+                :
+                    null
+                }
                     <div className="flex justify-center w-full p-5">
                         <div className="md:grid md:grid-cols-3 md:gap-6 max-w-[1100px]">
                             <div className="md:col-span-2 mb-5">
@@ -572,7 +603,7 @@ const Subscription = (props) => {
                                     <span>Bill annually
                                 </span><span className="mx-3">
                                     
-                                    {/* ======swip===== */}
+                                    {/* ======swipe===== */}
                                     <FormGroup>
                                         <FormControlLabel
                                         control={
@@ -587,7 +618,7 @@ const Subscription = (props) => {
                                         label=""
                                         />
                                     </FormGroup>
-                                    {/* ======swip===== */}
+                                    {/* ======swipe===== */}
                                     
                                 </span></div>
                                 </div>
