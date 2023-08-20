@@ -192,7 +192,7 @@ const Differentbtn = (props) => {
             </span>
             
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message"
+              <button type="button" className="tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message"
               onClick={()=>{
                 ask_question_in_repeat()
               }}>
@@ -205,6 +205,7 @@ const Differentbtn = (props) => {
                           <path d="M1.16,4.08c.13,.96,.25,1.48,.56,2.35,.92-.12,1.44-.24,2.35-.56" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
                         </svg>
                     </span>
+                    <span className="tooltip-text">Repeat Question</span>
                   </span>
               </button>
             </span>
@@ -226,7 +227,7 @@ const Differentbtn = (props) => {
               </button>
             </span>
 
-            <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
+            {/* <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
               <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Add Message to Knowledge Base">
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
@@ -236,7 +237,7 @@ const Differentbtn = (props) => {
                     </span>
                   </span>
               </button>
-            </span>
+            </span> */}
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
               <button type="button" className=" tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Open in Document"
                onClick={()=>{
@@ -245,7 +246,7 @@ const Differentbtn = (props) => {
                                 dispatch(_message_("Creating Document"))
                                 createDocumentForUser()
                             }}
-                            >
+                >
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                     <span className="flex items-center justify-center">
                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">

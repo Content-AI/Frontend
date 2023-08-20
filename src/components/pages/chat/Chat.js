@@ -113,6 +113,7 @@ const Chat = ({ AUTH_TOKEN }) => {
   const [ChatTitleForSideBar, setChatTitleForSideBar] = useState(null);
 
   const [Loading, setLoading] = useState(false);
+  const [check_to_stop_typing, setcheck_to_stop_typing] = useState(false);
 
   const [sidebarStatus, setSidebarStatus] = useState(false);
 
@@ -266,9 +267,9 @@ const Chat = ({ AUTH_TOKEN }) => {
     if (AllChatText.length <= 0) {
       // if there is tone selected for chat
       let InTone = ``;
-      if (selectedSummarizes.length > 0) {
+      if (selectedSummarizes) {
         selectedSummarizes.forEach((item) => {
-          InTone += `Generate In Tone:${item.value}\n`;
+          InTone += `[Generate In Tone:${item.value}]`;
         });
       } else {
         InTone = "Default";
@@ -308,7 +309,8 @@ const Chat = ({ AUTH_TOKEN }) => {
         } else {
           // notifyerror("something went wrong");
         }
-        setLoading(false);
+        // setLoading(false);
+        setcheck_to_stop_typing(true)
         return true;
       }
     }
@@ -321,9 +323,9 @@ const Chat = ({ AUTH_TOKEN }) => {
 
       // if there is tone selected for chat
       let InTone = ``;
-      if (selectedSummarizes.length > 0) {
+      if (selectedSummarizes) {
         selectedSummarizes.forEach((item) => {
-          InTone += `Generate In Tone :${item.value}\n`;
+          InTone += `[Generate In Tone:${item.value}]`;
         });
       } else {
         InTone = "Default";
@@ -359,7 +361,8 @@ const Chat = ({ AUTH_TOKEN }) => {
       }
     }
     // =================Initial chat with data or after there is some data==============================
-    setLoading(false);
+    // setLoading(false);
+    setcheck_to_stop_typing(true)
   };
 
   // useEffect(() => {
@@ -784,7 +787,7 @@ const Chat = ({ AUTH_TOKEN }) => {
       let InTone = ``;
       if (selectedSummarizes.length > 0) {
         selectedSummarizes.forEach((item) => {
-          InTone += `Generate In Tone:${item.value}\n`;
+          InTone += `[Generate In Tone:${item.value}]`;
         });
       } else {
         InTone = "Default";
@@ -822,8 +825,9 @@ const Chat = ({ AUTH_TOKEN }) => {
           }
         } else {
           notifyerror("something went wrong");
+          setLoading(false);
         }
-        setLoading(false);
+        setcheck_to_stop_typing(true)
         return true;
       }
     }
@@ -836,7 +840,7 @@ const Chat = ({ AUTH_TOKEN }) => {
       let InTone = ``;
       if (selectedSummarizes.length > 0) {
         selectedSummarizes.forEach((item) => {
-          InTone += `Generate In Tone :${item.value}\n`;
+          InTone += `Generate In Tone :${item.value}`;
         });
       } else {
         InTone = "Default";
@@ -865,10 +869,11 @@ const Chat = ({ AUTH_TOKEN }) => {
         setChatText("");
       } else {
         // notifyerror("something went wrong");
+        setLoading(false);
       }
     }
     // =================Initial chat with data or after there is some data==============================
-    setLoading(false);
+    setcheck_to_stop_typing(true)
   };
 
   useEffect(() => {
@@ -891,6 +896,30 @@ const Chat = ({ AUTH_TOKEN }) => {
     const textarea = document.querySelector("textarea");
     adjustTextareaHeight(textarea);
   }, [ChatText]);
+
+
+
+  // =======typing done=========
+  const [isTypingFinished, setIsTypingFinished] = useState(false);
+  const [characterCount, setCharacterCount] = useState(0);
+
+
+
+  const handleTypingDone = () => {
+    setIsTypingFinished(true);
+    setLoading(false)
+    setcheck_to_stop_typing(false)
+  };
+
+  // useEffect(()=>{
+  //   console.log(characterCount)
+  // },[characterCount])
+
+
+  const handleStopTyping = () => {
+    setIsTypingFinished(false);
+    console.log("stope typing")
+  };
 
   return (
     <>
@@ -1032,6 +1061,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                             strings={[data_]}
                                             typeSpeed={5}
                                             showCursor={false}
+                                            onComplete={handleTypingDone}
                                           />
                                         </>
                                       ) : (
@@ -1197,6 +1227,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                               strings={[data_]}
                                               typeSpeed={5}
                                               showCursor={false}
+                                              onComplete={handleTypingDone}
                                             />
                                           </>
                                         ) : (
@@ -1461,70 +1492,80 @@ const Chat = ({ AUTH_TOKEN }) => {
                         }
                       }}
                     />
-                    <button
-                      className="absolute bottom-4 right-4 w-6 h-6"
-                      onClick={() => {
-                        submitChatText();
-                        setChatFill("");
-                      }}
-                    >
-                      {Loading ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle cx="18" cy="12" r="0" fill="currentColor">
-                            <animate
-                              attributeName="r"
-                              begin=".67"
-                              calcMode="spline"
-                              dur="1.5s"
-                              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                              repeatCount="indefinite"
-                              values="0;2;0;0"
+                   
+                    {check_to_stop_typing
+                    ?
+                        <button
+                          className="absolute bottom-4 right-4 w-6 h-6"
+                         onClick={handleStopTyping}>Stop Typing</button>
+                    :
+                      <>
+                      <button
+                        className="absolute bottom-4 right-4 w-6 h-6"
+                        onClick={() => {
+                          submitChatText();
+                          setChatFill("");
+                        }}
+                      >
+                        {Loading ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle cx="18" cy="12" r="0" fill="currentColor">
+                              <animate
+                                attributeName="r"
+                                begin=".67"
+                                calcMode="spline"
+                                dur="1.5s"
+                                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                                repeatCount="indefinite"
+                                values="0;2;0;0"
+                              />
+                            </circle>
+                            <circle cx="12" cy="12" r="0" fill="currentColor">
+                              <animate
+                                attributeName="r"
+                                begin=".33"
+                                calcMode="spline"
+                                dur="1.5s"
+                                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                                repeatCount="indefinite"
+                                values="0;2;0;0"
+                              />
+                            </circle>
+                            <circle cx="6" cy="12" r="0" fill="currentColor">
+                              <animate
+                                attributeName="r"
+                                begin="0"
+                                calcMode="spline"
+                                dur="1.5s"
+                                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                                repeatCount="indefinite"
+                                values="0;2;0;0"
+                              />
+                            </circle>
+                          </svg>
+                        ) : (
+                          <svg
+                            className="w-full h-full"
+                            width="36"
+                            height="30"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M21.6939 4.15669C21.6939 4.15669 21.6939 4.16607 21.6939 4.17075L16.2376 22.1651C16.155 22.4574 15.985 22.7174 15.7504 22.9103C15.5158 23.1032 15.2278 23.2197 14.9251 23.2442C14.882 23.2479 14.8389 23.2498 14.7957 23.2498C14.512 23.2507 14.234 23.1704 13.9945 23.0184C13.7549 22.8664 13.5639 22.6491 13.4439 22.392L10.0961 15.3242C10.063 15.2543 10.0524 15.1758 10.0656 15.0996C10.0789 15.0234 10.1154 14.9532 10.1701 14.8986L15.5382 9.5295C15.673 9.38771 15.7469 9.1989 15.7444 9.00332C15.7419 8.80775 15.6631 8.6209 15.5248 8.4826C15.3865 8.34429 15.1997 8.26549 15.0041 8.26299C14.8085 8.26048 14.6197 8.33448 14.4779 8.46919L9.10137 13.8373C9.04672 13.892 8.97649 13.9285 8.90029 13.9418C8.8241 13.9551 8.74566 13.9444 8.67574 13.9114L1.64449 10.5804C1.36835 10.4539 1.13595 10.2483 0.97674 9.98963C0.817528 9.73095 0.738657 9.43085 0.750116 9.12732C0.765386 8.81535 0.878328 8.51607 1.07297 8.2718C1.26762 8.02752 1.53412 7.85061 1.8348 7.76607L19.8292 2.30982H19.8432C20.0994 2.23784 20.3702 2.23531 20.6277 2.30251C20.8852 2.3697 21.1202 2.50419 21.3085 2.69217C21.4969 2.88016 21.6319 3.11487 21.6996 3.37224C21.7673 3.6296 21.7653 3.90034 21.6939 4.15669Z"
+                              fill="#1D43FF"
                             />
-                          </circle>
-                          <circle cx="12" cy="12" r="0" fill="currentColor">
-                            <animate
-                              attributeName="r"
-                              begin=".33"
-                              calcMode="spline"
-                              dur="1.5s"
-                              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                              repeatCount="indefinite"
-                              values="0;2;0;0"
-                            />
-                          </circle>
-                          <circle cx="6" cy="12" r="0" fill="currentColor">
-                            <animate
-                              attributeName="r"
-                              begin="0"
-                              calcMode="spline"
-                              dur="1.5s"
-                              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                              repeatCount="indefinite"
-                              values="0;2;0;0"
-                            />
-                          </circle>
-                        </svg>
-                      ) : (
-                        <svg
-                          className="w-full h-full"
-                          width="36"
-                          height="30"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M21.6939 4.15669C21.6939 4.15669 21.6939 4.16607 21.6939 4.17075L16.2376 22.1651C16.155 22.4574 15.985 22.7174 15.7504 22.9103C15.5158 23.1032 15.2278 23.2197 14.9251 23.2442C14.882 23.2479 14.8389 23.2498 14.7957 23.2498C14.512 23.2507 14.234 23.1704 13.9945 23.0184C13.7549 22.8664 13.5639 22.6491 13.4439 22.392L10.0961 15.3242C10.063 15.2543 10.0524 15.1758 10.0656 15.0996C10.0789 15.0234 10.1154 14.9532 10.1701 14.8986L15.5382 9.5295C15.673 9.38771 15.7469 9.1989 15.7444 9.00332C15.7419 8.80775 15.6631 8.6209 15.5248 8.4826C15.3865 8.34429 15.1997 8.26549 15.0041 8.26299C14.8085 8.26048 14.6197 8.33448 14.4779 8.46919L9.10137 13.8373C9.04672 13.892 8.97649 13.9285 8.90029 13.9418C8.8241 13.9551 8.74566 13.9444 8.67574 13.9114L1.64449 10.5804C1.36835 10.4539 1.13595 10.2483 0.97674 9.98963C0.817528 9.73095 0.738657 9.43085 0.750116 9.12732C0.765386 8.81535 0.878328 8.51607 1.07297 8.2718C1.26762 8.02752 1.53412 7.85061 1.8348 7.76607L19.8292 2.30982H19.8432C20.0994 2.23784 20.3702 2.23531 20.6277 2.30251C20.8852 2.3697 21.1202 2.50419 21.3085 2.69217C21.4969 2.88016 21.6319 3.11487 21.6996 3.37224C21.7673 3.6296 21.7653 3.90034 21.6939 4.15669Z"
-                            fill="#1D43FF"
-                          />
-                        </svg>
-                      )}
-                    </button>
+                          </svg>
+                        )}
+                      </button>
+                      </>
+                    }
                   </div>
                 </div>
               </div>
@@ -2433,7 +2474,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                   </div>
                 </button>
               </span>
-              <span className="pr-2 mb-2">
+              {/* <span className="pr-2 mb-2">
                 <button>
                   <div className="inline-block">
                     <div
@@ -2448,7 +2489,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                     </div>
                   </div>
                 </button>
-              </span>
+              </span> */}
             </div>
             <div className="relative inline-block text-left w-full z-auto max-h-[12.875rem] overflow-y-auto overscroll-contain">
               <div>
@@ -2530,10 +2571,11 @@ const Chat = ({ AUTH_TOKEN }) => {
                 </div>
               </div>
               <div>
-                <div className="mx-4 text-gray-500 text-xs my-3 pb-2 border-b border-gray-200">
+                {/* <div className="mx-4 text-gray-500 text-xs my-3 pb-2 border-b border-gray-200">
                   PRODUCT INFORMATION
-                </div>
-                <ul className="py-1">
+                </div> */}
+
+                {/* <ul className="py-1">
                   <label className="flex text-center items-center rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 mx-4 px-4 py-2 text-sm cursor-pointer">
                     <input
                       data-testid="menu-item-Hb9kX4FRpQ3Kq9nwplEF"
@@ -2618,7 +2660,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                       </svg>
                     </div>
                   </label>
-                </ul>
+                </ul> */}
+
+
               </div>
             </div>
           </div>

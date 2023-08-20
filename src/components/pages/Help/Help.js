@@ -1,24 +1,33 @@
 // Help.js
 import React from 'react';
-import LiveChat from './LiveChat'; // Create this component
-import TicketForm from './TicketForm'; // Create this component
+import LiveChat from './LiveChat'; 
+import TicketForm from './TicketForm'; 
+import Guide from './Guide';
 
 const Help = () => {
   return (
     <div className=" min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-3xl text-center font-extrabold text-gray-900">
-          Welcome to our Help & Support
-        </h1>
-        <p className="mt-2 text-sm text-gray-600 text-center">
-          Our platform will provide you with the best help and support.
-        </p>
+      {/* ================================== */}
+      <div className="max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
+        <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Welcome to our Help & Support</p>
+        <p className="mt-3 text-xl text-gray-500 max-w-prose">Our platform will provide you with the best help and support.</p>
+        <div className="mt-12">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <LiveChat/>
+              <TicketForm/>
+            </div>
+        </div>
       </div>
-      <div className="mt-10 max-w-md mx-auto space-y-6">
-        <LiveChat />
-        <TicketForm />
+      <div className="max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
+        <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Guide</p>
+        <div className="mt-12">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <Guide/>
+            </div>
+        </div>
       </div>
-    </div>
+      {/* ================================== */}
+      </div>
   );
 };
 

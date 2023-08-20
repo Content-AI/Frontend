@@ -87,6 +87,15 @@ const ResponseTemplate = (prop) => {
           secondary: '#FFFAEE',
         },
       });
+      const notifymessage = (message) =>
+      toast(message, {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
 
       const createDocumentForUser = async() =>{
         let formData = {}
@@ -129,18 +138,18 @@ const ResponseTemplate = (prop) => {
         :
             <>
                 <div className="flex items-center space-x-2">
-                <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 group-hover:opacity-100 hover:ring-1 hover:ring-gray-200 hover:bg-white hover:text-yellow-500">
+                {/* <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 group-hover:opacity-100 hover:ring-1 hover:ring-gray-200 hover:bg-white hover:text-yellow-500">
                         <svg title="Copy" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                             <path d="M8,1.33c.18,0,.34,.1,.43,.27l1.86,3.76,3.98,.68c.18,.03,.32,.16,.38,.34,.06,.18,.01,.38-.11,.51l-2.83,3.02,.61,4.18c.03,.19-.05,.37-.19,.48-.15,.11-.34,.13-.5,.04l-3.61-1.89-3.6,1.89c-.16,.09-.35,.07-.5-.04-.15-.11-.22-.3-.19-.48l.61-4.18L1.47,6.89c-.13-.13-.17-.33-.11-.51,.06-.18,.2-.31,.38-.34l3.99-.68,1.85-3.76c.08-.17,.25-.27,.43-.27Z" fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="1">   
                             </path>
                         </svg>
-                </button>
+                </button> */}
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    {/* <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                         <path d="M13.33,14.18c-.04,.53-.68,.78-1.06,.41l-3.48-3.29c-.44-.42-1.13-.42-1.57,0l-3.48,3.29c-.39,.37-1.03,.12-1.06-.41-.26-3.62-.27-7.24-.05-10.86,.07-1.19,1.06-2.1,2.25-2.1h6.26c1.19,0,2.18,.91,2.25,2.1,.21,3.62,.2,7.24-.05,10.86Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
                     </svg>
-                    </button>
+                    </button> */}
 
                    {/* ============================ */}
                    
@@ -197,7 +206,11 @@ const ResponseTemplate = (prop) => {
                         </button>
                     }
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                    onClick={()=>{
+                        notifymessage("Thank you for feedback")
+                    }}
+                    >
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                         <path d="M4.7,12.94h-.7V6.4L7.45,1.49c.28-.4,.73-.63,1.22-.63,.9,0,1.6,.8,1.48,1.7l-.26,1.86h2.27c.99,0,2.98,.99,2.98,2.98s-2,6.54-4.12,6.54c-2.78,0-5.17-.66-6.33-.99Z" fill="transparent"></path>
                         <path d="M4.7,12.94h-.7V6.4L7.45,1.49c.28-.4,.73-.63,1.22-.63,.9,0,1.6,.8,1.48,1.7l-.26,1.86h2.27c.99,0,2.98,.99,2.98,2.98s-2,6.54-4.12,6.54c-2.78,0-5.17-.66-6.33-.99Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -205,7 +218,10 @@ const ResponseTemplate = (prop) => {
                     </svg>
                     </button>
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                    onClick={()=>{
+                        notifymessage("Thank you for feedback")
+                    }}>
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                         <path d="M4.7,2.63h-.7v6.54l3.45,4.91c.28,.4,.73,.63,1.22,.63,.9,0,1.6-.8,1.48-1.7l-.26-1.86h2.27c.99,0,2.98-.99,2.98-2.98S13.14,1.64,11.03,1.64c-2.79,0-5.17,.66-6.33,.99Z" fill="transparent"></path>
                         <path d="M4.7,2.63h-.7v6.54l3.45,4.91c.28,.4,.73,.63,1.22,.63,.9,0,1.6-.8,1.48-1.7l-.26-1.86h2.27c.99,0,2.98-.99,2.98-2.98S13.14,1.64,11.03,1.64c-2.79,0-5.17,.66-6.33,.99Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>

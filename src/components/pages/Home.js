@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import clsx from "clsx";
+import { BACKEND_URL ,BACK_END_API_TEMPLATE_IMP} from "../../apis/urls";
+import { fetchData } from "../../apis/apiService";
 
 import CardDoc from "../Card/CardDoc";
 
 import CkCheck from "../Icons/CkCheck";
+import ThreeDots from "../Icons/ThreeDots";
+import { useNavigate } from "react-router-dom";
+import DocumentsIcons from '../Icons/DocumentsIcons'
+import ListOfDocument from "./Template/Document/ListOfDocument";
 
 const buttonTags = [
   "All",
@@ -102,11 +108,31 @@ const cardData = [
   },
 ];
 
-const Home = () => {
+const Home = ({AUTH_TOKEN}) => {
+
+  const navigate = useNavigate()
+  const [imp_template,set_imp_template]=useState(null)
+
+  const get_template = async(url,token) =>{
+    const response_data = await fetchData(url,token)
+    if(response_data.status==200){
+      set_imp_template(response_data.data)
+    }else{
+      // navigate("/logout")
+    }
+  }
+
+
+
+  
+useEffect(()=>{
+  get_template(BACKEND_URL+BACK_END_API_TEMPLATE_IMP,AUTH_TOKEN)
+},[])
+
   return (
     <div className="">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="max-w-[843px] mx-auto mt-24 mb-12">
+      <div className="max-w-[843px] mx-auto mt-10 mb-12">
         <div className="mb-6">
           <h1 className="text-[40px] font-bold">Welcome to Jasper</h1>
           <p className="text-sm">
@@ -182,51 +208,71 @@ const Home = () => {
           </tbody>
         </table>
       </div>
+
+    <div>
+      <h4 className="ml-10">Recent Documents</h4>
+      <ListOfDocument
+          SHOW={"active"}
+          AUTH_TOKEN={AUTH_TOKEN}
+          search_bar={"off"}
+          ShowDashboard="true"
+          slice_data='4'
+        />
+    </div>
+
+
       <div className="mt-12 mb-12">
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
         <div className="grid grid-cols-2 gap-6">
-          <div className="flex flex-col">
-            <div className="grid grid-cols-2 gap-6 w-full bg-gray-lightbg border border-border p-6 rounded-lg overflow-hidden">
-              <div className="flex flex-col gap-y-4">
-                <div className="titlewrap flex gap-x-3">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      d="M21.7309 17.5623C22.2599 16.4871 22.5235 15.3008 22.4997 14.1028C22.4759 12.9047 22.1654 11.7298 21.5942 10.6765C21.023 9.6231 20.2077 8.72193 19.2166 8.04843C18.2255 7.37493 17.0875 6.94871 15.8978 6.80545C15.5032 5.8857 14.9286 5.05421 14.2077 4.35998C13.4868 3.66575 12.6343 3.12282 11.7003 2.76318C10.7664 2.40354 9.76987 2.23446 8.76955 2.26591C7.76923 2.29736 6.78532 2.5287 5.87579 2.94629C4.96626 3.36389 4.14951 3.9593 3.47366 4.69744C2.79781 5.43558 2.27653 6.30153 1.94053 7.24425C1.60453 8.18698 1.46061 9.18742 1.51724 10.1866C1.57388 11.1858 1.82993 12.1636 2.2703 13.0623L1.55217 15.5767C1.48809 15.8016 1.48529 16.0396 1.54404 16.266C1.6028 16.4924 1.72099 16.699 1.88638 16.8644C2.05176 17.0298 2.25834 17.148 2.48473 17.2067C2.71113 17.2655 2.94911 17.2627 3.17405 17.1986L5.68842 16.4805C6.44715 16.853 7.26329 17.0948 8.10249 17.1958C8.50251 18.133 9.08933 18.9788 9.82713 19.6817C10.5649 20.3846 11.4382 20.9298 12.3937 21.284C13.3492 21.6381 14.3668 21.7939 15.3845 21.7417C16.4022 21.6895 17.3986 21.4305 18.3128 20.9805L20.8272 21.6986C21.0521 21.7627 21.2901 21.7655 21.5165 21.7067C21.7429 21.648 21.9495 21.5298 22.1148 21.3644C22.2802 21.199 22.3984 20.9924 22.4572 20.766C22.5159 20.5396 22.5131 20.3016 22.4491 20.0767L21.7309 17.5623ZM20.2066 17.688L20.9144 20.1639L18.4384 19.4561C18.2498 19.403 18.0479 19.4259 17.8759 19.5198C16.4934 20.272 14.8708 20.4514 13.3574 20.0194C11.8439 19.5873 10.5606 18.5785 9.78342 17.2098C10.8104 17.1029 11.8042 16.7848 12.7025 16.2757C13.6007 15.7665 14.3841 15.0771 15.0034 14.2509C15.6226 13.4247 16.0645 12.4794 16.3011 11.4744C16.5378 10.4693 16.5642 9.4262 16.3787 8.41045C17.2774 8.62225 18.1151 9.03861 18.8266 9.62711C19.5381 10.2156 20.1042 10.9604 20.4807 11.8034C20.8573 12.6465 21.0342 13.565 20.9977 14.4876C20.9612 15.4102 20.7123 16.312 20.2703 17.1226C20.1756 17.2954 20.1527 17.4985 20.2066 17.688Z"
-                      fill="#36464E"
-                    />
-                  </svg>
-                  <h4 className="text-md font-bold">Chat</h4>
-                  <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                    Boss Mode
-                  </span>
-                </div>
-                <p className="text-sm min-h-[62px]">
-                  Generate ideas, images, and content by chatting directly with
-                  Jasper.
-                </p>
-                <div className="button-wrap">
-                  <button className="inline-flex text-sm font-bold px-2 py-1 bg-gray-lightbg border border-border rounded-md overflow-hidden">
-                    Upgrade
-                  </button>
-                </div>
+        {/* ============== */}
+        <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Chat Now">
+          <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+            <div className="flex flex-col gap-y-4">
+              <div className="titlewrap flex gap-x-3">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                >
+                  <path
+                    d="M21.7309 17.5623C22.2599 16.4871 22.5235 15.3008 22.4997 14.1028C22.4759 12.9047 22.1654 11.7298 21.5942 10.6765C21.023 9.6231 20.2077 8.72193 19.2166 8.04843C18.2255 7.37493 17.0875 6.94871 15.8978 6.80545C15.5032 5.8857 14.9286 5.05421 14.2077 4.35998C13.4868 3.66575 12.6343 3.12282 11.7003 2.76318C10.7664 2.40354 9.76987 2.23446 8.76955 2.26591C7.76923 2.29736 6.78532 2.5287 5.87579 2.94629C4.96626 3.36389 4.14951 3.9593 3.47366 4.69744C2.79781 5.43558 2.27653 6.30153 1.94053 7.24425C1.60453 8.18698 1.46061 9.18742 1.51724 10.1866C1.57388 11.1858 1.82993 12.1636 2.2703 13.0623L1.55217 15.5767C1.48809 15.8016 1.48529 16.0396 1.54404 16.266C1.6028 16.4924 1.72099 16.699 1.88638 16.8644C2.05176 17.0298 2.25834 17.148 2.48473 17.2067C2.71113 17.2655 2.94911 17.2627 3.17405 17.1986L5.68842 16.4805C6.44715 16.853 7.26329 17.0948 8.10249 17.1958C8.50251 18.133 9.08933 18.9788 9.82713 19.6817C10.5649 20.3846 11.4382 20.9298 12.3937 21.284C13.3492 21.6381 14.3668 21.7939 15.3845 21.7417C16.4022 21.6895 17.3986 21.4305 18.3128 20.9805L20.8272 21.6986C21.0521 21.7627 21.2901 21.7655 21.5165 21.7067C21.7429 21.648 21.9495 21.5298 22.1148 21.3644C22.2802 21.199 22.3984 20.9924 22.4572 20.766C22.5159 20.5396 22.5131 20.3016 22.4491 20.0767L21.7309 17.5623ZM20.2066 17.688L20.9144 20.1639L18.4384 19.4561C18.2498 19.403 18.0479 19.4259 17.8759 19.5198C16.4934 20.272 14.8708 20.4514 13.3574 20.0194C11.8439 19.5873 10.5606 18.5785 9.78342 17.2098C10.8104 17.1029 11.8042 16.7848 12.7025 16.2757C13.6007 15.7665 14.3841 15.0771 15.0034 14.2509C15.6226 13.4247 16.0645 12.4794 16.3011 11.4744C16.5378 10.4693 16.5642 9.4262 16.3787 8.41045C17.2774 8.62225 18.1151 9.03861 18.8266 9.62711C19.5381 10.2156 20.1042 10.9604 20.4807 11.8034C20.8573 12.6465 21.0342 13.565 20.9977 14.4876C20.9612 15.4102 20.7123 16.312 20.2703 17.1226C20.1756 17.2954 20.1527 17.4985 20.2066 17.688Z"
+                    fill="#36464E"
+                  />
+                </svg>
+                <h4 className="text-md font-bold">Chat</h4>
+                <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
+                  Boss Mode
+                </span>
               </div>
-              <div className="-mb-6 shadow-customv2 rounded-s-xl rounded-e-xl">
-                <img
-                  src="card--placeholder.svg"
-                  alt=""
-                  className="w-full h-full"
-                />
+              <p className="text-sm min-h-[62px]">
+                Generate ideas, images, and content by chatting directly with
+                Jasper.
+              </p>
+              <div className="button-wrap">
+              <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+              onClick={()=>{
+                navigate("/chat")
+              }}>
+                Chat
+              </button>
               </div>
             </div>
+            <div className="-mb-6 shadow-customv2 rounded-s-xl rounded-e-xl mb-3">
+              <img
+                src="card--placeholder.svg"
+                alt=""
+                className="w-full h-full"
+              />
+            </div>
           </div>
-          <div className="flex flex-col">
+        </div>
+
+
+        {/* ============== */}
+          {/* <div className="flex flex-col">
             <div className="grid grid-cols-2 gap-6 w-full bg-gray-lightbg border border-border p-6 rounded-lg overflow-hidden">
               <div className="flex flex-col gap-y-4">
                 <div className="titlewrap flex gap-x-3">
@@ -291,20 +337,24 @@ const Home = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="mt-12">
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
         <div>
           <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
-            {cardData.map((items, index) => {
-              return (
-                <>
-                  {index < 3 && <CardDoc {...items} key={"carddoc_" + index} />}
-                </>
-              );
-            })}
+          {imp_template &&
+            <>
+              {imp_template.map((items, index) => {
+                return (
+                  <>
+                    {index < 3 && <CardDoc {...items} key={"carddoc_" + index} />}
+                  </>
+                );
+              })}
+            </>
+          }
           </div>
         </div>
       </div>

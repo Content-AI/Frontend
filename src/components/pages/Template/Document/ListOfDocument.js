@@ -10,11 +10,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { _fav_data_ } from "../../../../features/Favorite";
 
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
+import DocumentsIcons from "../../../Icons/DocumentsIcons";
 
 
 const ListOfDocument = (props) => {
 
-  
+  // console.log(props.ShowDashboard)
 
   const navigate = useNavigate();
   const popupRef = useRef(null);
@@ -73,7 +74,7 @@ const ListOfDocument = (props) => {
         notifyerror("something went wrong")
       }
     }
-    if(props.SHOW=="active"){
+    if(props.SHOW=="active" || props.ShowDashboard==true){
 
       const resp = await fetchData(BACKEND_URL + BACK_END_API_DOCUMENTS +"/?page="+currentPage+"&workspace="+ChosenWorkspaceId["Workspace_Id"], props.AUTH_TOKEN)
       if (resp.status == 200) {
@@ -82,6 +83,7 @@ const ListOfDocument = (props) => {
         notifyerror("something went wrong")
       }
     }
+
   }
   const initial_get_all_user_doc = async (chosen_workspace) => {
     // const chosen_workspace=localStorage.getItem('chose_workspace')
@@ -102,7 +104,7 @@ const ListOfDocument = (props) => {
       }
 
     }
-    if(props.SHOW=="active"){
+    if(props.SHOW=="active" || props.ShowDashboard==true){
 
       if(ChosenWorkspaceId!=null){
       
@@ -133,6 +135,7 @@ const ListOfDocument = (props) => {
   };
 
   const _update_document_data = async (data, id, message) => {
+    
     handleDelete(id)
     if (popupRef.current) {
       setOpenPopupIndex(null);
@@ -146,7 +149,8 @@ const ListOfDocument = (props) => {
     }
   }
   const _update_name_ = async (data, id, message) => {
-    const resp = await patchData(data,BACK_END_MULTIPLE_SELECT_FOR_TRASH, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
+    // clg
+    const resp = await patchData(data,BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + id + "/", props.AUTH_TOKEN)
     if (resp.status == 201) {
       notifysuccess(message)
       get_all_user_doc(ChosenWorkspaceId["Workspace_Id"])
@@ -476,173 +480,184 @@ const remove_to_fav = async(id) =>{
           <div class="p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
         </>
         :
-        null}
+        null
+      }
 
-        <div className="space-y-4">
+      <div className="space-y-4">
 
-        {documentData &&
-            documentData.length>0
-            ?
-              <>
-              {/* ===================search field========================== */}
-                <div className="flex flex-col justify-between sm:flex-row">
+      
+      {props.ShowDashboard
+      ?
+          null
+      :
+        <>   
+          {documentData &&
+              documentData.length>0
+              ?
+                <>
+                {/* ===================search field========================== */}
+                  <div className="flex flex-col justify-between sm:flex-row">
 
-                <div className="flex items-center space-x-6">
-                  <div className="w-80">
-                    <div className="w-full space-y-1.5">
-                      <label htmlFor="search-content" className="sr-only"
-                      ><span className="flex items-center space-x-1"><span>Search content</span></span></label
-                      >
-          
-                    
-                      <>
-                      <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
-                        <div className="flex grow items-center gap-2 py-1.5">
-                          <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                            <path d="M15.11,15.11l-4-4" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                          </svg>
-                          <div className="flex grow gap-1">
-                            <input
-                                id="search-content"
-                                type="search"
-                                className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
-                                placeholder="Search content"
-                                value={searchText}
-                                onChange={handleSearchText}
-                              />
+                  <div className="flex items-center space-x-6">
+                    <div className="w-80">
+                      <div className="w-full space-y-1.5">
+                        <label htmlFor="search-content" className="sr-only"
+                        ><span className="flex items-center space-x-1"><span>Search content</span></span></label
+                        >
+            
+                      
+                        <>
+                        <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
+                          <div className="flex grow items-center gap-2 py-1.5">
+                            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <path d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                              <path d="M15.11,15.11l-4-4" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                            </svg>
+                            <div className="flex grow gap-1">
+                              <input
+                                  id="search-content"
+                                  type="search"
+                                  className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
+                                  placeholder="Search content"
+                                  value={searchText}
+                                  onChange={handleSearchText}
+                                />
+                            </div>
                           </div>
                         </div>
+                        </>
                       </div>
-                      </>
                     </div>
-                  </div>
-                  <div>
-                        {props.SHOW=="trash"
-                            ?
-                            <>
-                            <>
-                              {selectedItems.length>0
+                    <div>
+                          {props.SHOW=="trash"
                               ?
                               <>
-                                <button  onClick={()=>{
+                              <>
+                                {selectedItems.length>0
+                                ?
+                                <>
+                                  <button  onClick={()=>{
+                                    const formData = {
+                                            id:selectedItems,
+                                            trash:false
+                                        }
+                                        delete_multiple_data(formData,"Restored")
+                                  }}>
+                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                      <path d="M2.15,5.13c-.12,2.74-.09,5.49,.32,8.26,.22,1.49,1.48,2.61,2.99,2.61h5.08c1.51,0,2.77-1.12,2.99-2.61,.41-2.77,.44-5.52,.32-8.26H2.15Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
+                                      <path d="M5.85,6.77c.54-.47,1.37-.08,1.37,.63v.76h1.5c1.66,0,3,1.34,3,3s-1.34,3-3,3h-.78c-.39,0-.71-.32-.71-.71s.32-.71,.71-.71h.78c.87,0,1.57-.7,1.57-1.57s-.7-1.57-1.57-1.57h-1.5v.77c0,.7-.81,1.09-1.36,.64-.65-.54-1.04-.93-1.54-1.57-.26-.34-.25-.81,.02-1.13,.53-.63,.92-1.01,1.51-1.52Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                      <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33,.7-.7,1.64-1.09,2.62-1.09s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.21c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.1c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.2Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
+                                  </svg>  
+                                      {/* <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                        <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
+                                        <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                        <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
+                                      </svg> */}
+                                    </button>
+                                  {/* <button id="selectButton" onClick={()=>{
+                                    const formData = {
+                                        project_ids:selectedItems,
+                                        }
+                                      update_folder_bulk(formData,"Project Moved")
+                                  }}>
+                                      Restore
+                                    </button> */}
+                                  </>
+                                :
+                                  null
+                                }
+                                </>
+                              </>
+                              :
+                                <>
+                                {selectedItems.length>0
+                                ?
+                                <button id="selectButton" onClick={()=>{
                                   const formData = {
                                           id:selectedItems,
-                                          trash:false
+                                          trash:true
                                       }
-                                      delete_multiple_data(formData,"Restored")
+                                      delete_multiple_data(formData,"Moved to Trash")
                                 }}>
-                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                    <path d="M2.15,5.13c-.12,2.74-.09,5.49,.32,8.26,.22,1.49,1.48,2.61,2.99,2.61h5.08c1.51,0,2.77-1.12,2.99-2.61,.41-2.77,.44-5.52,.32-8.26H2.15Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
-                                    <path d="M5.85,6.77c.54-.47,1.37-.08,1.37,.63v.76h1.5c1.66,0,3,1.34,3,3s-1.34,3-3,3h-.78c-.39,0-.71-.32-.71-.71s.32-.71,.71-.71h.78c.87,0,1.57-.7,1.57-1.57s-.7-1.57-1.57-1.57h-1.5v.77c0,.7-.81,1.09-1.36,.64-.65-.54-1.04-.93-1.54-1.57-.26-.34-.25-.81,.02-1.13,.53-.63,.92-1.01,1.51-1.52Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
-                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33,.7-.7,1.64-1.09,2.62-1.09s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.21c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.1c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.2Z" fill="#4B5563" fillRule="evenodd" role="none"></path>
-                                </svg>  
-                                    {/* <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
+                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
                                       <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
                                       <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
                                       <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                    </svg> */}
+                                    </svg>
                                   </button>
-                                {/* <button id="selectButton" onClick={()=>{
-                                  const formData = {
-                                      project_ids:selectedItems,
-                                      }
-                                    update_folder_bulk(formData,"Project Moved")
-                                }}>
-                                    Restore
-                                  </button> */}
+                                :
+                                  null
+                                }
                                 </>
-                              :
-                                null
-                              }
-                              </>
-                            </>
-                            :
-                              <>
-                              {selectedItems.length>0
-                              ?
-                              <button id="selectButton" onClick={()=>{
-                                const formData = {
-                                        id:selectedItems,
-                                        trash:true
-                                    }
-                                    delete_multiple_data(formData,"Moved to Trash")
-                              }}>
-                                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
-                                    <path d="M2.19,5.13c-.12,2.74-.09,5.49,.31,8.26,.22,1.48,1.47,2.61,2.97,2.61h5.03c1.51,0,2.76-1.12,2.97-2.61,.4-2.77,.44-5.52,.31-8.26H2.19Z" fill="#F98080" fillRule="evenodd" role="none"></path>
-                                    <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                    <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
-                                  </svg>
-                                </button>
-                              :
-                                null
-                              }
-                              </>
-                          }
-                        </div>
-                </div>
-               
-          {/* ===================search field========================== */}
-          
-              {/* ===================list or gird========================== */}
-                <div className="flex items-center space-x-5 divide-x divide-gray-200 pt-4 md:pt-0">
-                      <div className="md:pl-5">
-                        <div className="mr-3 flex items-center justify-center space-x-2">
-                          <button className={ListOrGrid?" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-gray-100 px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 ":" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-white px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 "}
-                            onClick={()=>{
-                              setListOrGrid(true)
-                            }}
-                            >
-
-                            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                              <path d="M14.71,12.68c.1-1.5,.14-3.05,.14-4.64,0-.59,0-1.17-.02-1.75H1.16c-.01,.58-.02,1.16-.02,1.75,0,1.59,.05,3.14,.14,4.64,.07,1.09,.94,1.96,2.05,2.03,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.03Z" fill="transparent"></path>
-                              <path d="M1.16,6.29c-.01,.58-.02,1.17-.02,1.77,0,1.6,.05,3.16,.14,4.67,.07,1.1,.94,1.98,2.05,2.05,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.05,.1-1.51,.14-3.07,.14-4.67,0-.59,0-1.18-.02-1.77" fill="none" stroke="#0D121C" strokeWidth="1"></path>
-                              <path d="M5.7,6.29V14.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                              <path d="M1.18,10.29H14.82" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                              <path d="M14.84,6.29H1.16c.02-1,.06-1.99,.12-2.95,.07-1.1,.94-1.98,2.04-2.05,1.51-.09,3.07-.14,4.67-.14s3.16,.05,4.67,.14c1.1,.07,1.98,.94,2.04,2.05,.06,.96,.1,1.95,.13,2.95Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                            </svg>
-                          </button>
-                          <button 
-                            className={ListOrGrid?" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-white px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 ":" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-gray-100 px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 "}
-                            onClick={()=>{
-                              setListOrGrid(false)
-                            }}
-                          >
-                          <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M9.66,5.04c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.44,.1s.98-.04,1.45-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.45-.1s-.97,.04-1.44,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
-                            <path d="M1.03,5.04c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.45,.1s.97-.04,1.44-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.44-.1s-.98,.04-1.45,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
-                            <path d="M1.03,13.83c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.45,.1s.97-.04,1.44-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.44-.1s-.98,.04-1.45,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
-                            <path d="M9.66,13.83c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.44,.1s.98-.04,1.45-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.45-.1s-.97,.04-1.44,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
-                          </svg>
-                          </button>
-                        </div>
-                      </div>
-                </div>
+                            }
+                          </div>
+                  </div>
+                
+            {/* ===================search field========================== */}
+            
                 {/* ===================list or gird========================== */}
-                </div>
-             
-              </>
-              :
-              <>
-                <div className="space-y-8 px-4 md:px-10">
-                      <div className="space-y-4 flex flex-col justify-center">
-                        <div className="mx-auto mt-6 max-w-[540px] space-y-2 text-center sm:mt-10 md:mt-28">
-                          <h3 className="text-lg font-semibold">You do not have any Document</h3>
-                          <p className="text-base font-normal text-gray-600">Prior to creating a document, it appears that you do not have any existing content. To proceed, please create the necessary content first and subsequently generate a document based on the created content.</p>
+                  <div className="flex items-center space-x-5 divide-x divide-gray-200 pt-4 md:pt-0">
+                        <div className="md:pl-5">
+                          <div className="mr-3 flex items-center justify-center space-x-2">
+                            <button className={ListOrGrid?" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-gray-100 px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 ":" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-white px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 "}
+                              onClick={()=>{
+                                setListOrGrid(true)
+                              }}
+                              >
+
+                              <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                <path d="M14.71,12.68c.1-1.5,.14-3.05,.14-4.64,0-.59,0-1.17-.02-1.75H1.16c-.01,.58-.02,1.16-.02,1.75,0,1.59,.05,3.14,.14,4.64,.07,1.09,.94,1.96,2.05,2.03,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.03Z" fill="transparent"></path>
+                                <path d="M1.16,6.29c-.01,.58-.02,1.17-.02,1.77,0,1.6,.05,3.16,.14,4.67,.07,1.1,.94,1.98,2.05,2.05,1.51,.09,3.07,.14,4.67,.14s3.16-.05,4.67-.14c1.1-.07,1.98-.94,2.05-2.05,.1-1.51,.14-3.07,.14-4.67,0-.59,0-1.18-.02-1.77" fill="none" stroke="#0D121C" strokeWidth="1"></path>
+                                <path d="M5.7,6.29V14.73" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                <path d="M1.18,10.29H14.82" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                                <path d="M14.84,6.29H1.16c.02-1,.06-1.99,.12-2.95,.07-1.1,.94-1.98,2.04-2.05,1.51-.09,3.07-.14,4.67-.14s3.16,.05,4.67,.14c1.1,.07,1.98,.94,2.04,2.05,.06,.96,.1,1.95,.13,2.95Z" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+                              </svg>
+                            </button>
+                            <button 
+                              className={ListOrGrid?" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-white px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 ":" flex aspect-square h-9 w-9 items-center justify-center rounded-md bg-gray-100 px-2 py-1.5 text-gray-400 transition-all duration-150 hover:bg-gray-200 hover:text-gray-500 "}
+                              onClick={()=>{
+                                setListOrGrid(false)
+                              }}
+                            >
+                            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <path d="M9.66,5.04c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.44,.1s.98-.04,1.45-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.45-.1s-.97,.04-1.44,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
+                              <path d="M1.03,5.04c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.45,.1s.97-.04,1.44-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.44-.1s-.98,.04-1.45,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
+                              <path d="M1.03,13.83c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.45,.1s.97-.04,1.44-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.44-.1s-.98,.04-1.45,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
+                              <path d="M9.66,13.83c.07,.63,.58,1.14,1.21,1.21,.47,.05,.95,.1,1.44,.1s.98-.04,1.45-.1c.63-.07,1.14-.58,1.21-1.21,.05-.47,.09-.95,.09-1.44s-.04-.97-.09-1.44c-.07-.63-.58-1.14-1.21-1.21-.47-.05-.95-.1-1.45-.1s-.97,.04-1.44,.1c-.63,.07-1.14,.58-1.21,1.21-.05,.47-.09,.95-.09,1.44s.04,.97,.09,1.44Z" fill="none" stroke="#0D121C" strokeWidth="1"></path>
+                            </svg>
+                            </button>
+                          </div>
                         </div>
-                        <div className="m-auto">
-                          <button
-                            onClick={() => {
-                              navigate("/template")
-                            }}
-                            type="button" className="relative w-[300px] rounded-md bg-[#334977] text-white px-3 py-1.5 text-sm font-semibold  shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-0">
-                            <span className="mx-auto flex select-none items-center justify-center space-x-2"><div>Create template</div></span>
-                          </button>
+                  </div>
+                  {/* ===================list or gird========================== */}
+                  </div>
+              
+                </>
+                :
+                <>
+                  <div className="space-y-8 px-4 md:px-10">
+                        <div className="space-y-4 flex flex-col justify-center">
+                          <div className="mx-auto mt-6 max-w-[540px] space-y-2 text-center sm:mt-10 md:mt-28">
+                            <h3 className="text-lg font-semibold">You do not have any Document</h3>
+                            <p className="text-base font-normal text-gray-600">Prior to creating a document, it appears that you do not have any existing content. To proceed, please create the necessary content first and subsequently generate a document based on the created content.</p>
+                          </div>
+                          <div className="m-auto">
+                            <button
+                              onClick={() => {
+                                navigate("/template")
+                              }}
+                              type="button" className="relative w-[300px] rounded-md bg-[#334977] text-white px-3 py-1.5 text-sm font-semibold  shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-0">
+                              <span className="mx-auto flex select-none items-center justify-center space-x-2"><div>Create template</div></span>
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                </div>
-              </>
-        }
+                  </div>
+                </>
+          }
+        </>
+      }
+
+
   
 
       {ListOrGrid
@@ -945,7 +960,7 @@ const remove_to_fav = async(id) =>{
           :
           documentData &&
           <>
-            <div className="flex flex-wrap">            
+            <div className="flex flex-wrap">
                   {documentData.map((data,index)=>{
                     return (
                         <div key={index} title={"Open "+ data.title} className="relative m-3 transition-all p-3 group cursor-pointer hover:bg-blue-50 border rounded-xl w-[240px] h-[280px]">
@@ -955,16 +970,7 @@ const remove_to_fav = async(id) =>{
                                       <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r2e:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state=""
                                        onClick={() => handlePopUpMenu(index)}
                                       >
-                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                              <path d="M6.31,2.61c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="#9CA3AF"></path>
-                                              <path d="M6.31,8c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="#9CA3AF"></path>
-                                              <path d="M6.31,13.39c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.72-1.71-1.72-1.71,.62-1.71,1.72Z" fill="#9CA3AF"></path>
-                                              <path d="M6.31,2.61c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                              <path d="M6.31,8c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.71-1.71-1.71-1.71,.62-1.71,1.71Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                              <path d="M6.31,13.39c0,1.1,.62,1.71,1.71,1.71s1.71-.62,1.71-1.71-.62-1.72-1.71-1.72-1.71,.62-1.71,1.72Z" fill="none" stroke="#4B5563" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                                            </svg>
-                                        </span>
+                                        <DocumentsIcons/>
                                       </button>
                                       {props.SHOW=="trash"
                                       ?
@@ -1297,43 +1303,51 @@ const remove_to_fav = async(id) =>{
       }
 
       {/* ===========pagination================== */}
-      {showpagination
+
+      {props.ShowDashboard
       ?
-        <>
-        <div className="flex items-center justify-center mt-9">
-        <button
-          onClick={goToPreviousPage}
-          disabled={currentPage === 1}
-          className={`text-gray-600 ${currentPage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        >
-          Previous
-        </button>
-        <div className="flex items-center mx-4">
-          {getVisiblePageNumbers().map((page) => (
-            <button
-              key={page}
-              onClick={() => goToPage(page)}
-              className={`px-4 py-2 rounded-md mx-1 ${
-                currentPage === page
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPages}
-          className={`text-gray-600 ${currentPage === totalPages ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        >
-          Next
-        </button>
-        </div>
-        </>
-      :
         null
+      :
+      <>
+        {showpagination
+        ?
+          <>
+          <div className="flex items-center justify-center mt-9">
+          <button
+            onClick={goToPreviousPage}
+            disabled={currentPage === 1}
+            className={`text-gray-600 ${currentPage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+          >
+            Previous
+          </button>
+          <div className="flex items-center mx-4">
+            {getVisiblePageNumbers().map((page) => (
+              <button
+                key={page}
+                onClick={() => goToPage(page)}
+                className={`px-4 py-2 rounded-md mx-1 ${
+                  currentPage === page
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages}
+            className={`text-gray-600 ${currentPage === totalPages ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+          >
+            Next
+          </button>
+          </div>
+          </>
+        :
+          null
+        }
+      </>
       }
                                                
       {/* ===========pagination================== */}

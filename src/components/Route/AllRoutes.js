@@ -82,7 +82,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
               }
         >
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/chat" element={<Chat AUTH_TOKEN={TOKEN} />} />
             <Route

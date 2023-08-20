@@ -133,6 +133,8 @@ const Navbar = () => {
     }
   }, []);
 
+
+
   useEffect(()=>{
     dispatch(_chosen_workspace_id_(JSON.parse(localStorage.getItem("chose_workspace"))))
   },[])
@@ -152,13 +154,16 @@ const Navbar = () => {
 
   useEffect(()=>{
     if(subscriptions_details){
-      const splitResult = subscriptions_details.user.trail_ends.split(" ");
-      const firstNumber = parseInt(splitResult[0], 10);
+      try{
+        const splitResult = subscriptions_details.user.trail_ends.split(" ");
+        const firstNumber = parseInt(splitResult[0], 10);
+
 
       if(firstNumber<="0"){
         navigate("/settings/subscription_plan?message=upgrade")
         // dispatch(_save_details_(upgrade_plan))
       }
+    }catch(e){}
     }
   },[subscriptions_details])
 
@@ -211,15 +216,26 @@ const Navbar = () => {
               } */}
                 <div className="lg:flex items-center gap-10 ml-auto hidden h-[74px]">
                   
+                {subscriptions_details &&
+                <>
+                  {subscriptions_details.user.status=="active"
+                  ?
+                    null
+                  :
+                    <>
+                    <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-[#334977] pl-3 pr-6 py-2.5 rounded-md"
+                      onClick={()=>{
+                        navigate("/settings/subscription_plan")
+                      }}
+                    >
+                      <SealCheck classes="w-6 h-6" />
+                      Upgrade to Pro
+                    </button>
+                    </>
+                  }
+                </>
+                }
 
-                  <button className="inline-flex items-center gap-3 text-lg font-bold text-white bg-[#334977] pl-3 pr-6 py-2.5 rounded-md"
-                    onClick={()=>{
-                      navigate("/settings/subscription_plan")
-                    }}
-                  >
-                    <SealCheck classes="w-6 h-6" />
-                    Upgrade to Pro
-                  </button>
 
                 </div>
             </div>
@@ -514,9 +530,21 @@ const Navbar = () => {
                             </>
                           }
                         </p>
-                        <p className="text-[10px] font-sans font-bold text-black">
-                          Free plan
-                        </p>
+                        {subscriptions_details &&
+                          <>
+                            {subscriptions_details.user.status=='active'
+                            ?
+                              null
+                            :
+                              <>
+                                <p className="text-[10px] font-sans font-bold text-black">
+                                  Free plan
+                                </p>
+                              </>
+                            }
+
+                          </>
+                        }
                       </div>
                       <span className="w-4 h-6 float-right ml-3">
                         <svg

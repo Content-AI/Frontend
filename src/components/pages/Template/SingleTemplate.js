@@ -94,6 +94,8 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
 
+
+
   const [renderKey, setRenderKey] = useState(0);
 
   const [fieldValues, setFieldValues] = useState([]);
@@ -726,7 +728,7 @@ useEffect(()=>{
                   :
                     <div className="flex justify-center">
                       <button type="button"
-                        className="text-[#007A7A] font-semibold hover:text-green-600"
+                        className="text-slate-500  font-semibold hover:text-slate-900"
                       onClick={()=>{
                         navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
                       }}>

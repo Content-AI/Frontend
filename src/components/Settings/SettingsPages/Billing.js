@@ -63,34 +63,39 @@ const Billing = (props) => {
 
 
 
-    const cancel_subscription_feedback = async() =>{
-      setshowCancelSubs(true)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION_FINAL_FEEDBACK,props.AUTH_TOKEN)
-      if(resp.status==200){
-        // console.log(resp.data)
-        // notifysucces("subscription cancel")
+    const subscription_feedback = async() =>{
         openDialog()
-        setstatusMessage(resp.status)
-        setshowCancelSubs(false)
-      }else{
-        // notifyerror("Your subscription is already canceled")
+      }
+      
+      const cancel_subscription_feedback = async() =>{
+        
+        setshowCancelSubs(true)  
+        const resp = await fetchData(BACKEND_URL+BACK_END_API_CANCEL_SUBSCRIPTION_FINAL_FEEDBACK,props.AUTH_TOKEN)
+        if(resp.status==200){
+          // console.log(resp.data)
+          // notifysucces("subscription cancel")
           setstatusMessage(resp.status)
-          const resp_inner = await fetchData(BACKEND_URL+BACK_END_API_TIMES_REMANING,props.AUTH_TOKEN)
-          if(resp_inner.status==200){
-            setshowCancelSubs(false)
-            try{
-              settrialExpirationDate(resp_inner.data.end_at)
-              if(resp_inner.data.end_at == null){
+          setshowCancelSubs(false)
+        }else{
+          // notifyerror("Your subscription is already canceled")
+            setstatusMessage(resp.status)
+            const resp_inner = await fetchData(BACKEND_URL+BACK_END_API_TIMES_REMANING,props.AUTH_TOKEN)
+            if(resp_inner.status==200){
+              setshowCancelSubs(false)
+              setIsDialogOpen(false)
+              try{
+                settrialExpirationDate(resp_inner.data.end_at)
+                if(resp_inner.data.end_at == null){
+                  settrialExpirationDate(resp_inner.data.trail_ends)
+                }
+              }catch(e){
                 settrialExpirationDate(resp_inner.data.trail_ends)
               }
-            }catch(e){
-              settrialExpirationDate(resp_inner.data.trail_ends)
+              openAlreadyCancelDialog("You Already Unsubscribe")
+            }else{
+              setshowCancelSubs(false)
             }
-            openAlreadyCancelDialog("You Already Unsubscribe")
-          }else{
-            setshowCancelSubs(false)
           }
-        }
       }
     
       const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -112,7 +117,7 @@ const Billing = (props) => {
         if(statusMessage==200){
           notifysucces("subscription cancel")
         }else{
-          notifyerror("Your subscription is already canceled")
+          // notifyerror("Your subscription is already canceled")
         }
       };
     
@@ -276,7 +281,7 @@ const handleNewFormSubmit = (event) => {
                   {/* ============================= */}
                 </div>
           </div>
-          <div className="m-1">
+          {/* <div className="m-1">
               <div>
                 <div className="flex items-center p-6 transition-all duration-150 bg-white rounded-md ring-gray-300 ring-1">
                     <div className="flex-grow">
@@ -291,7 +296,7 @@ const handleNewFormSubmit = (event) => {
                       </span></button>
                 </div>
               </div>
-          </div>
+          </div> */}
           <div className="m-1">
               <div className="flex items-center p-6 transition-all duration-150 bg-white rounded-md  ring-gray-300 ring-1">
                 <div className="flex-grow">
@@ -340,7 +345,7 @@ const handleNewFormSubmit = (event) => {
                 <button 
                   type="button"
                   onClick={()=>{
-                    cancel_subscription_feedback()
+                    subscription_feedback()
                     // openDialog()
                   }}
                   className="w-[200px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
@@ -363,7 +368,7 @@ const handleNewFormSubmit = (event) => {
         classNames="dialog"
         unmountOnExit
       >
-         <div className="fixed inset-0 flex justify-center items-center bg-slate-50 bg-opacity-60 z-20">
+         <div className="fixed inset-0 flex justify-center items-center bg-slate-50 bg-opacity-20 z-20">
           <div className="bg-white w-[600px] p-6 rounded shadow-lg">
             <h2 className="text-2xl font-semibold mb-4">Cancel Subscription</h2>
             <form onSubmit={handleFormSubmit}>
@@ -439,7 +444,10 @@ const handleNewFormSubmit = (event) => {
                   Close
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={()=>{
+                    cancel_subscription_feedback()
+                  }}
                   // className=" text-gray-600 hover:text-gray-800"
                   className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                 >

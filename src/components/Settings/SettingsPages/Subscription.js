@@ -90,8 +90,89 @@ const Subscription = (props) => {
         (state) => state.SetSubscriptionsData.SubscriptionsData
       );
 
-    // console.log(" subscriptions_details :",subscriptions_details)
-    
+    const check_active_or_trail = async()=>{
+
+        switch (true) {
+            case (
+              subscriptions_details.user.plan === "starter" &&
+              subscriptions_details.user.status === "trial" &&
+              subscriptions_details.user.subscription_type === "annually"
+            ):
+              console.log("this 1");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "starter" &&
+              subscriptions_details.user.status === "trial" &&
+              subscriptions_details.user.subscription_type === "monthly"
+            ):
+              console.log("this 2");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "premium" &&
+              subscriptions_details.user.status === "trial" &&
+              subscriptions_details.user.subscription_type === "annually"
+            ):
+              console.log("this 3");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "premium" &&
+              subscriptions_details.user.status === "trial" &&
+              subscriptions_details.user.subscription_type === "monthly"
+            ):
+              console.log("this 4");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "starter" &&
+              subscriptions_details.user.status === "active" &&
+              subscriptions_details.user.subscription_type === "annually"
+            ):
+              console.log("this 5");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "starter" &&
+              subscriptions_details.user.status === "active" &&
+              subscriptions_details.user.subscription_type === "monthly"
+            ):
+              console.log("this 6");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "premium" &&
+              subscriptions_details.user.status === "active" &&
+              subscriptions_details.user.subscription_type === "annually"
+            ):
+              console.log("this 7");
+              break;
+          
+            case (
+              subscriptions_details.user.plan === "premium" &&
+              subscriptions_details.user.status === "active" &&
+              subscriptions_details.user.subscription_type === "monthly"
+            ):
+              console.log("this 8");
+              break;
+          
+            default:
+              break;
+          }
+          
+    }
+
+    useEffect(()=>{
+        if(subscriptions_details!=null){
+            // console.log("plan : ",subscriptions_details.user.plan)
+            // console.log("status : ",subscriptions_details.user.status)
+            // console.log("subscription_type : ",subscriptions_details.user.subscription_type)
+            check_active_or_trail()
+
+        }
+    },[subscriptions_details])
+
     const [isCheckedPlan, setIsCheckedPlan] = useState(false);
     const [isRadioChecked, setisRadioChecked] = useState(true);
     const [startbtnLoading, setstartbtnLoading] = useState(false);
@@ -281,14 +362,20 @@ const Subscription = (props) => {
             :
                 <>
                     <div className="flex jusitfy-start pt-10 pb-5 px-5 lg:px-10">
-                        <button type="button" 
-                        // className="transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-[#334977] active:to-blue-700 w-full shadow-sm"
-                        className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                        onClick={()=>{
-                            navigate("/settings/Billing")
-                        }}>
-                            <span>Go Back</span>
-                        </button>
+                    <button
+                    type="button"
+                    className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1 flex items-center space-x-1"
+                    onClick={() => {
+                        navigate("/settings/Billing");
+                    }}
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" className='w-4 h-4 mt-1' data-name="Layer 1" viewBox="0 0 80 100" x="0px" y="0px">
+                    <path d="M71,40a5.12,5.12,0,0,1-5.12,5.12H26.48L36.85,55.5a5.13,5.13,0,0,1-5,8.57,5.22,5.22,0,0,1-2.32-1.39l-19.06-19a5.16,5.16,0,0,1,0-7.26L29.61,17.26a5.12,5.12,0,0,1,3.63-1.51,5.11,5.11,0,0,1,3.55,8.81L26.48,34.88h39.4A5.12,5.12,0,0,1,71,40Z"
+                        fill="white"
+                    />
+                    </svg>
+                    <span>Go Back</span>
+                    </button>
                     </div>
                 </>
             }
@@ -359,17 +446,13 @@ const Subscription = (props) => {
                                         <div className="col-span-7">
                                             <div className="flex justify-start">
                                             <div className="text-xl mb-2 font-medium mr-2">Starter</div>
-                                            {/* {isCheckedPlan
+                                            {/* && subscriptions_details.user.status=="trial"  */}
+                                            {/* {subscriptions_details.user.plan==all_cost_data["actual_plan"] && subscriptions_details.user.subscription_type==all_cost_data["plan_time"]
                                             ?
-                                            null
+                                                "Trail"
                                             :
-                                            <> */}
-                                                <div className="inline-block">
-                                                    <div className="flex items-center text-xs font-medium leading-5 rounded-full bg-green-100 text-green-600  px-3 py-1 ">
-                                                    <strong className="font-semibold">On Trial</strong></div>
-                                                </div>
-                                            {/* </> */}
-                                            {/* } */}
+                                                null
+                                            } */}
                                             </div>
                                             <div className="text-sm text-gray-600 mb-3">
                                                 For the hobbyist just getting started.The economic option for individuals who want to use Generative AI casually for hobbies and work.
