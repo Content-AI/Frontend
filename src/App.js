@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import Login from './components/pages/Login';
 import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
-import { fetchData } from './apis/apiService';
+import { fetchData,HitUrl } from './apis/apiService';
 import { BACK_END_API_PROFILE,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
 import LoadingPage from './components/LoadingPage';
 import Subscription from './components/pages/Subscription/Subscription'
@@ -148,7 +148,7 @@ function App() {
 
 
   const track_user = async()=>{
-    await fetchData(BACKEND_URL+BACK_END_API_TRACK_USER)
+    await HitUrl(BACKEND_URL+BACK_END_API_TRACK_USER)
   }
 
 

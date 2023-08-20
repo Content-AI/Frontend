@@ -50,6 +50,14 @@ export const fetchData = async (url,ACCESS_TOKEN) => {
     return err
   }
 };
+export const HitUrl = async (url) => {
+  try{
+    const res = await axios.get(url)
+    return res
+  }catch(err){
+    return err
+  }
+};
 
 export const deleteData = async (url,ACCESS_TOKEN) => {
 
