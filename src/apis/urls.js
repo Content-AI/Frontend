@@ -142,3 +142,5 @@ export const BACK_END_API_DOC_SHARED_TO_USER ="/v1/team_members/doc_shared_to_us
 
 export const BACK_END_API_FAV ="/v1/template/favorite/";
 
+export const BACK_END_API_TRACK_USER ="/v1/accounts/acc/";
+

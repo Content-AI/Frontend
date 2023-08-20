@@ -27,7 +27,7 @@ import Login from './components/pages/Login';
 import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
 import { fetchData } from './apis/apiService';
-import { BACK_END_API_PROFILE,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
+import { BACK_END_API_PROFILE,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
 import LoadingPage from './components/LoadingPage';
 import Subscription from './components/pages/Subscription/Subscription'
 import { useLocation } from "react-router-dom";
@@ -107,7 +107,7 @@ function App() {
     }else{
       // console.log("subscription_type : ",subscription_type)
       // console.log("plan : ",plan)
-      console.log("invitation_code : ",invitation_code)
+      // console.log("invitation_code : ",invitation_code)
       if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
         navigate(`/login?subscription_type=${subscription_type}&plan=${plan}`)
       }else if(invitation_code!=null && invitation_code!=undefined){
@@ -145,6 +145,13 @@ function App() {
     }
 
   }
+
+
+  const track_user = async()=>{
+    await fetchData(BACKEND_URL+BACK_END_API_TRACK_USER)
+  }
+
+
   const get_workshop_list = async() => {
     const workspace_list = await fetchData(BACKEND_URL+BACK_END_API_WORKSPACE,TOKEN)
       if(workspace_list.status=200){
@@ -215,6 +222,7 @@ function App() {
         get_subscription_details()
         get_subcribe_data_of_user()
         get_token_generated_by_user()
+        track_user()
     }
     if (localStorage.getItem("three_steps")) {
       dispatch(_save_survey_(localStorage.getItem("three_steps")));
