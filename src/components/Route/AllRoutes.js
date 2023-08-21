@@ -33,6 +33,7 @@ import Subscription from "../Settings/SettingsPages/Subscription";
 import ChangeWorkSpace from "../pages/ChangeWorkSpace";
 import AcceptInvitationPage from "../pages/AcceptInvitationPage";
 import { BsWhatsapp } from "react-icons/bs";
+import Workflow from "../pages/workflow/Workflow";
 
 import Help from "../pages/Help/Help";
 
@@ -110,6 +111,12 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route
               path="/folder_of_user/:folder_id"
               element={<FolderData AUTH_TOKEN={TOKEN} />}
+            />
+
+
+            <Route
+              path="/Workflow"
+              element={<Workflow AUTH_TOKEN={TOKEN} />}
             />
             
 

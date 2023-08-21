@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useRef } from "react";
 
-import QuillWrapper from './quillcomponent'
+// import QuillWrapper from './quillcomponent'
 // import Editor from './EditorWithUseQuill';
 
 import { useParams } from 'react-router-dom';

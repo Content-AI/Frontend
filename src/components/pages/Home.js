@@ -10,6 +10,8 @@ import ThreeDots from "../Icons/ThreeDots";
 import { useNavigate } from "react-router-dom";
 import DocumentsIcons from '../Icons/DocumentsIcons'
 import ListOfDocument from "./Template/Document/ListOfDocument";
+import Workflow from "../Icons/Workflow";
+
 
 const buttonTags = [
   "All",
@@ -225,6 +227,39 @@ useEffect(()=>{
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
         <div className="grid grid-cols-2 gap-6">
         {/* ============== */}
+        <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Work Flow">
+          <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+            <div className="flex flex-col gap-y-4">
+              <div className="titlewrap flex gap-x-3">
+                <Workflow/>
+                <h4 className="text-md font-bold">WorkFlow</h4>
+                <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
+                  Boss Mode
+                </span>
+              </div>
+              <p className="text-sm min-h-[62px]">
+                Generate WorkFlow to Create Content.
+              </p>
+              <div className="button-wrap">
+              <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+              onClick={()=>{
+                navigate("/workflow")
+              }}>
+                WorkFlow
+              </button>
+              </div>
+            </div>
+            <div className="rounded-s-xl rounded-e-xl mb-3">
+              <img
+                src="card--placeholder.svg"
+                alt=""
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+        </div>
+
+
         <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Chat Now">
           <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
             <div className="flex flex-col gap-y-4">
