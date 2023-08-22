@@ -90,9 +90,9 @@ const WholeTemplateRender = ({template_data}) => {
                                 <div className="flex justify-between items-center gap-[10px] w-full truncate overflow-hidden">
                                     <div className="text-xs truncate whitespace-nowrap">{data.title}</div>
                                     <div className="aspect-1 origin-center scale-90 hover:scale-100 transition-all duration-100 opacity-50 group-hover:opacity-100">
-                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                    {/* <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                         <path d="M8,1.33c.18,0,.34,.1,.43,.27l1.86,3.76,3.98,.68c.18,.03,.32,.16,.38,.34,.06,.18,.01,.38-.11,.51l-2.83,3.02,.61,4.18c.03,.19-.05,.37-.19,.48-.15,.11-.34,.13-.5,.04l-3.61-1.89-3.6,1.89c-.16,.09-.35,.07-.5-.04-.15-.11-.22-.3-.19-.48l.61-4.18L1.47,6.89c-.13-.13-.17-.33-.11-.51,.06-.18,.2-.31,.38-.34l3.99-.68,1.85-3.76c.08-.17,.25-.27,.43-.27Z" fill="none" fillRule="evenodd" stroke="#4B5563" strokeWidth="1"></path>
-                                    </svg>
+                                    </svg> */}
                                     </div>
                                 </div>
                             </div>

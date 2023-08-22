@@ -339,6 +339,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       return "Tell us second key word";
     } else if (index === 2) {
       return "One last word";
+    } else if (index === 3) {
+      return "isn't that enough";
+    } else if (index === 4) {
+      return "ok that's quite heck of feature";
     } else {
       return "...";
     }

@@ -6,7 +6,7 @@ import React, { useEffect, useState,useRef } from "react";
 import { useParams } from 'react-router-dom';
 
 import { fetchData, patchData,postData } from "../../../../apis/apiService";
-import { BACKEND_URL,BACK_END_API_REMOVE_USER,BACK_END_API_REMOVE_USER_FROM_DOC,BACK_END_API_DOC_SHARED_TO_USER,BACK_END_API_MAKE_PUBLIC_OR_NOT,BACK_END_API_CHECK_PUBLIC_OR_NOT,BACK_END_API_SEND_INVITATION,BACK_END_API_CAN_INVITE,BACK_END_API_DOCUMENTS_USERS,BACK_END_API_DOCUMENTS,BACK_END_API_CUSTOM_TEMPLATE,BACK_END_API_GET_CUSTOM_TEMPLATE,BACK_END_API_SELECT_FIELD,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_SINGLE_WORKFLOW,BACK_END_API_REMOVE_USER,BACK_END_API_REMOVE_USER_FROM_DOC,BACK_END_API_DOC_SHARED_TO_USER,BACK_END_API_MAKE_PUBLIC_OR_NOT,BACK_END_API_CHECK_PUBLIC_OR_NOT,BACK_END_API_SEND_INVITATION,BACK_END_API_CAN_INVITE,BACK_END_API_DOCUMENTS_USERS,BACK_END_API_DOCUMENTS,BACK_END_API_CUSTOM_TEMPLATE,BACK_END_API_GET_CUSTOM_TEMPLATE,BACK_END_API_SELECT_FIELD,BACK_END_API_TEMPLATE, BACK_END_API_RESPONSE,BACK_API_HISTORY, BACK_END_API_INNER_TEMPLATE } from "../../../../apis/urls";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +30,11 @@ import { Transition } from "@headlessui/react";
 
 import Editor from "./EditorForDocuments/editor/Editor";
 // import EditorTextParser from "./EditorForDocuments/editor-parser/EditorTextParser";
+import Fullscreen from '../../../Icons/Fullscreen'
+import Chat from '../../../Icons/Chat'
+import Template from '../../../Icons/Template'
+
+import WorkflowSteps from "../../workflow/WorkflowSteps";
 
 
 export default function EditDocuments() {
@@ -66,8 +71,11 @@ export default function EditDocuments() {
   const templateValue = searchParams.get('template');
 
   const custome = searchParams.get('custome');
-
-
+  // only load workflow if page=workflow
+  const page = searchParams.get('page');
+  const template_editing = searchParams.get('template_editing');
+  
+  
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
@@ -104,19 +112,15 @@ export default function EditDocuments() {
   const [HoverBtnColor,setHoverBtnColor] = useState(true);
 
 
-
   const [Outputlanguage, setOutputlanguage] = useState([]);
   const [OutputlanguageChoice, setOutputlanguageChoice] = useState("English");
   
-  
-  
+    
   const [SharePopUpModal,setSharePopUpModal] = useState(false);
-
 
 
   const [inputs, setInputs] = useState([]);
   const [multipleInputForms, setMultipleInputForms] = useState({});
-
 
 
   const [ShowHideHistory, setShowHideHistory] = useState(false);
@@ -197,7 +201,7 @@ export default function EditDocuments() {
 
 
   const get_custom_template_data = async(template_id) => {
-    console.log('get_cusotm_template_data : ',template_id)
+    
     const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_GET_CUSTOM_TEMPLATE + templateValue, TOKEN)
     if(resp_template_data.status == 200) {
       setTemplateData(resp_template_data.data)
@@ -210,22 +214,30 @@ export default function EditDocuments() {
   }
   const get_normal_template = async(template_id) => {
     // console.log('get_normal_template : ',template_id)
-    const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id, TOKEN)
-    if(resp_template_data.status == 200) {
-      setTemplateData(resp_template_data.data)
-    }else{
-      const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
-      if(res_template.status==200){
-        setWholeTemplate(res_template.data)
+    if(page!="workflow")
+    {
+      const resp_template_data = await fetchData(BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id, TOKEN)
+      if(resp_template_data.status == 200) {
+        setTemplateData(resp_template_data.data)
+      }else{
+        const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+        if(res_template.status==200){
+          setWholeTemplate(res_template.data)
+        }
       }
     }
   }
 
   const WholeTemplateApi = async() =>{
-    const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
-      if(res_template.status==200){
-        setWholeTemplate(res_template.data)
-      }
+    if(page!="workflow")
+    {
+      setFieldValues({})
+      setContentOutputNumber(2)
+      const res_template = await fetchData(BACKEND_URL+BACK_END_API_TEMPLATE,TOKEN)
+        if(res_template.status==200){
+          setWholeTemplate(res_template.data)
+        }
+    }
   }
 
   const get_history = async(template_id_for_history) => {
@@ -284,7 +296,7 @@ export default function EditDocuments() {
       };
       setDelta(newDelta);
       dispatch(setText(null))
-      
+
     }
   },[EDITOR_TEXT])
 
@@ -297,35 +309,33 @@ export default function EditDocuments() {
   },[LeftListTemplateData])
 
   const handleClick = async(id_of_template) => {
-   // console.log(TemplateData[0]["title"])
-    // return true
     const divElement = document.getElementById(id_of_template);
     const inputElements = divElement.getElementsByTagName("input");
     const textareaElements = divElement.getElementsByTagName("textarea");
-
+    
     const elements = [...inputElements, ...textareaElements];
-
+    
     const formData = Array.from(elements).reduce((data, element) => {
       data[element.name] = element.value;
       return data;
     }, {});
     let isFormDataValid = true;
     formData["language"] =
-      "Generate whole text in " + OutputlanguageChoice + " Language";
+    "Generate whole text in " + OutputlanguageChoice + " Language";
     formData["output_results"] = ContentOutputNumber.toString();
     formData["generate"] = TemplateData[0]["title"];
     formData["ids"] = TemplateData[0]["id"];
     formData["workspace_id"] = ChosenWorkspaceId["Workspace_Id"];
-
+    
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
-
+    
     // return true
     for (const [key, value] of Object.entries(formData)) {
       if (key === "") {
         delete formData[key];
       }
     }
-
+    
     Object.entries(formData).forEach(([key, value_d]) => {
       if (key.match(keyToCheck)) {
         // Case-sensitive match
@@ -335,11 +345,11 @@ export default function EditDocuments() {
         }
       }
     });
-
+    
     if (inputs.length > 0) {
       formData["inputs"] = inputs;
     }
-
+    
     Object.entries(formData).forEach(([key, value__d]) => {
       const trimmedValue__d = value__d.trim();
       if (trimmedValue__d === "") {
@@ -349,6 +359,9 @@ export default function EditDocuments() {
     if (value != null) {
       formData["tone"] = value.value;
     }
+    
+    // console.log(formData)
+    // return true
 
     if (isFormDataValid) {
         setLoadingButton(true)
@@ -410,6 +423,10 @@ export default function EditDocuments() {
       return "Tell us second key word";
     } else if (index === 2) {
       return "One last word";
+    } else if (index === 3) {
+      return "isn't that enough";
+    } else if (index === 4) {
+      return "ok that's quite heck of feature";
     } else {
       return "...";
     }
@@ -458,6 +475,8 @@ export default function EditDocuments() {
       await patchData(formData, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + document_id + "/", TOKEN)
     }
   };
+
+
 
 
   // ===========get the document data=========
@@ -785,6 +804,7 @@ export default function EditDocuments() {
   };
 
 
+
   return (
     <div className="fixed z-50 top-0 left-0 right-0 h-screen bg-white">
       <div className="relative z-10">
@@ -820,6 +840,10 @@ export default function EditDocuments() {
                   />
 
                 </div>
+
+
+                {/* ========top button======= */}
+
                 <div className="hidden md:flex flex-none items-center justify-center">
                   <div className="
                   flex items-center transform
@@ -830,55 +854,46 @@ export default function EditDocuments() {
                   [&amp;_:first-child_button]:!rounded-r-none
                   [&amp;_:last-child_button]:!rounded-l-none
                   ">
+                   
                     <span className="relative hover:z-10">
                       <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4">
-                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"></path>
-                            </svg>
+                           <Chat/>
                           </span>
                         </span>
                       </button>
                     </span>
                     <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4">
-                              <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
-                              <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
-                            </svg>
+                            <Fullscreen/>
                           </span>
                         </span>
                       </button>
                     </span>
                     <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                          onClick={()=>{
+                                setTemplateData(null)
+                                dispatch(_template_id_(null))
+                                WholeTemplateApi()
+                            }}
+                          >
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
-                            <svg className="w-4 h-4" viewBox="0 0 44 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M25 28.5H28.5C29 28.5 29.3 28.1 29.3 27.7V11.4C29.3 10.9 28.9 10.6 28.5 10.6H25C24.5 10.6 24.2 11 24.2 11.4V27.7C24.2 28.1 24.6 28.5 25 28.5ZM6 9V18.5V20.5V21.5H8L6 24.4L4 27.3L2 24.4L0 21.5H2.1V20.5V18.5V9C2.1 4.1 6.1 0 11.1 0H32.2C37.1 0 41.2 4 41.2 9H37.3C37.3 6.2 35 4 32.3 4H11C8.3 3.9 6 6.2 6 9ZM39.1 11.7L41.1 14.6L43.1 17.5H41.1V18.5V19.4V30C41.1 34.9 37.1 39 32.1 39H11C6.1 39 2 35 2 30H6C6 32.8 8.3 35 11 35H32.1C34.9 35 37.1 32.7 37.1 30V19.5V18.6V17.6H35.1L37.1 14.7L39.1 11.7ZM14.6 28.5H18.1C18.6 28.5 18.9 28.1 18.9 27.7V17.3C18.9 16.8 18.5 16.5 18.1 16.5H14.6C14.1 16.5 13.8 16.9 13.8 17.3V27.6C13.8 28.1 14.2 28.5 14.6 28.5Z" fill="currentColor"></path>
-                              <defs></defs>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                    <span className="active z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <svg className="w-4 h-4" viewBox="0 0 16 14" fill="none">
-                              <path fillRule="evenodd" clipRule="evenodd" d="M14 1.6001H7V12.3999H14C14.1025 12.3999 14.1963 12.3611 14.2671 12.2974C14.3486 12.2244 14.3999 12.1182 14.3999 12V2C14.3999 1.87915 14.3462 1.77075 14.2612 1.69727C14.1914 1.63672 14.1001 1.6001 14 1.6001ZM2 0C0.895508 0 0 0.895508 0 2V12C0 13.1045 0.895508 14 2 14H14C15.1045 14 16 13.1045 16 12V2C16 0.895508 15.1045 0 14 0H2ZM5 4H2V5H5V4ZM2 6H5V7H2V6ZM5 8H2V9H5V8Z" fill="currentColor"></path>
-                            </svg>
+                            <Template/>
                           </span>
                         </span>
                       </button>
                     </span>
                   </div>
                 </div>
+
+                {/* ========top button======= */}
+
+
                 {/* ==============share======================= */}
                 <div className="flex items-center justify-end px-3 py-0.5 space-x-2 flex-1">
                   {/* ===============share button===================== */}
@@ -892,7 +907,7 @@ export default function EditDocuments() {
                       </button>
                     <div className="pr-2 text-sm text-gray-400">{NOW_LENGTH_OF_WORD}</div>
                     {/* ===============share button===================== */}
-                    <div className="relative inline-block text-left" data-headlessui-state="">
+                    <div className="relative inline-block text-left">
                     <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                         <span className="-mx-1.5">
@@ -933,216 +948,215 @@ export default function EditDocuments() {
                           </div>
                           {/*body*/}
                           <div>
+
                       {/* ==================the message ============= */}
-
-
-                  <div className="m-auto p-8">
-                      <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
-                        <div>
-                        </div>
-                        {/* ============emails============== */}
-                        <div className="flex flex-col">
-                            <div>
-                              {emails.map((enteredEmail, index) => (
-                                <span key={index} className="bg-gray-300 p-1 m-1 rounded w-[700px]">
-                                  {enteredEmail}
-                                  <button
-                                    className="ml-3 font-bold text-[12px]"
-                                    onClick={() => handleRemoveEmail(index)}
-                                  >
-                                    X
-                                  </button>
-                                </span>
-                              ))}
-                            <input
-                              type="email"
-                              placeholder="Enter email"
-                              value={email}
-                              onChange={handleEmailChange}
-                              onKeyDown={handleEmailKeyDown}
-                              className="border border-gray-300 p-2 rounded mt-2 w-[600px]"
-                            />
-                          </div>
-                          <div className="mt-2">
-                            {emails &&
-                              <>
-                                {emails.length>0
-                                ?
-                                <>
-                                
-                                <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                  onClick={()=>{
-                                    send_invitation()
-                                  }}>
-                                    Send invite
-                                  </button>
-                                  </>
-                                :
-                                  <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                  disabled>
-                                    Send invite
-                                  </button>
-                              }
-                              </>
-                              }
-                          </div>
-                        </div>
-
-                        {/* ============emails============== */}
-                      </div>
-                      
-                      <div class="flex flex-col  p-[30px] mt-5 w-full border-b border-gray-200 space-y-1">
-                        {/* ======================the list of users===================== */}
-                        <div class="flex flex-col w-full">
-                        <div class="w-full border-b border-gray-100 max-h-72 overflow-auto scrollbar-hide">
-                                
-                                {listOfUser &&
-                                    <div class="flex items-center pb-4 relative">
-                                      <div class="flex-shrink-0 w-10 h-10">
-                                          <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                          <img
-                                              src="/default.png"
-                                              className="w-[35px] h-[35px] rounded-full"
-                                            />
-                                          </div>
-                                      </div>
-                                      <div class="ml-4 truncate ">
-                                          <div class="font-medium leading-5 text-sm text-gray-900 truncate" title="copy ai">
-                                            {listOfUser[0]["first_name"]?listOfUser[0]["first_name"]:""
-                                            + " " 
-                                            +listOfUser[0]["last_name"]?listOfUser[0]["last_name"]:""}
-                                          </div>
-                                          <div class="text-sm leading-5 text-xs text-gray-500 truncate" >{listOfUser[0]["email"]}</div>
-                                      </div>
-                                      <div class="ml-auto text-gray-400 text-sm font-medium px-2 w-24">Creator</div>
-                                    </div>
-                                }
-
-                            <div className="h-[80px]">
-                            {listOfUser &&
-                            <>
-                              {listOfUser.length>0
-                              ?
-                                <>
-                                {ChosenWorkspaceId["admin_or_not"]==true
-                                  ?
-                                  <>
-                                      {/* can edit as admin */}
-                                      {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
-                                      return (
-                                                <div class="flex items-center pb-4">
-                                                  <div class="flex-shrink-0 w-10 h-10">
-                                                      <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                                      <img
-                                                          src="/default.png"
-                                                          className="w-[35px] h-[35px] rounded-full"
-                                                        />
-                                                      </div>
-                                                  </div>
-
-                                                  <div class="ml-4 truncate ">
-                                                      <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
-                                                      {data.first_name?data.first_name:""
-                                                      + " " 
-                                                      +data.last_name?data.last_name:""}
-                                                      </div>
-                                                      <div class="text-sm leading-5 text-xs text-gray-500 truncate" >{data.email}</div>
-                                                  </div>
-                                                  <div class="ml-auto">
-                                                                <SelectField
-                                                                    options={[
-                                                                      { label: 'Edit', value: 'Edit' },
-                                                                      { label: 'Remove Member', value: 'Remove Member' },
-                                                                    ]}
-                                                                    defaultValue={selectedRoles[index]}
-                                                                    onSelect={(value) => handleSelectData(index, value)}
-                                                                    role_of_user="Can Edit"
-                                                                    data_index={data}
-                                                                  />
-                                                  </div>
-                                              </div> 
-                                      )
-                                    })}
-                                  </>
-                                  :
+                        <div className="m-auto p-8">
+                            <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
+                              <div>
+                              </div>
+                              {/* ============emails============== */}
+                              <div className="flex flex-col">
+                                  <div>
+                                    {emails.map((enteredEmail, index) => (
+                                      <span key={index} className="bg-gray-300 p-1 m-1 rounded w-[700px]">
+                                        {enteredEmail}
+                                        <button
+                                          className="ml-3 font-bold text-[12px]"
+                                          onClick={() => handleRemoveEmail(index)}
+                                        >
+                                          X
+                                        </button>
+                                      </span>
+                                    ))}
+                                  <input
+                                    type="email"
+                                    placeholder="Enter email"
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    onKeyDown={handleEmailKeyDown}
+                                    className="border border-gray-300 p-2 rounded mt-2 w-[600px]"
+                                  />
+                                </div>
+                                <div className="mt-2">
+                                  {emails &&
                                     <>
-                                    {/* cannot edit as admin */}
-                                    {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
-                                      return (
-                                                <div class="flex items-center pb-4 relative">
-                                                  <div class="flex-shrink-0 w-10 h-10">
-                                                      <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                                      <img
-                                                          src="/default.png"
-                                                          className="w-[35px] h-[35px] rounded-full"
-                                                        />
-                                                      </div>
-                                                  </div>
-
-                                                  <div class="ml-4 truncate ">
-                                                      <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
-                                                      {data.first_name?data.first_name:""
-                                                      + " " 
-                                                      +data.last_name?data.last_name:""}
-                                                      </div>
-                                                      <div class="text-sm leading-5 text-xs text-gray-500 truncate" title="test@gmail.com">{data.email}</div>
-                                                  </div>
-                                              </div> 
-                                      )
-                                    })}
+                                      {emails.length>0
+                                      ?
+                                      <>
+                                      
+                                      <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                        onClick={()=>{
+                                          send_invitation()
+                                        }}>
+                                          Send invite
+                                        </button>
+                                        </>
+                                      :
+                                        <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                        disabled>
+                                          Send invite
+                                        </button>
+                                    }
                                     </>
-                                }
-                                </>
-                              :
-                                null
-                              }
+                                    }
+                                </div>
+                              </div>
 
-                            </>
-                            }
-                               
-                          </div> 
-                                  
+                              {/* ============emails============== */}
                             </div>
                             
-                          </div>
+                            <div class="flex flex-col  p-[30px] mt-5 w-full border-b border-gray-200 space-y-1">
+                              {/* ======================the list of users===================== */}
+                              <div class="flex flex-col w-full">
+                              <div class="w-full border-b border-gray-100 max-h-72 overflow-auto scrollbar-hide">
+                                      
+                                      {listOfUser &&
+                                          <div class="flex items-center pb-4 relative">
+                                            <div class="flex-shrink-0 w-10 h-10">
+                                                <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                <img
+                                                    src="/default.png"
+                                                    className="w-[35px] h-[35px] rounded-full"
+                                                  />
+                                                </div>
+                                            </div>
+                                            <div class="ml-4 truncate ">
+                                                <div class="font-medium leading-5 text-sm text-gray-900 truncate" title="copy ai">
+                                                  {listOfUser[0]["first_name"]?listOfUser[0]["first_name"]:""
+                                                  + " " 
+                                                  +listOfUser[0]["last_name"]?listOfUser[0]["last_name"]:""}
+                                                </div>
+                                                <div class="leading-5 text-xs text-gray-500 truncate" >{listOfUser[0]["email"]}</div>
+                                            </div>
+                                            <div class="ml-auto text-gray-400 text-sm font-medium px-2 w-24">Creator</div>
+                                          </div>
+                                      }
 
-                        {/* ======================the list of users===================== */}
-                      </div>
+                                  <div className="h-[80px]">
+                                  {listOfUser &&
+                                  <>
+                                    {listOfUser.length>0
+                                    ?
+                                      <>
+                                      {ChosenWorkspaceId["admin_or_not"]==true
+                                        ?
+                                        <>
+                                            {/* can edit as admin */}
+                                            {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
+                                            return (
+                                                      <div class="flex items-center pb-4">
+                                                        <div class="flex-shrink-0 w-10 h-10">
+                                                            <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                            <img
+                                                                src="/default.png"
+                                                                className="w-[35px] h-[35px] rounded-full"
+                                                              />
+                                                            </div>
+                                                        </div>
 
+                                                        <div class="ml-4 truncate ">
+                                                            <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
+                                                            {data.first_name?data.first_name:""
+                                                            + " " 
+                                                            +data.last_name?data.last_name:""}
+                                                            </div>
+                                                            <div class="text-sm leading-5 text-xs text-gray-500 truncate" >{data.email}</div>
+                                                        </div>
+                                                        <div class="ml-auto">
+                                                                      <SelectField
+                                                                          options={[
+                                                                            { label: 'Edit', value: 'Edit' },
+                                                                            { label: 'Remove Member', value: 'Remove Member' },
+                                                                          ]}
+                                                                          defaultValue={selectedRoles[index]}
+                                                                          onSelect={(value) => handleSelectData(index, value)}
+                                                                          role_of_user="Can Edit"
+                                                                          data_index={data}
+                                                                        />
+                                                        </div>
+                                                    </div> 
+                                            )
+                                          })}
+                                        </>
+                                        :
+                                          <>
+                                          {/* cannot edit as admin */}
+                                          {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
+                                            return (
+                                                      <div class="flex items-center pb-4 relative">
+                                                        <div class="flex-shrink-0 w-10 h-10">
+                                                            <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                            <img
+                                                                src="/default.png"
+                                                                className="w-[35px] h-[35px] rounded-full"
+                                                              />
+                                                            </div>
+                                                        </div>
 
-                      <div class="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
+                                                        <div class="ml-4 truncate ">
+                                                            <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
+                                                            {data.first_name?data.first_name:""
+                                                            + " " 
+                                                            +data.last_name?data.last_name:""}
+                                                            </div>
+                                                            <div class="text-sm leading-5 text-xs text-gray-500 truncate" title="test@gmail.com">{data.email}</div>
+                                                        </div>
+                                                    </div> 
+                                            )
+                                          })}
+                                          </>
+                                      }
+                                      </>
+                                    :
+                                      null
+                                    }
 
-                      </div>
-                          <div class="pt-6 flex">
-                            <button class="flex items-center justify-center ring-1 ring-blue-800 text-blue-800 text-sm w-28 h-9 rounded-lg font-medium mr-1.5 transition  bg-[#334977]"
-                            onClick={copyToClipboard}
-                            >
-                              <span>Copy Link</span>
-                            </button>
-                            <div class="ml-auto flex items-center text-gray-700">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-3 h-3 mr-2">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                              </svg>
-                              <p class="pr-3.5 text-sm">Make public ( {ChosenWorkspaceId["workspace_name"]} )</p>
-                              {/* =============radio btn============== */}
-                              <button
-                                type="button"
-                                className={`relative inline-flex items-center flex-shrink-0 border-2 rounded-full cursor-pointer transition-colors ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                                  isOn ? 'bg-indigo-500' : 'bg-gray-200'
-                                } h-6 w-11`}
-                                onClick={handleToggle}
-                              >
-                                <span
-                                  aria-hidden="true"
-                                  className={`pointer-events-none inline-block rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-150 ${
-                                    isOn ? 'translate-x-5' : 'translate-x-0'
-                                  } h-5 w-5`}
-                                ></span>
-                              </button>
-                              {/* =============radio btn============== */}
+                                  </>
+                                  }
+                                    
+                                </div> 
+                                        
+                                  </div>
+                                  
+                                </div>
+
+                              {/* ======================the list of users===================== */}
                             </div>
+
+
+                            <div class="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
+
+                            </div>
+                                <div class="pt-6 flex">
+                                  <button class="flex items-center justify-center ring-1 ring-blue-800 text-blue-800 text-sm w-28 h-9 rounded-lg font-medium mr-1.5 transition  bg-[#334977]"
+                                  onClick={copyToClipboard}
+                                  >
+                                    <span>Copy Link</span>
+                                  </button>
+                                  <div class="ml-auto flex items-center text-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-3 h-3 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                    <p class="pr-3.5 text-sm">Make public ( {ChosenWorkspaceId["workspace_name"]} )</p>
+                                    {/* =============radio btn============== */}
+                                    <button
+                                      type="button"
+                                      className={`relative inline-flex items-center flex-shrink-0 border-2 rounded-full cursor-pointer transition-colors ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                                        isOn ? 'bg-indigo-500' : 'bg-gray-200'
+                                      } h-6 w-11`}
+                                      onClick={handleToggle}
+                                    >
+                                      <span
+                                        aria-hidden="true"
+                                        className={`pointer-events-none inline-block rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-150 ${
+                                          isOn ? 'translate-x-5' : 'translate-x-0'
+                                        } h-5 w-5`}
+                                      ></span>
+                                    </button>
+                                    {/* =============radio btn============== */}
+                                  </div>
+                              </div>
                         </div>
-                  </div>
                       {/* ==================the message ============= */}
 
 
@@ -1161,6 +1175,8 @@ export default function EditDocuments() {
                 }
 
                 {/* ==============share======================= */}
+
+
               </div>
               <div className="flex md:hidden py-2 px-1 space-x-2 justify-between">
                 <span className="basis-1/3 flex items-center justify-start"></span>
@@ -1263,6 +1279,7 @@ export default function EditDocuments() {
                               setTemplateData(null)
                               dispatch(_template_id_(null))
                               WholeTemplateApi()
+                              navigate("/template_data/563f60b8-2ae0-4f5a-b234-2be0f11c620f?template_editing=edit_by_user&template_used=redirect_from_doc_page&page=workflow")
                           }}>
                               <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                 <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -1567,14 +1584,14 @@ export default function EditDocuments() {
                                   </button>
                                   <div className="flex ">
                                     <input type="number"
-                                      // className="form-inputs formInput max-w-[80px] mr-3" 
                                       className='mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                                      // defaultValue={ContentOutputNumber}
+                                      defaultValue={ContentOutputNumber}
                                       onChange={(e) => {
+                                        setContentOutputNumber(e.target.value)
                                       }}
                                       max="10" min="1"
                                     />
-                                     <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm hover:from-purple-500 hover:to-blue-500 selectionRing active:from-purple-700 active:to-blue-700" id="generateBtn1"
+                                     <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r bg-[#334977]"
                                         onClick={()=>{
                                             handleClick(document_id)
                                             setTemplateResponseData(null)
@@ -1614,7 +1631,7 @@ export default function EditDocuments() {
                                     >
                                     {/* <span className="relative">New outputs {ContentOutputNumber.toString()}</span> */}
                                     <span className="relative">
-                                      New outputs 2
+                                      New outputs {ContentOutputNumber}
                                     </span>
 
                                     </button>
@@ -1626,7 +1643,8 @@ export default function EditDocuments() {
                                           } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
 
                                     onClick={()=>{
-                                        // get_history()
+                                      // if()
+                                        // get_history(templateValue)
                                         setShowHideHistory(true)
                                         // setTemplateResponseData(null)
                                     }}>
@@ -1709,6 +1727,9 @@ export default function EditDocuments() {
                       )
                       )
                       }
+                      {page=="workflow" &&
+                        <WorkflowSteps/>
+                      }
                     {/* ===================================================== */}
 
                     {/* ===================Left side whole template Render================================== */}
@@ -1789,18 +1810,7 @@ export default function EditDocuments() {
             </div>
           </div>
           <div className="fixed z-9999 top-16 left-16 right-16 bottom-16 pointer-events-none"></div>
-          <noscript><img height="1" width="1" className="hidden" alt="" src="https://px.ads.linkedin.com/collect/?pid=3958300&amp;fmt=gif" /></noscript>
-          <div className="fixed block z-30  bottom-5 right-5">
-            {/* <div className="flex items-center space-x-3">
-          <button type="button" className="transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-full px-2 py-1 text-xs text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm hover:from-purple-500 hover:to-blue-500 selectionRing active:from-purple-700 active:to-blue-700 aspect-1" id="help-menu-button" aria-haspopup="true">
-              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18.1523 25.4766C18.1523 23.918 18.3457 22.6758 18.7324 21.75C19.1191 20.8242 19.8809 19.8105 21.0176 18.709C22.166 17.5957 22.8926 16.8047 23.1973 16.3359C23.666 15.6211 23.9004 14.8477 23.9004 14.0156C23.9004 12.9141 23.625 12.0762 23.0742 11.502C22.5352 10.916 21.7383 10.623 20.6836 10.623C19.6758 10.623 18.8613 10.9102 18.2402 11.4844C17.6309 12.0469 17.3262 12.8145 17.3262 13.7871H13.0547C13.0781 11.7129 13.7812 10.0723 15.1641 8.86523C16.5586 7.6582 18.3984 7.05469 20.6836 7.05469C23.0391 7.05469 24.873 7.65234 26.1855 8.84766C27.5098 10.043 28.1719 11.7129 28.1719 13.8574C28.1719 15.7676 27.2812 17.6484 25.5 19.5L23.3379 21.627C22.5645 22.5059 22.166 23.7891 22.1426 25.4766H18.1523ZM17.8535 30.9434C17.8535 30.252 18.0703 29.6953 18.5039 29.2734C18.9375 28.8398 19.5234 28.623 20.2617 28.623C21.0117 28.623 21.6035 28.8457 22.0371 29.291C22.4707 29.7246 22.6875 30.2754 22.6875 30.9434C22.6875 31.5879 22.4766 32.127 22.0547 32.5605C21.6328 32.9941 21.0352 33.2109 20.2617 33.2109C19.4883 33.2109 18.8906 32.9941 18.4688 32.5605C18.0586 32.127 17.8535 31.5879 17.8535 30.9434Z" fill="currentColor"></path>
-                </svg>
-              </span>
-          </button>
-        </div> */}
-          </div>
+          
         </div>
         {/* ============================== */}
       </div>

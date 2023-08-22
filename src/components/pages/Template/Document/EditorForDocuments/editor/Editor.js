@@ -35,7 +35,6 @@ export default function Editor({ data, setData }) {
 		document_content:document_data
 	}
 	const resp=await patchData(formData,BACKEND_URL+BACK_END_API_DOCUMENTS_PATCH+"/"+document_id+"/",TOKEN)
-	// const resp=await patchData(formData,"http://localhost:8000/admin/documentsData/documents/"+"/"+document_id+"/",TOKEN)
 	}
 
 	const ReactEditorJS = createReactEditorJS();

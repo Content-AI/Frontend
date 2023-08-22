@@ -145,4 +145,5 @@ export const BACK_END_API_FAV ="/v1/template/favorite/";
 export const BACK_END_API_TRACK_USER ="/v1/accounts/acc/";
 
 export const BACK_END_API_WORKFLOW ="/v1/workflow/data";
+export const BACK_END_API_SINGLE_WORKFLOW ="/v1/workflow/single_workflow/";
 
