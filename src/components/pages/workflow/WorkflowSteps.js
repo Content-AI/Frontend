@@ -148,79 +148,100 @@ const WorkflowSteps = () => {
 
 
   return (
+
     <div className="container mx-auto py-8">
-    {workFlowData && workFlowData[0].WorkFlowTemplateId.map((step, stepIndex) => (
-      <div key={step.id} className="mb-8">
-      <h2 className="text-xl font-bold">{`Step ${stepIndex + 1}`}</h2>
-        <h2 className="text-xl font-bold">{step.title}</h2>
-        {step.inner_fields.map((field) => (
-          <div key={field.id} className="mb-4">
-            <label className="block font-bold mb-1">{field.label_title}</label>
-            {field.component === 'textarea' ? (
-              <div className="relative">
-                <textarea
-                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder={field.placeholder}
-                  value={inputValues[stepIndex]?.[field.label_title] || ''}
-                  onChange={(e) => handleInputChange(stepIndex, field.label_title, e.target.value)}
-                  disabled={!isFirstStepSubmitted && stepIndex !== currentStep}
-                />
-                <div className="absolute bottom-0 right-0 text-xs text-gray-500">
-                  {inputValues[stepIndex]?.[field.label_title]?.length || 0}/{field.range_of_text}
+    {workFlowData &&
+      workFlowData[0].WorkFlowTemplateId.map((step, stepIndex) => (
+        <div key={step.id} className="mb-8">
+          <h2 className="text-xl font-bold">{`Step ${stepIndex + 1}`}</h2>
+          <h2 className="text-xl font-bold">{step.title}</h2>
+          {step.inner_fields.map((field) => (
+            <div key={field.id} className="mb-4">
+              <label className="block font-bold mb-1">{field.label_title}</label>
+              {field.component === 'textarea' ? (
+                <div className="relative">
+                  <textarea
+                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={field.placeholder}
+                    value={inputValues[stepIndex]?.[field.label_title] || ''}
+                    onChange={(e) =>
+                      handleInputChange(stepIndex, field.label_title, e.target.value)
+                    }
+                    disabled={
+                      (!isFirstStepSubmitted || stepIndex !== currentStep) &&
+                      stepIndex !== currentStep
+                    }
+                  />
+                  <div className="absolute bottom-0 right-0 text-xs text-gray-500">
+                    {inputValues[stepIndex]?.[field.label_title]?.length || 0}/
+                    {field.range_of_text}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <select
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={inputValues[stepIndex]?.[field.label_title] || ''}
-                onChange={(e) => handleInputChange(stepIndex, field.label_title, e.target.value)}
-                disabled={!isFirstStepSubmitted && stepIndex !== currentStep}
-              >
-                {/* Options */}
-              </select>
-            )}
-          </div>
-        ))}
-        <div className="flex space-x-4">
-          <button
-            className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${
-              isLoading[stepIndex] ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            onClick={(e) => {
-              handleSubmit(e, stepIndex);
-              setIsFirstStepSubmitted(true);
-            }}
-            disabled={
-              isLoading[stepIndex] || (!isFirstStepSubmitted && stepIndex !== currentStep)
-            }
-          >
-            {isLoading[stepIndex] ? 'Loading...' : 'Submit'}
-          </button>
-          {stepIndex === currentStep && (
+              ) : (
+                <select
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={inputValues[stepIndex]?.[field.label_title] || ''}
+                  onChange={(e) =>
+                    handleInputChange(stepIndex, field.label_title, e.target.value)
+                  }
+                  disabled={
+                    (!isFirstStepSubmitted || stepIndex !== currentStep) &&
+                    stepIndex !== currentStep
+                  }
+                >
+                  {/* Options */}
+                </select>
+              )}
+            </div>
+          ))}
+          <div className="flex space-x-4">
             <button
-              className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600`}
-              onClick={handleNextStep}
+              className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ${
+                isLoading[stepIndex] ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              onClick={(e) => {
+                handleSubmit(e, stepIndex);
+                setIsFirstStepSubmitted(true);
+              }}
               disabled={
-                isLoading[stepIndex] || (!isFirstStepSubmitted || stepIndex !== currentStep)
+                isLoading[stepIndex] ||
+                (!isFirstStepSubmitted && stepIndex !== currentStep)
               }
             >
-            {currentStep === workFlowData[0].WorkFlowTemplateId.length - 1 ? 'Finish' : 'Next'}
+              {isLoading[stepIndex] ? 'Loading...' : 'Submit'}
             </button>
-          )}
-        </div>
-        {randomOutputs[stepIndex] && (
-          <div className="mt-2 bg-gray-100 p-2 rounded">
-            <strong>Random Output:</strong>
-            <textarea
-              className="w-full mt-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={randomOutputs[stepIndex]}
-              onChange={(e) => handleRandomOutputChange(stepIndex, e.target.value)}
-            />
-           </div>
+            {stepIndex === currentStep && (
+              <button
+                className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600`}
+                onClick={handleNextStep}
+                disabled={
+                  isLoading[stepIndex] ||
+                  (!isFirstStepSubmitted || stepIndex !== currentStep)
+                }
+              >
+                {currentStep === workFlowData[0].WorkFlowTemplateId.length - 1
+                  ? 'Finish'
+                  : 'Next'}
+              </button>
+            )}
+          </div>
+          {randomOutputs[stepIndex] && (
+            <div className="mt-2 bg-gray-100 p-2 rounded">
+              <strong>Random Output:</strong>
+              <textarea
+                className="w-full mt-2 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={randomOutputs[stepIndex]}
+                onChange={(e) =>
+                  handleRandomOutputChange(stepIndex, e.target.value)
+                }
+              />
+            </div>
           )}
         </div>
       ))}
-    </div>
+  </div>
+
+
   );
 };
 
