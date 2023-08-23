@@ -35,6 +35,7 @@ import Chat from '../../../Icons/Chat'
 import Template from '../../../Icons/Template'
 
 import WorkflowSteps from "../../workflow/WorkflowSteps";
+import { _change_state_ } from "../../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate";
 
 
 export default function EditDocuments() {
@@ -91,6 +92,10 @@ export default function EditDocuments() {
 
   let EDITOR_TEXT = useSelector(
     (state) => state.SetEditorText
+  );
+
+  let TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate = useSelector(
+    (state) => state.SetTriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate.TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate
   );
 
   
@@ -197,7 +202,18 @@ export default function EditDocuments() {
       notifyerror("something went wrong refresh page")
     }
 
+    dispatch(_change_state_(false))
+
   }
+
+  useEffect(()=>{
+    if(TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate==true){
+        console.log("TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate : ",TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate)
+        seteditorData(null)
+        get_document_content(document_id,"")
+      }
+  },[TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate])
+  
 
 
   const get_custom_template_data = async(template_id) => {

@@ -147,3 +147,6 @@ export const BACK_END_API_TRACK_USER ="/v1/accounts/acc/";
 export const BACK_END_API_WORKFLOW ="/v1/workflow/data";
 export const BACK_END_API_SINGLE_WORKFLOW ="/v1/workflow/single_workflow/";
 
+export const BACK_END_API_WORKFLOW_ANSWER ="/v1/workflow/output";
+export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW ="/v1/workflow/select_tone";
+
