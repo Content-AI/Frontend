@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchData, postData } from '../../../apis/apiService';
-import { BACKEND_URL, BACK_END_API_SINGLE_WORKFLOW,BACK_END_API_WORKFLOW_ANSWER,BACK_API_LANG,BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW } from '../../../apis/urls';
+import { BACKEND_URL,BACK_END_API_WORKFLOW_INNER_ANSWER, BACK_END_API_SINGLE_WORKFLOW,BACK_END_API_WORKFLOW_ANSWER,BACK_API_LANG,BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW } from '../../../apis/urls';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -118,22 +118,8 @@ const WorkflowSteps = () => {
   const handleSubmit = async (event, stepIndex,title) => {
     event.preventDefault();
 
-    try{
-      console.log("stepIndex : ",stepIndex+1)
-      console.log("label title",workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"])
-      let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
-      
-      setInputValues((prevInputValues) => ({
-        ...prevInputValues,
-        [stepIndex+1]: {
-          ...prevInputValues[stepIndex],
-          data_title: "value",
-        },
-      }));
-    }catch(e){}
+
   
-
-
     if (inputValues[stepIndex]) {
         setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: true }));
         
@@ -160,10 +146,45 @@ const WorkflowSteps = () => {
         const response = await postData(formData,BACKEND_URL+BACK_END_API_WORKFLOW_ANSWER,TOKEN)
 
         if(response.status==200){
+
             const data=response.data
-            setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
-            setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
-            handleStepSubmit(stepIndex);
+            
+            try{
+              let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
+              const formDataInner={}
+              formDataInner[data_title] = data.resp_data
+              // set the another index value from previous data
+              const response_next_index=await postData(formDataInner,BACKEND_URL+BACK_END_API_WORKFLOW_INNER_ANSWER,TOKEN)
+              
+              if(response_next_index.status==200){
+                // console.log(response_next_index.data.resp_data)
+                try{
+                  let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
+                  setInputValues((prevInputValues) => ({
+                    ...prevInputValues,
+                    [stepIndex+1]: {
+                      ...prevInputValues[stepIndex],
+                      [data_title]: response_next_index.data.resp_data,
+                    },
+                  }));
+
+                  setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                  setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+                  handleStepSubmit(stepIndex);
+
+                }catch(e){
+                  
+                  setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                  setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+                  handleStepSubmit(stepIndex);
+                }
+                
+              }
+            }catch(e){
+              setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+              setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+              handleStepSubmit(stepIndex);
+          }
 
         }else{
             console.error('Error fetching random output:');
@@ -195,10 +216,10 @@ const WorkflowSteps = () => {
       setIsFirstStepSubmitted(false);
   
       // Clear input values for the next step
-      setInputValues((prevInputValues) => ({
-        ...prevInputValues,
-        [currentStep + 1]: {},
-      }));
+      // setInputValues((prevInputValues) => ({
+      //   ...prevInputValues,
+      //   [currentStep + 1]: {},
+      // }));
   
     }
   };

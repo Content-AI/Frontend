@@ -1294,7 +1294,7 @@ export default function EditDocuments() {
                               setTemplateData(null)
                               dispatch(_template_id_(null))
                               WholeTemplateApi()
-                              navigate("/template_data/563f60b8-2ae0-4f5a-b234-2be0f11c620f?template_editing=edit_by_user&template_used=redirect_from_doc_page&page=workflow")
+                              navigate("/template_data/563f60b8-2ae0-4f5a-b234-2be0f11c620f?template_editing=edit_by_user&template_used=redirect_from_doc_page")
                           }}>
                               <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                 <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
