@@ -8,6 +8,7 @@ import axios from 'axios';
 import "./style.css";
 import { useParams } from 'react-router-dom';
 import { _change_state_ } from '../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate';
+import Done from '../../Icons/Done';
 
 
 
@@ -108,10 +109,29 @@ const WorkflowSteps = () => {
     }
   };
 
+  useEffect(()=>{
+    // console.log(inputValues)
+    
+  },[inputValues])
 
 
   const handleSubmit = async (event, stepIndex,title) => {
     event.preventDefault();
+
+    try{
+      console.log("stepIndex : ",stepIndex+1)
+      console.log("label title",workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"])
+      let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
+      
+      setInputValues((prevInputValues) => ({
+        ...prevInputValues,
+        [stepIndex+1]: {
+          ...prevInputValues[stepIndex],
+          data_title: "value",
+        },
+      }));
+    }catch(e){}
+  
 
 
     if (inputValues[stepIndex]) {
@@ -238,6 +258,9 @@ const [inputValueselect, setInputValueselect] = useState("");
   };
 
 
+  // useEffect(()=>{
+  //   console.log("currentStep : ",currentStep)
+  // },[currentStep])
 
 
   return (
@@ -348,9 +371,20 @@ const [inputValueselect, setInputValueselect] = useState("");
                                   <div className="item-center self-center italic text-gray-600 dark:text-gray-400">
                                       <div className="pr-3">Step</div>
                                   </div>
-                                  <div className="mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:bg-gray-900 dark:text-white dark:ring-gray-600">
-                                      <div className="self-center text-center text-2xl font-extrabold leading-4 dark:text-gray-400">{stepIndex + 1}</div>
-                                  </div>
+                                  {currentStep>=stepIndex+1
+                                  ?
+                                    <div className="mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:bg-gray-900 dark:text-white dark:ring-gray-600">
+                                        <div className="self-center text-center text-2xl font-extrabold leading-4 dark:text-gray-400">
+                                          <Done/>
+                                        </div>
+                                    </div>
+                                  :
+                                    <div className="mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:bg-gray-900 dark:text-white dark:ring-gray-600">
+                                        <div className="self-center text-center text-2xl font-extrabold leading-4 dark:text-gray-400">
+                                          {stepIndex + 1}
+                                        </div>
+                                    </div>
+                                  }
                                   </div>
                                   <div className="left-1/2 h-10 self-center border-l-2 border-gray-200 dark:border-gray-600"></div>
                               </div>

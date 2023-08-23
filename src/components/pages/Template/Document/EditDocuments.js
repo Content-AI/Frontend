@@ -208,7 +208,6 @@ export default function EditDocuments() {
 
   useEffect(()=>{
     if(TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate==true){
-        console.log("TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate : ",TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate)
         seteditorData(null)
         get_document_content(document_id,"")
       }
