@@ -9,12 +9,18 @@ import "./style.css";
 import { useParams } from 'react-router-dom';
 import { _change_state_ } from '../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate';
 import Done from '../../Icons/Done';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 
 const WorkflowSteps = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
 
   const [workFlowData, setWorkFlowData] = useState(null);
   const [inputValues, setInputValues] = useState({});
@@ -116,82 +122,110 @@ const WorkflowSteps = () => {
 
 
   const handleSubmit = async (event, stepIndex,title) => {
+
+
     event.preventDefault();
+    
+    // let hasMissingRequiredFields = false;
+
+    // notify from here as Toast to fill the data in textarea
+    
+    let hasMissingRequiredFields = false;
+    try {
+      let fill_data = workFlowData[0].WorkFlowTemplateId[stepIndex]["inner_fields"];
+    
+      fill_data.forEach(field => {
+        // Check if the field is required and if the value is empty or null
+        if (field.required && !inputValues[stepIndex]?.[field.label_title]) {
+          notifyerror(field.label_title + " is required");
+          hasMissingRequiredFields = true;
+        }
+      });
+    } catch (e) {
+      // hasMissingRequiredFields = true;
+    }
 
 
-  
-    if (inputValues[stepIndex]) {
+    if (hasMissingRequiredFields) {
+    } else {
+      // All required fields are present, log "passed"
+      if (inputValues[stepIndex]) {
+
+
         setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: true }));
         
         
         // Create an object with input name and value
         const inputData = {};
         for (const fieldName in inputValues[stepIndex]) {
-            inputData[fieldName] = inputValues[stepIndex][fieldName];
+          inputData[fieldName] = inputValues[stepIndex][fieldName];
         }
+  
         const formData=inputData
         formData["Generate only"]=title
-
+        
         if(isSwitchOn){
           formData["Context"]=textareaValue
         }
-
+        
         formData["document_id"]=document_id
+  
+  
         if (inputValueselect!=null && inputValueselect!="") {
-            formData["Tone"]=inputValueselect
+          formData["Tone"]=inputValueselect
         }
         
-        // return true
-
-        const response = await postData(formData,BACKEND_URL+BACK_END_API_WORKFLOW_ANSWER,TOKEN)
-
-        if(response.status==200){
-
-            const data=response.data
-            
-            try{
-              let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
-              const formDataInner={}
-              formDataInner[data_title] = data.resp_data
-              // set the another index value from previous data
-              const response_next_index=await postData(formDataInner,BACKEND_URL+BACK_END_API_WORKFLOW_INNER_ANSWER,TOKEN)
+          const response = await postData(formData,BACKEND_URL+BACK_END_API_WORKFLOW_ANSWER,TOKEN)
+  
+          if(response.status==200){
+  
+              const data=response.data
               
-              if(response_next_index.status==200){
-                // console.log(response_next_index.data.resp_data)
-                try{
-                  let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
-                  setInputValues((prevInputValues) => ({
-                    ...prevInputValues,
-                    [stepIndex+1]: {
-                      ...prevInputValues[stepIndex],
-                      [data_title]: response_next_index.data.resp_data,
-                    },
-                  }));
-
-                  setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
-                  setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
-                  handleStepSubmit(stepIndex);
-
-                }catch(e){
-                  
-                  setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
-                  setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
-                  handleStepSubmit(stepIndex);
-                }
+              try{
+                let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
+                const formDataInner={}
+                formDataInner[data_title] = data.resp_data
+                // set the another index value from previous data
+                const response_next_index=await postData(formDataInner,BACKEND_URL+BACK_END_API_WORKFLOW_INNER_ANSWER,TOKEN)
                 
-              }
-            }catch(e){
-              setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                if(response_next_index.status==200){
+                  // console.log(response_next_index.data.resp_data)
+                  try{
+                    let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
+                    setInputValues((prevInputValues) => ({
+                      ...prevInputValues,
+                      [stepIndex+1]: {
+                        ...prevInputValues[stepIndex],
+                        [data_title]: response_next_index.data.resp_data,
+                      },
+                    }));
+  
+                    setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                    setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+                    handleStepSubmit(stepIndex);
+  
+                  }catch(e){
+                    
+                    setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                    setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+                    handleStepSubmit(stepIndex);
+                  }
+                  
+                }
+              }catch(e){
+                setRandomOutputs((prevRandomOutputs) => ({ ...prevRandomOutputs, [stepIndex]: data.resp_data }));
+                setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
+                handleStepSubmit(stepIndex);
+            }
+  
+          }else{
+              console.error('Error fetching random output:');
               setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
-              handleStepSubmit(stepIndex);
           }
-
-        }else{
-            console.error('Error fetching random output:');
-            setIsLoading((prevIsLoading) => ({ ...prevIsLoading, [stepIndex]: false }));
-        }
-      
-    }
+        
+      }
+    }        
+  
   };
 
 
@@ -210,18 +244,40 @@ const WorkflowSteps = () => {
 
 
   const handleNextStep = () => {
-    dispatch(_change_state_(true))
-    if (currentStep < workFlowData[0].WorkFlowTemplateId.length - 1) {
-      setCurrentStep(currentStep + 1);
-      setIsFirstStepSubmitted(false);
-  
-      // Clear input values for the next step
-      // setInputValues((prevInputValues) => ({
-      //   ...prevInputValues,
-      //   [currentStep + 1]: {},
-      // }));
-  
+
+
+    let hasMissingRequiredFields = false;
+    try {
+      let fill_data = workFlowData[0].WorkFlowTemplateId[currentStep]["inner_fields"];
+    
+      fill_data.forEach(field => {
+        // Check if the field is required and if the value is empty or null
+        if (field.required && !inputValues[currentStep]?.[field.label_title]) {
+          notifyerror(field.label_title + " is required");
+          hasMissingRequiredFields = true;
+        }
+      });
+    } catch (e) {
+      // hasMissingRequiredFields = true;
     }
+
+
+    if (hasMissingRequiredFields) {
+      return true
+    } else {
+        dispatch(_change_state_(true))
+        if (currentStep < workFlowData[0].WorkFlowTemplateId.length - 1) {
+          setCurrentStep(currentStep + 1);
+          setIsFirstStepSubmitted(false);
+      
+          // Clear input values for the next step
+          // setInputValues((prevInputValues) => ({
+          //   ...prevInputValues,
+          //   [currentStep + 1]: {},
+          // }));
+
+        }
+      }
   };
 
 
@@ -279,9 +335,15 @@ const [inputValueselect, setInputValueselect] = useState("");
   };
 
 
-  // useEffect(()=>{
-  //   console.log("currentStep : ",currentStep)
-  // },[currentStep])
+// =========generate single or all======
+const [isOpenOptionGenerateOrAll, setIsOpenOptionGenerateOrAll] = useState(
+  false
+);
+
+const toggleDropdown = () => {
+  setIsOpenOptionGenerateOrAll(!isOpenOptionGenerateOrAll);
+};
+
 
 
   return (
@@ -491,7 +553,7 @@ const [inputValueselect, setInputValueselect] = useState("");
                                                                   value={inputValueselect}
                                                                   onChange={handleInputChangeselect}
                                                                   onFocus={() => setIsOpenselect(false)}
-                                                                  className="w-full px-3 py-2 border rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                  className="w-full px-3 py-2 border text-sm font-normal rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                                   placeholder="Type  Witty , Normal , Professional ...."
                                                                   />
                                                                   <button
@@ -586,7 +648,74 @@ const [inputValueselect, setInputValueselect] = useState("");
                                               <div className="relative inline-block text-left">
                                               <div className="relative text-sm font-normal leading-tight text-gray-600 shadow-sm">
 
-                                                  <button 
+                                        {/* ===========generate all or once======= */}
+                                        
+                                        {stepIndex==0
+                                          ?
+                                          <>
+                                            <div className="group cursor-pointer">
+                                              <div
+                                                className="px-4 py-2 rounded-lg border border-gray-300 bg-[#334977] text-white flex items-center justify-between"
+                                                onClick={toggleDropdown}
+                                              >
+                                                {isLoading[stepIndex]
+                                                  ?
+                                                      <>
+                                                        <div class="w-4 h-4 border-t-2 border-white mr-2 border-solid rounded-full animate-spin">
+                                                        </div>
+                                                          Generating
+                                                      </>
+                                                :
+                                                      <p>
+                                                        Generate
+                                                      </p>
+                                                }
+                                                
+                                                    <div className="aspect-1 ml-1 mt-1">
+                                                        <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                                        <path d="M4,6.19c1.18,1.44,1.98,2.29,3.17,3.31,.48,.41,1.18,.41,1.66,0,1.18-1.02,1.99-1.87,3.17-3.31" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                                                        </path>
+                                                        </svg>
+                                                    </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  isOpenOptionGenerateOrAll ? "block" : "hidden"
+                                                } origin-top-right absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                                              >
+                                                <button 
+                                                  className={`flex flex-wrap items-start  w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 sm:col-span-3 md:flex-nowrap ${
+                                                            (!isFirstStepSubmitted || stepIndex !== currentStep) && stepIndex !== currentStep
+                                                                ? 'bg-slate-400 ring-gray-200 dark:ring-gray-300'
+                                                                : ''
+                                                            } ${isLoading[stepIndex] ? 'opacity-50 cursor-not-allowed' : ''}  px-3 h-[35px] selectionRing inline-flex w-full items-center justify-between space-x-2 truncate text-black`}
+
+                                                        onClick={(e) => {
+                                                            handleSubmit(e, stepIndex,step.title);
+                                                            setIsFirstStepSubmitted(true);
+                                                            setIsOpenOptionGenerateOrAll(false)
+                                                        }}
+                                                        disabled={
+                                                            isLoading[stepIndex] ||
+                                                            (!isFirstStepSubmitted && stepIndex !== currentStep)
+                                                    }
+
+                                                >
+                                                  Generate
+                                                </button>
+                                                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                onClick={()=>{
+                                                  notifysucces("comming soon")
+                                                }}>
+                                                  All
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </>
+                                          :
+                                          <>
+                                          <button 
                                                       type="button"
                                                       className={`flex flex-wrap items-start rounded-xl shadow-xl ring-1 sm:col-span-3 md:flex-nowrap ${
                                                           (!isFirstStepSubmitted || stepIndex !== currentStep) && stepIndex !== currentStep
@@ -617,20 +746,12 @@ const [inputValueselect, setInputValueselect] = useState("");
                                                         </p>
                                                     }
                                                   </div>
-
-                                                  {stepIndex==0
-                                                  ?
-                                                  <div className="aspect-1">
-                                                      <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                                      <path d="M4,6.19c1.18,1.44,1.98,2.29,3.17,3.31,.48,.41,1.18,.41,1.66,0,1.18-1.02,1.99-1.87,3.17-3.31" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-                                                      </path>
-                                                      </svg>
-                                                  </div>
-                                                  :
-                                                      null
-                                                  }
                                                   </button>
+                                          </>
+
+                                        }
+
+                                        {/* ===========generate all or once======= */}
 
                                               </div>
                                               </div>

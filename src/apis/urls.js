@@ -1,6 +1,6 @@
-BACKEND_URL = "http://localhost:8000"
+// BACKEND_URL = "http://localhost:8000"
 // BACKEND_URL = "https://copyai.pythonanywhere.com";
-// BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
 export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =

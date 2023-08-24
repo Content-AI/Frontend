@@ -187,8 +187,17 @@ export default function Login() {
                 navigate("/");
             }
             return true
+        }else{
+            try{
+                if(response.response.data.detail=="You do not have permission to perform this action."){
+                    notifyerror("Try after 3 minutes")
+                }else{
+                    notifyerror("Invalid token")
+                }
+            }catch(e){
+                notifyerror("Invalid token")
+            }
         }
-        notifyerror("Invalid token")
         setwholePageLoading(false)
 
     }
