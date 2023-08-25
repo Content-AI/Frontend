@@ -214,8 +214,6 @@ export default function Login() {
     };
 
 
-
-
     return (
         <>
             {popupgoogle ? <GoogleOneTap /> : null}
