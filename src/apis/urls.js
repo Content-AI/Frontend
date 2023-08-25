@@ -4,10 +4,13 @@
 
 export const FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
 
+// export const FRONT_END_URL_LINKEDIN = "http://localhost:3000"
+export const FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+
 const GOOGLE_PARAM = "/google"
 const LINKEDIN_PARAM = "/linkedin"
 
-export const FRONT_END_URL_PARAM = `${FRONT_END_URL}${LINKEDIN_PARAM}`
+export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
 
 
 BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
