@@ -207,8 +207,8 @@ const Template = ({AUTH_TOKEN}) => {
 
   const handleCategoryClick = (selectedCategory) => {
     console.log("selectedCategory",selectedCategory)
-    if(selectedCategory=="custom"){
-      setCategoryTmp(["custom"]);
+    if(selectedCategory=="custom" || selectedCategory=="Custom"){
+      setCategoryTmp(["Custom","custom"]);
       get_custome_template()
       return true
     }
