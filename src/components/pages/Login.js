@@ -1,18 +1,21 @@
+
+
+
 import React, { useEffect, useState } from 'react';
 import { LoginData } from '../../apis/apiService';
 
 import toast, { Toaster } from 'react-hot-toast';
 
-import { LinkedIn } from 'react-linkedin-login-oauth2';
-// You can use provided image shipped by this package or using your own
-import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
 
-import LinkedInLogin from '../LinkedInSignUp';
+import LinkedInLogin from './LoginUpdate/LinkedInSignUp';
+
 
 // import FacebookLogin from 'react-facebook-login';
 
+// import GoogleOAuthButton from './LoginUpdate/GoogleLoginButton';
+
 import { useNavigate } from "react-router-dom";
-import Ga from './Ga';
+import Ga from './LoginUpdate/Ga';
 import { FcGoogle } from 'react-icons/fc';
 // import { FaFacebook } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
@@ -39,7 +42,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 
 import Button from '@mui/material/Button';
-import GoogleLoginSigup from './GoogleLoginSigup';
+import GoogleLoginSigup from './LoginUpdate/GoogleLoginSigup';
 
 
 import Backdrop from '@mui/material/Backdrop';
@@ -53,10 +56,10 @@ import { FacebookLoginButton } from "react-social-login-buttons";
 import LoadingPage from '../LoadingPage';
 import axios from 'axios';
 
-import FacebookLoginPage from './FacebookLoginPage'
-import GoogleOneTap from './GoogleOneTap';
+import FacebookLoginPage from './LoginUpdate/FacebookLoginPage'
+import GoogleOneTap from './LoginUpdate/GoogleOneTap';
 import { useLocation } from "react-router-dom";
-import LinkedInSignUp from '../LinkedInSignUp';
+import LinkedInSignUp from './LoginUpdate/LinkedInSignUp';
 
 const style = {
     position: 'absolute',
@@ -76,12 +79,15 @@ export default function Login() {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
+    
 
 
     const searchParams = new URLSearchParams(location.search);
     const subscription_type = searchParams.get('subscription_type');
     const plan = searchParams.get('plan');
     const invitation_code = searchParams.get('invitation_code');
+
+
 
 
     const [open, setOpen] = React.useState(false);
@@ -252,27 +258,7 @@ export default function Login() {
                         <GoogleLoginSigup />
                     </div>
                     <div className='md:ml-4 lg:ml-4 mt-3 '>
-
-                        {/* <LinkedInSignUp/> */}
-                        {/* <LinkedIn
-clientId="86nbyoaj3py59q"
-redirectUri="http://localhost:3000"
-onSuccess={(code) => {
-console.log(code);
-}}
-onError={(error) => {
-console.log(error);
-}}
->
-{({ linkedInLogin }) => (
-<img
-onClick={linkedInLogin}
-src={linkedin}
-alt="Sign in with Linked In"
-style={{ maxWidth: '210px',height:"38px", cursor: 'pointer' }}
-/>
-)}
-</LinkedIn> */}
+                        <LinkedInSignUp />
                     </div>
                 </div>
 

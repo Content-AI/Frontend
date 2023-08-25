@@ -1,29 +1,29 @@
 import React , { useState,useEffect} from 'react'
 import axios from "axios";
 
-import { BACKEND_URL, BACK_API_GOOGLE } from '../../apis/urls';
+import { BACKEND_URL, BACK_API_GOOGLE } from '../../../apis/urls';
 
 import { useSelector, useDispatch } from "react-redux";
 
 import {
   _save_token_,
   _delete_token_,
-} from "../../features/AuthenticationToken";
+} from "../../../features/AuthenticationToken";
 import {
   _save_user_profile,_delete_user_profile
-} from "../../features/Fullprofile";
+} from "../../../features/Fullprofile";
 import {
   _save_survey_
-} from "../../features/ThreeSteps";
+} from "../../../features/ThreeSteps";
 import {
   _load_screen_
-} from "../../features/LoadingScreen";
+} from "../../../features/LoadingScreen";
 
 
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
-import LoadingPage from '../LoadingPage';
+import LoadingPage from '../../LoadingPage';
 
 const GoogleOneTap = () => {
     let navigate = useNavigate();

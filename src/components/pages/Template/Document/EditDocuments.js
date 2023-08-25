@@ -199,7 +199,7 @@ export default function EditDocuments() {
         navigate("/template")
       }
     } catch (e) {
-      notifyerror("something went wrong refresh page")
+      // notifyerror("something went wrong refresh page")
     }
 
     dispatch(_change_state_(false))

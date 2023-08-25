@@ -1,5 +1,15 @@
 // BACKEND_URL = "http://localhost:8000"
-// BACKEND_URL = "https://copyai.pythonanywhere.com";
+
+// export const FRONT_END_URL = "http://localhost:3000"
+
+export const FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+
+const GOOGLE_PARAM = "/google"
+const LINKEDIN_PARAM = "/linkedin"
+
+export const FRONT_END_URL_PARAM = `${FRONT_END_URL}${LINKEDIN_PARAM}`
+
+
 BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
 export var BACKEND_URL;
 
@@ -17,6 +27,7 @@ export const BACK_API_UPDATE_USER = "/v1/user/data/";
 export const BACK_API_GET_COMPANY_DETAILS = "/v1/company/data";
 
 export const BACK_API_GOOGLE = "/v1/accounts/register/google/";
+export const BACK_API_LINKEDIN = "/v1/accounts/register/linkedin/";
 
 export const BACK_API_FACEBOOK = "/v1/accounts/register/facebook/";
 

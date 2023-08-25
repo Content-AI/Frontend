@@ -71,7 +71,7 @@ const ListOfDocument = (props) => {
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
-        notifyerror("something went wrong")
+        // notifyerror("something went wrong")
       }
     }
     if(props.SHOW=="active" || props.ShowDashboard==true){
@@ -80,7 +80,7 @@ const ListOfDocument = (props) => {
       if (resp.status == 200) {
         setdocumentData(resp.data.results)
       } else {
-        notifyerror("something went wrong")
+        // notifyerror("something went wrong")
       }
     }
 
@@ -99,7 +99,7 @@ const ListOfDocument = (props) => {
           }
 
         } else {
-          notifyerror("something went wrong")
+          // notifyerror("something went wrong")
         }
       }
 
@@ -117,7 +117,7 @@ const ListOfDocument = (props) => {
           }
 
         } else {
-          notifyerror("something went wrong")
+          // notifyerror("something went wrong")
         }
       }
     
@@ -145,7 +145,7 @@ const ListOfDocument = (props) => {
       notifysuccess(message)
       setSelectedItems([])
     } else {
-      notifyerror("something went wrong")
+      // notifyerror("something went wrong")
     }
   }
   const _update_name_ = async (data, id, message) => {
@@ -157,7 +157,7 @@ const ListOfDocument = (props) => {
       setSelectedItems([])
       setRenameDiv(false)
     } else {
-      notifyerror("something went wrong")
+      // notifyerror("something went wrong")
     }
   }
 

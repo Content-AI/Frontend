@@ -26,8 +26,8 @@ import { useNavigate } from "react-router-dom";
 import Login from './components/pages/Login';
 import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
-import { fetchData,HitUrl } from './apis/apiService';
-import { BACK_END_API_PROFILE,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
+import { fetchData,HitUrl,LoginData, postData } from './apis/apiService';
+import { BACK_END_API_PROFILE,BACK_API_LINKEDIN,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
 import LoadingPage from './components/LoadingPage';
 import Subscription from './components/pages/Subscription/Subscription'
 import { useLocation } from "react-router-dom";
@@ -46,6 +46,10 @@ function App() {
   const notifysucces = (message) => toast.success(message);
 
   const [ subcheck,setsubcheck]=useState(true)
+  
+  const [ linkedInAuthToken,setlinkedInAuthToken]=useState(null)
+
+
   const [ data_of_planning,setdata_of_planning]=useState([])
   const [invitation_code_show, setinvitation_code_show] = useState(false);
 
@@ -56,6 +60,11 @@ function App() {
   const invitation_code = searchParams.get('invitation_code');
   
   const message_from_subscription = searchParams.get('message');
+  
+
+
+  const linkedInCode = searchParams.get('code');
+
 
 
   let TOKEN = useSelector(
@@ -78,6 +87,39 @@ function App() {
   useEffect(() => {
     if(location.pathname.includes("/invitation")){
       setinvitation_code_show(true);
+    }
+  }, []);
+
+
+
+  // proceed towards linkedIn Login
+
+  const get_linkedIn_token = async() =>{
+    console.log("login via linked IN")
+    dispatch(_load_screen_(true))
+    const formData = {
+      code:linkedInAuthToken
+    }
+    const response = await LoginData(formData,BACKEND_URL+BACK_API_LINKEDIN)
+    if (response.status == 200) {
+      localStorage.setItem("token", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+      dispatch(_save_token_(response.data.access));
+      dispatch(_save_survey_(response.data.three_steps))
+      localStorage.setItem("three_steps", response.data.three_steps)
+      navigate("/")
+    }
+  }
+
+  useEffect(()=>{
+    if(linkedInAuthToken!=null){
+      get_linkedIn_token()
+    }
+  },[linkedInAuthToken])
+
+  useEffect(() => {
+    if(linkedInCode!=null){
+      setlinkedInAuthToken(linkedInCode)
     }
   }, []);
 

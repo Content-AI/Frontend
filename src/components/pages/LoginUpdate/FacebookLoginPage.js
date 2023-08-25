@@ -1,5 +1,5 @@
 import React ,{useEffect, useState} from 'react';
-import { LoginData } from '../../apis/apiService';
+import { LoginData } from '../../../apis/apiService';
 
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -16,16 +16,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
     _save_token_,_delete_token_
-  } from "../../features/AuthenticationToken";
+  } from "../../../features/AuthenticationToken";
 import {
     _save_survey_
-  } from "../../features/ThreeSteps";
+  } from "../../../features/ThreeSteps";
 
-import {BACKEND_URL,BACK_API_LOGIN_URL,BACK_TOKEN_RECEIVE,BACK_API_FACEBOOK} from '../../apis/urls'
+import {BACKEND_URL,BACK_API_LOGIN_URL,BACK_TOKEN_RECEIVE,BACK_API_FACEBOOK} from '../../../apis/urls'
 import Checkbox from '@mui/material/Checkbox';
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { LoginSocialFacebook } from "reactjs-social-login";
-import LoadingPage from '../LoadingPage';
+import LoadingPage from '../../LoadingPage';
 import axios from 'axios';
 
 const FacebookLoginPage = () => {
