@@ -3,6 +3,9 @@ import Settings from '../Settings'
 import LineCharComponent from './LineCharComponent'
 import Table from './Table';
 import { useSelector, useDispatch } from "react-redux";
+import { BACKEND_URL,BACK_END_API_COUNT_CUSTOM_TEMPLATE } from '../../../apis/urls';
+
+import TooltipInfo from '../../Icons/TooltipInfo';
 
 import {
   LineChart,
@@ -13,6 +16,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { fetchData } from '../../../apis/apiService';
 
 const data = [];
 
@@ -47,7 +51,7 @@ const CustomizedDot = (props) => {
 };
 
 
-const Usage = () => {
+const Usage = (props) => {
   
   
     const [pointSelectedPayload, setPointSelectedPayload] = useState(null);
@@ -56,6 +60,7 @@ const Usage = () => {
   let list_token_generated_by_user = useSelector(
     (state) => state.SetListTokenGeneratedByUser.ListTokenGeneratedByUser
   );
+
 
 
   useEffect(()=>{
@@ -116,6 +121,8 @@ const Usage = () => {
     }
   };
 
+
+
   
   return (
     <>
@@ -133,40 +140,42 @@ const Usage = () => {
   
         <div className="mb-6">
           <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-              <dt className="flex items-center truncate text-sm font-medium text-gray-500">
+            <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+              <div className="flex items-center text-sm font-medium text-gray-500">
                 <div>Words generated</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+                                      
+                  <TooltipInfo
+                    text="Usage of Token by User" 
+                  />
+                 
                 </div>
-              </dt>
-              <dd className="my-1 text-3xl font-semibold text-gray-900">{list_token_generated_by_user.total}</dd>
+              </div>
+              <div className="my-1 text-3xl font-semibold text-gray-900">{list_token_generated_by_user.total}</div>
             </div>
-            <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-              <dt className="flex items-center truncate text-sm font-medium text-gray-500">
+            {/* <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+              <div className="flex items-center text-sm font-medium text-gray-500">
                 <div>Active users</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+                  <TooltipInfo
+                    text="Active Users" 
+                  />
                 </div>
-              </dt>
-              <dd className="my-1 text-3xl font-semibold text-gray-900">1</dd>
-            </div>
-            <div title="info about creation" className="overflow-hidden rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-              <dt className="flex items-center truncate text-sm font-medium text-gray-500">
+              </div>
+              <div className="my-1 text-3xl font-semibold text-gray-900">1</div>
+            </div> */}
+            <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+              <div className="flex items-center  text-sm font-medium text-gray-500">
                 <div>Templates</div>
                 <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true" className="ml-2 h-4 w-4 text-gray-300 hover:text-gray-400">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+                  <TooltipInfo 
+                    text="Custom Template created by users"
+                  />
                 </div>
-              </dt>
-              <dd className="my-1 text-3xl font-semibold text-gray-900">
+              </div>
+              <div className="my-1 text-3xl font-semibold text-gray-900">
               {list_token_generated_by_user.count_template}
-              </dd>
+              </div>
             </div>
           </div>
         </div>

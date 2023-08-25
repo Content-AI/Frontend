@@ -29,6 +29,7 @@ import axios from "axios";
 import ResponseTemplate from "./ResponseTemplate";
 import { useSelector, useDispatch } from "react-redux";
 import { _save_details_ } from "../../../features/Subscriptions";
+import TooltipInfo from "../../Icons/TooltipInfo";
 
 
 // import ReactMarkdown from 'react-markdown'
@@ -669,7 +670,10 @@ useEffect(()=>{
                         <span className="md:whitespace-nowrap">
                           Language options
                         </span>{" "}
-                        <svg
+                        <TooltipInfo
+                            text="Create content in your chosen language efficiently and effectively for your needs." 
+                          />
+                        {/* <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -685,7 +689,7 @@ useEffect(()=>{
                             strokeLinejoin="round"
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           ></path>
-                        </svg>
+                        </svg> */}
                       </h3>
                     </div>
                     <div className="flex items-end justify-between gap-2">

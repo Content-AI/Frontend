@@ -28,6 +28,9 @@ export const BACK_END_API_PROFILE_UPDATE = "/v1/auth/users/";
 
 
 export const BACK_END_API_TEMPLATE = "/v1/template/data";
+
+export const BACK_END_API_COUNT_CUSTOM_TEMPLATE = "/v1/template/count_custom_template";
+
 export const BACK_END_API_TEMPLATE_IMP = "/v1/template/imp_template";
 export const BACK_END_API_CUSTOM_TEMPLATE = "/v1/custom_template/create_get/";
 export const BACK_END_API_GET_CUSTOM_TEMPLATE = "/v1/custom_template/get_single_template/";
