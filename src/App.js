@@ -27,7 +27,7 @@ import Login from './components/pages/Login';
 import Navbar from './components/NavBar/NavBar';
 import FirstStep from './components/pages/ThreeSteps/FirstStep';
 import { fetchData,HitUrl,LoginData, postData } from './apis/apiService';
-import { BACK_END_API_PROFILE,BACK_API_LINKEDIN,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
+import { BACK_END_API_PROFILE,BACK_API_LINKEDIN,BACK_API_GOOGLE_UPDATE,BACK_END_API_INITIAL_WORKSPACE,BACK_END_API_TRACK_USER,BACK_END_API_WORKSPACE,BACK_END_API_TOKEN_GENERATED,BACK_END_API_SUBCRIPTION_DETAILS,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK } from './apis/urls';
 import LoadingPage from './components/LoadingPage';
 import Subscription from './components/pages/Subscription/Subscription'
 import { useLocation } from "react-router-dom";
@@ -48,6 +48,7 @@ function App() {
   const [ subcheck,setsubcheck]=useState(true)
   
   const [ linkedInAuthToken,setlinkedInAuthToken]=useState(null)
+  const [ googleAuthToken,setgoogleInAuthToken]=useState(null)
 
 
   const [ data_of_planning,setdata_of_planning]=useState([])
@@ -64,6 +65,11 @@ function App() {
 
 
   const linkedInCode = searchParams.get('code');
+
+  const params = new URLSearchParams(window.location.hash.substring(1));
+  // Get the value of the access_token parameter of google auth
+  const google_auth_code = params.get('access_token');
+
 
 
 
@@ -93,9 +99,7 @@ function App() {
 
 
   // proceed towards linkedIn Login
-
   const get_linkedIn_token = async() =>{
-    console.log("login via linked IN")
     dispatch(_load_screen_(true))
     const formData = {
       code:linkedInAuthToken
@@ -111,15 +115,40 @@ function App() {
     }
   }
 
+  // proceed google login
+  const get_google_token = async() =>{
+    dispatch(_load_screen_(true))
+    const formData = {
+      code_google:googleAuthToken
+    }
+    const response = await LoginData(formData,BACKEND_URL+BACK_API_GOOGLE_UPDATE)
+    if (response.status == 200) {
+      localStorage.setItem("token", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+      dispatch(_save_token_(response.data.access));
+      dispatch(_save_survey_(response.data.three_steps))
+      localStorage.setItem("three_steps", response.data.three_steps)
+      navigate("/")
+    }
+  }
+
   useEffect(()=>{
     if(linkedInAuthToken!=null){
       get_linkedIn_token()
     }
   },[linkedInAuthToken])
+  useEffect(()=>{
+    if(googleAuthToken!=null){
+      get_google_token()
+    }
+  },[googleAuthToken])
 
   useEffect(() => {
     if(linkedInCode!=null){
       setlinkedInAuthToken(linkedInCode)
+    }
+    if(google_auth_code!=null){
+      setgoogleInAuthToken(google_auth_code)
     }
   }, []);
 

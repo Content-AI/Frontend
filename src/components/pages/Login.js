@@ -1,28 +1,14 @@
-
-
-
 import React, { useEffect, useState } from 'react';
 import { LoginData } from '../../apis/apiService';
 
 import toast, { Toaster } from 'react-hot-toast';
 
 
-import LinkedInLogin from './LoginUpdate/LinkedInSignUp';
-
-
-// import FacebookLogin from 'react-facebook-login';
-
-// import GoogleOAuthButton from './LoginUpdate/GoogleLoginButton';
+import GoogleAuthComponent from './LoginUpdate/GoogleAuthComponent';
 
 import { useNavigate } from "react-router-dom";
-import Ga from './LoginUpdate/Ga';
-import { FcGoogle } from 'react-icons/fc';
-// import { FaFacebook } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
-
 
 import OTPInput, { ResendOTP } from "otp-input-react";
-
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -38,26 +24,22 @@ import {
 } from "../../features/LoadingScreen";
 
 import { BACKEND_URL, BACK_API_LOGIN_URL, BACK_TOKEN_RECEIVE, BACK_API_FACEBOOK } from '../../apis/urls'
-import Checkbox from '@mui/material/Checkbox';
 
 
-import Button from '@mui/material/Button';
 import GoogleLoginSigup from './LoginUpdate/GoogleLoginSigup';
+
 
 
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
-
-import { LoginSocialFacebook } from "reactjs-social-login";
-import { FacebookLoginButton } from "react-social-login-buttons";
 import LoadingPage from '../LoadingPage';
-import axios from 'axios';
 
-import FacebookLoginPage from './LoginUpdate/FacebookLoginPage'
 import GoogleOneTap from './LoginUpdate/GoogleOneTap';
+
+
+
 import { useLocation } from "react-router-dom";
 import LinkedInSignUp from './LoginUpdate/LinkedInSignUp';
 
@@ -74,7 +56,6 @@ const style = {
 };
 
 export default function Login() {
-
 
     let navigate = useNavigate();
     const dispatch = useDispatch();
@@ -255,7 +236,8 @@ export default function Login() {
                 </div>
                 <div className="flex justify-center items-center p-6 flex-col sm:flex-row">
                     <div className="flex mt-3 ">
-                        <GoogleLoginSigup />
+                        {/* <GoogleLoginSigup /> */}
+                        <GoogleAuthComponent/>
                     </div>
                     <div className='md:ml-4 lg:ml-4 mt-3 '>
                         <LinkedInSignUp />

@@ -24,7 +24,7 @@ const LinkedInSignUp = () => {
           className="flex items-center bg-[#0288D1] text-white p-3 max-width:[400px] h-[40px] min-width:[200px] rounded cursor-pointer transition-transform transform"
         >
           <LinkedInIcon className="w-6 h-6 mr-2" /> {/* Adjust the width and height */}
-          Sign Up with LinkedIn
+          Login with LinkedIn
         </button>
     </div>
   );
