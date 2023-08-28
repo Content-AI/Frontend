@@ -22,6 +22,7 @@ import ChangeWorkSpace from '../../pages/ChangeWorkSpace';
 
 import TooltipInfo from '../../Icons/TooltipInfo';
 import Trailing from '../../Icons/Trailing';
+import ActivePlan from '../../Icons/ActivePlan';
 
 
 const ISwitch = styled((props) => (
@@ -173,6 +174,11 @@ const Subscription = (props) => {
     const [trail_premium_monthly, settrail_premium_monthly] = useState(false);
     const [trail_premium_yearly, settrail_premium_yearly] = useState(false);
     
+    const [active_starter_monthly, setactive_starter_monthly] = useState(false);
+    const [active_starter_yearly, setactive_starter_yearly] = useState(false);
+    const [active_premium_monthly, setactive_premium_monthly] = useState(false);
+    const [active_premium_yearly, setactive_premium_yearly] = useState(false);
+    
     const [all_cost_data,setall_cost_data] = useState([{
         plan:"starter",
         actual_plan:"starter",
@@ -199,8 +205,6 @@ const Subscription = (props) => {
           "plan_time":all_cost_data[0]["plan_time"],
         }
 
-        // console.log(formData)
-        // return true
         const resp = await postData(formData,BACKEND_URL+BACK_END_API_SUBCRIPTION_DIRECT,props.AUTH_TOKEN)
 
         if(resp.status==200){
@@ -291,6 +295,9 @@ const Subscription = (props) => {
                 if(subscriptions_details.user.status=="trial"){
                     settrail_starter_monthly(true)
                 }
+                if(subscriptions_details.user.status=="active"){
+                    setactive_starter_monthly(true)
+                }
             }
             if(subscriptions_details.user.plan=='premium' && subscriptions_details.user.subscription_type=="monthly"){
                 setisRadioChecked(false)
@@ -299,6 +306,9 @@ const Subscription = (props) => {
                 if(subscriptions_details.user.status=="trial"){
                     settrail_premium_monthly(true)
                 }
+                if(subscriptions_details.user.status=="active"){
+                    setactive_premium_monthly(true)
+                }
             }
             if(subscriptions_details.user.plan=='starter' && subscriptions_details.user.subscription_type=="annually"){
                 setIsCheckedPlan(true)
@@ -306,7 +316,9 @@ const Subscription = (props) => {
                 init_plan_time="yearly"
                 if(subscriptions_details.user.status=="trial"){
                     settrail_starter_yearly(true)
-                    
+                }
+                if(subscriptions_details.user.status=="active"){
+                    setactive_starter_yearly(true)
                 }
             }
             if(subscriptions_details.user.plan=='premium' && subscriptions_details.user.subscription_type=="annually"){
@@ -317,8 +329,11 @@ const Subscription = (props) => {
                 if(subscriptions_details.user.status=="trial"){
                     settrail_premium_yearly(true)
                 }
+                if(subscriptions_details.user.status=="active"){
+                    setactive_premium_yearly(true)
+                }
             }
-
+            
             setall_cost_data([{
                 plan:subscriptions_details.user.plan,
                 actual_plan:"",
@@ -513,6 +528,23 @@ const Subscription = (props) => {
                                             :
                                                 null
                                             }
+                                            {subscriptions_details!=null
+                                            ?
+                                            <>
+                                                {active_starter_monthly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] 
+                                                ?
+                                                    <ActivePlan/>
+                                                :""}
+                                                {active_starter_yearly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"]
+                                                ?
+                                                    <ActivePlan/>
+                                                :
+                                                    ""
+                                                }
+                                            </>
+                                            :
+                                                null
+                                            }
 
                                             </div>
                                             <div className="text-sm text-gray-600 mb-3">
@@ -612,6 +644,15 @@ const Subscription = (props) => {
                                                 <>
                                                     {trail_premium_monthly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<Trailing/>:""}
                                                     {trail_premium_yearly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<Trailing/>:""}
+                                                </>
+                                                :
+                                                    null
+                                                }
+                                                {subscriptions_details!=null
+                                                ?
+                                                <>
+                                                    {active_premium_monthly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<ActivePlan/>:""}
+                                                    {active_premium_yearly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<ActivePlan/>:""}
                                                 </>
                                                 :
                                                     null
