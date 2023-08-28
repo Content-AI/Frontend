@@ -1,10 +1,10 @@
 
-export const FRONT_END_URL = "http://localhost:3000"
-// export const FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+// export const FRONT_END_URL = "http://localhost:3000"
+export const FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
 
 
-export const FRONT_END_URL_LINKEDIN = "http://localhost:3000"
-// export const FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+// export const FRONT_END_URL_LINKEDIN = "http://localhost:3000"
+export const FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
 
 export const GOOGLE_PARAM = "/google"
 export const LINKEDIN_PARAM = "/linkedin"
@@ -12,14 +12,14 @@ export const LINKEDIN_PARAM = "/linkedin"
 export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
 
 
-export const FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
-// export const FRONT_END_URL_GOOGLE_PARAM = "https://copy-ai-ecru.vercel.app/google"
+// export const FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
+export const FRONT_END_URL_GOOGLE_PARAM = "https://copy-ai-ecru.vercel.app/google"
 
 
 
 
-BACKEND_URL = "http://localhost:8000"
-// BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+// BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
 
 export var BACKEND_URL;
 
