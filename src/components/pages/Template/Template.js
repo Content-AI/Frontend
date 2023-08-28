@@ -121,6 +121,19 @@ const Template = ({AUTH_TOKEN}) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
+
+  let subscriptions_check = useSelector(
+    (state) => state.SetSubscriptions.Subscriptions
+  );
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
+
   const notifyprogress = (message) => toast('Template comming soon',
   {
     icon: '👏',
@@ -349,6 +362,12 @@ const Template = ({AUTH_TOKEN}) => {
                 className="card flex p-6 border border-border rounded-xl cursor-pointer"
                 onClick={()=>{
                   // console.log(items.id)
+                  if(items.premium){
+                    if(subscriptions_check.status=="trial"){
+                      notifyerror("To use this Template you need to upgrade your plan")
+                      return true
+                    }
+                  }
                   if(items.custome=="user"){
                     navigate(`/template/${items.id}?custom=user`)
                   }else{

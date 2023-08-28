@@ -240,8 +240,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       );
       if (res_of_template.status == 200) {
         if(res_of_template.data.data[0]["content"]=="upgrade your plan"){
-          // dispatch(_save_details_(upgrade_plan))
           navigate("/settings/subscription_plan?message=upgrade")
+        }
+        if(res_of_template.data.data[0]["content"]=="To use Premium you need to upgrade your plan"){
+          notifysucces(res_of_template.data.data[0]["content"])
         }
         setTemplateResponseData(res_of_template.data.data);
         setProjectId(res_of_template.data.project_id);
