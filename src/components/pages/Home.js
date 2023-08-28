@@ -213,14 +213,16 @@ useEffect(()=>{
       </div>
 
     <div>
-      <h4 className="ml-10">Recent Documents</h4>
+
       <ListOfDocument
+          DASHBOARD={true}
           SHOW={"active"}
           AUTH_TOKEN={AUTH_TOKEN}
           search_bar={"off"}
           ShowDashboard="true"
           slice_data='4'
-        />
+      />
+
     </div>
 
 

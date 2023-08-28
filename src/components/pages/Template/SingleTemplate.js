@@ -32,6 +32,9 @@ import { _save_details_ } from "../../../features/Subscriptions";
 import TooltipInfo from "../../Icons/TooltipInfo";
 
 
+import SelectOptionsTemplate from "./SelectOptionsTemplate.js/SelectOptions";
+
+
 // import ReactMarkdown from 'react-markdown'
 // import rehypeKatex from 'rehype-katex'
 

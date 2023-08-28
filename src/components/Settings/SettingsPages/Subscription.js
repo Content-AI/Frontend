@@ -20,12 +20,8 @@ import { _chosen_workspace_id_ } from "../../../features/ChosenWorkspaceId";
 import { _save_sub_details_ } from "../../../features/SubscriptionsData";
 import ChangeWorkSpace from '../../pages/ChangeWorkSpace';
 
-
-
-
-import {
-    MdLogout,
-  } from "react-icons/md";
+import TooltipInfo from '../../Icons/TooltipInfo';
+import Trailing from '../../Icons/Trailing';
 
 
 const ISwitch = styled((props) => (
@@ -90,6 +86,9 @@ const Subscription = (props) => {
         (state) => state.SetSubscriptionsData.SubscriptionsData
       );
 
+
+    // console.log(subscriptions_details)
+
     const check_active_or_trail = async()=>{
 
         switch (true) {
@@ -98,7 +97,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "trial" &&
               subscriptions_details.user.subscription_type === "annually"
             ):
-              console.log("this 1");
               break;
           
             case (
@@ -106,7 +104,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "trial" &&
               subscriptions_details.user.subscription_type === "monthly"
             ):
-              console.log("this 2");
               break;
           
             case (
@@ -114,7 +111,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "trial" &&
               subscriptions_details.user.subscription_type === "annually"
             ):
-              console.log("this 3");
               break;
           
             case (
@@ -122,7 +118,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "trial" &&
               subscriptions_details.user.subscription_type === "monthly"
             ):
-              console.log("this 4");
               break;
           
             case (
@@ -130,7 +125,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "active" &&
               subscriptions_details.user.subscription_type === "annually"
             ):
-              console.log("this 5");
               break;
           
             case (
@@ -138,7 +132,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "active" &&
               subscriptions_details.user.subscription_type === "monthly"
             ):
-              console.log("this 6");
               break;
           
             case (
@@ -146,7 +139,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "active" &&
               subscriptions_details.user.subscription_type === "annually"
             ):
-              console.log("this 7");
               break;
           
             case (
@@ -154,7 +146,6 @@ const Subscription = (props) => {
               subscriptions_details.user.status === "active" &&
               subscriptions_details.user.subscription_type === "monthly"
             ):
-              console.log("this 8");
               break;
           
             default:
@@ -165,9 +156,6 @@ const Subscription = (props) => {
 
     useEffect(()=>{
         if(subscriptions_details!=null){
-            // console.log("plan : ",subscriptions_details.user.plan)
-            // console.log("status : ",subscriptions_details.user.status)
-            // console.log("subscription_type : ",subscriptions_details.user.subscription_type)
             check_active_or_trail()
 
         }
@@ -180,6 +168,11 @@ const Subscription = (props) => {
     const [monthly_or_annyally_check, setmonthly_or_annyally_check] = useState("monthly");
     const [plan_subscribe, setplan_subscribe] = useState("starter");
     
+    const [trail_starter_monthly, settrail_starter_monthly] = useState(false);
+    const [trail_starter_yearly, settrail_starter_yearly] = useState(false);
+    const [trail_premium_monthly, settrail_premium_monthly] = useState(false);
+    const [trail_premium_yearly, settrail_premium_yearly] = useState(false);
+    
     const [all_cost_data,setall_cost_data] = useState([{
         plan:"starter",
         actual_plan:"starter",
@@ -187,19 +180,11 @@ const Subscription = (props) => {
         monthly_anually:"monthly",
         plan_time:"monthly"
     }]);
+
     
     const notifyerror = (message) => toast.error(message);
     const notifysucces = (message) => toast.success(message);
-    // const notifymessage = (message) =>
-    // toast(message, {
-    //   icon: "🔔",
-    //   style: {
-    //     borderRadius: "10px",
-    //     background: "#333",
-    //     color: "#fff",
-    //   },
-    // });
-
+ 
 
     const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
     const annually_plan=["Up to 5 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
@@ -234,7 +219,11 @@ const Subscription = (props) => {
 
 
       const handleCheckboxChangePlan = (event,check_month_or_annually,plan_subscribe) => {
-          setIsCheckedPlan(event.target.checked);
+        
+        try{
+            setIsCheckedPlan(event.target.checked);
+        }catch(e){}
+
           if(isCheckedPlan){
                 if(plan_subscribe=="starter" && check_month_or_annually=="monthly"){
                     setall_cost_data(
@@ -286,6 +275,68 @@ const Subscription = (props) => {
 
 
 
+
+      useEffect(()=>{
+
+        // This is the initial state of checking what plan is bought
+        // and don't show the confirm changes while there is same data
+        if(subscriptions_details!=null){
+
+
+            let init_cost=0
+            let init_plan_time=""
+            if(subscriptions_details.user.plan=='starter' && subscriptions_details.user.subscription_type=="monthly"){
+                init_cost=subscriptions_details.charge_description.monthly_starter
+                init_plan_time="monthly"
+                if(subscriptions_details.user.status=="trial"){
+                    settrail_starter_monthly(true)
+                }
+            }
+            if(subscriptions_details.user.plan=='premium' && subscriptions_details.user.subscription_type=="monthly"){
+                setisRadioChecked(false)
+                init_cost=subscriptions_details.charge_description.monthly_premium_mode
+                init_plan_time="monthly"
+                if(subscriptions_details.user.status=="trial"){
+                    settrail_premium_monthly(true)
+                }
+            }
+            if(subscriptions_details.user.plan=='starter' && subscriptions_details.user.subscription_type=="annually"){
+                setIsCheckedPlan(true)
+                init_cost=subscriptions_details.charge_description.annaully_starter
+                init_plan_time="yearly"
+                if(subscriptions_details.user.status=="trial"){
+                    settrail_starter_yearly(true)
+                    
+                }
+            }
+            if(subscriptions_details.user.plan=='premium' && subscriptions_details.user.subscription_type=="annually"){
+                setIsCheckedPlan(true)
+                setisRadioChecked(false)
+                init_cost=subscriptions_details.charge_description.annaully_premium_mode
+                init_plan_time="yearly"
+                if(subscriptions_details.user.status=="trial"){
+                    settrail_premium_yearly(true)
+                }
+            }
+
+            setall_cost_data([{
+                plan:subscriptions_details.user.plan,
+                actual_plan:"",
+                cost:init_cost,
+                monthly_anually:subscriptions_details.user.subscription_type,
+                plan_time:init_plan_time
+            }])
+            if(subscriptions_details.user.subscription_type=="annually"){
+                setIsCheckedPlan(true)
+            }
+        }
+
+    },[subscriptions_details])
+
+
+
+
+
     //   ======upgrade plan redirect if trail finish=======
     const [switch_workspace,setswitch_workspace] = useState(false);
 
@@ -295,7 +346,7 @@ const Subscription = (props) => {
 
     useEffect(()=>{
         if(message=="upgrade"){
-            // notifymessage("Upgrade your plan")
+            notifysucces("Upgrade your plan")
         }
     },[message])
 
@@ -395,12 +446,11 @@ const Subscription = (props) => {
                                 <div className="rounded shadow bg-white border border-gray-300">
                                 <div className="flex justify-between p-5 border-b border-gray-300 text-lg text-gray-600 font-medium transition-all items-center">
                                     <div>Choose your plan</div>
-                                    <div className="flex items-center">
-                                        <div className="hidden ml-2"><button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-2 py-1 text-xs bg-white bg-opacity-20 text-gray-600 ring-1 ring-gray-50 active:ring-1 hover:ring-gray-100 hover:ring-2 active:ring-gray-300 hover:text-gray-800 active:text-gray-800"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Edit</span></button></div>
-                                    </div>
                                 </div>
                                 <div className="">
-                                    <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer bg-gray-50"
+
+
+                                    <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer "
                                     onClick={()=>{
 
                                         if(isCheckedPlan){
@@ -415,7 +465,6 @@ const Subscription = (props) => {
                                             )
                                             setmonthly_or_annyally_check("annually")
                                             setplan_subscribe("starter")
-                                            // console.log(subscriptions_details.charge_description.annaully_starter)
                                         }else{
                                             setall_cost_data(
                                                 [{
@@ -429,7 +478,6 @@ const Subscription = (props) => {
                                             setmonthly_or_annyally_check("monthly")
                                             setplan_subscribe("starter")
 
-                                            // console.log(subscriptions_details.charge_description.monthly_starter)
                                         }
                                         setisRadioChecked(true)
                                     }}>
@@ -446,13 +494,26 @@ const Subscription = (props) => {
                                         <div className="col-span-7">
                                             <div className="flex justify-start">
                                             <div className="text-xl mb-2 font-medium mr-2">Starter</div>
-                                            {/* && subscriptions_details.user.status=="trial"  */}
-                                            {/* {subscriptions_details.user.plan==all_cost_data["actual_plan"] && subscriptions_details.user.subscription_type==all_cost_data["plan_time"]
+
+
+                                            {subscriptions_details!=null
                                             ?
-                                                "Trail"
+                                            <>
+                                                {trail_starter_monthly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] 
+                                                ?
+                                                    <Trailing/>
+                                                :""}
+                                                {trail_starter_yearly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"]
+                                                ?
+                                                    <Trailing/>
+                                                :
+                                                    ""
+                                                }
+                                            </>
                                             :
                                                 null
-                                            } */}
+                                            }
+
                                             </div>
                                             <div className="text-sm text-gray-600 mb-3">
                                                 For the hobbyist just getting started.The economic option for individuals who want to use Generative AI casually for hobbies and work.
@@ -502,12 +563,14 @@ const Subscription = (props) => {
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer"
                                     onClick={()=>{
                                         if(isCheckedPlan){
                                             setall_cost_data(
                                                 [{
-                                                    plan:"Premium mode",
+                                                    plan:"premium",
                                                     actual_plan:"premium",
                                                     cost:subscriptions_details.charge_description.annaully_premium_mode,
                                                     monthly_anually:"annually",
@@ -516,11 +579,10 @@ const Subscription = (props) => {
                                             )
                                             setmonthly_or_annyally_check("annaully")
                                             setplan_subscribe("premium")
-                                            // console.log(subscriptions_details.charge_description.annaully_boss_mode)
                                         }else{
                                             setall_cost_data(
                                                 [{
-                                                    plan:"Premium mode",
+                                                    plan:"premium",
                                                     actual_plan:"premium",
                                                     cost:subscriptions_details.charge_description.monthly_premium_mode,
                                                     monthly_anually:"monthly",
@@ -529,7 +591,6 @@ const Subscription = (props) => {
                                             )
                                             setmonthly_or_annyally_check("monthly")
                                             setplan_subscribe("premium")
-                                            // console.log(subscriptions_details.charge_description.monthly_boss_mode)
                                         }
                                         setisRadioChecked(false)
                                     }}>
@@ -542,8 +603,19 @@ const Subscription = (props) => {
                                         }
                                         </div>
                                         <div className="col-span-7">
-                                            <div className="flex justify-start">
+
+
+                                        <div className="flex justify-start">
                                             <div className="text-xl mb-2 font-medium mr-2">Premium Mode</div>
+                                                {subscriptions_details!=null
+                                                ?
+                                                <>
+                                                    {trail_premium_monthly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<Trailing/>:""}
+                                                    {trail_premium_yearly && subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"] ?<Trailing/>:""}
+                                                </>
+                                                :
+                                                    null
+                                                }
                                             </div>
                                             <div className="text-sm text-gray-600 mb-3">
                                             For individuals and small items.The most popular option for professionals who want to use automations and write-long-form.items
@@ -710,19 +782,7 @@ const Subscription = (props) => {
                                 <div className="p-5">
                                     <div className="text-xl font-semibold flex justify-center my-3">Review changes</div>
                                     
-                                    {/* {isCheckedPlan
-                                    ?
-                                        null
-                                    :
-                                    <>
-                                        <div className="flex justify-center my-3"><button className="p-2 bg-indigo-50 text-indigo-600 font-semibold rounded-md hover:bg-indigo-100 text-xs"
-                                        onClick={()=>{
-                                            setIsCheckedPlan(true)
-                                        }}>
-                                            Pay annually and get 15% off
-                                        </button></div>
-                                    </>
-                                    } */}
+                                    
                                     <div>
                                         <div className="py-4 flex justify-between items-center border-b border-gray-200">
                                             <div>
@@ -749,21 +809,16 @@ const Subscription = (props) => {
                                                     </p>
                                                     </>
                                                     :
-                                                        "39"
+                                                        null
                                                 }</div>
                                         </div>
                                         <div className="py-4 flex justify-between items-center border-b border-gray-200">
                                             <div>
                                             <div className="flex items-center">
                                                 <div className="uppercase text-xs text-gray-500 mr-2 font-medium">Total</div>
-                                                <span title="Total cost of subcription">
-                                                    <svg  className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                                        <path d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <path d="M6.57,7.17h1.71v3.96" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <path d="M6.58,11.13h3.4" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                        <path d="M8.29,4.25v.37" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    </svg>
-                                                </span>
+                                                <TooltipInfo
+                                                    text="Total Payment user will Pay"
+                                                />
                                             </div>
                                             </div>
                                             <div className="text-sm text-gray-600">
@@ -774,32 +829,15 @@ const Subscription = (props) => {
                                                     ${all_cost_data[0]["cost"]}/{all_cost_data[0]["plan_time"]}
                                                     </p>
                                                     :
-                                                        "39"
+                                                        null
                                                 }</div>
                                         </div>
-                                        {/* <div className="flex justify-between items-center text-gray-800">
-                                            <div className="flex font-bold items-center py-4">
-                                            <span className="mr-2 text-md">Due today</span>
-                                            <span>
-                                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                                    <path d="M2.42,12.96c2.57,3.01,8.6,3.01,11.17,0,2.36-2.77,2.18-8.21-.66-10.58C10.38,.26,5.62,.26,3.08,2.38,.23,4.76,.05,10.19,2.42,12.96Z" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M6.57,7.17h1.71v3.96" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M6.58,11.13h3.4" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                    <path d="M8.29,4.25v.37" fill="none" stroke="#9CA3AF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                            </span>
-                                            </div>
-                                            <div className="font-bold text-xl"><span>${all_cost_data &&
-                                                    all_cost_data.length>0
-                                                    ?
-                                                        all_cost_data[0]["cost"]
-                                                    :
-                                                        "39"
-                                                }</span></div>
-                                        </div> */}
+                                        
                                     </div>
                                     <div className="flex flex-col w-full mt-5">
+
                                         <div className="mb-5 text-sm text-center text-gray-500">Confirm your plan to end your trial now.</div>
+
                                         {startbtnLoading
                                         ?
                                         <button className=" bg-[#334977] font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-gray-200 rounded leading-5 shadow-sm transition duration-150 ease-in-out focus:outline-none focus-visible:ring-2 hover:border-gray-300 text-gray-600 w-full"
@@ -813,27 +851,44 @@ const Subscription = (props) => {
                                         </div>
                                         </button>
                                         :
-                                            <button type="button" 
-                                                    className="transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-[#334977] active:to-blue-700 w-full shadow-sm"
-                                            onClick={()=>{
-                                                // console.log(all_cost_data)
-                                                request_subcription()
-                                                
-                                            }}
-                                            >
-                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M5.5 11.125L8.77272 14.5C10.3127 10.0762 11.5953 8.13495 14.5 5.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                </svg>
-                                                <span>Confirm changes</span>
-                                                </span>
-                                            </button>
+                                        <>
+                                      {/* {console.log(subscriptions_details)} */}
+                                        {subscriptions_details!=null
+                                        ?
+                                            <>
+                                            {subscriptions_details.user.plan==all_cost_data[0]["plan"] 
+                                                && 
+                                            subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"]
+                                            ?
+                                                null
+                                            :
+                                                <>
+                                                    <button type="button" 
+                                                            className="transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-[#334977] active:to-blue-700 w-full shadow-sm"
+                                                    onClick={()=>{
+                                                        request_subcription()
+                                                        
+                                                    }}
+                                                    >
+                                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                        <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M5.5 11.125L8.77272 14.5C10.3127 10.0762 11.5953 8.13495 14.5 5.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                        <span>Confirm changes</span>
+                                                        </span>
+                                                    </button>
+                                                </>
+                                            }
+                                            
+                                            </>
+                                            :null
+                                        }
+                                        </>
                                         }
                                     </div>
                                 </div>
                                 </div>
 
-                                {/* <div className="flex justify-center my-5 text-xs text-gray-400">Payments are secured by Stripe</div> */}
 
                                 <div className="mt-5 invisible">
                                 <div className="rounded shadow bg-white">
@@ -859,7 +914,6 @@ const Subscription = (props) => {
             {/* ==================the message ============= */}
 
                 </div>
-                {/*footer*/}
 
               </div>
             </div>
