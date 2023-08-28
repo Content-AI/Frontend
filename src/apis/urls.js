@@ -126,6 +126,13 @@ export const BACK_END_API_SUBCRIPTION_DIRECT ="/v1/subscription/direct-create-ac
 
 
 export const BACK_END_API_TOKEN_GENERATED ="/v1/template/token_generated/";
+export const BACK_END_API_TEAM_TOKEN_GENERATED ="/v1/template/team_token_generated/";
+
+export const BACK_END_API_SINGLE_TOKEN_GENERATED ="/v1/template/single_user_token_generation/";
+export const BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED ="/v1/template/team_user_token_generation/";
+
+export const BACK_END_API_SINGLE_TEMPLATE_USE ="/v1/template/user_template_user_user/";
+export const BACK_END_API_TEAM_TEMPLATE_USER ="/v1/template/team_template_user_user/";
 
 
 // export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";

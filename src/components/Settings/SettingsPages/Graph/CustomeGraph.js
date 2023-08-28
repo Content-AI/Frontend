@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import { Bar } from 'react-chartjs-2'
+
 import { 
     Chart as ChartJs,
     CategoryScale,
@@ -18,38 +19,55 @@ ChartJs.register(
 )
 
 
-const users = [
-    {name:"Jan ",miles_driven:100},
-    {name:"Feb ",miles_driven:200},
-    {name:"Mar",miles_driven:300},
-    {name:"Apr",miles_driven:400},
-    {name:"May",miles_driven:400},
-    {name:"Jun",miles_driven:30},
-    {name:"Jul",miles_driven:100},
-    {name:"Aug",miles_driven:20},
-    {name:"Oct",miles_driven:25},
-    {name:"Nov",miles_driven:20},
-    {name:"Dec",miles_driven:2000},
-]
+// const users = [
+//     {name:"Jan ",Token_Generated:100},
+// ]
 
-const CustomeGraph = () => {
+const CustomeGraph = (props) => {
+    // console.log(props.userToken)
+
+    const [userToken,setuserToken]=useState(null)
+
+    useEffect(()=>{
+        setuserToken(props.userToken)
+    })
+
   return (
-    <>
-        <Bar
+<div>
+      {userToken && (
+            <Bar
             data={{
-                labels:users.map(user=>user.name),
-                datasets:[
-                    {
-                        label:"Items Delivered",
-                        data:users.map(user=>user.miles_driven),
-                        backgroundColor:"rgb(173, 216, 230)"
-                    }
-                ]
+                labels: userToken.map(user => user.name),
+                datasets: [
+                {
+                    label: 'Token Generated',
+                    data: userToken.map(user => user.Token_Generated),
+                    backgroundColor: 'rgb(173, 216, 230)',
+                },
+                ],
             }}
             width={800}
             height={400}
-        />
-    </>
+            options={{
+                animation: {
+                duration: 1000, // Animation duration in milliseconds
+                },
+                scales: {
+                y: {
+                    beginAtZero: true,
+                },
+                },
+            }}
+            />
+      )}
+      {userToken==null
+      ?
+        <div className='w-[800px] h-[400px]'>
+        </div>
+      :
+        null
+      }
+    </div>
   )
 }
 
