@@ -26,18 +26,17 @@ const SelectOptionsTemplate = (props) => {
     );
   };
 
-  useEffect(() => {
-    // Find the selected option object
-    const selectedText = options.find((option) => option.text === selectedOption);
-
+  const handleSelectChange = (e) => {
+    const newSelectedOption = e.target.value;
+    setSelectedOption(newSelectedOption);
+    const selectedText = options.find((option) => option.text === newSelectedOption);
     if (selectedText) {
       setcolorIt(selectedText.color);
-      updateStatus(props.id, selectedOption, props.TOKEN);
+      updateStatus(props.id, newSelectedOption, props.TOKEN);
     }
-  }, [selectedOption]);
+  };
 
   useEffect(() => {
-    // Find the selected option object by comparing with props
     const selectedText = options.find(
       (option) => option.text === props.options_selected.status
     );
@@ -46,14 +45,14 @@ const SelectOptionsTemplate = (props) => {
       setcolorIt(selectedText.color);
       setSelectedOption(selectedText.text);
     }
-  }, [props.options_selected.status]); // Trigger this effect when status changes in props
+  }, [props.options_selected.status]);
 
   return (
     <>
       <select
         className={`${colorIt} text-white rounded-full text-[12px] w-[70px] h-[25px] font-bold  text-center appearance-none`}
-        value={selectedOption} // Use value to control selected option
-        onChange={(e) => setSelectedOption(e.target.value)}
+        value={selectedOption}
+        onChange={handleSelectChange}
       >
         {options.map((option) => (
           <option key={option.text} value={option.text}>

@@ -24,6 +24,12 @@ const Billing = (props) => {
     (state) => state.SetListTokenGeneratedByUser.ListTokenGeneratedByUser
   );
 
+  
+  let SubscriptionsData = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+
+
 
 
   const invoice_portal = async() =>{
@@ -220,7 +226,24 @@ const handleNewFormSubmit = (event) => {
                         Words Generated
                         </strong>
                         <strong className="font-medium text-black ml-[400px]">
-                        {list_token_generated_by_user.total} / *
+                        {SubscriptionsData &&
+                          <>
+                            {SubscriptionsData.user.status=="trial"
+                            ?
+                              <>
+                                {
+                                  list_token_generated_by_user.total +"/ *"
+                                }
+                              </>
+                            :
+                              <>
+                                {
+                                  list_token_generated_by_user.total +"/ *"
+                                }
+                              </>
+                            }
+                          </>
+                        }
                         </strong>
                       </div>
                         <div className="w-full max-w-xl">
@@ -230,7 +253,7 @@ const handleNewFormSubmit = (event) => {
                               </div>
                           </div>
                         </div>
-                        <div className='mb-1'>Words usage resets on <strong className="font-medium text-slate-400">July 27, 2023</strong></div>
+                        {/* <div className='mb-1'>Words usage resets on <strong className="font-medium text-slate-400">July 27, 2023</strong></div> */}
                         {/* <div className="pt-4 sm:col-span-6">
                           <button type="button" className="mb-1 focus-within:outline-none relative flex cursor-pointer items-center rounded-md border border-grey-200 bg-[#334977] py-2 px-3 text-sm font-medium text-white shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 focus-within:ring-offset-grey-10">
                               View Generation History

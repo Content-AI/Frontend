@@ -19,6 +19,13 @@ import {
   MdLogout,
 } from "react-icons/md";
 
+
+
+export const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
+export const annually_plan=["Up to 3 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
+export const  enterprise_plan=["Collaborate with more than 3 users","Tailored AI Brand Voice","API access","Personalized onboarding & training","Dedicated accounnt manager"]
+
+
 const ISwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
   ))(({ theme }) => ({
@@ -134,10 +141,6 @@ const Subscription = (props) => {
 
 
 
-    const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
-    const annually_plan=["Up to 5 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
-    const enterprise_plan=["Collaborate with more than 5 users","Tailored AI Brand Voice","API access","Personalized onboarding & training","Dedicated accounnt manager"]
-    
     const handleCheckboxChangePlan = (event) => {
         setIsCheckedPlan(event.target.checked);
       };
@@ -500,7 +503,10 @@ const Subscription = (props) => {
                               </div>
                               
                               <button disabled className="font-medium text-sm inline-flex items-center justify-center px-3 py-2 border border-transparent rounded leading-5 shadow-sm transition duration-150 ease-in-out bg-indigo-500 focus:outline-none focus-visible:ring-2 hover:bg-indigo-600 text-white w-full">contact sales</button>
-                          </div>
+                        </div>
+
+
+
                           <div className="px-5 pt-4 pb-5">
                               <div className="text-xs text-gray-800 font-semibold uppercase mb-4">What's included</div>
                               

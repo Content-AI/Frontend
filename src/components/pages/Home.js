@@ -236,9 +236,9 @@ useEffect(()=>{
               <div className="titlewrap flex gap-x-3">
                 <Workflow/>
                 <h4 className="text-md font-bold">WorkFlow</h4>
-                <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
+                {/* <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
                   Boss Mode
-                </span>
+                </span> */}
               </div>
               <p className="text-sm min-h-[62px]">
                 Generate WorkFlow to Create Content.
@@ -281,9 +281,9 @@ useEffect(()=>{
                   />
                 </svg>
                 <h4 className="text-md font-bold">Chat</h4>
-                <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
+                {/* <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
                   Boss Mode
-                </span>
+                </span> */}
               </div>
               <p className="text-sm min-h-[62px]">
                 Generate ideas, images, and content by chatting directly with
@@ -315,9 +315,9 @@ useEffect(()=>{
               <div className="titlewrap flex gap-x-3">
                 <TemplateIcon/>
                 <h4 className="text-md font-bold">Template</h4>
-                <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
+                {/* <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
                   Boss Mode
-                </span>
+                </span> */}
               </div>
               <p className="text-sm min-h-[62px]">
                 Produce content effortlessly using AI, based on your custom templates.

@@ -1,27 +1,26 @@
+// const local = "local"
+const local="pro"
+export var GOOGLE_PARAM = "/google"
+export var LINKEDIN_PARAM = "/linkedin"
+export var FRONT_END_URL;
+export var FRONT_END_URL_LINKEDIN;
+export var FRONT_END_URL_GOOGLE_PARAM;
+export var BACKEND_URL;
 
-// export const FRONT_END_URL = "http://localhost:3000"
-export const FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+if(local==true){
+  FRONT_END_URL = "http://localhost:3000"
+  FRONT_END_URL_LINKEDIN = "http://localhost:3000"
+  FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
+  BACKEND_URL = "http://localhost:8000"
+}else{
+  FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+  FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
+  BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
 
-
-// export const FRONT_END_URL_LINKEDIN = "http://localhost:3000"
-export const FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
-
-export const GOOGLE_PARAM = "/google"
-export const LINKEDIN_PARAM = "/linkedin"
+}
 
 export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
-
-
-// export const FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
-export const FRONT_END_URL_GOOGLE_PARAM = "https://copy-ai-ecru.vercel.app/google"
-
-
-
-
-// BACKEND_URL = "http://localhost:8000"
-BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
-
-export var BACKEND_URL;
 
 export const BACK_API_LOGIN_URL =
   "/v1/accounts/accounts_data/login_using_token/";
@@ -133,6 +132,12 @@ export const BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED ="/v1/template/team_user_t
 
 export const BACK_END_API_SINGLE_TEMPLATE_USE ="/v1/template/user_template_user_user/";
 export const BACK_END_API_TEAM_TEMPLATE_USER ="/v1/template/team_template_user_user/";
+
+export const BACK_END_API_TEAM_LIMIT ="/v1/team_members/get_team_member_limit";
+
+export const BACK_END_API_CHECKOUT_ADD_SEAT ="/v1/subscription/direct-create-team-seat-stripe-app-create-session/";
+
+export const BACK_END_API_TEAM_MEMBER_SEAT_SUBS_ID ="/v1/team_members/team_subs_track";
 
 
 // export const BACK_END_API_CANCEL_SUBSCRIPTION ="/v1/subscription/cancel-subscription/";
