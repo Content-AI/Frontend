@@ -1,5 +1,5 @@
-// const local = "local"
-const local="pro"
+const local = "local"
+// const local="pro"
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -7,7 +7,7 @@ export var FRONT_END_URL_LINKEDIN;
 export var FRONT_END_URL_GOOGLE_PARAM;
 export var BACKEND_URL;
 
-if(local==true){
+if(local=="local"){
   FRONT_END_URL = "http://localhost:3000"
   FRONT_END_URL_LINKEDIN = "http://localhost:3000"
   FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
