@@ -13,11 +13,14 @@ import {
 } from "../../../../../../apis/urls";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 
 export default function Editor({ data, setData }) {
   const [activeBlock, setActiveBlock] = useState();
   const [activeBlockIndex, setActiveBlockIndex] = useState();
   const [isActive, setIsActive] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState("");
+  const [currentAnswer, setCurrentAnswer] = useState("");
 
   const editorCore = useRef(null);
 
@@ -62,48 +65,90 @@ export default function Editor({ data, setData }) {
       .catch((err) => console.log("An error occured", err));
   }, []);
 
-  const handleSave = useCallback(async () => {
-    // retrieve data inserted
-    const savedData = await editorCore.current.save();
+  const handleSave = useCallback(
+    async (instance) => {
+      // retrieve data inserted
+      const savedData = await editorCore.current.save();
+      const targetBlock = document.getElementsByClassName("ce-block");
 
-    // console.log("savedData", savedData);
-    savedData.blocks.forEach((item, index) => {
-      if (item.data.text === "/") {
-        var targetBlock = document.getElementsByClassName("ce-block");
-        for (var i = 0; i < targetBlock.length; i++) {
-          if (targetBlock[i].textContent.indexOf("/") > -1) {
-            setIsActive(true);
-            setActiveBlock(targetBlock[i]);
-            setActiveBlockIndex(index);
-            savedData.blocks[index].data.text = "Ullalala";
+      savedData.blocks.forEach((item, index) => {
+        if (item.data.text === "/") {
+          if (isActive) {
+            return;
           }
-        }
-        // console.log("found /");
-        // console.log(savedData.blocks.find((block) => block.id === item.id));
-      }
-    });
-    // save data
-    setData(savedData);
-    save_document_data(savedData);
-  }, [setData]);
+          setIsActive(true);
+          setActiveBlock(targetBlock[index]);
+          setActiveBlockIndex(index);
+          savedData.blocks[index].data.text = "";
+          instance.blocks.render(savedData);
 
-  useEffect(() => {
-    if (activeBlock) {
-      activeBlock.classList.add("focus");
-      activeBlock
-        .getElementsByClassName("ce-paragraph")[0]
-        .setAttribute("data-placeholder", "Type for content generation!");
-      activeBlock.getElementsByClassName("ce-paragraph")[0].innerHTML = "";
-      activeBlock.addEventListener("keydown", function (event) {
-        console.log("pressed keydown");
-        if (event.key === "Enter") {
-          console.log("pressed Enter");
+          setTimeout(function () {
+            targetBlock[index].classList.add("active");
+            targetBlock[index]
+              .getElementsByClassName("ce-paragraph")[0]
+              .focus();
+          }, 500);
         }
       });
+
+      // document.addEventListener("keydown", function (event) {
+      //   if (event.key === "Enter") {
+      //     console.log("pressed Enter 1");
+      //     if (isActive) {
+      //       console.log("pressed Enter 2");
+      //       setCurrentQuestion(
+      //         targetBlock[activeBlock].getElementsByClassName("ce-paragraph")[0]
+      //           .innerHTML
+      //       );
+      //       setIsActive(false);
+      //     }
+      //   }
+      // });
+
+      // save data
+      setData(savedData);
+      save_document_data(savedData);
+    },
+    [setData]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        if (isActive && activeBlockIndex) {
+          const targetBlock =
+            document.getElementsByClassName("ce-block")[activeBlockIndex];
+
+          setCurrentQuestion(
+            targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML
+          );
+          setIsActive(false);
+        }
+      }
+    });
+
+    if (!isActive && activeBlockIndex) {
+      const targetBlock =
+        document.getElementsByClassName("ce-block")[activeBlockIndex];
+
+      targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" > <circle cx="18" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="12" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="6" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> </svg>';
+      setTimeout(function () {
+        setCurrentAnswer("Rendered Text");
+      }, 5000);
     }
-    // console.log("Active Block", activeBlock);
-    // console.log("isActive", isActive);
-  }, [activeBlock]);
+  }, [isActive]);
+
+  useEffect(() => {
+    if (currentAnswer && activeBlockIndex) {
+      const targetBlock =
+        document.getElementsByClassName("ce-block")[activeBlockIndex];
+      targetBlock.classList.remove("active");
+      targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML =
+        currentAnswer;
+      setCurrentAnswer("");
+    }
+  }, [currentAnswer]);
 
   return (
     <div className="editor-container">

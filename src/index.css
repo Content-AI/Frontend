@@ -170,18 +170,17 @@ code {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+.ce-block.active {
+  margin-left: -5px;
+  padding-left: 5px;
+}
 
-.ce-block.focus .ce-paragraph {
+.ce-block.active .ce-paragraph {
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-.ce-block .ce-paragraph[data-placeholder]:empty::before {
-  content: 'Type "/" to activate content generation';
-  opacity: 1;
-}
-
-.ce-block.focus .ce-paragraph[data-placeholder]:empty::before {
-  content: attr(data-placeholder);
+.ce-block.active .ce-paragraph[data-placeholder]:empty::before {
+  content: "Enter to generate content";
   opacity: 1;
 }
