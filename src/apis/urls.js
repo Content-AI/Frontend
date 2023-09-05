@@ -1,5 +1,5 @@
-// const local = "local"
-const local="pro"
+const local = "local"
+// const local="pro"
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -187,4 +187,10 @@ export const BACK_END_API_SINGLE_WORKFLOW ="/v1/workflow/single_workflow/";
 export const BACK_END_API_WORKFLOW_ANSWER ="/v1/workflow/output";
 export const BACK_END_API_WORKFLOW_INNER_ANSWER ="/v1/workflow/output_";
 export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW ="/v1/workflow/select_tone";
+
+
+
+export const BACK_END_API_GENERATE_IMAGE ="/v1/template/image_generator";
+
+export const BACK_END_API_GENERATE_SUMMARIZE ="/v1/template/speech_to_text";
 

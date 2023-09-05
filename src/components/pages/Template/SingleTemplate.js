@@ -759,9 +759,6 @@ useEffect(()=>{
                       className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1"
                     >
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                                </svg> */}
                         <span className="hidden @sm:inline-block text-black">
                           Clear inputs
                         </span>
@@ -770,14 +767,16 @@ useEffect(()=>{
                     <div className="flex ">
                       <input
                         type="number"
-                        // className="form-inputs formInput max-w-[80px] mr-3"
                         className="mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         defaultValue={ContentOutputNumber}
                         onChange={(e) => {
+                          if(ContentOutputNumber>10){
+                            return true
+                          }
                           setContentOutputNumber(e.target.value);
                         }}
-                        max="10"
-                        min="1"
+                        max={10}
+                        min={1}
                       />
                       <button
                         type="submit"

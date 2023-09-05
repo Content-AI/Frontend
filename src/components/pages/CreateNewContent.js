@@ -23,6 +23,8 @@ import TemplateIconForCreate from "../Icons/TemplateIconForCreate"
 import Closeicons from "../Icons/Closeicons"
 import Template from "../Icons/Template"
 import DocumentsIcon from "../Icons/DocumentsIcon";
+import ArtIcon from "../Icons/ArtIcon";
+import ReacapBuildericon from '../Icons/ReacapBuildericon'
   
 
 const CreateNewContent = (props) => {
@@ -291,18 +293,17 @@ const create_blank_document = async() => {
                         <div className="grid grid-cols-2 gap-6 p-6  mb-4">
                             <button 
                                 className="p-4 border  rounded-lg text-left space-y-2 hover:scale-105 hover:ring-gray-600 transform transition-transform duration-300"
-                            // className="p-4 ring-1 ring-gray-200 rounded-2xl text-left space-y-3 hover:ring-gray-600 active:ring-gray-400"
                             onClick={()=>{
                               create_blank_document()
                             }}>
                                 <span className="flex items-center space-x-3">
                                     <DocumentsIcon/>
-                                    <span className="text-indigo-700 text-base font-semibold">Blank document</span>
+                                    <span className="text-slate-700 text-base font-semibold">Blank document</span>
                                 </span>
-                                <span className="block">Commence anew by creating an empty document.</span>
+                                <span className="block">Commence a new by creating an empty document.</span>
                             </button>
+
                             <button 
-                              // className="p-4 ring-1 ring-gray-200 rounded-2xl text-left space-y-3 hover:ring-gray-600 active:ring-gray-400"
                               className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
 
                                 onClick={()=>{
@@ -316,6 +317,33 @@ const create_blank_document = async() => {
                                 <span className="block">Create content with predefined templates and workflows.</span>
                             </button>
                             
+                            <button 
+                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
+
+                                onClick={()=>{
+                                    navigate("/art")
+                                }}
+                            >
+                                <span className="flex items-center space-x-3">
+                                    <ArtIcon/>
+                                    <span className="text-slate-700 text-base font-semibold">Art</span>
+                                </span>
+                                <span className="block">Express your creativity through the power of art.</span>
+                            </button>
+                            <button 
+                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
+
+                                onClick={()=>{
+                                    navigate("/recap_builder")
+                                }}
+                            >
+                                <span className="flex items-center space-x-3">
+                                    <ReacapBuildericon/>
+                                    <span className="text-slate-700 text-base font-semibold">Recap Builder</span>
+                                </span>
+                                <span className="block">Transform your audio visual content into concise and insightful summaries..</span>
+                            </button>
+
                         </div>
                         
 

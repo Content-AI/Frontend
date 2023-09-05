@@ -23,6 +23,9 @@ import Brandvoice from "../pages/brandvoice/Brandvoice";
 import BuildcustomTemplate from "../pages/Template/BuildcustomTemplate/BuildcustomTemplate";
 import Settings from "../Settings/Settings";
 
+import ImageGenerators from "../pages/ImageGenerator/ImageGenerators";
+import RecapBuilder from "../pages/RecapBuilder/RecapBuilder";
+
 import Billing from '../Settings/SettingsPages/Billing'
 import General from '../Settings/SettingsPages/General'
 import Profile from '../Settings/SettingsPages/Profile'
@@ -89,6 +92,15 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route
               path="/documents"
               element={<ListOfDocument SHOW={"active"} AUTH_TOKEN={TOKEN} />}
+            />
+            
+            <Route
+              path="/art"
+              element={<ImageGenerators AUTH_TOKEN={TOKEN} />}
+            />
+            <Route
+              path="/recap_builder"
+              element={<RecapBuilder AUTH_TOKEN={TOKEN} />}
             />
 
             <Route
