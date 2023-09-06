@@ -40,6 +40,9 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [selectedTab, setSelectedTab] = useState("url"); // Track the selected tab
+
+
   let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
 
 
@@ -131,6 +134,12 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
     }
 
 
+  // Toggle between the "Add URL" and "Upload New File" sections
+  const handleTabClick = (tab) => {
+    setSelectedTab(tab);
+  };
+
+
   return (
     <>
       <div className="relative lg:-m-6">
@@ -161,38 +170,69 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                 </div>
 
                 <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
-                  <div id="id-art">
-                    
 
-                    {/* ====art text-area===== */}
-                    <div className="last:mb-1 relative">
-                    <div className="space-y-1.5 w-full">
-                        <label
-                        htmlFor="form-field-productInfo"
-                        className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                        >
-                        <span className="font-bold flex items-center space-x-1">
-                            Add a YouTube URL
-                        </span>
-                        <span>Paste a link to a YouTube video</span>
-                        </label>
-                        <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                        <input
-                            id="form-field-productInfo"
-                            className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
-                            value={url}
-                            onChange={handleInputChange}
-                            placeholder="https://www.youtube.com/watch?v=Tuw8hxrFBH8&t"
-                        />
-                        </div>
-                        <div className="flex items-center gap-2">
-                        
-                        </div>
-                    </div>
-                    </div>
-                    {/* ====art text-area===== */}
-                        
+                <div className="flex flex-col">
+                  <div>
+                    <p className="text-sm font-bold ml-3">
+                      Media
+                    </p>
                   </div>
+                  <div>
+                    <span className="text-sm ml-3">
+                      Select a recording
+                    </span>
+                  </div>
+
+                  <div>
+                  <div className="flex mt-4">
+        <button
+          className={`${
+            selectedTab === "url"
+            ? "bg-slate-100 hover:bg-slate-200 text-white"
+              : "bg-gray-300 hover:bg-gray-400 text-gray-700"
+          } px-4 py-2 rounded-l-md cursor-pointer transition duration-300`}
+          tabIndex="-1"
+          type="button"
+          onClick={() => handleTabClick("url")}
+        >
+          Add URL
+        </button>
+        <button
+          className={`${
+            selectedTab === "upload"
+              ? "bg-slate-100 hover:bg-slate-200 text-white"
+              : "bg-gray-300 hover:bg-gray-400 text-gray-700"
+          } px-4 py-2 rounded-r-md cursor-pointer transition duration-300`}
+          tabIndex="0"
+          type="button"
+          onClick={() => handleTabClick("upload")}
+        >
+          Upload new file
+        </button>
+      </div>
+
+      {/* Content for Add URL Tab */}
+      {selectedTab === "url" && (
+        <div className="mt-4 p-4 bg-gray-200 rounded-b-lg">
+          <p className="text-xl font-bold">Add URL Content Here</p>
+          {/* Add your URL input or content here */}
+        </div>
+      )}
+
+      {/* Content for Upload New File Tab */}
+      {selectedTab === "upload" && (
+        <div className="mt-4 p-4 bg-gray-200 rounded-b-lg">
+          <p className="text-xl font-bold">Upload New File Content Here</p>
+          {/* Add your file upload input or content here */}
+        </div>
+      )}
+   
+                  </div>
+
+
+                 
+
+                </div>
 
                   
                 </div>
@@ -273,23 +313,23 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
-                    {/* <button
+                    <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        setShowHideHistory(false);
+                        // setShowHideHistory(false);
                       }}
                     >
                       <span className="relative">
-                        New outputs {ContentOutputNumber.toString()}
+                        Outputs
                       </span>
-                    </button> */}
-                    {/* <button
+                    </button>
+                    <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                       }}
                     >
                       <span className="relative">History</span>
-                    </button> */}
+                    </button>
                   </nav>
                   <div>
                     <button
