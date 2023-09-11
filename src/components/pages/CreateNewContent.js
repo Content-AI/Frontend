@@ -25,6 +25,7 @@ import Template from "../Icons/Template"
 import DocumentsIcon from "../Icons/DocumentsIcon";
 import ArtIcon from "../Icons/ArtIcon";
 import ReacapBuildericon from '../Icons/ReacapBuildericon'
+import { Premium } from "./ImageGenerator/Premium";
   
 
 const CreateNewContent = (props) => {
@@ -324,9 +325,11 @@ const create_blank_document = async() => {
                                     navigate("/art")
                                 }}
                             >
+                            
                                 <span className="flex items-center space-x-3">
                                     <ArtIcon/>
                                     <span className="text-slate-700 text-base font-semibold">Art</span>
+                                    <Premium />
                                 </span>
                                 <span className="block">Express your creativity through the power of art.</span>
                             </button>
@@ -340,6 +343,7 @@ const create_blank_document = async() => {
                                 <span className="flex items-center space-x-3">
                                     <ReacapBuildericon/>
                                     <span className="text-slate-700 text-base font-semibold">Recap Builder</span>
+                                    {/* <Premium /> */}
                                 </span>
                                 <span className="block">Transform your audio visual content into concise and insightful summaries..</span>
                             </button>

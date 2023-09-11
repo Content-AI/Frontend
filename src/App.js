@@ -152,15 +152,6 @@ function App() {
     }
   }, []);
 
-
-  // useEffect(()=>{
-  //   console.log("rendered")
-  //   if(invitation_code!=null){
-  //     navigate(`/invitation/${invitation_code}&invitation_code=${invitation_code}`)
-  //   }
-  // },[])
-
-
   useEffect(() => {
     
     if(message_from_subscription=="success")

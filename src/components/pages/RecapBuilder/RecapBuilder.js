@@ -4,9 +4,12 @@ import { useParams } from "react-router-dom";
 import {
   BACKEND_URL,
   BACK_END_API_GENERATE_IMAGE,
-  BACK_END_API_GENERATE_SUMMARIZE
+  BACK_END_API_GENERATE_SUMMARIZE,
+  BACK_END_API_AUDIO_SUMMARIZE,
+  BACK_END_API_HISTORY_URL,
+  BACK_END_API_HISTORY_AUDIO_VIDEO
 } from "../../../apis/urls";
-import { fetchData, postData } from "../../../apis/apiService";
+import { fetchData, postData,fileFormData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
@@ -41,6 +44,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
   const dispatch = useDispatch();
 
   const [selectedTab, setSelectedTab] = useState("url"); // Track the selected tab
+  const [ShowHideHistory, setShowHideHistory] = useState(false);
 
 
   let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
@@ -65,8 +69,11 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
 
   let ChosenWorkspaceId = useSelector(
     (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
-    );	
+    );
 
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
 
   const { template_id } = useParams();
 
@@ -82,6 +89,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
 
   const [summarize_text, setsummarize_text] = useState([]);
   const [summarize_text_id, setsummarize_text_id] = useState(null);
+  const [created_time, setcreated_time] = useState(null);
   const [GeneratingSummarize, setGeneratingSummarize] = useState(false);
   const [url, setUrl] = useState('');
   const [isValid, setIsValid] = useState(true);
@@ -97,6 +105,8 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
 
 
   const get_summarize = async() =>{
+    setsummarize_text([])
+    setsummarize_text_id(null)
     if(url.length<=0){
         notifyerror("Input Valid URL")
         return true
@@ -118,6 +128,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
             setGeneratingSummarize(false)
             setsummarize_text(resp.data[0]["summarize_text"])
             setsummarize_text_id(resp.data[0]["id"])
+            setcreated_time(resp.data[0]["created_at"])
             setUrl('')
         }else{
             try{
@@ -139,6 +150,127 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
     setSelectedTab(tab);
   };
 
+
+
+
+  // =========the file upload audio or video======
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [dragging, setDragging] = useState(false);
+  const [error, setError] = useState("");
+
+  const supportedExtensions = [".mp3", ".mp4", ".srt"];
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0]; // Allow only one file
+    setSelectedFile(file);
+    validateFile(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragging(false);
+  };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0]; // Allow only one file
+    setSelectedFile(file);
+    validateFile(file);
+  };
+
+  const validateFile = (file) => {
+    if (!file) {
+      setError("");
+      return;
+    }
+
+    const fileExtension = `.${file.name.split(".").pop()}`;
+    if (!supportedExtensions.includes(fileExtension.toLowerCase())) {
+      setError("Invalid file format. Supported formats: audio and video like mp3, mp4 , avi  etc..");
+    } else {
+      setError("");
+    }
+  };
+
+  const uploadFile = async() => {
+    setsummarize_text([])
+    setsummarize_text_id(null)
+    setGeneratingSummarize(true)
+    setLoadingButton(true)
+    if (!selectedFile || error) {
+      // Don't upload if no file selected or there is an error
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    const resp = await fileFormData(formData,BACKEND_URL+BACK_END_API_AUDIO_SUMMARIZE,AUTH_TOKEN)
+    if(resp.status==200){
+      setLoadingButton(false)
+      setsummarize_text(resp.data[0]["summarize_text"])
+      setsummarize_text_id(resp.data[0]["id"])
+      setGeneratingSummarize(false)
+      setSelectedFile(null)
+    }else{
+      setLoadingButton(false)
+      setGeneratingSummarize(false)
+      setSelectedFile(null)
+      try{
+        if(resp.response.data.message){
+          notifyerror(resp.response.data.message)
+        }
+      }catch(e){
+        notifyerror("We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery.")
+      }
+    }
+
+  };
+
+
+
+  // ======get the history====
+
+  const [history_data,set_history_data]=useState(null)
+
+  const get_history = async() =>{
+    if(selectedTab=="upload"){
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_HISTORY_AUDIO_VIDEO,AUTH_TOKEN)
+      if(resp.status==200){
+        console.log(resp.data)
+        set_history_data(resp.data)
+      }
+    }
+    if(selectedTab=="url"){
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_HISTORY_URL,AUTH_TOKEN)
+      if(resp.status==200){
+        console.log(resp.data)
+        set_history_data(resp.data)
+      }
+    }
+  }
+  const get_history_click = async(data) =>{
+    if(data=="upload"){
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_HISTORY_AUDIO_VIDEO,AUTH_TOKEN)
+      if(resp.status==200){
+        console.log(resp.data)
+        set_history_data(resp.data)
+      }
+    }
+    if(data=="url"){
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_HISTORY_URL,AUTH_TOKEN)
+      if(resp.status==200){
+        console.log(resp.data)
+        set_history_data(resp.data)
+      }
+    }
+  }
 
   return (
     <>
@@ -167,6 +299,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     </h1>
                     <p className="text-sm">Turn your videos and audios into clear, informative summaries effortlessly, adding professionalism and clarity to your content with ease.</p>
                   </div>
+
                 </div>
 
                 <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
@@ -184,48 +317,165 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                   </div>
 
                   <div>
+
                   <div className="flex mt-4">
-        <button
-          className={`${
-            selectedTab === "url"
-            ? "bg-slate-100 hover:bg-slate-200 text-white"
-              : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-          } px-4 py-2 rounded-l-md cursor-pointer transition duration-300`}
-          tabIndex="-1"
-          type="button"
-          onClick={() => handleTabClick("url")}
-        >
-          Add URL
-        </button>
-        <button
-          className={`${
-            selectedTab === "upload"
-              ? "bg-slate-100 hover:bg-slate-200 text-white"
-              : "bg-gray-300 hover:bg-gray-400 text-gray-700"
-          } px-4 py-2 rounded-r-md cursor-pointer transition duration-300`}
-          tabIndex="0"
-          type="button"
-          onClick={() => handleTabClick("upload")}
-        >
-          Upload new file
-        </button>
-      </div>
+                    <button
+                      className={`${
+                        selectedTab === "url"
+                          ? " text-black border-t-2 border-r-2  border-l-2"
+                          : "text-gray-400 border-t-2 border-r-2 border-b-2 border-l-2"
+                      } p-1 text-sm font-bold rounded-l-md cursor-pointer transition duration-300`}
+                      tabIndex="-1"
+                      type="button"
+                      onClick={() => {
+                          handleTabClick("url")
+                          setSelectedFile(null)
+                          setError("")
+                          get_history_click("url")
+                        }}
+                    >
+                      Add URL
+                    </button>
+                    <button
+                      className={`${
+                        selectedTab === "upload"
+                          ? "  text-black border-t-2 border-r-2"
+                          : " text-gray-400 border-t-2 border-r-2 border-b-2"
+                      } p-1 text-sm font-bold rounded-r-md cursor-pointer transition duration-300`}
+                      tabIndex="0"
+                      type="button"
+                      onClick={() => {
+                          handleTabClick("upload")
+                          setUrl('')
+                          get_history_click("upload")
+                        }}
+                    >
+                      Upload file
+                    </button>
+                  </div>
 
-      {/* Content for Add URL Tab */}
-      {selectedTab === "url" && (
-        <div className="mt-4 p-4 bg-gray-200 rounded-b-lg">
-          <p className="text-xl font-bold">Add URL Content Here</p>
-          {/* Add your URL input or content here */}
-        </div>
-      )}
+              {/* Content for Add URL Tab */}
+              {selectedTab === "url" && (
+                <div className="mt-4">
+                <div id="id-art" className="ml-3 mt-3">
+                    {/* ====url text-area===== */}
+                    <div className="last:mb-1 relative">
+                    <div className="space-y-1.5 w-full">
+                        <label
+                        htmlFor="form-field-productInfo"
+                        className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                        >
+                        <span className="font-bold flex items-center space-x-1 ">
+                            Add a YouTube URL
+                        </span>
+                        <span>Paste a link to a YouTube video</span>
+                        </label>
+                        <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                        <input
+                            id="form-field-productInfo"
+                            className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                            value={url}
+                            onChange={handleInputChange}
+                            placeholder="https://www.youtube.com/watch?v=Tuw8hxrFBH8&t"
+                        />
+                        </div>
+                    </div>
+                    </div>
+                    {/* ====url text-area===== */}
 
-      {/* Content for Upload New File Tab */}
-      {selectedTab === "upload" && (
-        <div className="mt-4 p-4 bg-gray-200 rounded-b-lg">
-          <p className="text-xl font-bold">Upload New File Content Here</p>
-          {/* Add your file upload input or content here */}
-        </div>
-      )}
+                    </div>
+
+                    {subscriptions_details &&
+                    <>
+                      {subscriptions_details.user.status=="trial"
+                        ?
+                        <div className="flex mt-4 items-center bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
+                          <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                          <p>You can only use 10 minutes videos in trial</p>
+                        </div>
+                        
+                        :
+                          null
+                        }
+                      </>
+                    }
+                              
+                    
+                </div>
+              )}
+
+            {/* Content for Upload New File Tab */}
+            {selectedTab === "upload" && (
+              <div className="mt-4">
+                <p 
+                  className="text-sm font-bold block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                >Upload File Content Here</p>
+                {/* Add your file upload input or content here */}
+                <div
+                  className={`w-full mt-3 p-8 bg-white border-2 border-dashed rounded-lg ${
+                    dragging ? "border-green-500" : "border-gray-300"
+                  }`}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                >
+                  {selectedFile ? (
+                    <div>
+                      <p className="text-green-500 text-center">
+                        File selected: {selectedFile.name} (
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                      </p>
+                      {error && <p className="text-red-500 text-center">{error}</p>}
+                      {/* <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600"
+                        onClick={uploadFile}
+                      >
+                        Upload
+                      </button> */}
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-gray-500 text-center">
+                          Drag and drop your file here or{" "}
+                        <label
+                          htmlFor="fileInput"
+                          className="text-green-500 cursor-pointer hover:underline"
+                        >
+                          select a file
+                        </label>{" "}
+                        from your device.
+                      </p>
+                      {error && <p className="text-red-500 text-center">{error}</p>}
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    id="fileInput"
+                    className="hidden"
+                    onChange={handleFileInputChange}
+                    accept=".mp3, .mp4, .srt" // Define your supported file types here
+                  />
+                </div>
+
+
+                {subscriptions_details &&
+                    <>
+                      {subscriptions_details.user.status=="trial"
+                        ?
+                        <div className="flex mt-4 items-center bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
+                          <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                          <p>You can only use 10 minutes videos in trial</p>
+                        </div>
+                        
+                        :
+                          null
+                        }
+                      </>
+                    }
+
+
+              </div>
+            )}
    
                   </div>
 
@@ -266,42 +516,94 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                         max={10}
                         min={1}
                       /> */}
+
+
+
+                      {/* =======for url====== */}
                       
-                      <button
-                        type="submit"
-                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
-                        id="generateBtn1"
-                        onClick={() => {
-                            get_summarize()
-                        }}
-                      >
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          {LoadingButton ? (
-                            <>
-                              <svg
-                                aria-hidden="true"
-                                role="status"
-                                className="inline w-4 h-4 mr-3 text-white animate-spin"
-                                viewBox="0 0 100 101"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                  fill="#E5E7EB"
-                                />
-                                <path
-                                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                  fill="currentColor"
-                                />
-                              </svg>
-                              Generating
-                            </>
-                          ) : (
-                            "Generate summarize"
-                          )}
-                        </span>
-                      </button>
+                      {selectedTab === "url" && (
+                        <button
+                          type="submit"
+                          className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
+                          id="generateBtn1"
+                          onClick={() => {
+                              get_summarize()
+                          }}
+                        >
+                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            {LoadingButton ? (
+                              <>
+                                <svg
+                                  aria-hidden="true"
+                                  role="status"
+                                  className="inline w-4 h-4 mr-3 text-white animate-spin"
+                                  viewBox="0 0 100 101"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="#E5E7EB"
+                                  />
+                                  <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                Generating
+                              </>
+                            ) : (
+                              "Generate"
+                            )}
+                          </span>
+                        </button>
+                      )}
+                    {/* =======for url====== */}
+
+                      {/* =======for file====== */}
+                      
+                      {selectedFile ? (
+                        <button
+                          type="submit"
+                          className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
+                          id="generateBtn1"
+                          onClick={uploadFile}
+                        >
+                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            {LoadingButton ? (
+                              <>
+                                <svg
+                                  aria-hidden="true"
+                                  role="status"
+                                  className="inline w-4 h-4 mr-3 text-white animate-spin"
+                                  viewBox="0 0 100 101"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="#E5E7EB"
+                                  />
+                                  <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                                Generating
+                              </>
+                            ) : (
+                              "Generate"
+                            )}
+                          </span>
+                        </button>
+                      )
+                      :
+                        null
+                      }
+                    {/* =======for file====== */}
+                     
+
+
                     </div>
                   </div>
                 </div>
@@ -316,7 +618,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        // setShowHideHistory(false);
+                        setShowHideHistory(false);
                       }}
                     >
                       <span className="relative">
@@ -326,6 +628,8 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <button
                       className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
+                        setShowHideHistory(true);
+                        get_history()
                       }}
                     >
                       <span className="relative">History</span>
@@ -337,7 +641,6 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                       onClick={() => {
                         setsummarize_text([])
                         setsummarize_text_id(null)
-  
                       }}
                     >
                       <span className="relative">Clear</span>
@@ -347,6 +650,24 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
 
 
             <div className="">
+            {ShowHideHistory ?
+              <>
+                {history_data &&
+                  history_data.map((data, index) => {
+                      return (
+                        <div key={index}>
+                          <ResponseTemplate
+                              r_id={data["id"]}
+                              r_time={data["created_at"]}
+                              r_data={data["summarize_text"]}
+                            />
+                        </div>
+                      );
+                    })
+                }
+              </>
+            :
+            <>
                 {summarize_text &&
                     <>
                     {summarize_text.length>0
@@ -354,7 +675,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <>
                           <ResponseTemplate
                             r_id={summarize_text_id}
-                            r_time={""}
+                            r_time={created_time}
                             r_data={summarize_text}
                             r_custome={custom=="user"?"user":"normal_user"}
                           />
@@ -409,9 +730,10 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                         </div>
                     </>
                     }
-
                     </>
                 }
+              </>
+            }
                 </div>
 
                 

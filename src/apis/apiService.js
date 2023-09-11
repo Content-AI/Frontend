@@ -72,3 +72,17 @@ export const deleteData = async (url,ACCESS_TOKEN) => {
     return "error"
   }
 };
+
+export const fileFormData = async (formData,url,ACCESS_TOKEN) => {
+    try{
+      const res = axios.post(url, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${ACCESS_TOKEN}`
+              }
+            })
+        return res
+      }catch(e){
+        return "error"
+      }
+};

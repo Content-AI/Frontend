@@ -198,7 +198,26 @@ const Subscription = (props) => {
 
 
       const request_subcription = async() =>{
-        setstartbtnLoading(true)
+
+          setstartbtnLoading(true)
+          if(subscriptions_details.user.status=="trial"){
+            const formData = {
+                "plan":all_cost_data[0]["actual_plan"],
+                "subscription_type":all_cost_data[0]["monthly_anually"],
+              }
+              const resp = await postData(formData,BACKEND_URL+BACK_END_API_SUBSCRIBE_USER,props.AUTH_TOKEN)
+        
+              if(resp.status==200){
+                try{
+                    window.location.replace(resp.data.message.url);
+                    setstartbtnLoading(true)
+                }catch(e){
+                }
+            }else{
+                  setstartbtnLoading(true)
+              }            
+            return;
+        }
         const formData = {
           "plan":all_cost_data[0]["actual_plan"],
           "monthly_annually":all_cost_data[0]["monthly_anually"],

@@ -1,5 +1,5 @@
-const local = "local"
-// const local="pro"
+// const local = true
+const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -7,16 +7,34 @@ export var FRONT_END_URL_LINKEDIN;
 export var FRONT_END_URL_GOOGLE_PARAM;
 export var BACKEND_URL;
 
-if(local=="local"){
-  FRONT_END_URL = "http://localhost:3000"
-  FRONT_END_URL_LINKEDIN = "http://localhost:3000"
-  FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
+if(local==true){
+  // FRONT_END_URL = "http://localhost:3000"
+  FRONT_END_URL = "http://localhost:8000"
+
+  // FRONT_END_URL_LINKEDIN = "http://localhost:3000"
+  FRONT_END_URL_LINKEDIN = "http://localhost:8000"
+
+  // FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
+  FRONT_END_URL_GOOGLE_PARAM = "http://localhost:8000/google"
+
   BACKEND_URL = "http://localhost:8000"
+
 }else{
-  FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
-  FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
-  FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
-  BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+  
+  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  
+  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+
+  FRONT_END_URL = "http://52.66.4.200/"
+  FRONT_END_URL_LINKEDIN = "http://52.66.4.200"
+
+  // FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
+  // BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+  
+  FRONT_END_URL_GOOGLE_PARAM= "http://52.66.4.200/google"
+  BACKEND_URL = "http://52.66.4.200";
 
 }
 
@@ -193,4 +211,11 @@ export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW ="/v1/workflow/select_tone
 export const BACK_END_API_GENERATE_IMAGE ="/v1/template/image_generator";
 
 export const BACK_END_API_GENERATE_SUMMARIZE ="/v1/template/speech_to_text";
+
+
+
+export const BACK_END_API_AUDIO_SUMMARIZE ="/v1/template/movie_file_to_text";
+
+export const BACK_END_API_HISTORY_URL ="/v1/template/history_url";
+export const BACK_END_API_HISTORY_AUDIO_VIDEO ="/v1/template/history_audio_video";
 

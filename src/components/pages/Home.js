@@ -129,7 +129,9 @@ const Home = ({AUTH_TOKEN}) => {
 
   
 useEffect(()=>{
-  get_template(BACKEND_URL+BACK_END_API_TEMPLATE_IMP,AUTH_TOKEN)
+  if(AUTH_TOKEN!=null){
+    get_template(BACKEND_URL+BACK_END_API_TEMPLATE_IMP,AUTH_TOKEN)
+  }
 },[])
 
   return (

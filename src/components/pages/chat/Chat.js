@@ -1059,8 +1059,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         <>
                                           <Typed
                                             strings={[data_]}
-                                            typeSpeed={5}
-                                            showCursor={false}
+                                            typeSpeed={1}
+                                            showCursor={true}
                                             onComplete={handleTypingDone}
                                           />
                                         </>
@@ -1225,8 +1225,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                                           <>
                                             <Typed
                                               strings={[data_]}
-                                              typeSpeed={5}
-                                              showCursor={false}
+                                              typeSpeed={1}
+                                              showCursor={true}
                                               onComplete={handleTypingDone}
                                             />
                                           </>
