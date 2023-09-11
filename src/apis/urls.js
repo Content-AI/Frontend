@@ -21,20 +21,20 @@ if(local==true){
 
 }else{
   
-  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+  FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
   
-  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
+  FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
 
-  FRONT_END_URL = "http://52.66.4.200/"
-  FRONT_END_URL_LINKEDIN = "http://52.66.4.200"
+  // FRONT_END_URL = "http://52.66.4.200/"
+  // FRONT_END_URL_LINKEDIN = "http://52.66.4.200"
 
-  // FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
-  // BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+  FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
+  BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
   
-  FRONT_END_URL_GOOGLE_PARAM= "http://52.66.4.200/google"
-  BACKEND_URL = "http://52.66.4.200";
+  // FRONT_END_URL_GOOGLE_PARAM= "http://52.66.4.200/google"
+  // BACKEND_URL = "http://52.66.4.200";
 
 }
 
