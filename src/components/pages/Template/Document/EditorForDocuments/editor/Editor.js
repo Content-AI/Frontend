@@ -5,9 +5,10 @@ import { EDITOR_JS_TOOLS } from "./tools/tools";
 
 // create editor instance
 import { createReactEditorJS } from "react-editor-js";
-import { patchData } from "../../../../../../apis/apiService";
+import { postData, patchData } from "../../../../../../apis/apiService";
 import {
   BACKEND_URL,
+  BACK_END_API_DOCUMENTS_QUESTION,
   BACK_END_API_DOCUMENTS,
   BACK_END_API_DOCUMENTS_PATCH,
 } from "../../../../../../apis/urls";
@@ -49,8 +50,24 @@ export default function Editor({ data, setData }) {
       BACKEND_URL + BACK_END_API_DOCUMENTS_PATCH + "/" + document_id + "/",
       TOKEN
     );
+  };
 
-    console.log("resp", resp);
+  const post_document_data = async (document_data) => {
+    if (currentQuestion) {
+      const formData = {
+        ask: document_data,
+      };
+      const resp = await postData(
+        formData,
+        BACKEND_URL + BACK_END_API_DOCUMENTS_QUESTION + "/",
+        TOKEN
+      );
+
+      if (resp.status === 200 || resp.status === 201) {
+        setCurrentQuestion(null);
+        setCurrentAnswer(resp.data.data);
+      }
+    }
   };
 
   const ReactEditorJS = createReactEditorJS();
@@ -91,21 +108,6 @@ export default function Editor({ data, setData }) {
         }
       });
 
-      // document.addEventListener("keydown", function (event) {
-      //   if (event.key === "Enter") {
-      //     console.log("pressed Enter 1");
-      //     if (isActive) {
-      //       console.log("pressed Enter 2");
-      //       setCurrentQuestion(
-      //         targetBlock[activeBlock].getElementsByClassName("ce-paragraph")[0]
-      //           .innerHTML
-      //       );
-      //       setIsActive(false);
-      //     }
-      //   }
-      // });
-
-      // save data
       setData(savedData);
       save_document_data(savedData);
     },
@@ -114,8 +116,8 @@ export default function Editor({ data, setData }) {
 
   useEffect(() => {
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        if (isActive && activeBlockIndex) {
+      if (isActive && activeBlockIndex) {
+        if (event.key === "Enter") {
           const targetBlock =
             document.getElementsByClassName("ce-block")[activeBlockIndex];
 
@@ -133,20 +135,24 @@ export default function Editor({ data, setData }) {
 
       targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML =
         '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" > <circle cx="18" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="12" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="6" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> </svg>';
-      setTimeout(function () {
-        setCurrentAnswer("Rendered Text");
-      }, 5000);
+      post_document_data(currentQuestion);
     }
   }, [isActive]);
 
   useEffect(() => {
     if (currentAnswer && activeBlockIndex) {
       const targetBlock =
-        document.getElementsByClassName("ce-block")[activeBlockIndex];
+          document.getElementsByClassName("ce-block")[activeBlockIndex],
+        textWrapper = targetBlock.getElementsByClassName("ce-paragraph")[0];
+
       targetBlock.classList.remove("active");
-      targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML =
-        currentAnswer;
-      setCurrentAnswer("");
+      textWrapper.innerHTML = currentAnswer;
+
+      // setActiveBlock(null);
+      // setActiveBlockIndex(null);
+      // setIsActive(false);
+      // setCurrentQuestion(null);
+      // setCurrentAnswer(null);
     }
   }, [currentAnswer]);
 
