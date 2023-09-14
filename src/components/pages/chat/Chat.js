@@ -41,6 +41,15 @@ import LoadingPage from "../../LoadingPage";
 import { _save_ask_question_again_ } from "../../../features/RepeatQuestionInChat";
 import { _save_details_ } from "../../../features/Subscriptions";
 
+
+import ReactMarkdown from 'react-markdown'
+import rehypeKatex from 'rehype-katex'
+
+import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+
+
 const buttonTags = [
   "All",
   "Blog",
@@ -991,7 +1000,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                <RenderHtmlData htmldata={chat_data.question} />
+                              <ReactMarkdown
+                                children={chat_data.question}
+                                remarkPlugins={[remarkMath,remarkGfm]}
+                                rehypePlugins={[rehypeKatex]}
+                              />
+                                {/* <RenderHtmlData htmldata={chat_data.question} /> */}
                               </div>
                             </div>
 
@@ -1005,7 +1019,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
-                                <RenderHtmlData htmldata={chat_data.content} />
+                              <ReactMarkdown
+                                children={chat_data.content}
+                                remarkPlugins={[remarkMath,remarkGfm]}
+                                rehypePlugins={[rehypeKatex]}
+                              />
+                                {/* <RenderHtmlData htmldata={chat_data.content} /> */}
                                 {/* ============all sorts of btn================ */}
                                 <Differentbtn
                                   all_data={chat_data}
@@ -1038,7 +1057,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                                       />
                                     </div>
                                     <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                      <RenderHtmlData htmldata={data["question"]} />
+                                    <ReactMarkdown
+                                      children={data["question"]}
+                                      remarkPlugins={[remarkMath,remarkGfm]}
+                                      rehypePlugins={[rehypeKatex]}
+                                    />
+                                      {/* <RenderHtmlData htmldata={data["question"]} /> */}
                                     </div>
                                   </div>
 
@@ -1065,9 +1089,16 @@ const Chat = ({ AUTH_TOKEN }) => {
                                           />
                                         </>
                                       ) : (
-                                        <RenderHtmlData
-                                          htmldata={data["content"]}
+                                        <>
+                                        <ReactMarkdown
+                                          children={data["content"]}
+                                          remarkPlugins={[remarkMath,remarkGfm]}
+                                          rehypePlugins={[rehypeKatex]}
                                         />
+                                        {/* <RenderHtmlData
+                                          htmldata={data["content"]}
+                                        /> */}
+                                        </>
                                       )}
                                       {/* ============all sorts of btn================ */}
                                       <Differentbtn
@@ -1094,7 +1125,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 />
                               </div>
                               <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                <RenderHtmlData htmldata={CurrentQuestion} />
+                                {/* <RenderHtmlData htmldata={CurrentQuestion} /> */}
+                                <ReactMarkdown
+                                      children={CurrentQuestion}
+                                      remarkPlugins={[remarkMath,remarkGfm]}
+                                      rehypePlugins={[rehypeKatex]}
+                                    />
                               </div>
                             </div>
 
@@ -1201,8 +1237,13 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         />
                                       </div>
                                       <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                        <RenderHtmlData
+                                        {/* <RenderHtmlData
                                           htmldata={data["question"]}
+                                        /> */}
+                                         <ReactMarkdown
+                                          children={data["question"]}
+                                          remarkPlugins={[remarkMath,remarkGfm]}
+                                          rehypePlugins={[rehypeKatex]}
                                         />
                                       </div>
                                     </div>
@@ -1231,9 +1272,18 @@ const Chat = ({ AUTH_TOKEN }) => {
                                             />
                                           </>
                                         ) : (
-                                          <RenderHtmlData
+                                          <>
+
+                                          {/* <RenderHtmlData
                                             htmldata={data["content"]}
-                                          />
+                                          /> */}
+                                           <ReactMarkdown
+                                          children={data["question"]}
+                                          remarkPlugins={[remarkMath,remarkGfm]}
+                                          rehypePlugins={[rehypeKatex]}
+                                        />
+                                          
+                                          </>
                                         )}
                                         {/* ============all sorts of btn================ */}
                                         <Differentbtn
@@ -1260,7 +1310,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   />
                                 </div>
                                 <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                  <RenderHtmlData htmldata={CurrentQuestionIni} />
+                                  {/* <RenderHtmlData htmldata={CurrentQuestionIni} /> */}
+                                  <ReactMarkdown
+                                          children={CurrentQuestionIni}
+                                          remarkPlugins={[remarkMath,remarkGfm]}
+                                          rehypePlugins={[rehypeKatex]}
+                                        />
                                 </div>
                               </div>
 
