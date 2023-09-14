@@ -200,9 +200,10 @@ const Subscription = (props) => {
       const request_subcription = async() =>{
 
           setstartbtnLoading(true)
+
           if(subscriptions_details.user.status=="trial"){
             const formData = {
-                "plan":all_cost_data[0]["actual_plan"],
+                "plan":all_cost_data[0]["plan"],
                 "subscription_type":all_cost_data[0]["monthly_anually"],
               }
               const resp = await postData(formData,BACKEND_URL+BACK_END_API_SUBSCRIBE_USER,props.AUTH_TOKEN)
@@ -919,6 +920,8 @@ const Subscription = (props) => {
                                             {subscriptions_details.user.plan==all_cost_data[0]["plan"] 
                                                 && 
                                             subscriptions_details.user.subscription_type==all_cost_data[0]["monthly_anually"]
+                                                && 
+                                            subscriptions_details.user.status=="active"
                                             ?
                                                 null
                                             :

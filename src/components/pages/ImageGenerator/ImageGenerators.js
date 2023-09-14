@@ -198,7 +198,7 @@ const [imageUrls, setImageUrls] = useState([]);
                   <div className="w-10 h-10">
                     <img
                       className="w-full h-full object-contain rounded-full"
-                      src="/art-generator.png"
+                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/art-generator.png"
                     />
                   </div>
                   <div className="flex-1 pl-6">

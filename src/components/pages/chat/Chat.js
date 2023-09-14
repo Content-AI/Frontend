@@ -1232,7 +1232,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                                       <div className="w-6 h-6 rounded-full order-last overflow-hidden">
                                         <img
                                           className="w-full h-full rounded-full"
-                                          src="default.png"
+                                          // src="default.png"
+                                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                                           alt="User"
                                         />
                                       </div>
@@ -1252,7 +1253,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                       <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
                                         <img
                                           className="w-full h-full rounded-full"
-                                          src="chat.png"
+                                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
                                           alt="ChatBot"
                                         />
                                       </div>
@@ -1399,7 +1400,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                             <div className="flex flex-auto flex-col items-center justify-center">
                               <div className="py-10 text-center">
                                 <img
-                                  src="chat-hero.png"
+                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat-hero.png"
                                   className="w-64 mb-8"
                                   alt="Chat Hero"
                                 />

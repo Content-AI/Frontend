@@ -14,6 +14,9 @@ import Workflow from "../Icons/Workflow";
 import TemplateIcon from "../Icons/TemplateIcon";
 
 
+import toast, { Toaster } from 'react-hot-toast';
+
+
 const buttonTags = [
   "All",
   "Blog",
@@ -116,6 +119,11 @@ const Home = ({AUTH_TOKEN}) => {
   const navigate = useNavigate()
   const [imp_template,set_imp_template]=useState(null)
 
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
+
   const get_template = async(url,token) =>{
     const response_data = await fetchData(url,token)
     if(response_data.status==200){
@@ -148,7 +156,9 @@ useEffect(()=>{
           <thead className="p-6 border-b border-border">
             <tr>
               <th className="text-left p-6">Getting Started</th>
-              <th className="text-right p-6">1500 credits available</th>
+              <th className="text-right p-6">
+                2000 free credits available
+              </th>
             </tr>
           </thead>
           <tbody className="[&_td]:px-6 [&_td]:py-2 [&_tr:first-child_td]:pt-6 [&_tr:last-child_td]:pb-6 [&_td:last-child]:text-right">
@@ -163,7 +173,11 @@ useEffect(()=>{
             <tr>
               <td className="px-6 py-4">Generate your first blog post</td>
               <td className="px-6 py-4 text-right">
-                <button className="inline-flex items-center justify-center text-white bg-[#304572] px-3 py-1.5 gap-x-2 rounded-md">
+                <button 
+                  onClick={()=>{
+                    notifysucces("Coming soon")
+                  }}
+                className="inline-flex items-center justify-center text-white bg-[#304572] px-3 py-1.5 gap-x-2 rounded-md">
                   <span>Try it</span>
                   <svg
                     width="14"
@@ -191,7 +205,11 @@ useEffect(()=>{
             <tr>
               <td>Watch introduction video</td>
               <td>
-                <button className="inline-flex items-center justify-center text-white bg-[#304572]  px-3 py-1.5 gap-x-2 rounded-md">
+                <button 
+                onClick={()=>{
+                    notifysucces("Coming soon")
+                  }}
+                className="inline-flex items-center justify-center text-white bg-[#304572]  px-3 py-1.5 gap-x-2 rounded-md">
                   <span>Play Video</span>
                   <svg
                     width="14"
@@ -256,7 +274,7 @@ useEffect(()=>{
             </div>
             <div className="rounded-s-xl rounded-e-xl mb-3">
               <img
-                src="card--placeholder.svg"
+                src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                 alt=""
                 className="w-full h-full"
               />
@@ -302,7 +320,7 @@ useEffect(()=>{
             </div>
             <div className="-mb-6 shadow-customv2 rounded-s-xl rounded-e-xl mb-3">
               <img
-                src="card--placeholder.svg"
+                src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                 alt=""
                 className="w-full h-full"
               />
@@ -335,7 +353,7 @@ useEffect(()=>{
             </div>
             <div className="shadow-customv2 rounded-s-xl rounded-e-xl mb-3">
               <img
-                src="card--placeholder.svg"
+                src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                 alt=""
                 className="w-full h-full"
               />

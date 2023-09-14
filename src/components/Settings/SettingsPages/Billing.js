@@ -200,6 +200,27 @@ const handleNewFormSubmit = (event) => {
   closeNewDialog();
 };
 
+
+// Define a function to calculate the background color based on the value
+function calculateBackgroundColor(total) {
+  
+
+  if (total >= 0 && total <= 10) {
+    return 'bg-green-500 w-[2%]'; // Red color for values between 0 and 100
+  } else if (total >= 10 && total <= 100) {
+    return 'bg-green-500 w-[10%]'; // Red color for values between 0 and 100
+  } else if (total > 500 && total <= 1499) {
+  } else if (total > 100 && total <= 500) {
+    return 'bg-green-500 w-[45%]'; // Yellow color for values between 101 and 500
+  } else if (total > 500 && total <= 1499) {
+    return 'bg-green-500 w-[70%]'; // Blue color for values between 501 and 1000
+  } else if (total > 1500 && total <= 2000) {
+    return 'bg-red-500 w-[95%]'; // Green color for values between 1001 and 2000
+  } else {
+    return 'bg-red-500'; // Default color for other values
+  }
+}
+
   return (
     <>
       <Settings/>
@@ -232,7 +253,7 @@ const handleNewFormSubmit = (event) => {
                             ?
                               <>
                                 {
-                                  list_token_generated_by_user.total +"/ *"
+                                  list_token_generated_by_user.total +"/ 2000"
                                 }
                               </>
                             :
@@ -246,29 +267,35 @@ const handleNewFormSubmit = (event) => {
                         }
                         </strong>
                       </div>
-                        <div className="w-full max-w-xl">
-                          <div className="relative py-1 min-w-full w-full">
-                              <div className="flex overflow-hidden rounded-full text-xs relative shadow-inner bg-green-200 h-[0.75rem]" >
-                                <div className="absolute z-10 flex flex-col justify-center whitespace-nowrap text-center text-black rounded-r-full bg-green-600 shadow-inner_right w-[50%] h-[0.75rem]"></div>
+
+                        {SubscriptionsData &&
+                        <>
+
+                          {SubscriptionsData.user.status=="trial"
+                          ?
+                            <div className="w-full max-w-xl">
+                              <div className="relative py-1 min-w-full w-full">
+                                <div className="flex overflow-hidden rounded-full text-xs relative shadow-inner h-[0.75rem] w-[100%] bg-slate-400">
+                                  <div className={`absolute z-10 flex flex-col justify-center whitespace-nowrap text-center text-black rounded-r-full ${calculateBackgroundColor(list_token_generated_by_user.total)} shadow-inner_right  h-[0.75rem]`}></div>
+                                </div>
                               </div>
-                          </div>
-                        </div>
-                        {/* <div className='mb-1'>Words usage resets on <strong className="font-medium text-slate-400">July 27, 2023</strong></div> */}
-                        {/* <div className="pt-4 sm:col-span-6">
-                          <button type="button" className="mb-1 focus-within:outline-none relative flex cursor-pointer items-center rounded-md border border-grey-200 bg-[#334977] py-2 px-3 text-sm font-medium text-white shadow-sm focus-within:ring-2 focus-within:ring-green-500 focus-within:ring-offset-2 focus-within:ring-offset-grey-10">
-                              View Generation History
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-md ml-2 h-3 w-3">
-                                <g clip-path="url(#clip0_5_410)">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.7071 2.29289C10.3166 1.90237 9.68342 1.90237 9.29289 2.29289C8.90237 2.68342 8.90237 3.31658 9.29289 3.70711L12.5858 7H1C0.447715 7 0 7.44772 0 8C0 8.55228 0.447715 9 1 9H12.5858L9.29289 12.2929C8.90237 12.6834 8.90237 13.3166 9.29289 13.7071C9.68342 14.0976 10.3166 14.0976 10.7071 13.7071L15.7071 8.70711C16.0976 8.31658 16.0976 7.68342 15.7071 7.29289L10.7071 2.29289Z" fill="currentColor"></path>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_5_410">
-                                      <rect width="16" height="16" fill="white"></rect>
-                                    </clipPath>
-                                </defs>
-                              </svg>
-                          </button>
-                        </div> */}
+                            </div>
+                          :
+
+                            <div className="w-full max-w-xl">
+                              <div className="relative py-1 min-w-full w-full">
+                                  <div className="flex overflow-hidden rounded-full text-xs relative shadow-inner bg-green-200 h-[0.75rem]" >
+                                    <div className="absolute z-10 flex flex-col justify-center whitespace-nowrap text-center text-black rounded-r-full bg-green-600 shadow-inner_right w-[50%] h-[0.75rem]"></div>
+                                  </div>
+                              </div>
+                            </div>
+                          }  
+
+                        </>
+
+                        }
+                        
+
                         <div className="mb-1 font-medium text-gray-700 md:flex  md:justify-end">
                         <div className="mt-4 md:flex md:items-center  md:space-x-2">
                         {showBillsData

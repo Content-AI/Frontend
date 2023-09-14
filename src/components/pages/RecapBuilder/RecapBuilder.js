@@ -290,7 +290,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                   <div className="w-10 h-10">
                     <img
                       className="w-full h-full object-contain rounded-full"
-                      src="/recap_builder.png"
+                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/recap_builder.png"
                     />
                   </div>
                   <div className="flex-1 pl-6">

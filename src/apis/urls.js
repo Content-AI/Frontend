@@ -1,11 +1,12 @@
-const local = true
-// const local=false
+// const local = true
+const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
 export var FRONT_END_URL_LINKEDIN;
 export var FRONT_END_URL_GOOGLE_PARAM;
 export var BACKEND_URL;
+
 
 if(local==true){
   // FRONT_END_URL = "http://localhost:3000"
@@ -39,6 +40,8 @@ if(local==true){
 }
 
 export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
+
+export const AWS_FRONT_END_IMAGES = "https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/"
 
 export const BACK_API_LOGIN_URL =
   "/v1/accounts/accounts_data/login_using_token/";
