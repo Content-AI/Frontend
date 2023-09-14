@@ -105,6 +105,8 @@ const Chat = ({ AUTH_TOKEN }) => {
   const [CurrentQuestion, setCurrentQuestion] = useState(null);
   const [CurrentAnswer, setCurrentAnswer] = useState([]);
 
+  const [showStopBtn, setShowStopBtn] = useState(false);
+
   const [
     LatestOrCurrentClickGetChatFromID,
     setLatestOrCurrentClickGetChatFromID,
@@ -119,6 +121,9 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const [open, setOpen] = useState(false);
   const [popStat, setPopStat] = useState(false);
+  const [typedComp, setTypedComp] = useState();
+  
+  var typedCompRef = useRef();
 
   const popRef = React.useRef();
 
@@ -262,6 +267,7 @@ const Chat = ({ AUTH_TOKEN }) => {
       return false;
     }
     setLoading(true);
+    setShowStopBtn(true);
 
     // =================Initial chat without data==============================
     if (AllChatText.length <= 0) {
@@ -909,7 +915,15 @@ const Chat = ({ AUTH_TOKEN }) => {
     setIsTypingFinished(true);
     setLoading(false)
     setcheck_to_stop_typing(false)
+    setShowStopBtn(false)
   };
+
+  const handleTypeStop = () => {
+    setShowStopBtn(false)
+    console.log('typedComp', typedComp)
+    setTypedComp(typedComp.cursor.hidden = true)
+    setTypedComp(typedComp.stop())
+  }
 
   // useEffect(()=>{
   //   console.log(characterCount)
@@ -1058,8 +1072,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                       {CurrentAnswer.length == length_of_obj ? (
                                         <>
                                           <Typed
+                                            typedRef={(typed) => {setTypedComp(typed)}}
                                             strings={[data_]}
-                                            typeSpeed={1}
+                                            typeSpeed={10}
                                             showCursor={true}
                                             onComplete={handleTypingDone}
                                           />
@@ -1224,8 +1239,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         length_of_obj ? (
                                           <>
                                             <Typed
+                                              typedRef={(typed) => {setTypedComp(typed)}}
                                               strings={[data_]}
-                                              typeSpeed={1}
+                                              typeSpeed={10}
                                               showCursor={true}
                                               onComplete={handleTypingDone}
                                             />
@@ -1365,8 +1381,15 @@ const Chat = ({ AUTH_TOKEN }) => {
                 </div>
                 <div
                   ref={popRef}
-                  className="chatbox flex flex-col w-full py-2 px-4 @lg:py-4 max-w-7xl m-auto"
+                  className="chatbox relative flex flex-col w-full py-2 px-4 @lg:py-4 max-w-7xl m-auto"
                 >
+                  <button
+                  className={clsx("stop-generator absolute -top-10 left-1/2 -translate-x-1/2 text-white bg-red-500 px-4 py-1 rounded-md transition-all",
+                  { "hidden -top-2" : !showStopBtn })}
+                  onClick={handleTypeStop}
+                  >
+                    Stop Generating
+                  </button>
                   <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
                     <button
                       className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
