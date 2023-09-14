@@ -511,14 +511,16 @@ const Navbar = () => {
                           />
                         ) : (
                           <img
-                            src="/default.png"
+                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                            // src="/default.png"
                             alt="Image"
                             className="w-[40px] h-[40px] rounded-full"
                           />
                         )
                       ) : (
                         <img
-                          src="/default.png"
+                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                          // src="/default.png"
                           alt="Image"
                           className="w-[40px] h-[40px] rounded-full"
                         />
@@ -952,14 +954,16 @@ const Navbar = () => {
                               />
                             ) : (
                               <img
-                                src="default.png"
+                                // src="default.png"
+                                src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                                 alt="Image"
                                 className="w-[40px] h-[40px] rounded-full"
                               />
                             )
                           ) : (
                             <img
-                              src="default.png"
+                              // src="default.png"
+                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                               alt="Image"
                               className="w-[40px] h-[40px] rounded-full"
                             />
