@@ -4,10 +4,15 @@ import { useParams } from "react-router-dom";
 import {
   BACKEND_URL,
   BACK_END_API_GENERATE_IMAGE,
-  BACK_END_API_GENERATE_SUMMARIZE,
+  BACK_END_API_CHECK_VIDEO,
+  BACK_END_API_UPLOADING_VIDEO,
+  BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO,
+  BACK_END_API_RECAP_OF_AUDIO,
   BACK_END_API_AUDIO_SUMMARIZE,
   BACK_END_API_HISTORY_URL,
-  BACK_END_API_HISTORY_AUDIO_VIDEO
+  BACK_END_API_HISTORY_AUDIO_VIDEO,
+  BACK_END_API_CHUNK_FILE,
+  BACK_END_API_CONVERT_AUDIO,
 } from "../../../apis/urls";
 import { fetchData, postData,fileFormData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
@@ -36,6 +41,7 @@ import { Carousel } from "react-responsive-carousel";
 import { FaDownload } from "react-icons/fa"; // Import the download icon from react-icons
 import Downloadicon from "../../Icons/Downloadicon";
 import RenderHtmlData from "../Template/RenderHtmlData";
+import Progressbar from "./Progressbar";
 
 
 
@@ -91,6 +97,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
   const [summarize_text_id, setsummarize_text_id] = useState(null);
   const [created_time, setcreated_time] = useState(null);
   const [GeneratingSummarize, setGeneratingSummarize] = useState(false);
+  const [message_from_backend, setmessage_from_backend] = useState('Generating Summarize of content this may take while buckle up ...');
   const [url, setUrl] = useState('');
   const [isValid, setIsValid] = useState(true);
 
@@ -122,18 +129,50 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
             url:url
         }
         
-        const resp = await postData(formdata,BACKEND_URL+BACK_END_API_GENERATE_SUMMARIZE,AUTH_TOKEN)
-        if(resp.status==200){
-            setLoadingButton(false)
-            setGeneratingSummarize(false)
-            setsummarize_text(resp.data[0]["summarize_text"])
-            setsummarize_text_id(resp.data[0]["id"])
-            setcreated_time(resp.data[0]["created_at"])
-            setUrl('')
+        const resp_first = await postData(formdata,BACKEND_URL+BACK_END_API_CHECK_VIDEO,AUTH_TOKEN)
+        if(resp_first.status==200){
+          
+          setmessage_from_backend(resp_first.data.message)
+          
+          
+          const resp_second = await fetchData(BACKEND_URL+BACK_END_API_UPLOADING_VIDEO,AUTH_TOKEN)
+          if(resp_second.status==200){
+            
+            setmessage_from_backend(resp_second.data.message)
+            
+            const resp_third = await fetchData(BACKEND_URL+BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO,AUTH_TOKEN)
+            if(resp_third.status==200){
+              
+              setmessage_from_backend(resp_third.data.message)
+              const resp_fourth = await fetchData(BACKEND_URL+BACK_END_API_RECAP_OF_AUDIO,AUTH_TOKEN)
+              
+              if(resp_fourth.status==200){
+                  setLoadingButton(false)
+                  setGeneratingSummarize(false)
+                  setsummarize_text(resp_fourth.data[0]["summarize_text"])
+                  setsummarize_text_id(resp_fourth.data[0]["id"])
+                  setcreated_time(resp_fourth.data[0]["created_at"])
+                  setUrl('')
+
+              }else{
+                notifyerror("something went wrong refresh the page")
+              }
+
+            }else{
+
+              notifyerror("something went wrong refresh the page")
+
+            }
+
+          }else{
+            notifyerror("something went wrong refresh the page")
+          }
+
+
         }else{
             try{
-                if(resp.response.data.message){
-                    notifyerror(resp.response.data.message)
+                if(resp_first.response.data.message){
+                    notifyerror(resp_first.response.data.message)
                 }
             }catch(e){
                 notifyerror("We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery.")
@@ -156,6 +195,10 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
   // =========the file upload audio or video======
   const [selectedFile, setSelectedFile] = useState(null);
   const [dragging, setDragging] = useState(false);
+
+  const [show_uploading_bar, setshow_uploading_bar] = useState(false);
+  const [percent_uploaded, setpercent_uploaded] = useState(0);
+
   const [error, setError] = useState("");
 
   const supportedExtensions = [".mp3", ".mp4", ".srt"];
@@ -198,7 +241,10 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
     }
   };
 
+  const CHUNK_SIZE = 6 * 1024 * 1024; // 3 MB
+
   const uploadFile = async() => {
+    const message_data = "We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery."
     setsummarize_text([])
     setsummarize_text_id(null)
     setGeneratingSummarize(true)
@@ -208,28 +254,142 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
+    // const formData = new FormData();
+    // formData.append("file", selectedFile);
 
-    const resp = await fileFormData(formData,BACKEND_URL+BACK_END_API_AUDIO_SUMMARIZE,AUTH_TOKEN)
-    if(resp.status==200){
-      setLoadingButton(false)
-      setsummarize_text(resp.data[0]["summarize_text"])
-      setsummarize_text_id(resp.data[0]["id"])
-      setGeneratingSummarize(false)
-      setSelectedFile(null)
-    }else{
-      setLoadingButton(false)
-      setGeneratingSummarize(false)
-      setSelectedFile(null)
-      try{
-        if(resp.response.data.message){
-          notifyerror(resp.response.data.message)
-        }
-      }catch(e){
-        notifyerror("We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery.")
+    const fileSize = selectedFile.size;
+    let start = 0;
+    let end = CHUNK_SIZE;
+
+    let resp_upload;
+
+    while (start < fileSize) {
+      const chunk = selectedFile.slice(start, end);
+      const formData = new FormData();
+      formData.append('file_chunk', chunk);
+      formData.append('file_name', selectedFile.name);
+      formData.append('file_size', selectedFile.size);
+
+      
+      try {
+        
+          resp_upload = await axios.post(BACKEND_URL+BACK_END_API_CHUNK_FILE, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${AUTH_TOKEN}`,
+              },
+            });
+          start = end;
+          end = Math.min(start + CHUNK_SIZE, fileSize);
+          
+          let inputNumber = (resp_upload.data.uploaded_partial_size/fileSize)*100
+          let actual_percent = inputNumber.toString().match(/\d{2}/)
+
+          setpercent_uploaded(actual_percent["input"])
+          setshow_uploading_bar(true)
+          
+          if(resp_upload.data.uploaded_partial_size==fileSize){
+            setshow_uploading_bar(false)
+            
+                try{
+                  if(resp_upload.status==200){
+                      setmessage_from_backend(resp_upload.data.message)
+
+                      const resp_second = await fetchData(BACKEND_URL+BACK_END_API_CONVERT_AUDIO,AUTH_TOKEN)
+                      if(resp_second.status==200){
+                        setmessage_from_backend(resp_second.data.message)
+
+                        const resp_third = await fetchData(BACKEND_URL+BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO,AUTH_TOKEN)
+                        if(resp_third.status==200){
+                          
+                          setmessage_from_backend(resp_third.data.message)
+                          const resp_fourth = await fetchData(BACKEND_URL+BACK_END_API_RECAP_OF_AUDIO,AUTH_TOKEN)
+                          
+                          if(resp_fourth.status==200){
+                            setLoadingButton(false)
+                            setsummarize_text(resp_fourth.data[0]["summarize_text"])
+                            setsummarize_text_id(resp_fourth.data[0]["id"])
+                            setGeneratingSummarize(false)
+                            setSelectedFile(null)
+              
+                          }else{
+                            if(resp_fourth.response.data.message){
+                              notifyerror(resp_fourth.response.data.message)
+                            }
+                            notifyerror(message_data)
+                          }
+              
+                        }else{
+              
+                          if(resp_third.response.data.message){
+                            notifyerror(resp_third.response.data.message)
+                          }
+                          notifyerror(message_data)
+              
+                        }
+
+
+
+                      }else{
+                        if(resp_second.response.data.message){
+                          notifyerror(resp_second.response.data.message)
+                        }
+                        notifyerror(message_data)
+                      }
+
+                    }else{
+                      if(resp_upload.response.data.message){
+                        notifyerror(resp_upload.response.data.message)
+                      }
+                      notifyerror(message_data)
+                  }
+
+                }catch(e){
+
+                }
+
+          }
+
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        break;
       }
+
     }
+
+    // try{
+    //   // console.log(resp_upload.data)
+    //   if(resp_upload.status==201){
+    //       setmessage_from_backend(resp_upload.data.message)
+
+    //   }else{
+
+    //   }
+    // }catch(e){
+
+    // }
+
+
+
+    // const resp = await fileFormData(formData,BACKEND_URL+BACK_END_API_AUDIO_SUMMARIZE,AUTH_TOKEN)
+    // if(resp.status==200){
+    //   setLoadingButton(false)
+    //   setsummarize_text(resp.data[0]["summarize_text"])
+    //   setsummarize_text_id(resp.data[0]["id"])
+    //   setGeneratingSummarize(false)
+    //   setSelectedFile(null)
+    // }else{
+    //   setLoadingButton(false)
+    //   setGeneratingSummarize(false)
+    //   setSelectedFile(null)
+    //   try{
+    //     if(resp.response.data.message){
+    //       notifyerror(resp.response.data.message)
+    //     }
+    //   }catch(e){
+    //     notifyerror("We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery.")
+    //   }
+    // }
 
   };
 
@@ -272,9 +432,57 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
     }
   }
 
+
+
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    // const fileSize = file.size;
+    // let start = 0;
+    // let end = CHUNK_SIZE;
+
+    // while (start < fileSize) {
+    //   const chunk = file.slice(start, end);
+    //   const formData = new FormData();
+    //   formData.append('file_chunk', chunk);
+    //   formData.append('file_name', file.name);
+    //   formData.append('file_size', file.size);
+
+    //   try {
+    //     await axios.post(BACKEND_URL+BACK_END_API_CHUNK_FILE, formData, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     });
+    //     start = end;
+    //     end = Math.min(start + CHUNK_SIZE, fileSize);
+    //   } catch (error) {
+    //     console.error('Error uploading file:', error);
+    //     break;
+    //   }
+    // }
+
+    // alert('File uploaded successfully!');
+  };
+
+
+
   return (
     <>
       <div className="relative lg:-m-6">
+
+      {/* <div>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Upload</button>
+      </div>
+       */}
         <button
           onClick={() => {
             navigate("/create_new_content");
@@ -423,15 +631,9 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <div>
                       <p className="text-green-500 text-center">
                         File selected: {selectedFile.name} (
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)                        
                       </p>
                       {error && <p className="text-red-500 text-center">{error}</p>}
-                      {/* <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 hover:bg-blue-600"
-                        onClick={uploadFile}
-                      >
-                        Upload
-                      </button> */}
                     </div>
                   ) : (
                     <div>
@@ -456,6 +658,15 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     accept=".mp3, .mp4, .srt" // Define your supported file types here
                   />
                 </div>
+                  
+                {show_uploading_bar
+                ?
+                  <Progressbar 
+                    percent_uploaded={percent_uploaded}
+                  /> 
+                :
+                  null
+                }
 
 
                 {subscriptions_details &&
@@ -503,20 +714,6 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                       </span>
                     </button>
                     <div className="flex ">
-                      {/* <input
-                        type="number"
-                        className="mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        defaultValue={ContentOutputNumber}
-                        onChange={(e) => {
-                          if(ContentOutputNumber>10){
-                            return true
-                          }
-                          setContentOutputNumber(e.target.value);
-                        }}
-                        max={10}
-                        min={1}
-                      /> */}
-
 
 
                       {/* =======for url====== */}
@@ -561,45 +758,78 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     {/* =======for url====== */}
 
                       {/* =======for file====== */}
-                      
-                      {selectedFile ? (
-                        <button
-                          type="submit"
-                          className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
-                          id="generateBtn1"
-                          onClick={uploadFile}
-                        >
-                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                            {LoadingButton ? (
-                              <>
-                                <svg
-                                  aria-hidden="true"
-                                  role="status"
-                                  className="inline w-4 h-4 mr-3 text-white animate-spin"
-                                  viewBox="0 0 100 101"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
+
+                      {selectedFile &&
+                      <>
+                        {(selectedFile.size / 1024 / 1024).toFixed(2)>=23.9
+                        ?
+                          <>
+                          {selectedFile ? (
+                                <button
+                                  type="submit"
+                                  className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-red-500"
+                                  id="generateBtn1"
+                                  onClick={()=>{
+                                    setSelectedFile(null)
+                                  }}
                                 >
-                                  <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="#E5E7EB"
-                                  />
-                                  <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                    fill="currentColor"
-                                  />
-                                </svg>
-                                Generating
-                              </>
-                            ) : (
-                              "Generate"
-                            )}
-                          </span>
-                        </button>
-                      )
-                      :
-                        null
+                                  File must be less then 24 MB
+                                  ( Delete file )
+                                </button>
+                              )
+                              :
+                                null
+                              }
+                          </>
+                        :
+                          <>
+                              {selectedFile ? (
+                                <button
+                                  type="submit"
+                                  className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
+                                  id="generateBtn1"
+                                  onClick={uploadFile}
+                                >
+                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                    {LoadingButton ? (
+                                      <>
+                                        <svg
+                                          aria-hidden="true"
+                                          role="status"
+                                          className="inline w-4 h-4 mr-3 text-white animate-spin"
+                                          viewBox="0 0 100 101"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                            fill="#E5E7EB"
+                                          />
+                                          <path
+                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                            fill="currentColor"
+                                          />
+                                        </svg>
+                                        Generating
+                                      </>
+                                    ) : (
+                                      <>
+                                        Generate
+                                      </>
+                                    )}
+                                        {/* 24117248 */}
+                                  </span>
+                                </button>
+                              )
+                              :
+                                null
+                              }
+                          </>
+                        }
+
+                      </>
                       }
+                      
                     {/* =======for file====== */}
                      
 
@@ -691,7 +921,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                                 <div className="mb-1 text-sm font-medium text-gray-500">
                                 <div className="mt-3 flex flex-col items-center justify-center">
                                     <div>
-                                        <p>Generating Summarize of content this may take while buckle up ...</p>
+                                        <p>{message_from_backend}</p>
                                     </div>
                                     <div className="mt-3">
                                         <BouncingDotsLoader />
