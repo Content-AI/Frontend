@@ -356,6 +356,41 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
       }
 
     }
+
+    // try{
+    //   // console.log(resp_upload.data)
+    //   if(resp_upload.status==201){
+    //       setmessage_from_backend(resp_upload.data.message)
+
+    //   }else{
+
+    //   }
+    // }catch(e){
+
+    // }
+
+
+
+    // const resp = await fileFormData(formData,BACKEND_URL+BACK_END_API_AUDIO_SUMMARIZE,AUTH_TOKEN)
+    // if(resp.status==200){
+    //   setLoadingButton(false)
+    //   setsummarize_text(resp.data[0]["summarize_text"])
+    //   setsummarize_text_id(resp.data[0]["id"])
+    //   setGeneratingSummarize(false)
+    //   setSelectedFile(null)
+    // }else{
+    //   setLoadingButton(false)
+    //   setGeneratingSummarize(false)
+    //   setSelectedFile(null)
+    //   try{
+    //     if(resp.response.data.message){
+    //       notifyerror(resp.response.data.message)
+    //     }
+    //   }catch(e){
+    //     notifyerror("We adhere to strict guidelines ensuring the responsible creation of content, prioritizing the avoidance of any harmful or offensive imagery.")
+    //   }
+    // }
+
   };
 
 
