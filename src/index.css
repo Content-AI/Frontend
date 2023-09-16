@@ -1,19 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -33,8 +33,6 @@ code {
   background-color: #555;
 }
 
-
-
 .kep-login-facebook.metro {
   width: 200px !important;
   height: 36px !important;
@@ -46,9 +44,6 @@ code {
   color: white;
   outline: none;
 }
-
-
-
 
 /* ===============Bouncing loading ================ */
 
@@ -148,7 +143,6 @@ code {
   border: 0;
 }
 
-
 .ql-toolbar.ql-snow {
   position: sticky !important;
   top: 0 !important;
@@ -156,11 +150,7 @@ code {
   z-index: 1 !important;
 }
 
-
-
 /* ==========Modal popup========== */
-
-
 
 /* analyzing tone css */
 @keyframes spin {
@@ -179,4 +169,18 @@ code {
   border-top-color: #3b82f6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+.ce-block.active {
+  margin-left: -5px;
+  padding-left: 5px;
+}
+
+.ce-block.active .ce-paragraph {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.ce-block.active .ce-paragraph[data-placeholder]:empty::before {
+  content: "Enter to generate content";
+  opacity: 1;
 }
