@@ -436,7 +436,7 @@ useEffect(()=>{
                   <div className="w-10 h-10">
                     <img
                       className="w-full h-full object-contain"
-                      src={BACKEND_URL + TemplateData[0].icon}
+                      src={TemplateData[0].icon}
                     />
                   </div>
                   <div className="flex-1 pl-6">
