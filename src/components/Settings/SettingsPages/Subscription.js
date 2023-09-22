@@ -390,7 +390,7 @@ const Subscription = (props) => {
     <>
       <>
         
-      <div className='m-auto'>
+      <div className='ml-[50px] sm:ml-[150px]'>
 
           <div
             className="w-full h-full bg-red-500 overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"

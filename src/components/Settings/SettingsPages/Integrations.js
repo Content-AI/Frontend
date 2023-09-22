@@ -77,8 +77,8 @@ const Integrations = () => {
 
   return (
     <>
-      <Settings/>
-      <div className='m-auto'>
+      {/* <Settings/> */}
+      <div className='ml-[50px] mr-[50px] sm:ml-[100px] mt-10'>
 
       <div className="mx-auto px-4 sm:px-6 max-w-4xl">
           <div className="flex items-center mb-4 justify-between">

@@ -185,12 +185,15 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route path="/Projects" element={<Projects AUTH_TOKEN={TOKEN} />} />
 
             <Route path="/logout" element={<Logout />} />
-            <Route path="/settings/general" element={<General AUTH_TOKEN={TOKEN}/>} />
-            <Route path="/settings/billing" element={<Billing AUTH_TOKEN={TOKEN}/>} />
+
+            <Route path="/settings/general" element={<Settings AUTH_TOKEN={TOKEN}/>} />
+            {/* <Route path="/settings/general" element={<General AUTH_TOKEN={TOKEN}/>} /> */}
+            
+            {/* <Route path="/settings/billing" element={<Billing AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/profile" element={<Profile AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/integrations" element={<Integrations AUTH_TOKEN={TOKEN}/>} />
             <Route path="/settings/team" element={<Team AUTH_TOKEN={TOKEN}/>} />
-            <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />            
+            <Route path="/settings/usage" element={<Usage AUTH_TOKEN={TOKEN}/>} />             */}
 
             <Route path="/settings/subscription_plan" element={<Subscription AUTH_TOKEN={TOKEN}/>} />
 

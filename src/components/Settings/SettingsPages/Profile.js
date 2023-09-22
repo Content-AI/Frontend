@@ -84,8 +84,8 @@ const Profile = () => {
   
   return (
     <>
-      <Settings/>
-            <div className='flex flex-col ml-[150px]'>
+      {/* <Settings/> */}
+            <div className='flex flex-col ml-[50px] sm:ml-[150px] mt-10'>
                     <div>
                         <h1 className='text-[18px] font-bold'>Profile Settings</h1>
                     </div>

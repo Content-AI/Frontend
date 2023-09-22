@@ -23,6 +23,10 @@ const Usage = (props) => {
   
   const [chartData, setChartData] = useState(null);
 
+  let TOKEN = useSelector(
+    (state) => state.SetAuthenticationToken.AuthenticationToken
+  );
+
 
   let list_token_generated_by_user = useSelector(
     (state) => state.SetListTokenGeneratedByUser.ListTokenGeneratedByUser
@@ -45,7 +49,7 @@ const Usage = (props) => {
 
   const get_the_individual_data = async()=>{
     setuserToken(null)
-    const resp = await fetchData(BACKEND_URL+BACK_END_API_TOKEN_GENERATED,props.AUTH_TOKEN)
+    const resp = await fetchData(BACKEND_URL+BACK_END_API_TOKEN_GENERATED,TOKEN)
     if(resp.status==200){
         setuserToken(resp.data.data)
         setuserTotalToken(resp.data.total)
@@ -53,7 +57,7 @@ const Usage = (props) => {
     }
     const get_the_team_data = async()=>{
       setuserToken(null)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_TEAM_TOKEN_GENERATED,props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_TEAM_TOKEN_GENERATED,TOKEN)
       if(resp.status==200){
         setuserToken(resp.data.data)
         setuserTotalToken(resp.data.total)
@@ -62,28 +66,28 @@ const Usage = (props) => {
   }
     const get_the_team_template_used_team = async()=>{
       setuserToken(null)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_TEAM_TEMPLATE_USER,props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_TEAM_TEMPLATE_USER,TOKEN)
       if(resp.status==200){
         settemplate_used(resp.data.total_count)
     }
   }
     const get_the_single_template_used_team = async()=>{
       setuserToken(null)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TEMPLATE_USE,props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TEMPLATE_USE,TOKEN)
       if(resp.status==200){
         settemplate_used(resp.data.total)
     }
   }
     const get_the_list_users_token_and_template_used_by_team = async()=>{
       setuserToken(null)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED,props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED,TOKEN)
       if(resp.status==200){
         settemplate_use_token_used_by_users(resp.data)
     }
   }
     const get_single_list_users_token_and_template_used_by_team = async()=>{
       setuserToken(null)
-      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TOKEN_GENERATED,props.AUTH_TOKEN)
+      const resp = await fetchData(BACKEND_URL+BACK_END_API_SINGLE_TOKEN_GENERATED,TOKEN)
       if(resp.status==200){
         settemplate_use_token_used_by_users(resp.data)
     }
@@ -93,21 +97,21 @@ const Usage = (props) => {
 
 
     useEffect(()=>{
-      if(props.AUTH_TOKEN!=null){
+      if(TOKEN!=null){
           get_the_team_data()
           get_the_team_template_used_team()
           get_the_list_users_token_and_template_used_by_team()
       }
-  },[props.AUTH_TOKEN])
+  },[TOKEN])
 
 
 
 
   return (
     <>
-      <Settings />
+      {/* <Settings /> */}
       {chartData &&
-        <div className='m-auto'>
+        <div className='ml-[50px] mr-[50px] sm:ml-[100px] mt-10'>
 
 
           <div className="max-w-4xl">

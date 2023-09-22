@@ -269,6 +269,7 @@ const Team = () => {
 
     return (
       <div className="">
+
         <div>
           <button
             type="button"
@@ -332,6 +333,7 @@ const Team = () => {
 
           </div>
         </Transition>
+
       </div>
     );
   };
@@ -412,14 +414,14 @@ const Team = () => {
 
   return (
     <>
-      <Settings />
+      {/* <Settings /> */}
 
       {loadingpage
         ?
         <LoadingPage />
         :
         <>
-          <div className="px-4 sm:px-6">
+          <div className="px-4 sm:px-6 ml-[50px] mr-[50px] sm:ml-[100px] mt-10">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Team</h2>
             </div>
@@ -626,15 +628,15 @@ const Team = () => {
                       {selectedItem == "Team Member"
                         ?
                         <>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Role</th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Joined</th>
+                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Role</th>
+                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Joined</th>
                         </>
                         :
                         <>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Invite at</th>
+                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Invite at</th>
                         </>
                       }
-                      <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"><span className="sr-only">Edit</span></th>
+                      <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 "><span className="sr-only">Edit</span></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 bg-slate-100">
@@ -667,16 +669,22 @@ const Team = () => {
                                         </div>
                                       </div>
                                     </td>
-                                    <td className="hidden sm:table-cell">
+                                    <td className=" sm:table-cell">
                                       {PROFILE_DATA.email == data["team_member_user"]["email"]
                                         ?
                                         <>
-                                          <SelectField
+                                        
+                                        <button 
+                                          className="text-gray-700 group flex items-center px-4 py-2 text-sm focus:outline-none hover:bg-gray-100"
+                                        >
+                                          Admin
+                                        </button>
+                                          {/* <SelectField
                                             options={[
                                               { label: 'Admin', value: 'Admin' },
                                             ]}
                                             role_of_user={workspacelist[index]["admin_or_not"] ? "Admin" : "Member"}
-                                          />
+                                          /> */}
                                         </>
                                         :
                                         <>
@@ -693,10 +701,10 @@ const Team = () => {
                                         </>
                                       }
                                     </td>
-                                    <td className="hidden sm:table-cell">
+                                    <td className=" sm:table-cell">
                                       {data["team_member_user"]["created_at"]}
                                     </td>
-                                    <td className="hidden sm:table-cell text-blue-500">
+                                    <td className=" sm:table-cell text-blue-500">
 
                                       {PROFILE_DATA.email == data["team_member_user"]["email"]
                                         ?

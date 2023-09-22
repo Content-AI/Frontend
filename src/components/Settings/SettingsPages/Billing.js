@@ -223,8 +223,9 @@ function calculateBackgroundColor(total) {
 
   return (
     <>
-      <Settings/>
-      <div className='m-auto'>
+      {/* <Settings/> */}
+
+      <div className='ml-[50px] mr-[50px] sm:ml-[100px] mt-10 '>
         <p className="font-bold text-[25px] text-black mb-1">Billing </p>
         <div className="m-1 px-6 pt-6 bg-white text-black rounded-md shadow-xs ring-1 ring-gray-300">
               <h3 className="text-xl font-medium leading-6 text-gray-700">Subscription</h3>

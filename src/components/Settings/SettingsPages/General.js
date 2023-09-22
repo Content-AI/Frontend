@@ -4,7 +4,7 @@ import Settings from '../Settings'
 const General = () => {
   return (
     <>
-      <Settings/>
+      {/* <Settings/> */}
         <div className='flex flex-col ml-[150px]'>
             <div>
                 <h1 className='text-[18px] font-bold'>General Settings</h1>
