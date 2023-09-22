@@ -2,6 +2,7 @@ import React, { useEffect,useState } from "react";
 import clsx from "clsx";
 import { BACKEND_URL ,BACK_END_API_TEMPLATE_IMP} from "../../apis/urls";
 import { fetchData } from "../../apis/apiService";
+import { useSelector, useDispatch } from "react-redux";
 
 import CardDoc from "../Card/CardDoc";
 
@@ -15,6 +16,7 @@ import TemplateIcon from "../Icons/TemplateIcon";
 
 
 import toast, { Toaster } from 'react-hot-toast';
+import { Premium } from "./ImageGenerator/Premium";
 
 
 const buttonTags = [
@@ -123,6 +125,11 @@ const Home = ({AUTH_TOKEN}) => {
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
 
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+
+
 
   const get_template = async(url,token) =>{
     const response_data = await fetchData(url,token)
@@ -132,6 +139,8 @@ const Home = ({AUTH_TOKEN}) => {
       // navigate("/logout")
     }
   }
+
+
 
 
 
@@ -260,16 +269,33 @@ useEffect(()=>{
                   Boss Mode
                 </span> */}
               </div>
+                
               <p className="text-sm min-h-[62px]">
                 Generate WorkFlow to Create Content.
               </p>
               <div className="button-wrap">
-              <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
-              onClick={()=>{
-                navigate("/workflow")
-              }}>
-                WorkFlow
-              </button>
+              
+              {subscriptions_details &&
+              <>
+                {subscriptions_details.user.status=="trial"
+                ?
+                  <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                  onClick={()=>{
+                    navigate("/settings/subscription_plan")
+                  }}>
+                    Upgrade
+                  </button>
+                :
+                  <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                  onClick={()=>{
+                    navigate("/workflow")
+                  }}>
+                    WorkFlow
+                  </button>
+                }
+
+              </>
+              }
               </div>
             </div>
             <div className="rounded-s-xl rounded-e-xl mb-3">

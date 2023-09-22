@@ -452,7 +452,7 @@ const Subscription = (props) => {
                     type="button"
                     className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1 flex items-center space-x-1"
                     onClick={() => {
-                        navigate("/settings/Billing");
+                        navigate("/settings/general?page=billing");
                     }}
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" className='w-4 h-4 mt-1' data-name="Layer 1" viewBox="0 0 80 100" x="0px" y="0px">

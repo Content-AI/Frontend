@@ -48,6 +48,7 @@ import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import TextTypingAnimation from "./TextTypingAnimation";
 
 
 const buttonTags = [
@@ -1095,6 +1096,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                     >
                                       {CurrentAnswer.length == length_of_obj ? (
                                         <>
+                                        <TextTypingAnimation 
+                                          data={data_}
+                                        />
                                           <Typed
                                             typedRef={(typed) => {setTypedComp(typed)}}
                                             strings={[data_]}
@@ -1280,6 +1284,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         {CurrentAnswerIni.length ==
                                         length_of_obj ? (
                                           <>
+                                          {/* <TextTypingAnimation 
+                                          data={data_}
+                                        /> */}
                                             <Typed
                                               typedRef={(typed) => {setTypedComp(typed)}}
                                               strings={[data_]}

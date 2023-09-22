@@ -97,7 +97,7 @@ const Workflow = (props) => {
                         <div  id={`template-card-${data.id}`} className="cursor-pointer relative p-6 transition-all h-full focus:ring-gray-400 focus:shadow-xl duration-150 rounded-2xl shadow-sm hover:shadow-lg hover:ring-gray-300 hover:ring-2 ring-1 ring-gray-200 group flex flex-col bg-white">
                             <div className="!absolute top-4 right-4"></div>
                             <div className="flex flex-col space-y-2">
-                                <img src={BACKEND_URL + data.icon} className="w-8 h-8" alt="frame icon" />
+                                <img src={data.icon} className="w-8 h-8" alt="frame icon" />
                                 <div className="text-left font-semibold text-gray-700">{data.title}</div>
                                 <div className="text-gray-500">{data.description}</div>
                             </div>

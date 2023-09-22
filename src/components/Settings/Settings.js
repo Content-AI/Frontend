@@ -15,10 +15,16 @@ import Integrations from "./SettingsPages/Integrations"
 import Team from "./SettingsPages/Team"
 import Billing from "./SettingsPages/Billing"
 
+import { useLocation } from "react-router-dom";
+
+
 const Settings = () => {
    const navigate = useNavigate();
   const work_space = ['General', 'Billing', 'Team', 'Usage', 'Integrations'];
   const personal_settings = ['Profile'];
+
+  const location = useLocation();
+    
 
   const [activeLink, setActiveLink] = useState('');
   
@@ -40,12 +46,15 @@ const Settings = () => {
 
 
 // ==========render the page according to url========
-  const [currentPath, setCurrentPath] = useState("general");
+    const [currentPath, setCurrentPath] = useState("general");
+
+    const searchParams = new URLSearchParams(location.search);
+    const page_link = searchParams.get('page');
 
   useEffect(() => {
     // Listen to changes in the URL path
     const handlePathChange = () => {
-      setCurrentPath(window.location.pathname);
+        setCurrentPath(page_link);
     };
 
     window.addEventListener('popstate', handlePathChange);
@@ -54,6 +63,11 @@ const Settings = () => {
       window.removeEventListener('popstate', handlePathChange);
     };
   }, []);
+
+
+  useEffect(()=>{
+    setCurrentPath(page_link)
+  },[page_link])
 
 
 
@@ -93,7 +107,7 @@ const Settings = () => {
                         onClick={() => {
                             setActiveLink(data)
                             setCurrentPath(lowercaseFrontText(data))
-                            navigate("/settings/general?="+lowercaseFrontText(data))
+                            navigate("/settings/general?page="+lowercaseFrontText(data))
                         }}
                         >
                             <span className="relative text-[#36464E] text-[13px]  font-sans">{capitalizeFrontText(data)}</span>
@@ -146,7 +160,7 @@ const Settings = () => {
                         onClick={() => {
                             setActiveLink(data)
                             setCurrentPath(lowercaseFrontText(data))
-                            navigate("/settings/general?="+lowercaseFrontText(data))
+                            navigate("/settings/general?page="+lowercaseFrontText(data))
                         }}
                         >
                             <span className="relative text-[#36464E] text-[13px]  font-sans">{capitalizeFrontText(data)}</span>
