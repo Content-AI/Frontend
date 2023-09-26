@@ -1,17 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-function TextTypingAnimation({data}) {
-    console.log(data)
-  const textToType = data;
-  const [displayedText, setDisplayedText] = useState('');
+function TextTypingAnimation(props) {
+  
+
+  const [textToType, setTextToType] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
   const typingSpeed = 50; // Adjust typing speed in milliseconds
+
+  useEffect(() => {
+    // Simulate fetching data from an API
+    // Replace this with your actual API fetch code
+    // setTimeout(() => {
+      const apiResponse = props.data;
+
+      // Replace \n with <br /> for line breaks
+      const formattedText = apiResponse.replace(/\n/g, "<br />");
+      setTextToType(formattedText);
+    // }, 1000); // Simulated API fetch delay, replace with your actual fetch code
+  }, []);
 
   useEffect(() => {
     let currentIndex = 0;
 
     const typingInterval = setInterval(() => {
       if (currentIndex <= textToType.length) {
-        setDisplayedText(textToType.slice(0, currentIndex));
+        const segment = textToType.slice(0, currentIndex);
+
+        setDisplayedText(segment);
+
         currentIndex++;
       } else {
         clearInterval(typingInterval);
@@ -21,12 +37,12 @@ function TextTypingAnimation({data}) {
     return () => {
       clearInterval(typingInterval);
     };
-  }, []);
-
-
+  }, [textToType]);
 
   return (
-      "{displayedText}"
+    <div>
+      <div dangerouslySetInnerHTML={{ __html: displayedText }} />
+    </div>
   );
 }
 

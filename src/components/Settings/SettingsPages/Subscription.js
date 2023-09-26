@@ -191,6 +191,17 @@ const Subscription = (props) => {
     const notifyerror = (message) => toast.error(message);
     const notifysucces = (message) => toast.success(message);
  
+    const notifyInfo = (message) => toast.success(message, {
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: '#713200',
+        },
+        iconTheme: {
+          primary: '#713200',
+          secondary: '#FFFAEE',
+        },
+      });
 
     const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
     const annually_plan=["Up to 5 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
@@ -233,10 +244,10 @@ const Subscription = (props) => {
             window.location.replace(resp.data.message.url);
           }catch(e){
             notifyerror("something went wrong refresh the page")
-          }
-        }else{
+        }
+    }else{
           // navigate("/")
-          notifyerror("something went wrong refresh the page")
+          notifyInfo(resp.response.data.message+" for "+resp.response.data.time)
           setstartbtnLoading(false)
         }
       }

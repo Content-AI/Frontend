@@ -945,9 +945,43 @@ const Chat = ({ AUTH_TOKEN }) => {
     console.log("stope typing")
   };
 
+
+  // ======it the screen is large then show the side bar of chat with title===========
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1500px)'); // Adjust the screen size as needed
+
+    const handleMediaChange = (e) => {
+      if (e.matches) {
+        // Screen is large, set the sidebar status
+        setSidebarStatus(true);
+      } else {
+        // Screen is small, don't set the sidebar status
+        // You can also set it to false if needed
+        setSidebarStatus(false);
+      }
+    };
+
+    // Add the event listener
+    mediaQuery.addEventListener('change', handleMediaChange);
+
+    // Initial check for screen size
+    handleMediaChange(mediaQuery);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      mediaQuery.removeEventListener('change', handleMediaChange);
+    };
+  }, []);
+  // useEffect(()=>{
+  //   console.log(sidebarStatus)
+  // },[sidebarStatus])
+
+
+
   return (
     <>
       <div className="z-20 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
+        
         <div className="flex-auto flex flex-col h-full">
           <div className="sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
             <div className="flex-1 text-xl font-semibold">
@@ -1096,9 +1130,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                     >
                                       {CurrentAnswer.length == length_of_obj ? (
                                         <>
-                                        <TextTypingAnimation 
+                                        {/* <TextTypingAnimation 
                                           data={data_}
-                                        />
+                                        /> */}
                                           <Typed
                                             typedRef={(typed) => {setTypedComp(typed)}}
                                             strings={[data_]}
@@ -1699,6 +1733,7 @@ const Chat = ({ AUTH_TOKEN }) => {
             </div>
           </div>
         </div>
+
         <div
           className={clsx(
             "z-10 absolute top-[50px] sm:top-0 -right-0 h-[calc(100%-50px)] sm:h-full sm:relative w-60 max-w-screen bg-gray-50 flex flex-col duration-300",
@@ -1777,7 +1812,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                     return (
                       <div
                         key={index}
-                        className="cursor-pointer group border-b border-gray-200 flex items-center h-13 bg-gray-100 mt-1 mb-1 hover: bg-[#ffffff]"
+                        className="cursor-pointer group border-b border-gray-200 flex items-center h-13  mt-1 mb-1 hover: bg-[#ffffff]"
                       >
                         <div className="p-4 flex flex-grow justify-between items-center truncate">
                           <div
@@ -1952,9 +1987,12 @@ const Chat = ({ AUTH_TOKEN }) => {
               )}
             </div>
             {/* =============== */}
+
           </div>
         </div>
+
       </div>
+      
       {/* =====================Browse prompts ============ */}
       <Dialog
         open={open}

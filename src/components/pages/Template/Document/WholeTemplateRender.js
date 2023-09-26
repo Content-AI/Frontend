@@ -82,7 +82,7 @@ const WholeTemplateRender = ({template_data}) => {
                             <div className="rounded-full aspect-square w-4 flex justify-center items-center bg-transparent ">
                                 {/* <svg viewBox="0 0 146 138" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6"> */}
                                 <div className="w-6 h-6 mt-[10px]">
-                                    <img src={data.icon?BACKEND_URL+data.icon:"/template.png"}  alt="template"/>
+                                    <img src={data.icon?data.icon:"/template.png"}  alt="template"/>
                                 </div>
                                 {/* </svg> */}
                             </div>
