@@ -8,7 +8,7 @@ export var FRONT_END_URL_GOOGLE_PARAM;
 export var BACKEND_URL;
 
 
-if (local == false) {
+if (local == true) {
   // FRONT_END_URL = "http://localhost:3000"
   FRONT_END_URL = "http://localhost:8000"
 
