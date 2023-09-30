@@ -8,7 +8,7 @@ export var FRONT_END_URL_GOOGLE_PARAM;
 export var BACKEND_URL;
 
 
-if(local==true){
+if (local == false) {
   // FRONT_END_URL = "http://localhost:3000"
   FRONT_END_URL = "http://localhost:8000"
 
@@ -20,11 +20,11 @@ if(local==true){
 
   BACKEND_URL = "http://localhost:8000"
 
-}else{
-  
+} else {
+
   // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
   // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
-  
+
   // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
   // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
 
@@ -33,8 +33,8 @@ if(local==true){
 
   // FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
   // BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
-  
-  FRONT_END_URL_GOOGLE_PARAM= "http://52.66.4.200/google"
+
+  FRONT_END_URL_GOOGLE_PARAM = "http://52.66.4.200/google"
   BACKEND_URL = "http://52.66.4.200";
 
 }
@@ -145,24 +145,24 @@ export const BACK_END_API_SUBCRIPTION_DETAILS =
   "/v1/subscription/subcription-details/";
 
 
-export const BACK_END_API_SUBCRIPTION_CHARGE ="/v1/subscription/charge/";
+export const BACK_END_API_SUBCRIPTION_CHARGE = "/v1/subscription/charge/";
 
-export const BACK_END_API_SUBCRIPTION_DIRECT ="/v1/subscription/direct-create-account-stripe-app-create-session/";
+export const BACK_END_API_SUBCRIPTION_DIRECT = "/v1/subscription/direct-create-account-stripe-app-create-session/";
 
 
-export const BACK_END_API_TEAM_TOKEN_GENERATED ="/v1/template/team_token_generated/";
+export const BACK_END_API_TEAM_TOKEN_GENERATED = "/v1/template/team_token_generated/";
 
-export const BACK_END_API_SINGLE_TOKEN_GENERATED ="/v1/template/single_user_token_generation/";
-export const BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED ="/v1/template/team_user_token_generation/";
+export const BACK_END_API_SINGLE_TOKEN_GENERATED = "/v1/template/single_user_token_generation/";
+export const BACK_END_API_SINGLE_TEAM_TOKEN_GENERATED = "/v1/template/team_user_token_generation/";
 
-export const BACK_END_API_SINGLE_TEMPLATE_USE ="/v1/template/user_template_user_user/";
-export const BACK_END_API_TEAM_TEMPLATE_USER ="/v1/template/team_template_user_user/";
+export const BACK_END_API_SINGLE_TEMPLATE_USE = "/v1/template/user_template_user_user/";
+export const BACK_END_API_TEAM_TEMPLATE_USER = "/v1/template/team_template_user_user/";
 
-export const BACK_END_API_TEAM_LIMIT ="/v1/team_members/get_team_member_limit";
+export const BACK_END_API_TEAM_LIMIT = "/v1/team_members/get_team_member_limit";
 
-export const BACK_END_API_CHECKOUT_ADD_SEAT ="/v1/subscription/direct-create-team-seat-stripe-app-create-session/";
+export const BACK_END_API_CHECKOUT_ADD_SEAT = "/v1/subscription/direct-create-team-seat-stripe-app-create-session/";
 
-export const BACK_END_API_TEAM_MEMBER_SEAT_SUBS_ID ="/v1/team_members/team_subs_track";
+export const BACK_END_API_TEAM_MEMBER_SEAT_SUBS_ID = "/v1/team_members/team_subs_track";
 
 export const BACK_END_API_TOKEN_GENERATED = "/v1/template/token_generated/";
 
@@ -225,26 +225,25 @@ export const BACK_END_API_WORKFLOW = "/v1/workflow/data";
 export const BACK_END_API_SINGLE_WORKFLOW = "/v1/workflow/single_workflow/";
 
 
-export const BACK_END_API_WORKFLOW_ANSWER ="/v1/workflow/output";
-export const BACK_END_API_WORKFLOW_INNER_ANSWER ="/v1/workflow/output_";
-export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW ="/v1/workflow/select_tone";
+export const BACK_END_API_WORKFLOW_ANSWER = "/v1/workflow/output";
+export const BACK_END_API_WORKFLOW_INNER_ANSWER = "/v1/workflow/output_";
+export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW = "/v1/workflow/select_tone";
 
 
 
-export const BACK_END_API_GENERATE_IMAGE ="/v1/template/image_generator";
+export const BACK_END_API_GENERATE_IMAGE = "/v1/template/image_generator";
 
-export const BACK_END_API_CHECK_VIDEO ="/v1/template/check_video";
-export const BACK_END_API_UPLOADING_VIDEO ="/v1/template/uploading_video";
-export const BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO ="/v1/template/extracting_speech_from_video";
-export const BACK_END_API_RECAP_OF_AUDIO ="/v1/template/getting_the_recap_of_audio";
+export const BACK_END_API_CHECK_VIDEO = "/v1/template/check_video";
+export const BACK_END_API_UPLOADING_VIDEO = "/v1/template/uploading_video";
+export const BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO = "/v1/template/extracting_speech_from_video";
+export const BACK_END_API_RECAP_OF_AUDIO = "/v1/template/getting_the_recap_of_audio";
 
-export const BACK_END_API_CHUNK_FILE ="/v1/template/file_first_step/";
-export const BACK_END_API_CONVERT_AUDIO ="/v1/template/convert_audio/";
+export const BACK_END_API_CHUNK_FILE = "/v1/template/file_first_step/";
+export const BACK_END_API_CONVERT_AUDIO = "/v1/template/convert_audio/";
 
 
 
-export const BACK_END_API_AUDIO_SUMMARIZE ="/v1/template/movie_file_to_text";
+export const BACK_END_API_AUDIO_SUMMARIZE = "/v1/template/movie_file_to_text";
 
-export const BACK_END_API_HISTORY_URL ="/v1/template/history_url";
-export const BACK_END_API_HISTORY_AUDIO_VIDEO ="/v1/template/history_audio_video";
-
+export const BACK_END_API_HISTORY_URL = "/v1/template/history_url";
+export const BACK_END_API_HISTORY_AUDIO_VIDEO = "/v1/template/history_audio_video";
