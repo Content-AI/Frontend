@@ -17,9 +17,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { current } from "@reduxjs/toolkit";
 
 export default function Editor({ data, setData }) {
-  const [activeBlock, setActiveBlock] = useState();
-  const [activeBlockIndex, setActiveBlockIndex] = useState();
   const [isActive, setIsActive] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
 
@@ -40,6 +39,9 @@ export default function Editor({ data, setData }) {
   let NOW_LENGTH_OF_WORD = useSelector(
     (state) => state.SetLengthOfEditorWord.LengthOfEditorWord.nowLen
   );
+
+  const loaderSVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" > <circle cx="18" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="12" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="6" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/></circle></svg>';
 
   const save_document_data = async (document_data) => {
     const formData = {
@@ -70,6 +72,26 @@ export default function Editor({ data, setData }) {
     }
   };
 
+  // document.addEventListener("keydown", function (event) {
+  //   console.log("key stat", isActive + " activeIndex", activeIndex);
+  //   if (isActive && activeIndex) {
+  //     if (event.key === "Enter") {
+  //       event.preventDefault();
+
+  //       console.log("PRESSED ENTER KEY");
+
+  //       const currentBlock =
+  //           document.getElementsByClassName("ce-block")[activeIndex],
+  //         holder = currentBlock.getElementsByClassName("ce-paragraph")[0];
+
+  //       setCurrentQuestion(holder.innerHTML);
+  //       currentBlock.classList.add("loading");
+  //       holder.innerHTML = "...";
+  //       holder.focus();
+  //     }
+  //   }
+  // });
+
   const ReactEditorJS = createReactEditorJS();
 
   const handleInitialize = useCallback((instance) => {
@@ -88,25 +110,25 @@ export default function Editor({ data, setData }) {
       const savedData = await editorCore.current.save();
       const targetBlock = document.getElementsByClassName("ce-block");
 
-      savedData.blocks.forEach((item, index) => {
-        if (item.data.text === "/") {
-          if (isActive) {
-            return;
-          }
-          setIsActive(true);
-          setActiveBlock(targetBlock[index]);
-          setActiveBlockIndex(index);
-          savedData.blocks[index].data.text = "";
-          instance.blocks.render(savedData);
+      console.log("savedData", savedData);
 
-          setTimeout(function () {
-            targetBlock[index].classList.add("active");
-            targetBlock[index]
-              .getElementsByClassName("ce-paragraph")[0]
-              .focus();
-          }, 500);
-        }
-      });
+      if (!activeIndex) {
+        savedData.blocks.forEach((item, index) => {
+          if (item.data.text === "/") {
+            setActiveIndex(index);
+            Array.from(targetBlock).forEach(function (itemBlock, indexBlock) {
+              var holder = itemBlock.getElementsByClassName("ce-paragraph")[0];
+              if (holder.innerHTML === "/") {
+                if (indexBlock !== index) {
+                  setActiveIndex(indexBlock);
+                } else {
+                  setActiveIndex(index);
+                }
+              }
+            });
+          }
+        });
+      }
 
       setData(savedData);
       save_document_data(savedData);
@@ -115,44 +137,70 @@ export default function Editor({ data, setData }) {
   );
 
   useEffect(() => {
-    document.addEventListener("keydown", function (event) {
-      if (isActive && activeBlockIndex) {
-        if (event.key === "Enter") {
-          const targetBlock =
-            document.getElementsByClassName("ce-block")[activeBlockIndex];
-
-          setCurrentQuestion(
-            targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML
-          );
-          setIsActive(false);
-        }
-      }
-    });
-
-    if (!isActive && activeBlockIndex) {
+    if (activeIndex) {
       const targetBlock =
-        document.getElementsByClassName("ce-block")[activeBlockIndex];
+          document.getElementsByClassName("ce-block")[activeIndex],
+        holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
 
-      targetBlock.getElementsByClassName("ce-paragraph")[0].innerHTML =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" > <circle cx="18" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".67" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="12" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin=".33" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> <circle cx="6" cy="12" r="0" fill="currentColor"> <animate attributeName="r" begin="0" calcMode="spline" dur="1.5s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0"/> </circle> </svg>';
-      post_document_data(currentQuestion);
+      targetBlock.classList.add("active");
+      holder.innerHTML = "";
+      holder.focus();
+
+      setIsActive(true);
     }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (isActive && event.key === "Enter") {
+        const targetBlock =
+            document.getElementsByClassName("ce-block")[activeIndex],
+          holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+
+        if (holder.innerHTML === "") {
+          targetBlock.classList.remove("active");
+          return;
+        }
+
+        setCurrentQuestion(holder.innerHTML);
+        targetBlock.classList.remove("active");
+        targetBlock.classList.add("loading");
+        holder.innerHTML = "...";
+        holder.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
   }, [isActive]);
 
   useEffect(() => {
-    if (currentAnswer && activeBlockIndex) {
+    if (currentQuestion) {
       const targetBlock =
-          document.getElementsByClassName("ce-block")[activeBlockIndex],
-        textWrapper = targetBlock.getElementsByClassName("ce-paragraph")[0];
+          document.getElementsByClassName("ce-block")[activeIndex],
+        holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+
+      post_document_data(currentQuestion);
+    }
+  }, [currentQuestion]);
+
+  useEffect(() => {
+    if (currentAnswer) {
+      const targetBlock =
+          document.getElementsByClassName("ce-block")[activeIndex],
+        holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
 
       targetBlock.classList.remove("active");
-      textWrapper.innerHTML = currentAnswer;
+      targetBlock.classList.remove("loading");
+      holder.innerHTML = currentAnswer;
+      holder.focus();
 
-      // setActiveBlock(null);
-      // setActiveBlockIndex(null);
-      // setIsActive(false);
-      // setCurrentQuestion(null);
-      // setCurrentAnswer(null);
+      setActiveIndex(null);
+      setCurrentAnswer(null);
+      setIsActive(false);
     }
   }, [currentAnswer]);
 
