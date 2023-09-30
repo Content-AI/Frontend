@@ -1476,6 +1476,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                     ))}
                   {/* ====================================================== */}
                 </div>
+                
                 <div
                   ref={popRef}
                   className="chatbox relative flex flex-col w-full py-2 px-4 @lg:py-4 max-w-7xl m-auto"
@@ -1487,6 +1488,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                   >
                     Stop Generating
                   </button>
+
                   <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
                     <button
                       className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
@@ -1732,6 +1734,8 @@ const Chat = ({ AUTH_TOKEN }) => {
               </div>
             </div>
           </div>
+
+
         </div>
 
         <div

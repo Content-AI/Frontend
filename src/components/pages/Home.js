@@ -257,10 +257,11 @@ useEffect(()=>{
 
       <div className="mt-12 mb-12">
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
-        <div className="grid grid-cols-2 gap-6">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* ============== */}
-        <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Work Flow">
-          <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+        <div className=" flex flex-col cursor-pointer hover:bg-slate-100" title="Work Flow">
+          <div className="h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
             <div className="flex flex-col gap-y-4">
               <div className="titlewrap flex gap-x-3">
                 <Workflow/>
@@ -309,8 +310,8 @@ useEffect(()=>{
         </div>
 
 
-        <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Chat Now">
-          <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+        <div className="flex flex-col cursor-pointer hover:bg-slate-100" title="Chat Now">
+          <div className="h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
             <div className="flex flex-col gap-y-4">
               <div className="titlewrap flex gap-x-3">
                 <svg
@@ -344,7 +345,7 @@ useEffect(()=>{
               </button>
               </div>
             </div>
-            <div className="-mb-6 shadow-customv2 rounded-s-xl rounded-e-xl mb-3">
+            <div className="rounded-s-xl rounded-e-xl mb-3">
               <img
                 src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                 alt=""
@@ -355,8 +356,8 @@ useEffect(()=>{
         </div>
 
 
-        <div className="flex flex-col  cursor-pointer hover:bg-slate-100" title="Use Template">
-          <div className="grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+        <div className="flex flex-col cursor-pointer hover:bg-slate-100" title="Use Template">
+          <div className="h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
             <div className="flex flex-col gap-y-4">
               <div className="titlewrap flex gap-x-3">
                 <TemplateIcon/>
@@ -377,7 +378,7 @@ useEffect(()=>{
               </button>
               </div>
             </div>
-            <div className="shadow-customv2 rounded-s-xl rounded-e-xl mb-3">
+            <div className="rounded-s-xl rounded-e-xl mb-3">
               <img
                 src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                 alt=""
@@ -456,6 +457,7 @@ useEffect(()=>{
             </div>
           </div> */}
         </div>
+
       </div>
       <div className="mt-12">
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>

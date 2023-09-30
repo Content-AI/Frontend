@@ -164,6 +164,7 @@ const Navbar = () => {
     setIsOverlayVisible(!isOverlayVisible);
   };
 
+
   return (
     <>
       {show_invitation
@@ -465,7 +466,7 @@ const Navbar = () => {
                             <div className="mb-3">
                             <button
                               onClick={() => {
-                                console.log("pricing")
+                                // console.log("pricing")
                                 setShowpricingPopUpModal(true)
                               }}
                               className="text-[25px] transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-2"
@@ -688,7 +689,7 @@ const Navbar = () => {
                                           {/* =================workspace==================== */}
 
                                           <Link
-                                            to="/settings/general"
+                                            to="/settings/general?page=general"
                                             onClick={() => {
                                               setHovered(!isHovered);
                                               dispatch(_hide_nav_(!NAV_BAR_CONDITION))
@@ -801,7 +802,7 @@ const Navbar = () => {
                                           <div className="">
                                           <button
                                             onClick={() => {
-                                              console.log("pricing")
+                                              // console.log("pricing")
                                               setShowpricingPopUpModal(true)
                                               dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                                             }}
@@ -938,7 +939,19 @@ const Navbar = () => {
                                     <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                   </svg>
                                 </div>
-                                <span className="text-lg pl-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+                                <span className="text-lg pl-2">
+                                {subscriptions_details &&
+                                  <>
+                                    {
+                                      subscriptions_details.user.trail_ends!=undefined || subscriptions_details.user.trail_ends!=null
+                                      ?
+                                      "Free trial ends in  " + subscriptions_details.user.trail_ends
+                                      :
+                                        "Your subscription ends in  "+subscriptions_details.user.date_to_end_subs
+                                      }
+                                  </>
+                                }
+                                  </span>
                               </div>
                             </div>
                           </h3>

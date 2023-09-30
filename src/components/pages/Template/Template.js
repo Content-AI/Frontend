@@ -350,80 +350,53 @@ const Template = ({AUTH_TOKEN}) => {
             <LoadingPage/>
           }
         </div>
-        <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
-
-          {templateData && templateData[0] && (
-            templateData.length>0
-          ?
-            templateData.map((items,index)=>{
-              return (
-              <div
-                key={items.id}
-                className="card flex p-6 border border-border rounded-xl cursor-pointer"
-                onClick={()=>{
-                  // console.log(items.id)
-                  if(items.premium){
-                    if(subscriptions_check.status=="trial"){
-                      notifyerror("To use this Template you need to upgrade your plan")
-                      return true
-                    }
-                  }
-                  if(items.custome=="user"){
-                    navigate(`/template/${items.id}?custom=user`)
-                  }else{
-                    navigate(`/template/${items.id}?custom=normal_user`)
-                  }
-                }}
-              >
-                <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
-                  <img src={items.icon} alt="" className="block w-full" />
-                </div>
-                <div className="content relative flex-auto pl-4">
-                  <div className="title flex items-center justify-between gap-2 mb-2">
-                    <h4 className="text-sm font-bold leading-none">
-                      {items.title}
-                    </h4>
-                    {items.premium && (
-                      <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
-                        Premium
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm leading-none">{items.description}</p>
-                </div>
-              </div>
-            );
-            })
-          :
-            <LoadingPage/>
-          )}
-
-          {/* {cardData.map((items, index) => {
-            return (
-              <div
-                key={index}
-                className="card flex p-6 border border-border rounded-xl"
-              >
-                <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
-                  <img src={items.icon} alt="" className="block w-full" />
-                </div>
-                <div className="content relative flex-auto pl-4">
-                  <div className="title flex items-center justify-between gap-2 mb-2">
-                    <h4 className="text-sm font-bold leading-none">
-                      {items.title}
-                    </h4>
-                    {items.isPremium && (
-                      <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
-                        Premium
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm leading-none">{items.description}</p>
-                </div>
-              </div>
-            );
-          })} */}
+        <div className="cardwrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {templateData && templateData[0] && templateData.length > 0 ? (
+    templateData.map((items, index) => {
+      return (
+        <div
+          key={items.id}
+          className="card flex p-6 border border-border rounded-xl cursor-pointer"
+          onClick={() => {
+            if (items.premium) {
+              if (subscriptions_check.status === "trial") {
+                notifyerror(
+                  "To use this Template you need to upgrade your plan"
+                );
+                return true;
+              }
+            }
+            if (items.custome === "user") {
+              navigate(`/template/${items.id}?custom=user`);
+            } else {
+              navigate(`/template/${items.id}?custom=normal_user`);
+            }
+          }}
+        >
+          <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+            <img src={items.icon} alt="" className="block w-full" />
+          </div>
+          <div className="content relative flex-auto pl-4">
+            <div className="title flex items-center justify-between gap-2 mb-2">
+              <h4 className="text-sm font-bold leading-none">
+                {items.title}
+              </h4>
+              {items.premium && (
+                <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                  Premium
+                </span>
+              )}
+            </div>
+            <p className="text-sm leading-none">{items.description}</p>
+          </div>
         </div>
+      );
+    })
+  ) : (
+    <LoadingPage />
+  )}
+</div>
+
       </div>
       {/* <Toaster/> */}
     </div>

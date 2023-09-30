@@ -13,6 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import CreatableSelect from "react-select/creatable";
 import { useLocation } from 'react-router-dom';
 
+import ChatInEditor from './ChatInEditor/ChatInEditor'
+
 import toast, { Toaster } from 'react-hot-toast';
 
 import {setText} from "../../../../features/EditorText";
@@ -33,6 +35,7 @@ import Editor from "./EditorForDocuments/editor/Editor";
 import Fullscreen from '../../../Icons/Fullscreen'
 import Chat from '../../../Icons/Chat'
 import Template from '../../../Icons/Template'
+import Template_Editor from '../../../Icons/Template_Editor'
 
 import WorkflowSteps from "../../workflow/WorkflowSteps";
 import { _change_state_ } from "../../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate";
@@ -818,6 +821,10 @@ export default function EditDocuments() {
     }));
   };
 
+  // =======top bar button function======
+  const [editor_full_screen,set_editor_full_screen]=useState(false)
+  const [show_chat,set_show_chat]=useState(false)
+
 
 
   return (
@@ -871,7 +878,10 @@ export default function EditDocuments() {
                   ">
                    
                     <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                      onClick={()=>{
+                        set_show_chat(!show_chat)
+                      }}>
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
                            <Chat/>
@@ -879,8 +889,13 @@ export default function EditDocuments() {
                         </span>
                       </button>
                     </span>
+
+
                     <span className="relative hover:z-10">
-                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                    onClick={()=>{
+                      set_editor_full_screen(!editor_full_screen)
+                    }}>
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
                             <Fullscreen/>
@@ -891,6 +906,7 @@ export default function EditDocuments() {
                     <span className="relative hover:z-10">
                       <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                           onClick={()=>{
+                                set_editor_full_screen(false)
                                 setTemplateData(null)
                                 dispatch(_template_id_(null))
                                 WholeTemplateApi()
@@ -898,7 +914,7 @@ export default function EditDocuments() {
                           >
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <span>
-                            <Template/>
+                            <Template_Editor/>
                           </span>
                         </span>
                       </button>
@@ -923,7 +939,8 @@ export default function EditDocuments() {
                     <div className="pr-2 text-sm text-gray-400">{NOW_LENGTH_OF_WORD}</div>
                     {/* ===============share button===================== */}
                     <div className="relative inline-block text-left">
-                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
+
+                    {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                         <span className="-mx-1.5">
                           <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -931,7 +948,8 @@ export default function EditDocuments() {
                           </svg>
                         </span>
                       </span>
-                    </button>
+                    </button> */}
+
                   </div>
                 </div>
 
@@ -1193,7 +1211,7 @@ export default function EditDocuments() {
 
 
               </div>
-              <div className="flex md:hidden py-2 px-1 space-x-2 justify-between">
+              {/* <div className="flex md:hidden py-2 px-1 space-x-2 justify-between">
                 <span className="basis-1/3 flex items-center justify-start"></span>
                 <span className="basis-1/3 flex items-center justify-center">
                   <div className="
@@ -1274,560 +1292,571 @@ export default function EditDocuments() {
                     </button>
                   </div>
                 </span>
-              </div>
+              </div> */}
 
             </div>
+
+
             <div className="jsx-1f9b1dd4731f1fae flex flex-col-reverse md:flex-row bg:white overflow-hidden h-full">
-              <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
-                <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
-                  {/* <div className="flex flex-col h-full relative bg-white overflow-auto p-4 xl:p-6">
-                    <div className="flex flex-row absolute inset-0 divide-x divide-slate-200"> */}
-                      {/* ===========Template name from apis=============== */}
+              
 
-                    {TemplateData ?(
+                    {editor_full_screen
+                    ?
+                      null
+                    :
+                    <>
+                    {/* {show_chat
+                    ?
                       <>
-                      <div className="flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
-                        
-                        <div className="flex items-baseline sticky top-0 bg-white z-10">
-                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0"
-                          onClick={()=>{
-                              setTemplateData(null)
-                              dispatch(_template_id_(null))
-                              WholeTemplateApi()
-                              const baseUrl = window.location.href.split('?')[0];                
-                              const newUrl = "/template_data/"+document_id+`?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
-                              // window.location.replace(newUrl);
-                              navigate(newUrl)
-                          }}>
-                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                  <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-
-                                  </path>
-                                  <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-
-                                  </path>
-                                  </svg>
-                                  <span className="sr-only">
-                                    Back
-                                  </span>
-                                  </span>
-                          </button>
+                        <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
+                          <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
+                              <ChatInEditor
+                                AUTH_TOKEN={TOKEN}
+                              />
+                          </div>
                         </div>
-                            
-                            <div className="flex flex-col w-full">
-                              <div className="flex-1 sticky top-0 bg-white z-10">
-                                <h2 className="leading-7 text-gray-900 font-semibold line-clamp-1">
-                                  {TemplateData[0].title}
-                                </h2>
-                                <p className="leading-tight text-gray-500 text-xs line-clamp-1">
-                                  {TemplateData[0].description}
-                                </p>
-                            <div className="pt-2">
-                              <div className="
-                                  flex items-center transform
-                                  [&amp;_.active_button]:bg-indigo-100
-                                  [&amp;_.active_button]:text-indigo-600
-                                  [&amp;_.active_button]:ring-indigo-700
-                                  [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                                  [&amp;_:first-child_button]:!rounded-r-none
-                                  [&amp;_:last-child_button]:!rounded-l-none
-                                ">
-                                <span className="active z-10 mr-3">
-                                  <button type="button" 
-                                    onClick={()=>{
-                                      setHoverBtnColor(true)
-                                    }}
-                                    className={`${
-                                                HoverBtnColor
-                                                  ? "bg-slate-400 "
-                                                  : " "
-                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+                      </>
+                    : */}
+                      <>
+                            <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
+                            <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
 
-                                  >
-                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                      <small className="-my-0.5">
-                                        Inputs
-                                      </small>
-                                    </span>
-                                  </button>
-                                </span>
-                                <span className="relative hover:z-10">
-                                  <button type="button" 
-                                    onClick={()=>{
-                                      setHoverBtnColor(false)
-                                    }}
-                                    className={`${
-                                                HoverBtnColor
-                                                  ? " "
-                                                  : " bg-slate-400 "
-                                              } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
-                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                      <small className="-my-0.5">
-                                        Outputs
-                                      </small>
-                                    </span>
-                                  </button>
-                                </span>
+                                {TemplateData ?(
+                                  <>
+                                  <div className="flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
+                                    
+                                    <div className="flex items-baseline sticky top-0 bg-white z-10">
+                                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0"
+                                      onClick={()=>{
+                                          setTemplateData(null)
+                                          dispatch(_template_id_(null))
+                                          WholeTemplateApi()
+                                          const baseUrl = window.location.href.split('?')[0];                
+                                          const newUrl = "/template_data/"+document_id+`?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
+                                          // window.location.replace(newUrl);
+                                          navigate(newUrl)
+                                      }}>
+                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                              <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                              </div>
-                            </div>
-                              </div>
+                                              </path>
+                                              <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
 
-                        
-                         
-                          {HoverBtnColor
-                          ?
-                            <>
-                              {/* =============Template inner value==================== */}
-                              <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
-                              <div id={document_id} className="mt-4 mb-7">
-                              {TemplateData &&
-                                TemplateData[0]['template_fields'].map((data, index) => {
-                                  const textLength = fieldValues[index]?.value?.length || 0;
-                                return (
-                                  (data.component === "textarea" && (
-                          <div className="last:mb-1 relative" key={index}>
-                            <div className="space-y-1.5 w-full">
-                              <label
-                                htmlFor="form-field-productInfo"
-                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                              >
-                                <span className="flex items-center space-x-1">
-                                  <span>{data.label}</span>
-                                </span>
-                              </label>
-                              <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                <textarea
-                                  id="form-field-productInfo"
-                                  className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
-                                  maxLength={data.range_of_text}
-                                  name={data.title}
-                                  placeholder={data.placeholder}
-                                  value={
-                                    fieldValues[index]?.value ||
-                                    data.pre_define_value ||
-                                    ""
-                                  }
-                                  onChange={(event) =>
-                                    handleInputChange(event, index)
-                                  }
-                                ></textarea>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                  {textLength}/{data.range_of_text}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        )) ||
-                        (data.component === "text" && (
-                          <div className="space-y-1.5 w-full" key={index}>
-                            <label
-                              htmlFor="form-field-productName"
-                              className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                            >
-                              <span className="flex items-center space-x-1">
-                                <span>{data.label}</span>
-                              </span>
-                            </label>
-                            <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                              <div className="flex items-center grow gap-2 py-1.5">
-                                <div className="flex gap-1 grow">
-                                  <input
-                                    id="form-field-productName"
-                                    className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                    maxLength={data.range_of_text}
-                                    name={data.title}
-                                    type={data.component}
-                                    placeholder={data.placeholder}
-                                    value={
-                                      fieldValues[index]?.value ||
-                                      data.pre_define_value ||
-                                      ""
-                                    }
-                                    onChange={(event) =>
-                                      handleInputChange(event, index)
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                {textLength}/{data.range_of_text}
-                              </span>
-                            </div>
-                          </div>
-                        )) ||
-                        (data.component === "Example" && (
-                          <>
-                            <div>
-                              <label
-                                htmlFor="form-field-productInfo"
-                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                              >
-                                <span className="flex items-center space-x-1">
-                                  <span>Example</span>
-                                </span>
-                              </label>
-                            </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner}">
-                              {inputs.map((input, index_inner) => (
-                                <div
-                                  className="flex justify-between flex-col space-y-2"
-                                  key={index_inner}
-                                >
-                                  <div className="flex items-center justify-between space-x-2">
-                                    <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                      {index_inner + 1}
+                                              </path>
+                                              </svg>
+                                              <span className="sr-only">
+                                                Back
+                                              </span>
+                                              </span>
+                                      </button>
                                     </div>
-                                    <div className="space-y-1.5 w-full">
-                                      <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                        <div className="flex items-center grow gap-2 py-1.5">
-                                          <div className="flex gap-1 grow">
-                                            <input
-                                              id={`example-${index_inner + 1}`}
-                                              type="text"
-                                              className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                              placeholder={displayText(
-                                                index_inner
-                                              )}
-                                              value={input}
-                                              onChange={(event) =>
-                                                handleMultipleInputChange(
-                                                  event,
-                                                  index_inner
-                                                )
+                                        
+                                        <div className="flex flex-col w-full">
+                                          <div className="flex-1 sticky top-0 bg-white z-10">
+                                            <h2 className="leading-7 text-gray-900 text-[20px] font-semibold line-clamp-1">
+                                              {TemplateData[0].title}
+                                            </h2>
+                                            <p className="leading-tight text-gray-500 text-xs line-clamp-1">
+                                              {TemplateData[0].description}
+                                            </p>
+                                        <div className="pt-2">
+                                          <div className="
+                                              flex items-center transform
+                                              [&amp;_.active_button]:bg-indigo-100
+                                              [&amp;_.active_button]:text-indigo-600
+                                              [&amp;_.active_button]:ring-indigo-700
+                                              [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
+                                              [&amp;_:first-child_button]:!rounded-r-none
+                                              [&amp;_:last-child_button]:!rounded-l-none
+                                            ">
+                                            <span className="active z-10 mr-3">
+                                              <button type="button" 
+                                                onClick={()=>{
+                                                  setHoverBtnColor(true)
+                                                }}
+                                                className={`${
+                                                            HoverBtnColor
+                                                              ? "bg-slate-400 "
+                                                              : " "
+                                                          } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+
+                                              >
+                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                  <small className="-my-0.5">
+                                                    Inputs
+                                                  </small>
+                                                </span>
+                                              </button>
+                                            </span>
+                                            <span className="relative hover:z-10">
+                                              <button type="button" 
+                                                onClick={()=>{
+                                                  setHoverBtnColor(false)
+                                                }}
+                                                className={`${
+                                                            HoverBtnColor
+                                                              ? " "
+                                                              : " bg-slate-400 "
+                                                          } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
+                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                  <small className="-my-0.5">
+                                                    Outputs
+                                                  </small>
+                                                </span>
+                                              </button>
+                                            </span>
+
+                                          </div>
+                                        </div>
+                                          </div>
+
+                                    
+                                    
+                                      {HoverBtnColor
+                                      ?
+                                        <>
+                                          {/* =============Template inner value==================== */}
+                                          <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                                          <div id={document_id} className="mt-4 mb-7">
+                                          {TemplateData &&
+                                            TemplateData[0]['template_fields'].map((data, index) => {
+                                              const textLength = fieldValues[index]?.value?.length || 0;
+                                            return (
+                                              (data.component === "textarea" && (
+                                      <div className="last:mb-1 relative" key={index}>
+                                        <div className="space-y-1.5 w-full">
+                                          <label
+                                            htmlFor="form-field-productInfo"
+                                            className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                          >
+                                            <span className="flex items-center space-x-1">
+                                              <span>{data.label}</span>
+                                            </span>
+                                          </label>
+                                          <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                            <textarea
+                                              id="form-field-productInfo"
+                                              className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                                              maxLength={data.range_of_text}
+                                              name={data.title}
+                                              placeholder={data.placeholder}
+                                              value={
+                                                fieldValues[index]?.value ||
+                                                data.pre_define_value ||
+                                                ""
                                               }
-                                            />
+                                              onChange={(event) =>
+                                                handleInputChange(event, index)
+                                              }
+                                            ></textarea>
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                              {textLength}/{data.range_of_text}
+                                            </span>
                                           </div>
                                         </div>
                                       </div>
+                                    )) ||
+                                    (data.component === "text" && (
+                                      <div className="space-y-1.5 w-full" key={index}>
+                                        <label
+                                          htmlFor="form-field-productName"
+                                          className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                        >
+                                          <span className="flex items-center space-x-1">
+                                            <span>{data.label}</span>
+                                          </span>
+                                        </label>
+                                        <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                          <div className="flex items-center grow gap-2 py-1.5">
+                                            <div className="flex gap-1 grow">
+                                              <input
+                                                id="form-field-productName"
+                                                className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                maxLength={data.range_of_text}
+                                                name={data.title}
+                                                type={data.component}
+                                                placeholder={data.placeholder}
+                                                value={
+                                                  fieldValues[index]?.value ||
+                                                  data.pre_define_value ||
+                                                  ""
+                                                }
+                                                onChange={(event) =>
+                                                  handleInputChange(event, index)
+                                                }
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                          <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                            {textLength}/{data.range_of_text}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )) ||
+                                    (data.component === "Example" && (
+                                      <>
+                                        <div>
+                                          <label
+                                            htmlFor="form-field-productInfo"
+                                            className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                          >
+                                            <span className="flex items-center space-x-1">
+                                              <span>Example</span>
+                                            </span>
+                                          </label>
+                                        </div>
+                                        <div className="flex justify-between flex-col space-y-2 key={index_inner}">
+                                          {inputs.map((input, index_inner) => (
+                                            <div
+                                              className="flex justify-between flex-col space-y-2"
+                                              key={index_inner}
+                                            >
+                                              <div className="flex items-center justify-between space-x-2">
+                                                <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                                  {index_inner + 1}
+                                                </div>
+                                                <div className="space-y-1.5 w-full">
+                                                  <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                    <div className="flex items-center grow gap-2 py-1.5">
+                                                      <div className="flex gap-1 grow">
+                                                        <input
+                                                          id={`example-${index_inner + 1}`}
+                                                          type="text"
+                                                          className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                          placeholder={displayText(
+                                                            index_inner
+                                                          )}
+                                                          value={input}
+                                                          onChange={(event) =>
+                                                            handleMultipleInputChange(
+                                                              event,
+                                                              index_inner
+                                                            )
+                                                          }
+                                                        />
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                                {/* Delete button */}
+                                                <button
+                                                  type="button"
+                                                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                  onClick={() =>
+                                                    handleMultipleInputDelete(index_inner)
+                                                  }
+                                                >
+                                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                      aria-hidden="true"
+                                                      className="w-3"
+                                                    >
+                                                      <path
+                                                        fillRule="evenodd"
+                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                        clipRule="evenodd"
+                                                      ></path>
+                                                    </svg>
+                                                  </span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          ))}
+
+                                          {/* + button */}
+                                          <span className="self-end">
+                                            <button
+                                              type="button"
+                                              className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                              onClick={handleAdd}
+                                            >
+                                              +
+                                            </button>
+                                          </span>
+
+                                          {/* Submit button */}
+                                          {/* <button
+                                                            type="button"
+                                                            className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                            onClick={handleSubmit}
+                                                        >
+                                                            save
+                                                        </button> */}
+                                        </div>
+                                      </>
+                                    )) ||
+                                    (data.component === "select" && (
+                                      <>
+                                        <div>
+                                          <label
+                                            htmlFor="form-field-productInfo"
+                                            className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                          >
+                                            <span className="flex items-center space-x-1">
+                                              <span>{data.label}</span>
+                                            </span>
+                                          </label>
+                                        </div>
+                                        <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                          <CreatableSelect
+                                            isClearable
+                                            isDisabled={isLoading}
+                                            isLoading={isLoading}
+                                            onChange={(newValue) => setValue(newValue)}
+                                            onCreateOption={handleCreate}
+                                            options={options}
+                                            value={value}
+                                          />
+                                        </div>
+                                      </>
+                                    ))
+                                            );
+                                            })}                                 
+                                          </div>
+
+                                          </div>
+
+                                          {/* =======Generate Button=========== */}
+                                          <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
+                                            <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                                              {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
+                                              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1">
+                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                  {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
+                                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                                                </svg> */}
+                                                  <span className="hidden @sm:inline-block text-black">Clear inputs</span>
+                                                </span>
+                                              </button>
+                                              <div className="flex ">
+                                                <input type="number"
+                                                  className='mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                                                  defaultValue={ContentOutputNumber}
+                                                  onChange={(e) => {
+                                                    setContentOutputNumber(e.target.value)
+                                                  }}
+                                                  max="10" min="1"
+                                                />
+                                                <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r bg-[#334977]"
+                                                    onClick={()=>{
+                                                        handleClick(document_id)
+                                                        setTemplateResponseData(null)
+                                                    }}
+                                                    disabled={LoadingButton}
+                                                    >
+                                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                      Generate
+                                                    </span>
+                                                </button>
+
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          {/* ================== */}
+                                            
+                                        </>
+                                      :
+                                          <div className="mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-black max-h-[500px] overflow-y-auto">
+                                            <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+                                            <nav className="flex flex-grow py-1 space-x-3" aria-label="Tabs">
+                                                <button 
+                                                  className={`${
+                                                    ShowHideHistory
+                                                          ? "  "
+                                                          : " bg-gray-100 "
+                                                      } relative whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-black transition-all duration-150 hover:text-black`}
+
+                                                onClick={()=>{
+                                                  if(LeftListTemplateData==null){
+                                                    get_history(templateValue)
+                                                  }
+                                                    setShowHideHistory(false)
+                                                    // setTemplateResponseData(null)
+                                                }}
+                                                >
+                                                {/* <span className="relative">New outputs {ContentOutputNumber.toString()}</span> */}
+                                                <span className="relative">
+                                                  New outputs {ContentOutputNumber}
+                                                </span>
+
+                                                </button>
+                                                <button 
+                                                  className={`${
+                                                    ShowHideHistory
+                                                          ? " bg-gray-100 "
+                                                          : " "
+                                                      } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
+
+                                                onClick={()=>{
+                                                  // if()
+                                                    // get_history(templateValue)
+                                                    setShowHideHistory(true)
+                                                    // setTemplateResponseData(null)
+                                                }}>
+                                                <span className="relative">History</span>
+                                                </button>
+                                            </nav>
+                                            <div>
+                                                <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black transition-all duration-150 hover:text-gray-600"
+                                                onClick={()=>{
+                                                    setTemplateResponseData(null)
+                                                    if(LeftListTemplateData==null){
+                                                    get_history(templateValue)
+                                                    }
+                                                }}>
+                                                <span className="relative">Clear</span>
+                                                </button>
+                                            </div>
+                                            </div>
+
+
+                                        {ShowHideHistory
+                                        ?
+                                            (history_answer
+                                            ?
+                                                (history_answer.map((data,index)=>{
+                                                    return (
+                                                        <div key={index}>
+                                                            <ResponseTemplate r_show={"false"} r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
+                                                        </div>
+                                                    )
+                                                }))
+                                            :
+                                                null
+                                            )
+                                        :
+
+                                        (TemplateResponseData
+                                            ?
+                                            TemplateResponseData.map((data,index)=>{
+                                                return (
+                                                    <div key={index}>
+                                                        <ResponseTemplate  r_show={"false"} r_time={data["created_at"]} r_data={data["content"]}/>
+                                                    </div>
+                                                )
+                                            })
+                                            :
+                                            (LoadingButton
+                                                ?
+                                                    <>
+                                                        <div className="mt-3 flex flex-col items-center justify-center">
+                                                        <div>
+                                                            <p>
+                                                            Generating content ...
+                                                            </p>
+                                                        </div>
+                                                        <div className='mt-3'>
+                                                            <BouncingDotsLoader />
+                                                        </div>
+                                                        </div>
+                                                    </>
+                                                :
+                                                    null
+                                                )
+                                        )
+                                        }
+                                        </div>
+                                        
+                                      }
+                                      
+
                                     </div>
 
-                                    {/* Delete button */}
-                                    <button
-                                      type="button"
-                                      className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                      onClick={() =>
-                                        handleMultipleInputDelete(index_inner)
-                                      }
-                                    >
-                                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          viewBox="0 0 20 20"
-                                          fill="currentColor"
-                                          aria-hidden="true"
-                                          className="w-3"
-                                        >
-                                          <path
-                                            fillRule="evenodd"
-                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                          ></path>
-                                        </svg>
-                                      </span>
-                                    </button>
                                   </div>
-                                </div>
-                              ))}
-
-                              {/* + button */}
-                              <span className="self-end">
-                                <button
-                                  type="button"
-                                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                  onClick={handleAdd}
-                                >
-                                  +
-                                </button>
-                              </span>
-
-                              {/* Submit button */}
-                              {/* <button
-                                                type="button"
-                                                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                                onClick={handleSubmit}
-                                            >
-                                                save
-                                            </button> */}
-                            </div>
-                          </>
-                        )) ||
-                        (data.component === "select" && (
-                          <>
-                            <div>
-                              <label
-                                htmlFor="form-field-productInfo"
-                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                              >
-                                <span className="flex items-center space-x-1">
-                                  <span>{data.label}</span>
-                                </span>
-                              </label>
-                            </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                              <CreatableSelect
-                                isClearable
-                                isDisabled={isLoading}
-                                isLoading={isLoading}
-                                onChange={(newValue) => setValue(newValue)}
-                                onCreateOption={handleCreate}
-                                options={options}
-                                value={value}
-                              />
-                            </div>
-                          </>
-                        ))
-                                );
-                                })}                                 
-                              </div>
-
-                              </div>
-
-                              {/* =======Generate Button=========== */}
-                              <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                                <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
-                                  {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
-                                  <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1">
-                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                      {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
-                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                                    </svg> */}
-                                      <span className="hidden @sm:inline-block text-black">Clear inputs</span>
-                                    </span>
-                                  </button>
-                                  <div className="flex ">
-                                    <input type="number"
-                                      className='mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                                      defaultValue={ContentOutputNumber}
-                                      onChange={(e) => {
-                                        setContentOutputNumber(e.target.value)
-                                      }}
-                                      max="10" min="1"
-                                    />
-                                     <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r bg-[#334977]"
-                                        onClick={()=>{
-                                            handleClick(document_id)
-                                            setTemplateResponseData(null)
-                                        }}
-                                        disabled={LoadingButton}
-                                        >
-                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                          Generate
-                                        </span>
-                                    </button>
-
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* ================== */}
-                                
-                            </>
-                          :
-                              <div className="mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-black max-h-[500px] overflow-y-auto">
-                                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
-                                <nav className="flex flex-grow py-1 space-x-3" aria-label="Tabs">
-                                    <button 
-                                      className={`${
-                                        ShowHideHistory
-                                              ? "  "
-                                              : " bg-gray-100 "
-                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-black transition-all duration-150 hover:text-black`}
-
-                                    onClick={()=>{
-                                      if(LeftListTemplateData==null){
-                                        get_history(templateValue)
-                                      }
-                                        setShowHideHistory(false)
-                                        // setTemplateResponseData(null)
-                                    }}
-                                    >
-                                    {/* <span className="relative">New outputs {ContentOutputNumber.toString()}</span> */}
-                                    <span className="relative">
-                                      New outputs {ContentOutputNumber}
-                                    </span>
-
-                                    </button>
-                                    <button 
-                                      className={`${
-                                        ShowHideHistory
-                                              ? " bg-gray-100 "
-                                              : " "
-                                          } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
-
-                                    onClick={()=>{
-                                      // if()
-                                        // get_history(templateValue)
-                                        setShowHideHistory(true)
-                                        // setTemplateResponseData(null)
-                                    }}>
-                                    <span className="relative">History</span>
-                                    </button>
-                                </nav>
-                                <div>
-                                    <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black transition-all duration-150 hover:text-gray-600"
-                                    onClick={()=>{
-                                        setTemplateResponseData(null)
-                                        if(LeftListTemplateData==null){
-                                        get_history(templateValue)
-                                        }
-                                    }}>
-                                    <span className="relative">Clear</span>
-                                    </button>
-                                </div>
-                                </div>
-
-
-                            {ShowHideHistory
-                            ?
-                                (history_answer
-                                ?
-                                    (history_answer.map((data,index)=>{
-                                        return (
-                                            <div key={index}>
-                                                <ResponseTemplate r_show={"false"} r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
-                                            </div>
-                                        )
-                                    }))
-                                :
-                                    null
+                                  </>
                                 )
-                            :
+                                :                    
+                                  (
+                                  WholeTemplate&& (
+                                      <WholeTemplateRender template_data={WholeTemplate}/>
+                                  )
+                                  )
+                                }
+                                {/* ===========Template name from apis=============== */}
 
-                            (TemplateResponseData
-                                ?
-                                TemplateResponseData.map((data,index)=>{
-                                    return (
-                                        <div key={index}>
-                                            <ResponseTemplate  r_show={"false"} r_time={data["created_at"]} r_data={data["content"]}/>
-                                        </div>
-                                    )
-                                })
-                                :
-                                (LoadingButton
-                                    ?
-                                        <>
-                                            <div className="mt-3 flex flex-col items-center justify-center">
-                                            <div>
-                                                <p>
-                                                Generating content ...
-                                                </p>
-                                            </div>
-                                            <div className='mt-3'>
-                                                <BouncingDotsLoader />
-                                            </div>
-                                            </div>
-                                        </>
-                                    :
-                                        null
-                                    )
-                            )
-                            }
+                                {page=="workflow" &&
+                                  <WorkflowSteps/>
+                                } 
                             </div>
-                            
-                          }
-                          
-
-                        </div>
-
-                      </div>
+                            </div>
                       </>
-                    )
-                    :
-                      (
-                      WholeTemplate&& (
-                          <WholeTemplateRender template_data={WholeTemplate}/>
-                      )
-                      )
-                      }
-                      {page=="workflow" &&
-                        <WorkflowSteps/>
-                      }
+
+                    {/* } */}
+
+                    </>
+                    }
+
+                    
+
                     {/* ===================================================== */}
 
                     {/* ===================Left side whole template Render================================== */}
                     {/* ===================================================== */}
                     
 
-                      {/* <div className="h-full flex-1">
-                        <div className="h-full flex justify-center items-center">
-                          <div className="w-6 h-6 text-gray-400 relative overflow-hidden text-center">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-                </div>
-                <div className="flex absolute w-full left-0 z-10 justify-between gap-3 items-center pointer-events-none top-0">
-                  <div></div>
-                  <div className="flex flex-row-reverse justify-between w-full"></div>
-                </div>
-              </div>
-              <div className="jsx-1f9b1dd4731f1fae relative overflow-auto grow shrink">
-                <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className="jsx-1f9b1dd4731f1fae min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
-                  <div className="relative bg-white border border-gray-300 flex flex-col grow">
-                    {/* <div className="flex flex-col grow">
-                     <div className="select-text whitespace-pre-wrap break-words outline-none focus:outline-none relative grow pt-12 pb-[240px] px-[max((100%-700px)/2,64px)]" contentEditable="false" spellCheck="true"  data-lexical-editor="true" aria-autocomplete="none"></div>
-                  </div> */}
-                    {/* <div className="absolute inset-6 pointer-events-none select-none overflow-hidden opacity-60"></div> */}
-                    <div className="jsx-1f9b1dd4731f1fae absolute inset-0 z-0 pointer-events-none">
+             
 
-                    </div>
-                    {/* <div hidden="" c  lassName="absolute -translate-y-1/2 pointer-events-none"><span className="text-gray-400">Start writing or press <span className="bg-gray-50 border border-gray-100 font-semibold rounded-md px-1.5 py-0.5">/</span> to tell Jasper what to write</span></div> */}
-                    {delta
+                    
+
+                    {editor_full_screen
                     ?
                       <>
-                      {editorData &&
-                        <div className="App p-10">
-                          <Editor data={editorData} setData={seteditorData} />
-                        </div>
-                      }
+                        {delta
+                        ?
+                        <>
+                          <div className="jsx-1f9b1dd4731f1fae relative overflow-auto grow shrink">
+                          <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className="jsx-1f9b1dd4731f1fae min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
+                            <div className="relative bg-white border border-gray-300 flex flex-col grow">
+                          {editorData &&
+                            <div className="App p-10">
+                              <Editor data={editorData} setData={seteditorData} />
+                            </div>
+                          }
+                          </div>
+                          </div>
+                          </div>
+                          </>
+                        :   
+                          <LoaderDiv />
+                        }
                       </>
-                    :   
-                      <LoaderDiv />
+                    :
+                      <>
+                        {delta
+                        ?
+                          <>
+                          <div className="jsx-1f9b1dd4731f1fae relative overflow-auto grow shrink">
+                          <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className="jsx-1f9b1dd4731f1fae min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
+                            <div className="relative bg-white border border-gray-300 flex flex-col grow">
+                          {editorData &&
+                            <div className="App p-10">
+                              <Editor data={editorData} setData={seteditorData} />
+                            </div>
+                          }
+                          </div>
+                          </div>
+                          </div>
+                          </>
+                        :   
+                          <LoaderDiv />
+                        }
+                      </>
                     }
+                    
 
-                  </div>
-                  <div className="jsx-1f9b1dd4731f1fae absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-6 h-6 text-gray-400 relative overflow-hidden text-center">
-                      {/* <svg
-                          id="Layer_1"
-                          className="inset-0"
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          x="0px"
-                          y="0px"
-                          viewBox="0 0 50 50"
-                          xmlSpace="preserve"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z"
-                          >
-                            <animateTransform
-                              attributeType="xml"
-                              attributeName="transform"
-                              type="rotate"
-                              from="0 25 25"
-                              to="360 25 25"
-                              dur="0.4s"
-                              repeatCount="indefinite"
-                            ></animateTransform>
-                          </path>
-                        </svg> */}
-                    </div>
-                  </div>
-                  <span className="transform -translate-y-full text-white bg-indigo-700 font-semibold px-0.5 fixed z-10 text-xs pointer-events-none hidden top-neg-99999">Jasper</span>
-                </div>
-              </div>
+
             </div>
           </div>
-          <div className="fixed z-9999 top-16 left-16 right-16 bottom-16 pointer-events-none"></div>
           
         </div>
         {/* ============================== */}

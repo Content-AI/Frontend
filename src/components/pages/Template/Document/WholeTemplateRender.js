@@ -39,32 +39,41 @@ const WholeTemplateRender = ({template_data}) => {
   return (
     <>
     <div className="bg-white flex flex-col h-full w-full">
-        <div className="p-2 [&amp;_div.flex.grow]:py-0">
-            <div className="space-y-1.5 w-full">
-                <label htmlFor="search" className="sr-only"><span className="flex items-center space-x-1"><span>search</span></span></label>
-                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                    <div className="flex items-center grow gap-2 py-1.5">
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                        <path d="M15.11,15.11l-4-4" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                    </svg>
-                    <div className="flex gap-1 grow">
-                        <input
-                            id="search"
-                            type="search"
-                            className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                            placeholder="Search templates"
-                            value={searchValue}
-                            onChange={handleSearchChange}
-                        />
-                    </div>
+
+
+
+            {/* ========search template======= */}
+            <div className="p-2 [&amp;_div.flex.grow]:py-0">
+                <div className="space-y-1.5 w-full">
+                    <label htmlFor="search" className="sr-only"><span className="flex items-center space-x-1"><span>search</span></span></label>
+                    <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                        <div className="flex items-center grow gap-2 py-1.5">
+                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                            <path d="M15.11,15.11l-4-4" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
+                        </svg>
+                        <div className="flex gap-1 grow">
+                            <input
+                                id="search"
+                                type="search"
+                                className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                placeholder="Search templates"
+                                value={searchValue}
+                                onChange={handleSearchChange}
+                            />
+                        </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {/* ========search template======= */}
+
+
         <ul className="space-y-4 flex-1 overflow-auto">
+            
             {/* ===================Workflow start======================== */}
             {/* ===================Workflow end======================== */}
+
             <li>
                 <h3 className="px-2 font-semibold text-xs text-slate-800">Templates</h3>
                 <ul>
