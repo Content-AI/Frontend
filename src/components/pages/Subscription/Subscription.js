@@ -371,7 +371,8 @@ const Subscription = (props) => {
                                     }
                                   }}
                                 >
-                                    Start 7/Days Free Trail
+                                    {/* Start 7/Days Free Trail */}
+                                    Proceed With Plan
                                 </button>
 
                               }
@@ -459,7 +460,8 @@ const Subscription = (props) => {
                                           send_subcription_request("premium","monthly")
                                         }
                                     }}>
-                                  Start 7/Days Free Trail 
+                                  {/* Start 7/Days Free Trail  */}
+                                  Proceed With Plan
                               </button>
                             }
 

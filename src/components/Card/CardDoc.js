@@ -14,7 +14,7 @@ const CardDoc = (props) => {
     title={"open "+props.title}
     >
       <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
-        <img src={BACKEND_URL+props.icon} alt="" className="block w-full" />
+        <img src={props.icon} alt="" className="block w-full" />
       </div>
       <div className="content relative flex-auto pl-4">
         <div className="title flex items-center justify-between gap-2 mb-2">

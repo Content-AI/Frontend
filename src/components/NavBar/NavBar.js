@@ -379,18 +379,18 @@ const Navbar = () => {
                               <div>
 
                               <Link to="/help">
-                                      <p className="text-sm  ml-[10px] font-helv">Help</p>
+                                      <p className="text-sm  font-helv">Help</p>
                               </Link> 
                             </div>
                             </div>
-                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                            {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                               <div className="mr-2">
                                 <MdSearch size={18} />
                               </div>
                               <div>
                                 <p className="text-sm font-helv">Search</p>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                               <div className="mr-2">
                                 <FaTrash size={18} />
@@ -711,18 +711,18 @@ const Navbar = () => {
                                             <div>
 
                                             <Link to="/help">
-                                                    <p className="text-sm  ml-[10px] font-helv">Help</p>
+                                                    <p className="text-sm font-helv">Help</p>
                                             </Link> 
                                           </div>
                                           </div>
-                                          <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                          {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                                             <div className="mr-2">
                                               <MdSearch size={18} />
                                             </div>
                                             <div>
                                               <p className="text-sm font-helv">Search</p>
                                             </div>
-                                          </div>
+                                          </div> */}
                                           <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                                             <div className="mr-2">
                                               <FaTrash size={18} />

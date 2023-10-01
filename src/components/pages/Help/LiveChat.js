@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+
+import { useSelector, useDispatch } from "react-redux";
+
 
 const LiveChat = () => {
   const [showChat, setShowChat] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  let PROFILE_DATA = useSelector((state) => state.SetFullProfile.Fullprofile);
+
+
+
   const loadChatWidget = () => {
-    setIsLoading(true);
+    console.log(PROFILE_DATA?.email)
+    // setIsLoading(true);
 
     // Load the HubSpot chat widget
     const script = document.createElement("script");

@@ -233,6 +233,8 @@ export const BACK_END_API_TONE_SELECT_FIELDS_WORKFLOW = "/v1/workflow/select_ton
 
 export const BACK_END_API_GENERATE_IMAGE = "/v1/template/image_generator";
 
+export const BACK_END_API_TRANSCRIBE_SPEECH = "/v1/template/generate_speech_text_answer/";
+
 export const BACK_END_API_CHECK_VIDEO = "/v1/template/check_video";
 export const BACK_END_API_UPLOADING_VIDEO = "/v1/template/uploading_video";
 export const BACK_END_API_EXTRACT_SPEECH_FROM_VIDEO = "/v1/template/extracting_speech_from_video";
@@ -247,3 +249,5 @@ export const BACK_END_API_AUDIO_SUMMARIZE = "/v1/template/movie_file_to_text";
 
 export const BACK_END_API_HISTORY_URL = "/v1/template/history_url";
 export const BACK_END_API_HISTORY_AUDIO_VIDEO = "/v1/template/history_audio_video";
+
+export const BACK_END_API_HISTORY_TRANSCRIBE = "/v1/template/history_transcribe";

@@ -3,6 +3,8 @@ import { LoginData } from '../../apis/apiService';
 
 import toast, { Toaster } from 'react-hot-toast';
 
+import '../../PinInput.css';
+
 
 import GoogleAuthComponent from './LoginUpdate/GoogleAuthComponent';
 
@@ -48,7 +50,8 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
+    height:350,
     bgcolor: '#efefefd6',
     boxShadow: 24,
     borderRadius: "10px",
@@ -143,9 +146,13 @@ export default function Login() {
                 setOpen(true)
                 // setFormData({ email: ''});
             } else {
-                notifyerror("supply valid email")
+                if(response.response.data.detail=="You do not have permission to perform this action."){
+                    notifyerror("To Many attempts wait for Minutes")
+                }else{
+                    notifyerror("supply valid email")
+                }
             }
-
+            
         } catch (error) {
             // Handle any errors
             notifyerror("supply valid email")
@@ -344,20 +351,19 @@ export default function Login() {
                                                 </div>
                                             </>
                                             :
-                                            <>
-                                                <OTPInput
-                                                    value={OTP}
-                                                    onChange={(e) => {
-                                                        setOTP(e)
-                                                    }}
-                                                    autoFocus
-                                                    OTPLength={6}
-                                                    otpType="number"
-                                                    disabled={false}
-                                                    secure
-                                                />
-                                                {/* <ResendOTP handelResendClick={() => console.log("Resend clicked")} /> */}
-                                            </>
+                                            <div className="change_input_style">
+                                            <OTPInput
+                                                value={OTP}
+                                                onChange={(e) => {
+                                                    setOTP(e)
+                                                }}
+                                                autoFocus
+                                                OTPLength={6}
+                                                otpType="number"
+                                                disabled={false}
+                                                secure
+                                            />
+                                            </div>
                                         }
                                     </div>
                                 </div>

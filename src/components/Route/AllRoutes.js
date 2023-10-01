@@ -39,6 +39,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import Workflow from "../pages/workflow/Workflow";
 
 import Help from "../pages/Help/Help";
+import VoiceRecognition from "../pages/GenerateUsingVoice/VoiceRecognition";
 
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
@@ -106,6 +107,11 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             <Route
               path="/brand_voice"
               element={<Brandvoice AUTH_TOKEN={TOKEN} />}
+            />
+          
+            <Route
+              path="/transcribe-speech"
+              element={<VoiceRecognition AUTH_TOKEN={TOKEN} />}
             />
 
             <Route

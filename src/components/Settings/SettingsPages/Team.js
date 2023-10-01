@@ -457,11 +457,11 @@ const Team = () => {
                           {/* upgrade to premium mode monthly or yearly get 2 team extra */}
                           <div>
                             <span>
-                              Need more seats ?  
-
-                              <Upgradenow
-                                subscription_data={SubscriptionsData}
-                              />
+                              Need more seats ?
+                                <AddMoreSeat
+                                  subscription_data={SubscriptionsData}
+                                  TOKEN={TOKEN}
+                                />
 
                             </span>
                           </div>
@@ -470,6 +470,7 @@ const Team = () => {
                         <>
                         {/* when the user is trail or all payment in premium */}
                           {workspacelist &&
+                          <>
                             <div className="container mt-3 w-[300px]">
                               <ProgressBar value={workspacelist[0]["member_no"]} maxValue={team_limit} />
                               <span className="font-bold">
@@ -480,9 +481,13 @@ const Team = () => {
                                   }
                                   team member already exists.
                                 </p>
-
                               </span>
                             </div>
+
+                            
+
+                          </>
+                            
                           }
                           {Subscriptions &&
                             <>
@@ -501,6 +506,7 @@ const Team = () => {
                                                   subscription_data={SubscriptionsData}
                                                   TOKEN={TOKEN}
                                                 />
+
                                               </div>
                                           </>
                                           :
@@ -515,6 +521,17 @@ const Team = () => {
                                                 >
                                                   <InviteTeamMember />
                                                 </button>
+                                                 {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                                    <div>
+                                                      <span>
+                                                        Need more seats ?
+                                                          <AddMoreSeat
+                                                            subscription_data={SubscriptionsData}
+                                                            TOKEN={TOKEN}
+                                                          />
+
+                                                      </span>
+                                                    </div>
                                               </>
                                               :
                                               <>
@@ -522,6 +539,17 @@ const Team = () => {
                                                   title="Contact Your admin">
                                                   <TeamInviteDisable />
                                                 </button>
+                                                {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                                <div>
+                                                      <span>
+                                                        Need more seats ?
+                                                          <AddMoreSeat
+                                                            subscription_data={SubscriptionsData}
+                                                            TOKEN={TOKEN}
+                                                          />
+
+                                                      </span>
+                                                    </div>
                                               </>
                                             }
                                           </>
@@ -541,6 +569,18 @@ const Team = () => {
                                       >
                                         <InviteTeamMember />
                                       </button>
+                                      {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                      <div>
+                                                      <span>
+                                                        Need more seats ?
+                                                          <AddMoreSeat
+                                                            subscription_data={SubscriptionsData}
+                                                            TOKEN={TOKEN}
+                                                          />
+
+                                                      </span>
+                                                    </div>
+                                                  
                                     </>
                                     :
                                     <>
@@ -548,6 +588,17 @@ const Team = () => {
                                         title="Contact Your admin">
                                         <TeamInviteDisable />
                                       </button>
+                                      {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                      <div>
+                                                      <span>
+                                                        Need more seats ?
+                                                          <AddMoreSeat
+                                                            subscription_data={SubscriptionsData}
+                                                            TOKEN={TOKEN}
+                                                          />
+
+                                                      </span>
+                                                    </div>
                                     </>
                                   }
                                 </>

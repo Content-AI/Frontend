@@ -26,6 +26,7 @@ import DocumentsIcon from "../Icons/DocumentsIcon";
 import ArtIcon from "../Icons/ArtIcon";
 import ReacapBuildericon from '../Icons/ReacapBuildericon'
 import { Premium } from "./ImageGenerator/Premium";
+import { PremiumVoice } from "./GenerateUsingVoice/PremiumVoice";
   
 
 const CreateNewContent = (props) => {
@@ -42,6 +43,9 @@ const CreateNewContent = (props) => {
 
     const notifyerror = (message) => toast.error(message);
 
+    let subscriptions_check = useSelector(
+      (state) => state.SetSubscriptions.Subscriptions
+    );
 
     const [selectedValue, setSelectedValue] = useState('');
     const [SelectedOptions, setSelectedOptions] = useState(null);
@@ -176,9 +180,10 @@ const create_blank_document = async() => {
             <LoadingPage message={"Creating Document"}/>
         :
        <div className="fixed inset-0 z-40 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
-                <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[640px] opacity-100 translate-y-0 sm:scale-100">
+            <div className=" flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100"></div>
+                
+                <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[700px] opacity-100 translate-y-0 sm:scale-100">
                     <div className="flex flex-col p-6">
                         <div className="-m-6 divide-y divide-gray-200">
                         <div className="p-6 space-y-4">
@@ -291,7 +296,9 @@ const create_blank_document = async() => {
                         </div>
 
                         {/* ========choose the options ======== */}
-                        <div className="grid grid-cols-2 gap-6 p-6  mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3 mb-2">
+
+                        
                             <button 
                                 className="p-4 border  rounded-lg text-left space-y-2 hover:scale-105 hover:ring-gray-600 transform transition-transform duration-300"
                             onClick={()=>{
@@ -317,6 +324,55 @@ const create_blank_document = async() => {
                                 </span>
                                 <span className="block">Create content with predefined templates and workflows.</span>
                             </button>
+
+                            <button 
+                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
+
+                                onClick={()=>{
+                                    navigate("/recap_builder")
+                                }}
+                            >
+                                <span className="flex items-center space-x-3">
+                                    <ReacapBuildericon/>
+                                    <span className="text-slate-700 text-base font-semibold">Recap Builder</span>
+                                    {/* <Premium /> */}
+                                </span>
+                                <span className="block">Transform your audio visual content into concise and insightful summaries..</span>
+                            </button>
+
+                            <button 
+                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
+
+                                onClick={()=>{
+                                  if(subscriptions_check.status=="trial"){
+                                    notifyerror("Upgrade Your Plan")
+                                    return;
+                                  }
+                                    navigate("/transcribe-speech")
+                                }}
+                            >
+                                <span className="flex items-center space-x-3">
+                                    <ReacapBuildericon/>
+                                    <span className="text-slate-700 text-base font-semibold">Transcribe speech.</span>
+                                      <Premium/>
+                                </span>
+                                <span className="block">Convert your spoken words into written text effortlessly, transforming your voice into clear and precise written content.</span>
+                            </button>
+                            
+
+                            <button 
+                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
+
+                                onClick={()=>{
+                                    navigate(`/template/31025db5-d6e9-4bd2-b237-8a87a2545595?custom=normal_user`)
+                                }}
+                            >
+                                <span className="flex items-center space-x-3">
+                                    <ReacapBuildericon/>
+                                    <span className="text-slate-700 text-base font-semibold">One Shot Blog Post</span>
+                                </span>
+                                <span className="block">Get the key bullet points from a piece of content.</span>
+                            </button>
                             
                             <button 
                               className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
@@ -333,20 +389,6 @@ const create_blank_document = async() => {
                                 </span>
                                 <span className="block">Express your creativity through the power of art.</span>
                             </button>
-                            <button 
-                              className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
-
-                                onClick={()=>{
-                                    navigate("/recap_builder")
-                                }}
-                            >
-                                <span className="flex items-center space-x-3">
-                                    <ReacapBuildericon/>
-                                    <span className="text-slate-700 text-base font-semibold">Recap Builder</span>
-                                    {/* <Premium /> */}
-                                </span>
-                                <span className="block">Transform your audio visual content into concise and insightful summaries..</span>
-                            </button>
 
                         </div>
                         
@@ -354,11 +396,7 @@ const create_blank_document = async() => {
                         
                         </div>
 
-                        {/* <div className="flex justify-end p-6">
-                        <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                         onClick={handleGoBack}>
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">Cancel</span>
-                        </button></div> */}
+                        
                     </div>
                 </div>
             </div>

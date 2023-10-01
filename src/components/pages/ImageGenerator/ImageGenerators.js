@@ -103,12 +103,6 @@ const charCount = text.length;
 
 // =======generate image=========
 const [imageUrls, setImageUrls] = useState([]);
-//   const [imageUrls, setImageUrls] = useState([
-//     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-EncmxlbZN93n4LeGRYVWMHgE/user-dLo2gSLpM0LRChb6jC1dpiix/img-VpVEvF487WM5zHX3JSrO7Xcn.png?st=2023-09-02T13%3A30%3A16Z&se=2023-09-02T15%3A30%3A16Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-02T06%3A13%3A32Z&ske=2023-09-03T06%3A13%3A32Z&sks=b&skv=2021-08-06&sig=WiXn1kw61u9e4JqmxnEMkYfi8KgNVrnJkyo46kzhsQs%3D",
-//     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-EncmxlbZN93n4LeGRYVWMHgE/user-dLo2gSLpM0LRChb6jC1dpiix/img-RMbzU0stkDoQ1UMNPic5QBlW.png?st=2023-09-02T13%3A30%3A16Z&se=2023-09-02T15%3A30%3A16Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-02T06%3A13%3A32Z&ske=2023-09-03T06%3A13%3A32Z&sks=b&skv=2021-08-06&sig=KI0dmzIVUI9uVs2w4X%2BBDRq22N0sgcXqo3lMFtMHhA8%3D",
-//     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-EncmxlbZN93n4LeGRYVWMHgE/user-dLo2gSLpM0LRChb6jC1dpiix/img-oYKQxvVGEdihDo4QzOhCYr8U.png?st=2023-09-02T13%3A30%3A16Z&se=2023-09-02T15%3A30%3A16Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-02T06%3A13%3A32Z&ske=2023-09-03T06%3A13%3A32Z&sks=b&skv=2021-08-06&sig=hMzQFYBlHpmunBC02YTxqxBWVJOaHxaZ5singvovERs%3D",
-//     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-EncmxlbZN93n4LeGRYVWMHgE/user-dLo2gSLpM0LRChb6jC1dpiix/img-9y78Fn6ejGHUhwDmAWvLEN1E.png?st=2023-09-02T13%3A30%3A15Z&se=2023-09-02T15%3A30%3A15Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-09-02T06%3A13%3A32Z&ske=2023-09-03T06%3A13%3A32Z&sks=b&skv=2021-08-06&sig=yhqJ73r5inITfjASlP8BbCnsjttEvrhFJcAciOgZm5M%3D"
-//   ]);
   const [generateText, setGenerateText] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
@@ -209,6 +203,7 @@ const [imageUrls, setImageUrls] = useState([]);
                         <div>
                           <p className="text-sm">Unlock Infinite Artistry: Where Imagination Meets AI Innovation for Limitless Creative Expression!</p>
                         </div>
+                       
                         <div>
                         {subscriptions_details &&
                             <>
@@ -243,6 +238,7 @@ const [imageUrls, setImageUrls] = useState([]);
                             </>
                             }
                         </div>
+                        
                       </div>
                     
                   </div>
@@ -305,21 +301,7 @@ const [imageUrls, setImageUrls] = useState([]);
                         </span>
                       </span>
                     </button>
-                    <div className="flex ">
-                      {/* <input
-                        type="number"
-                        className="mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        defaultValue={ContentOutputNumber}
-                        onChange={(e) => {
-                          if(ContentOutputNumber>10){
-                            return true
-                          }
-                          setContentOutputNumber(e.target.value);
-                        }}
-                        max={10}
-                        min={1}
-                      /> */}
-                      
+                    <div className="flex ">                      
 
                       {subscriptions_details &&
                         <>
@@ -397,23 +379,7 @@ const [imageUrls, setImageUrls] = useState([]);
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
-                    {/* <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
-                      onClick={() => {
-                        setShowHideHistory(false);
-                      }}
-                    >
-                      <span className="relative">
-                        New outputs {ContentOutputNumber.toString()}
-                      </span>
-                    </button> */}
-                    {/* <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
-                      onClick={() => {
-                      }}
-                    >
-                      <span className="relative">History</span>
-                    </button> */}
+                    
                   </nav>
                   <div>
                     <button
