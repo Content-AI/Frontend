@@ -4,7 +4,7 @@ const ProgressBar = ({ value, maxValue }) => {
   const width = (value / maxValue) * 100;
 
   return (
-    <div className="relative pt-1">
+    <div className="relative pt-1 w-[200px] md:w-[300px]">
       <div className="flex mb-2 items-center justify-between">
         <div>
           <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-teal-600"></span>

@@ -116,6 +116,44 @@ const cardData = [
   },
 ];
 
+const imp_manaully = [
+  {
+    id:1,
+    title: "Recap Builder",
+    description:
+      "Transform your audio visual content into concise and insightful summaries..",
+    icon: "ReacapBuildericon",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png",
+    isPremium: false,
+    link:"/recap_builder"
+  },{
+    title: "Transcribe speech.",
+    description:
+    "Turn speech into text with ease for accurate content.",
+    icon: "Transcribe",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Transcribe+speech.png",
+    isPremium: true,
+    link:"/transcribe-speech"
+  },
+  // {
+  //   title: "One Shot Blog Post",
+  //   description:
+  //     "Get the key bullet points from a piece of content.",
+  //   icon: "Shot",
+  //   img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/1_T3DPBTv.png",
+  //   isPremium: false,
+  // },
+  {
+    title: "Art",
+    description:
+      "Express your creativity through the power of art.",
+    icon: "Art",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png",
+    isPremium: true,
+    link:"/art"
+  }
+]
+
 const Home = ({AUTH_TOKEN}) => {
 
   const navigate = useNavigate()
@@ -141,10 +179,6 @@ const Home = ({AUTH_TOKEN}) => {
   }
 
 
-
-
-
-  
 useEffect(()=>{
   if(AUTH_TOKEN!=null){
     get_template(BACKEND_URL+BACK_END_API_TEMPLATE_IMP,AUTH_TOKEN)
@@ -266,9 +300,6 @@ useEffect(()=>{
               <div className="titlewrap flex gap-x-3">
                 <Workflow/>
                 <h4 className="text-md font-bold">WorkFlow</h4>
-                {/* <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                  Boss Mode
-                </span> */}
               </div>
                 
               <p className="text-sm min-h-[62px]">
@@ -328,9 +359,6 @@ useEffect(()=>{
                   />
                 </svg>
                 <h4 className="text-md font-bold">Chat</h4>
-                {/* <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                  Boss Mode
-                </span> */}
               </div>
               <p className="text-sm min-h-[62px]">
                 Generate ideas, images, and content by chatting directly with
@@ -389,80 +417,69 @@ useEffect(()=>{
         </div>
 
 
-        {/* ============== */}
-          {/* <div className="flex flex-col">
-            <div className="grid grid-cols-2 gap-6 w-full bg-gray-lightbg border border-border p-6 rounded-lg overflow-hidden">
-              <div className="flex flex-col gap-y-4">
-                <div className="titlewrap flex gap-x-3">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M18 3C16.8954 3 16 3.89543 16 5C16 6.10457 16.8954 7 18 7C19.1046 7 20 6.10457 20 5C20 3.89543 19.1046 3 18 3ZM14 5C14 2.79086 15.7909 1 18 1C20.2091 1 22 2.79086 22 5C22 7.20914 20.2091 9 18 9C15.7909 9 14 7.20914 14 5Z"
-                      fill="#36464E"
+        {imp_manaully.map((data,index)=>{
+          return (
+              <div key={index} className=" flex flex-col cursor-pointer hover:bg-slate-100" title={data["title"]}>
+                <div className="h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+                  <div className="flex flex-col gap-y-4">
+                    <div className="flex gap-x-3">
+                        <img src={data["img"]} alt={data["title"]} className="block w-6 h-6" />
+                      <h4 className="text-md font-bold">{data["title"]}</h4>
+                    </div>
+                      
+                    <p className="text-sm min-h-[62px]">
+                      {data["description"]}
+                    </p>
+                    <div className="button-wrap">
+                    
+                    {subscriptions_details &&
+                    <>
+                      {subscriptions_details.user.status=="trial" && data["isPremium"]==true
+                      ?
+                        <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                        onClick={()=>{
+                          navigate("/settings/subscription_plan")
+                        }}>
+                          Upgrade
+                        </button>
+                      :
+                        <button className="text-white w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                        onClick={()=>{
+                          navigate(data["link"])
+                        }}>
+                          {data["title"]}
+                        </button>
+                      }
+
+                    </>
+                    }
+                    </div>
+                  </div>
+                  <div className="rounded-s-xl rounded-e-xl mb-3">
+                    <img
+                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
+                      alt=""
+                      className="w-full h-full"
                     />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10ZM2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M18 17C16.8954 17 16 17.8954 16 19C16 20.1046 16.8954 21 18 21C19.1046 21 20 20.1046 20 19C20 17.8954 19.1046 17 18 17ZM14 19C14 16.7909 15.7909 15 18 15C20.2091 15 22 16.7909 22 19C22 21.2091 20.2091 23 18 23C15.7909 23 14 21.2091 14 19Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M7.726 13.0065C8.00406 12.5293 8.61631 12.3679 9.09348 12.6459L15.9235 16.6259C16.4007 16.904 16.5621 17.5162 16.284 17.9934C16.006 18.4706 15.3937 18.632 14.9165 18.3539L8.08653 14.3739C7.60935 14.0959 7.44794 13.4836 7.726 13.0065Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M16.2737 6.0059C16.5521 6.4829 16.391 7.09525 15.914 7.37362L9.09403 11.3536C8.61703 11.632 8.00469 11.471 7.72632 10.994C7.44795 10.517 7.60898 9.90461 8.08598 9.62624L14.906 5.64624C15.383 5.36787 15.9953 5.5289 16.2737 6.0059Z"
-                      fill="#36464E"
-                    />
-                  </svg>
-                  <h4 className="text-md font-bold">Workflows</h4>
-                  <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                    Boss Mode
-                  </span>
-                </div>
-                <p className="text-sm min-h-[62px]">
-                  Create blog posts, social media campaigns, email campaigns,
-                  and rewrite content.
-                </p>
-                <div className="button-wrap">
-                  <button className="inline-flex text-sm font-bold px-2 py-1 bg-gray-lightbg border border-border rounded-md overflow-hidden">
-                    Upgrade
-                  </button>
+                  </div>
                 </div>
               </div>
-              <div className="-mb-6 shadow-customv2">
-                <img
-                  src="card--placeholder.svg"
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
-            </div>
-          </div> */}
+          )
+        })}
+
+
         </div>
 
       </div>
+
+
+      
       <div className="mt-12">
         <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
+        
         <div>
-          <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
+
+        <div className="cardwrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-5">
           {imp_template &&
             <>
               {imp_template.map((items, index) => {
@@ -475,8 +492,12 @@ useEffect(()=>{
             </>
           }
           </div>
+
+
         </div>
       </div>
+
+      
     </div>
   );
 };

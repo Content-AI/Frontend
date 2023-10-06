@@ -471,24 +471,40 @@ const Team = () => {
                         {/* when the user is trail or all payment in premium */}
                           {workspacelist &&
                           <>
+                          {Subscriptions.status == "trial"
+                          ?
                             <div className="container mt-3 w-[300px]">
-                              <ProgressBar value={workspacelist[0]["member_no"]} maxValue={team_limit} />
-                              <span className="font-bold">
-                                Out of {team_limit+1} member.
-                                <p>
-                                  {workspacelist &&
-                                    workspacelist[0]["member_no"] + " "
-                                  }
-                                  team member already exists.
-                                </p>
-                              </span>
-                            </div>
-
-                            
-
+                                  <ProgressBar value={1} maxValue={1} />
+                                  <span className="font-bold">
+                                    Out of {team_limit+1} member.
+                                    <p>
+                                      {workspacelist &&
+                                        workspacelist[0]["member_no"] + " "
+                                      }
+                                      team member already exists.
+                                    </p>
+                                  </span>
+                                  
+                                </div>
+                          :
+                              <div className="container mt-3 w-[300px]">
+                                <ProgressBar value={workspacelist[0]["member_no"]} maxValue={team_limit} />
+                                <span className="font-bold">
+                                  Out of {team_limit} member.
+                                  <p>
+                                    {workspacelist &&
+                                      workspacelist[0]["member_no"] + " "
+                                    }
+                                    team member already exists.
+                                  </p>
+                                </span>
+                              </div>
+                          }
                           </>
                             
                           }
+
+
                           {Subscriptions &&
                             <>
                               {Subscriptions.status == "trial"
@@ -500,21 +516,17 @@ const Team = () => {
                                         workspacelist[0]["member_no"] >= total_limit_check
                                           ?
                                           <>
+                                          <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0">
                                               <TeamInviteDisable />
-                                              <div className="flex gap-1">
-                                                <AddMoreSeat
-                                                  subscription_data={SubscriptionsData}
-                                                  TOKEN={TOKEN}
-                                                />
-
-                                              </div>
+                                          </button>
                                           </>
                                           :
                                           <>
                                             {invite_check
                                               ?
                                               <>
-                                                <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
+                                                <button type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" 
+                                                      title="Invite Member"
                                                   onClick={() => {
                                                     invite_modal()
                                                   }}
@@ -535,7 +547,7 @@ const Team = () => {
                                               </>
                                               :
                                               <>
-                                                <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                                                <button disabled className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
                                                   title="Contact Your admin">
                                                   <TeamInviteDisable />
                                                 </button>
@@ -571,34 +583,34 @@ const Team = () => {
                                       </button>
                                       {/* upgrade to premium mode monthly or yearly get 2 team extra */}
                                       <div>
-                                                      <span>
-                                                        Need more seats ?
-                                                          <AddMoreSeat
-                                                            subscription_data={SubscriptionsData}
-                                                            TOKEN={TOKEN}
-                                                          />
+                                          <span>
+                                            Need more seats ?
+                                              <AddMoreSeat
+                                                subscription_data={SubscriptionsData}
+                                                TOKEN={TOKEN}
+                                              />
 
-                                                      </span>
-                                                    </div>
+                                          </span>
+                                        </div>
                                                   
                                     </>
                                     :
                                     <>
-                                      <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
-                                        title="Contact Your admin">
-                                        <TeamInviteDisable />
-                                      </button>
-                                      {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                                      <div>
-                                                      <span>
-                                                        Need more seats ?
-                                                          <AddMoreSeat
-                                                            subscription_data={SubscriptionsData}
-                                                            TOKEN={TOKEN}
-                                                          />
+                                        <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                                          title="Contact Your admin">
+                                          <TeamInviteDisable />
+                                        </button>
+                                        {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                        <div>
+                                        <span>
+                                          Need more seats ?
+                                            <AddMoreSeat
+                                              subscription_data={SubscriptionsData}
+                                              TOKEN={TOKEN}
+                                            />
 
-                                                      </span>
-                                                    </div>
+                                        </span>
+                                      </div>
                                     </>
                                   }
                                 </>
@@ -618,23 +630,6 @@ const Team = () => {
                   
 
                 </div>
-
-
-                <div className="basis-1/2">
-                  <div className="w-full space-y-1.5">
-                    <label htmlFor="search-team-members" className="sr-only"
-                    ><span className="flex items-center space-x-1"><span>Search team members</span></span></label>
-                    <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
-                      <div className="flex grow items-center gap-2 py-1.5">
-                        <SearchIcon />
-                        <div className="flex grow gap-1">
-                          <input className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400" type='text' placeholder='search member' />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
 
               </div>
               <div>
@@ -671,121 +666,172 @@ const Team = () => {
               </div>
 
 
-              <div className="mb-10 ring-1 ring-gray-200 md:rounded-lg">
-                <table className="min-w-full">
-                  <thead className="bg-slate-200">
-                    <tr>
-                      <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold uppercase text-gray-700">Member</th>
-                      {selectedItem == "Team Member"
-                        ?
-                        <>
-                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Role</th>
-                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Joined</th>
-                        </>
-                        :
-                        <>
-                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Invite at</th>
-                        </>
-                      }
-                      <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 "><span className="sr-only">Edit</span></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 bg-slate-100">
+              <div className="mb-10 ring-1 ring-gray-200 md:rounded-lg overflow-x-auto">
 
-                    {workspacelist &&
-                      <>
-                        {ChosenWorkspaceId["admin_or_not"] == true
-                          ?
+                    <table className="min-w-full">
+                      <thead className="bg-slate-200">
+                        <tr>
+                          <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold uppercase text-gray-700">Member</th>
+                          {selectedItem == "Team Member"
+                            ?
+                            <>
+                              <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Role</th>
+                              <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Joined</th>
+                            </>
+                            :
+                            <>
+                              <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 ">Invite at</th>
+                            </>
+                          }
+                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700 "><span className="sr-only">Edit</span></th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 bg-slate-100">
+
+                        {workspacelist &&
                           <>
-                            {selectedItem == "Team Member"
+                            {ChosenWorkspaceId["admin_or_not"] == true
                               ?
                               <>
-                                {workspacelist.map((data, index) => (
-                                  <tr key={index}>
-                                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                                      <div className="flex items-center">
-                                        <div className="h-10 w-10 flex-shrink-0">
-                                          <img
-                                            className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
-                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                          />
-                                        </div>
-                                        <div className="ml-4 truncate">
-                                          <div className="truncate font-medium leading-5 text-gray-900">
-                                            {data["team_member_user"]["first_name"]}
+                                {selectedItem == "Team Member"
+                                  ?
+                                  <>
+                                    {workspacelist.map((data, index) => (
+                                      <tr key={index}>
+                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                                          <div className="flex items-center">
+                                            <div className="h-10 w-10 flex-shrink-0">
+                                              <img
+                                                className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
+                                                src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                              />
+                                            </div>
+                                            <div className="ml-4 truncate">
+                                              <div className="truncate font-medium leading-5 text-gray-900">
+                                                {data["team_member_user"]["first_name"]}
+                                              </div>
+                                              <div className="truncate text-sm leading-5 text-gray-500" >
+                                                {data["team_member_user"]["email"]}
+                                              </div>
+                                            </div>
                                           </div>
-                                          <div className="truncate text-sm leading-5 text-gray-500" >
-                                            {data["team_member_user"]["email"]}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td className=" sm:table-cell">
-                                      {PROFILE_DATA.email == data["team_member_user"]["email"]
-                                        ?
-                                        <>
-                                        
-                                        <button 
-                                          className="text-gray-700 group flex items-center px-4 py-2 text-sm focus:outline-none hover:bg-gray-100"
-                                        >
-                                          Admin
-                                        </button>
-                                          {/* <SelectField
-                                            options={[
-                                              { label: 'Admin', value: 'Admin' },
-                                            ]}
-                                            role_of_user={workspacelist[index]["admin_or_not"] ? "Admin" : "Member"}
-                                          /> */}
-                                        </>
-                                        :
-                                        <>
-                                          <SelectField
-                                            options={[
-                                              { label: 'Admin', value: 'Admin' },
-                                              { label: 'Member', value: 'Member' },
-                                            ]}
-                                            defaultValue={selectedRoles[index]}
-                                            onSelect={(value) => handleSelectData(index, value)}
-                                            role_of_user={workspacelist[index]["admin_or_not"] ? "Admin" : "Member"}
-                                            data_index={index}
-                                          />
-                                        </>
-                                      }
-                                    </td>
-                                    <td className=" sm:table-cell">
-                                      {data["team_member_user"]["created_at"]}
-                                    </td>
-                                    <td className=" sm:table-cell text-blue-500">
-
-                                      {PROFILE_DATA.email == data["team_member_user"]["email"]
-                                        ?
-                                        null
-                                        :
-                                        <>
-                                          {ChosenWorkspaceId["admin_or_not"] == true
+                                        </td>
+                                        <td className=" sm:table-cell">
+                                          {PROFILE_DATA.email == data["team_member_user"]["email"]
                                             ?
                                             <>
-                                              <button
-                                                onClick={() => {
-                                                  const formData = {}
-                                                  formData["id"] = data.id
-                                                  remove_user(formData)
-                                                }}>
-                                                Remove
-                                              </button>
+                                            
+                                            <button 
+                                              className="text-gray-700 group flex items-center px-4 py-2 text-sm focus:outline-none hover:bg-gray-100"
+                                            >
+                                              Admin
+                                            </button>
+                                              {/* <SelectField
+                                                options={[
+                                                  { label: 'Admin', value: 'Admin' },
+                                                ]}
+                                                role_of_user={workspacelist[index]["admin_or_not"] ? "Admin" : "Member"}
+                                              /> */}
                                             </>
                                             :
-                                            null
+                                            <>
+                                              <SelectField
+                                                options={[
+                                                  { label: 'Admin', value: 'Admin' },
+                                                  { label: 'Member', value: 'Member' },
+                                                ]}
+                                                defaultValue={selectedRoles[index]}
+                                                onSelect={(value) => handleSelectData(index, value)}
+                                                role_of_user={workspacelist[index]["admin_or_not"] ? "Admin" : "Member"}
+                                                data_index={index}
+                                              />
+                                            </>
                                           }
-                                        </>
-                                      }
-                                    </td>
-                                  </tr>
-                                ))}
+                                        </td>
+                                        <td className=" sm:table-cell">
+                                          {data["team_member_user"]["created_at"]}
+                                        </td>
+                                        <td className=" sm:table-cell text-blue-500">
+
+                                          {PROFILE_DATA.email == data["team_member_user"]["email"]
+                                            ?
+                                            null
+                                            :
+                                            <>
+                                              {ChosenWorkspaceId["admin_or_not"] == true
+                                                ?
+                                                <>
+                                                  <button
+                                                    onClick={() => {
+                                                      const formData = {}
+                                                      formData["id"] = data.id
+                                                      remove_user(formData)
+                                                    }}>
+                                                    Remove
+                                                  </button>
+                                                </>
+                                                :
+                                                null
+                                              }
+                                            </>
+                                          }
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                  :
+                                  <>
+                                    {pending_invitation.map((data, index) => {
+                                      return (
+                                        <tr key={index}>
+                                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                                            <div className="flex items-center">
+                                              <div className="h-10 w-10 flex-shrink-0">
+                                                <img
+                                                  className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
+                                                  src="/default.png"
+                                                />
+                                              </div>
+                                              <div className="ml-4 truncate">
+                                                <div className="truncate font-medium leading-5 text-gray-900">
+                                                </div>
+                                                <div className="truncate text-sm leading-5 text-gray-500" >
+                                                  {data["email"]}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </td>
+
+                                          <td className="hidden sm:table-cell">
+                                            {data["created_at"]}
+                                          </td>
+
+                                          <td className="hidden sm:table-cell text-blue-500">
+                                            {ChosenWorkspaceId["admin_or_not"] == true
+                                              ?
+                                              <>
+                                                <button
+                                                  onClick={() => {
+                                                    remove_invitation_member(data.id)
+                                                  }}>
+                                                  Remove
+                                                </button>
+                                              </>
+                                              :
+                                              null
+                                            }
+
+                                          </td>
+                                        </tr>
+                                      )
+                                    })}
+                                  </>
+
+                                }
                               </>
                               :
                               <>
-                                {pending_invitation.map((data, index) => {
+                                {workspacelist.map((data, index) => {
                                   return (
                                     <tr key={index}>
                                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
@@ -793,91 +839,41 @@ const Team = () => {
                                           <div className="h-10 w-10 flex-shrink-0">
                                             <img
                                               className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
-                                              src="/default.png"
+                                              src="http://localhost:3000/default.png"
                                             />
                                           </div>
                                           <div className="ml-4 truncate">
                                             <div className="truncate font-medium leading-5 text-gray-900">
+                                              {data["team_member_user"]["first_name"]}
                                             </div>
                                             <div className="truncate text-sm leading-5 text-gray-500" >
-                                              {data["email"]}
+                                              {data["team_member_user"]["email"]}
                                             </div>
                                           </div>
                                         </div>
                                       </td>
-
                                       <td className="hidden sm:table-cell">
-                                        {data["created_at"]}
-                                      </td>
-
-                                      <td className="hidden sm:table-cell text-blue-500">
-                                        {ChosenWorkspaceId["admin_or_not"] == true
+                                        {data.admin_or_not
                                           ?
-                                          <>
-                                            <button
-                                              onClick={() => {
-                                                remove_invitation_member(data.id)
-                                              }}>
-                                              Remove
-                                            </button>
-                                          </>
+                                          "Admin"
                                           :
-                                          null
+                                          "Member"
                                         }
-
+                                      </td>
+                                      <td className="hidden sm:table-cell">
+                                        {data["team_member_user"]["created_at"]}
+                                      </td>
+                                      <td className="hidden sm:table-cell text-blue-500">
                                       </td>
                                     </tr>
                                   )
                                 })}
                               </>
-
                             }
                           </>
-                          :
-                          <>
-                            {workspacelist.map((data, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                                    <div className="flex items-center">
-                                      <div className="h-10 w-10 flex-shrink-0">
-                                        <img
-                                          className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
-                                          src="http://localhost:3000/default.png"
-                                        />
-                                      </div>
-                                      <div className="ml-4 truncate">
-                                        <div className="truncate font-medium leading-5 text-gray-900">
-                                          {data["team_member_user"]["first_name"]}
-                                        </div>
-                                        <div className="truncate text-sm leading-5 text-gray-500" >
-                                          {data["team_member_user"]["email"]}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td className="hidden sm:table-cell">
-                                    {data.admin_or_not
-                                      ?
-                                      "Admin"
-                                      :
-                                      "Member"
-                                    }
-                                  </td>
-                                  <td className="hidden sm:table-cell">
-                                    {data["team_member_user"]["created_at"]}
-                                  </td>
-                                  <td className="hidden sm:table-cell text-blue-500">
-                                  </td>
-                                </tr>
-                              )
-                            })}
-                          </>
                         }
-                      </>
-                    }
-                  </tbody>
-                </table>
+                      </tbody>
+                    </table>
 
 
               </div>

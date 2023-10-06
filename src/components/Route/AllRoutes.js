@@ -144,6 +144,10 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             />
 
             {/* <Route path="/Template" element={<Template AUTH_TOKEN={TOKEN}/>} /> */}
+            <Route
+              path="/templates"
+              element={<Template AUTH_TOKEN={TOKEN} />}
+            />
 
             <Route path="template" AUTH_TOKEN={TOKEN}>
               <Route index element={<Template AUTH_TOKEN={TOKEN} />} />

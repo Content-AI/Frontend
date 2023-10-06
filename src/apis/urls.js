@@ -97,6 +97,7 @@ export const BACK_END_API_SINGLE_TEMPLATE = "/v1/template/project_template/";
 export const BACK_END_API_CATEGORIES = "/v1/template/categories";
 
 export const BACK_END_API_DOCUMENTS = "/v1/documents_data/document";
+export const BACK_END_API_DELETE_PERMANENTLY_DOCUMENTS = "/v1/documents_data/doc_trash_delete/";
 export const BACK_END_API_DOCUMENTS_PATCH =
   "/v1/documents_data/doc_patch/encode";
 

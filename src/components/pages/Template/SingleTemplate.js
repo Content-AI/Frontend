@@ -143,7 +143,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     if (resp.status === 200) {
       setTemplateData(resp.data);
     } else {
-      navigate("/template");
+      navigate("/templates");
     }
   };
 
@@ -161,16 +161,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }
   }, []);
 
-  // useEffect(()=>{
-  //     console.log(TemplateData)
-  // },[TemplateData])
-
 
 
   const handleClick = async (id_of_template) => {
-    // console.log(TemplateData[0]["title"])
-    // console.log(inputs)
-    // return true
     const divElement = document.getElementById(id_of_template);
     const inputElements = divElement.getElementsByTagName("input");
     const textareaElements = divElement.getElementsByTagName("textarea");
@@ -285,7 +278,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         if (TemplateData[0]["template_fields"].length > 0) {
           // console.log("good")
         } else {
-          navigate("/template");
+          navigate("/templates");
         }
       }
     }
@@ -420,18 +413,22 @@ useEffect(()=>{
   return (
     <>
       <div className="relative lg:-m-6">
-        <button
-          onClick={() => {
-            navigate("/template");
-          }}
-          className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
-        >
-          <IoMdArrowBack />
-        </button>
+
         {TemplateData && (
           <>
-            <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)]">
+            <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)] bg-white">
+
+
+
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
+                    <button
+                        onClick={() => {
+                          navigate("/templates");
+                        }}
+                        className="z-20 top-7 left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                      >
+                        <IoMdArrowBack />
+                      </button>
                 <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
                     <img

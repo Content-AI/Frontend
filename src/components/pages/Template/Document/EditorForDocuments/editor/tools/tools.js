@@ -35,7 +35,7 @@ export const EDITOR_JS_TOOLS = {
   warning: Warning,
   code: Code,
   linkTool: LinkTool,
-  image: Image,
+  // image: Image,
   raw: Raw,
   // header: Header,
   quote: Quote,
@@ -52,29 +52,29 @@ export const EDITOR_JS_TOOLS = {
     },
     render: ({ data }) => <CustomHeader data={data} />, // Render using your custom component
   },
-  image: {
-    class: Image,
-    config: {
-      uploader: {
-        uploadByFile: async (file) => {
-          const formData = new FormData();
-          formData.append('image', file);
+  // image: {
+  //   class: Image,
+  //   config: {
+  //     uploader: {
+  //       uploadByFile: async (file) => {
+  //         const formData = new FormData();
+  //         formData.append('image', file);
 
-          try {
-            const response = await fetch('http://localhost:8000/v1/template/upload-image/', {
-              method: 'POST',
-              body: formData,
-            });
+  //         try {
+  //           const response = await fetch('http://localhost:8000/v1/template/upload-image/', {
+  //             method: 'POST',
+  //             body: formData,
+  //           });
 
-            const data = await response.json();
-            return { success: 1, file: { url: "http://localhost:8000" + data.image } };
-          } catch (error) {
-            console.error('Image upload failed:', error);
-            return { success: 0, file: { url: '' } };
-          }
-        },
-      },
-    },
-  },
+  //           const data = await response.json();
+  //           return { success: 1, file: { url: "http://localhost:8000" + data.image } };
+  //         } catch (error) {
+  //           console.error('Image upload failed:', error);
+  //           return { success: 0, file: { url: '' } };
+  //         }
+  //       },
+  //     },
+  //   },
+  // },
   // simpleImage: SimpleImage
 };

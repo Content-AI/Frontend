@@ -74,7 +74,7 @@ const Settings = () => {
 
   return (
     <>
-            <div className="fixed inset-0 flex z-50">
+            <div className="fixed inset-0 flex z-50 ">
             {/* Sidebar (visible on large screens) */}
 
             <div className="hidden lg:flex w-64 bg-gray-100">
@@ -119,6 +119,7 @@ const Settings = () => {
 
                 
                 </div>
+
             </div>
 
             {/* Sidebar (popup on medium/small screens) */}
@@ -133,32 +134,54 @@ const Settings = () => {
                 className="lg:hidden w-64 bg-gray-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0"
             >
                 <div className="h-[100vh]">
-                <div className="flex flex-col py-4 bg-gray-200 h-[100vh]">
+                
+                <div className="flex flex-col py-4 bg-gray-200 h-[100vh] w-[100vh]">
                 
                 {/* Sidebar content */}
                 <div className='bg-gray-200'>
-                <button onClick={()=>{
-                    navigate("/")
-                }} className=" text-black font-bold py-2 px-4 rounded"
-                title="Go back">
-                    <IoMdArrowBack/>
-                </button>
+               
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Show the toggle button on medium/small screens */}
+                   
+                    <button onClick={()=>{
+                        navigate("/")
+                    }} 
+                    className=" text-black font-bold py-2 px-4 rounded lg:hidden"
+                    title="Go back">
+                        <IoMdArrowBack size={24}
+                        color="black"/>
+                    </button>
+
+                    <button
+                    className="text-gray-400 hover:text-white lg:hidden"
+                    onClick={toggleNavbar}
+                    >
+                     <FaTimes
+                        size={24}
+                        color="black"
+                        onClick={() => {
+                        }}
+                      />
+                    </button>
+                </div>
+                
                 </div>
 
                 <div className="flex flex-col ml-6">
-                    <div className="mt-[2vh] ">
+                    <div className="mt-[2vh]">
                         <div className='flex flex-col mr-4'>
                             <p className="font-bold text-[#414357] text-[15px] mt-1  font-sans">Workspace settings</p>
                         </div>
                         {work_space.map((data, index) => {
                         return (
                             <button
-                        // to={`/settings/${lowercaseFrontText(data)}`}
                         className={`block w-full py-1 text-sm mt-3 mb-3 px-1 text-left rounded-lg text-gray-600 transition-all duration-150 hover:text-black hover:bg-gray-100 ${
                             activeLink === data ? 'text-black font-bold' : 'text-black font-medium'
                         }`}
                         onClick={() => {
                             setActiveLink(data)
+                            setIsOpen(false)
                             setCurrentPath(lowercaseFrontText(data))
                             navigate("/settings/general?page="+lowercaseFrontText(data))
                         }}
@@ -178,24 +201,24 @@ const Settings = () => {
             </Transition>
 
             {/* Content */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col">
                 {/* Top Navbar */}
                 <header className="bg-slate-100 py-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Show the toggle button on medium/small screens */}
+                    <button onClick={()=>{
+                        navigate("/")
+                    }} 
+                    className=" text-black font-bold py-2 px-4 rounded lg:hidden"
+                    title="Go back">
+                        <IoMdArrowBack size={24}
+                        color="black"/>
+                    </button>
+
                     <button
                     className="text-gray-400 hover:text-white lg:hidden"
                     onClick={toggleNavbar}
                     >
-                    {isOpen
-                    ?
-                     <FaTimes
-                        size={24}
-                        color="black"
-                        onClick={() => {
-                        }}
-                      />
-                    :
                     
                      <FaBars
                         color="black"
@@ -203,26 +226,31 @@ const Settings = () => {
                         onClick={() => {
                         }}
                       />
-                    }
                     </button>
                 </div>
                 </header>
 
                 {/* Main content */}
-                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
-                    {currentPath === 'general' ? <Profile /> : null}
-                    {currentPath === 'usage' ? <Usage /> : null}
-                    {currentPath === 'integrations' ? <Integrations /> : null}
-                    {currentPath === 'team' ? <Team /> : null}
-                    {currentPath === 'billing' ? <Billing /> : null}
-                    {currentPath === 'general' ||
-                    currentPath === 'usage' ||
-                    currentPath === 'integrations' ||
-                    currentPath === 'team' ||
-                    currentPath === 'billing'
-                        ? null
-                        : <div>Page not found</div>}
+                {isOpen
+                ?
+                    null
+                :
+                    <main className=" bg-white relative overflow-scroll">
+                        {currentPath === 'general' ? <Profile /> : null}
+                        {currentPath === 'usage' ? <Usage /> : null}
+                        {currentPath === 'integrations' ? <Integrations /> : null}
+                        {currentPath === 'team' ? <Team /> : null}
+                        {currentPath === 'billing' ? <Billing /> : null}
+                        {currentPath === 'general' ||
+                        currentPath === 'usage' ||
+                        currentPath === 'integrations' ||
+                        currentPath === 'team' ||
+                        currentPath === 'billing'
+                            ? null
+                            : <div>Page not found</div>}
                     </main>
+                }
+               
 
             </div>
             </div>

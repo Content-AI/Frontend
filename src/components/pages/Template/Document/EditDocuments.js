@@ -199,7 +199,7 @@ export default function EditDocuments() {
         dispatch(_pre_len_text_((resp.data?.document_content).length))
         dispatch(_now_len_text_((resp.data?.document_content).length))
       } else {
-        navigate("/template")
+        navigate("/templates")
       }
     } catch (e) {
       // notifyerror("something went wrong refresh page")
@@ -540,6 +540,7 @@ export default function EditDocuments() {
     const [ListofUser, setListofUser] = useState(null);
 
     const [email, setEmail] = useState('');
+    const [send_loading, setsend_loading] = useState(false);
     const [emails, setEmails] = useState([]);
     const [sendinginvitation,setsendinginvitation] = useState(false);
     const [error, setError] = useState('');
@@ -617,6 +618,7 @@ export default function EditDocuments() {
   // ======send invitation==============
   const send_invitation = async() =>{
     setsendinginvitation(true)
+    setsend_loading(true)
     const formData={
         document_id:document_id,
         email:emails
@@ -625,9 +627,11 @@ export default function EditDocuments() {
     if(resp.status==200){
       setEmails([])
       setEmail('')
+      setsend_loading(false)
       notifysucces("Users Invited")
       setsendinginvitation(false)
     }else{
+      setsend_loading(false)
       notifyerror("User is not member of workspace")
       setsendinginvitation(false)
     }
@@ -840,7 +844,7 @@ export default function EditDocuments() {
                   <div className="-mx-3">
                     <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
                       onClick={() => {
-                        navigate("/template")
+                        navigate("/templates")
                       }}
                     >
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -1016,17 +1020,27 @@ export default function EditDocuments() {
                                       {emails.length>0
                                       ?
                                       <>
-                                      
+                                      {send_loading
+                                      ?
                                       <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                        onClick={()=>{
-                                          send_invitation()
-                                        }}>
-                                          Send invite
-                                        </button>
+                                          onClick={()=>{
+                                          }}>
+                                            Sending ...
+                                          </button>
+                                      :
+                                        <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                          onClick={()=>{
+                                            send_invitation()
+                                          }}>
+                                            Send invite
+                                          </button>
+
+                                      }
                                         </>
                                       :
                                         <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                        disabled>
+                                          disabled
+                                        >
                                           Send invite
                                         </button>
                                     }
@@ -1417,8 +1431,9 @@ export default function EditDocuments() {
                                       ?
                                         <>
                                           {/* =============Template inner value==================== */}
-                                          <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
-                                          <div id={document_id} className="mt-4 mb-7">
+                                          <div className="grow mt-2 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                                          {/* <div className="grow xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto"> */}
+                                          <div id={document_id} className="mt-2 mb-7">
                                           {TemplateData &&
                                             TemplateData[0]['template_fields'].map((data, index) => {
                                               const textLength = fieldValues[index]?.value?.length || 0;

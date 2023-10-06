@@ -14,7 +14,7 @@ const LiveChat = () => {
 
   const loadChatWidget = () => {
     console.log(PROFILE_DATA?.email)
-    // setIsLoading(true);
+    setIsLoading(true);
 
     // Load the HubSpot chat widget
     const script = document.createElement("script");
@@ -28,6 +28,9 @@ const LiveChat = () => {
       setShowChat(true);
     };
   };
+
+  
+
 
   return (
     <div className="pt-6">

@@ -242,12 +242,13 @@ function calculateBackgroundColor(total) {
                         <strong> Free Plan</strong> 
                         </p>
                     </div>
+
                     <div className="flex w-full flex-col sm:col-span-6 md:w-120">
                         <div className="flex flex-row ">
                         <strong className="font-medium text-black">
                         Words Generated
                         </strong>
-                        <strong className="font-medium text-black ml-[400px]">
+                        <strong className="font-medium text-black sm:ml-[400px] ml-[120px]">
                         {SubscriptionsData &&
                           <>
                             {SubscriptionsData.user.status=="trial"
@@ -303,7 +304,7 @@ function calculateBackgroundColor(total) {
                     ?
                         <button type="button" 
                         disabled
-                          className="w-[150px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-gray-400">
+                          className="w-[150px] mt-2 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-gray-400">
                         <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                           <div className="w-4 h-4 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
                         </span></button>
@@ -311,13 +312,15 @@ function calculateBackgroundColor(total) {
                       <button type="button" 
                         onClick={()=>{
                           edit_detials()
-                          }} className="w-[150px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700 md:w-auto">
+                          }} 
+                          className="transition-all mt-2 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
+                          >
                               <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                               Edit payment details
                               </span>
                             </button>
                         }
-                          <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
+                          <button type="button" className="mt-2 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
                           onClick={()=>{
                             navigate("/settings/subscription_plan")
                           }}>
@@ -328,6 +331,8 @@ function calculateBackgroundColor(total) {
                         </div>
                       </div>
                     </div>
+
+                    
                   </div>
                   {/* ============================= */}
                 </div>

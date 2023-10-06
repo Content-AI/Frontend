@@ -18,7 +18,7 @@ code {
 }
 
 /* Hide the default scrollbar */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0.4rem;
   background-color: #f5f5f5;
 }
@@ -26,12 +26,12 @@ code {
 ::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 0.2rem;
-}
+} */
 
 /* Style the custom scrollbar when hovering */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
-}
+} */
 
 .kep-login-facebook.metro {
   width: 200px !important;

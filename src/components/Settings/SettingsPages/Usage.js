@@ -6,6 +6,7 @@ import { BACKEND_URL,BACK_END_API_TOKEN_GENERATED,BACK_END_API_TEAM_TEMPLATE_USE
 
 import TooltipInfo from '../../Icons/TooltipInfo';
 import CustomeGraph from './Graph/CustomeGraph';
+import './Usage.css'
 
 import {fetchData} from "../../../apis/apiService"
 
@@ -109,18 +110,14 @@ const Usage = (props) => {
 
   return (
     <>
-      {/* <Settings /> */}
       {chartData &&
-        <div className='ml-[50px] mr-[50px] sm:ml-[100px] mt-10'>
 
-
-          <div className="max-w-4xl">
-            <div className="justify-flex-start mb-4 flex items-center">
-              <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
-              {/* <div className="ml-4">
-            <div className="flex max-w-xl space-x-4 overflow-x-auto p-1" aria-label="Tabs"><button className="rounded-md bg-blue-100 px-3 py-1.5 text-sm font-normal text-blue-900" aria-current="page">All team</button><button className="rounded-md px-3 py-1.5 text-sm font-normal text-gray-500 hover:bg-gray-100">Individual</button></div>
-          </div> */}
-            </div>
+        <div className="ml-[50px] mr-[50px] sm:ml-[100px] mt-10 ">
+        {/* <div className="ml-[50px] mr-[50px] sm:ml-[100px] mt-10 scrollable-div"> */}
+        <div className="max-w-4xl">
+          <div className="justify-flex-start mb-4 flex items-center">
+            <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
+          </div>
 
             {/* ========select options for individual and teams=======+ */}
             <div className="relative flex  w-full ">
@@ -164,6 +161,8 @@ const Usage = (props) => {
             {/* ========select options for individual and teams=======+ */}
             <div className="mb-6">
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+
+
                 <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
                   <div className="flex items-center text-sm font-medium text-gray-500">
                     <div>Words generated</div>
@@ -175,24 +174,26 @@ const Usage = (props) => {
 
                     </div>
                   </div>
+
                   <div className="my-1 text-3xl font-semibold text-gray-900">
-                  {/* {list_token_generated_by_user.total} */}
-                  {userTotalToken && userTotalToken}
+                    {userTotalToken && userTotalToken}
                   </div>
+
                 </div>
+
+
                 <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
                   <div className="flex items-center  text-sm font-medium text-gray-500">
                     <div>Templates</div>
-                    <div>
-                      <TooltipInfo
-                        text="Template Used"
-                      />
+                      <div>
+                        <TooltipInfo
+                          text="Template Used"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="my-1 text-3xl font-semibold text-gray-900">
-                  {template_used && template_used}
-                    {/* {list_token_generated_by_user.count_template} */}
-                  </div>
+                    <div className="my-1 text-3xl font-semibold text-gray-900">
+                    {template_used && template_used}
+                    </div>
                 </div>
               </div>
             </div>
@@ -202,14 +203,14 @@ const Usage = (props) => {
 
             {/* =========chart============ */}
 
-            <div className='mt-[40px]'>
             {template_use_token_used_by_users &&
               <Table Data={template_use_token_used_by_users} total_data={list_token_generated_by_user}/>
             }
-        </div>
 
           </div>
         </div>
+
+
       }
 
     </>

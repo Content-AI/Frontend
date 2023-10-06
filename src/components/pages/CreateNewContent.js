@@ -303,6 +303,8 @@ const create_blank_document = async() => {
                                 className="p-4 border  rounded-lg text-left space-y-2 hover:scale-105 hover:ring-gray-600 transform transition-transform duration-300"
                             onClick={()=>{
                               create_blank_document()
+                              dispatch(_load_screen_(true))
+                              dispatch(_message_("Creating Blank Doc ..."))
                             }}>
                                 <span className="flex items-center space-x-3">
                                     <DocumentsIcon/>
@@ -315,7 +317,7 @@ const create_blank_document = async() => {
                               className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
 
                                 onClick={()=>{
-                                    navigate("/template")
+                                    navigate("/templates")
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
@@ -333,7 +335,8 @@ const create_blank_document = async() => {
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
-                                    <ReacapBuildericon/>
+                                    {/* <ReacapBuildericon/> */}
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png" />
                                     <span className="text-slate-700 text-base font-semibold">Recap Builder</span>
                                     {/* <Premium /> */}
                                 </span>
@@ -344,15 +347,11 @@ const create_blank_document = async() => {
                               className="p-4 border rounded-lg text-left  hover:ring-gray-600 space-y-2 hover:scale-105 transform transition-transform duration-300"
 
                                 onClick={()=>{
-                                  if(subscriptions_check.status=="trial"){
-                                    notifyerror("Upgrade Your Plan")
-                                    return;
-                                  }
                                     navigate("/transcribe-speech")
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
-                                    <ReacapBuildericon/>
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Transcribe+speech.png" />
                                     <span className="text-slate-700 text-base font-semibold">Transcribe speech.</span>
                                       <Premium/>
                                 </span>
@@ -368,7 +367,7 @@ const create_blank_document = async() => {
                                 }}
                             >
                                 <span className="flex items-center space-x-3">
-                                    <ReacapBuildericon/>
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/1_T3DPBTv.png" />
                                     <span className="text-slate-700 text-base font-semibold">One Shot Blog Post</span>
                                 </span>
                                 <span className="block">Get the key bullet points from a piece of content.</span>
@@ -383,7 +382,8 @@ const create_blank_document = async() => {
                             >
                             
                                 <span className="flex items-center space-x-3">
-                                    <ArtIcon/>
+                                    {/* <ArtIcon/> */}
+                                    <img className="w-8 h-8" alt="Transcribe speech" src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png" />
                                     <span className="text-slate-700 text-base font-semibold">Art</span>
                                     <Premium />
                                 </span>

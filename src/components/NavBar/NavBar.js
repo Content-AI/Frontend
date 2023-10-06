@@ -179,7 +179,7 @@ const Navbar = () => {
             <>
 
               <div className="z-20 fixed top-0 left-0 right-0 flex items-center justify-between px-6 sm:pl-64 bg-white border-b border-border">
-                <div className="lg:hidden">
+                <div className="sm:hidden">
                   {NAV_BAR_CONDITION ? (
                     <>
                       <FaTimes
@@ -204,7 +204,7 @@ const Navbar = () => {
                 </div>
 
                 {/* ==========the large navbar============= */}
-                <div className="lg:hidden pl-4">
+                <div className="sm:hidden pl-4">
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
                     className="w-[50px] h-[50px] rounded-full"
@@ -820,7 +820,7 @@ const Navbar = () => {
                                       }
                                     </>
                                   )}
-                                  <div className="bg-white mb-3 w-full">
+                                  <div className="bg-white mb-6    w-full">
                                     <Button
                                       sx={{ textTransform: "none" }}
                                       onClick={() => {

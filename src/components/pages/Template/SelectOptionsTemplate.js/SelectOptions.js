@@ -7,12 +7,12 @@ const SelectOptionsTemplate = (props) => {
   const [colorIt, setcolorIt] = useState("bg-black");
 
   const options = [
-    { text: "Done", color: "bg-green-800" },
-    { text: "Working", color: "bg-green-600" },
-    { text: "Publish", color: "bg-green-800" },
-    { text: "Draft", color: "bg-blue-400" },
-    { text: "Urgent", color: "bg-red-700" },
-    { text: "Pending", color: "bg-red-500" },
+    { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
+    { text: "Working", color: "text-green-700 border border-green-500 bg-green-300 " },
+    { text: "Publish", color: "text-green-700 border border-green-500 bg-green-300 " },
+    { text: "Draft", color: "text-blue-700 border border-blue-500 bg-blue-200 " },
+    { text: "Urgent", color: "text-red-700 border border-red-500 bg-red-200 " },
+    { text: "Pending", color: "text-red-700 border border-red-500 bg-red-200 " },
   ];
 
   const updateStatus = async (id, option, TOKEN) => {
@@ -50,7 +50,7 @@ const SelectOptionsTemplate = (props) => {
   return (
     <>
       <select
-        className={`${colorIt} text-white rounded-full text-[12px] w-[70px] h-[25px] font-bold  text-center appearance-none`}
+        className={`${colorIt} rounded-full text-[12px] w-[74px] h-[28px] font-bold  text-center appearance-none`}
         value={selectedOption}
         onChange={handleSelectChange}
       >
