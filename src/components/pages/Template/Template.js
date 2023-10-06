@@ -277,41 +277,42 @@ const Template = ({AUTH_TOKEN}) => {
                 {templateData.map((items, index) => {
                   return (
                     <div
-                      key={items.id}
-                      className="card flex p-6 border border-border rounded-xl cursor-pointer"
-                      onClick={() => {
-                        if (items.premium) {
-                          if (subscriptions_check.status === "trial") {
-                            notifyerror(
-                              "To use this Template you need to upgrade your plan"
-                            );
-                            return true;
+                        key={items.id}
+                        className="card flex p-6 border border-border rounded-xl cursor-pointer"
+                        onClick={() => {
+                          if (items.premium) {
+                            if (subscriptions_check.status === "trial") {
+                              notifyerror(
+                                "To use this Template you need to upgrade your plan"
+                              );
+                              return true;
+                            }
                           }
-                        }
-                        if (items.custome === "user") {
-                          navigate(`/template/${items.id}?custom=user`);
-                        } else {
-                          navigate(`/template/${items.id}?custom=normal_user`);
-                        }
-                      }}
-                    >
-                      <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
-                        <img src={items.icon} alt="" className="block w-full" />
-                      </div>
-                      <div className="content relative flex-auto pl-4">
-                        <div className="title flex items-center justify-between gap-2 mb-2">
-                          <h4 className="text-sm font-bold leading-none">
-                            {items.title}
-                          </h4>
-                          {items.premium && (
-                            <span className="text-xs text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
-                              Premium
-                            </span>
-                          )}
+                          if (items.custome === "user") {
+                            navigate(`/template/${items.id}?custom=user`);
+                          } else {
+                            navigate(`/template/${items.id}?custom=normal_user`);
+                          }
+                        }}
+                      >
+                        <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                          <img src={items.icon} alt="" className="block w-full" />
                         </div>
-                        <p className="text-sm leading-none">{items.description}</p>
+                        <div className="content relative flex-auto pl-4">
+                          <div className="title flex items-center justify-between gap-2 mb-2">
+                            <h4 className="text-sm font-bold leading-none">
+                              {items.title}
+                            </h4>
+                            {items.premium && (
+                              <span className="md:inline text-xs md:text-sm lg:text-base text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                                Premium
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm leading-none">{items.description}</p>
+                        </div>
                       </div>
-                    </div>
+
                   );
                 })
                 }

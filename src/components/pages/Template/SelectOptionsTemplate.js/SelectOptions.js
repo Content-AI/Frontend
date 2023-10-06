@@ -7,12 +7,19 @@ const SelectOptionsTemplate = (props) => {
   const [colorIt, setcolorIt] = useState("bg-black");
 
   const options = [
-    { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
-    { text: "Working", color: "text-green-700 border border-green-500 bg-green-300 " },
-    { text: "Publish", color: "text-green-700 border border-green-500 bg-green-300 " },
-    { text: "Draft", color: "text-blue-700 border border-blue-500 bg-blue-200 " },
-    { text: "Urgent", color: "text-red-700 border border-red-500 bg-red-200 " },
-    { text: "Pending", color: "text-red-700 border border-red-500 bg-red-200 " },
+    // { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
+    { text: "Completed", color: "text-green-800 border border-green-200 bg-[#9FE2BF] " },
+    // { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
+    { text: "Working", color: "text-black border border-blue-100 bg-blue-300 " },
+    // { text: "Working", color: "bg-blue-700 text-white border border-blue-900" },
+    { text: "Publish", color: "text-indigo-700 border border-indigo-100 bg-indigo-300 " },
+    // { text: "Publish", color: "bg-indigo-800 text-white border border-indigo-500 " },
+    { text: "Draft", color: "text-gray-700 border border-gray-400 bg-gray-200 " },
+    // { text: "Draft", color: "bg-gray-800 text-white  border border-gray-500" },
+    { text: "Urgent", color: "text-red-700 border border-red-500 bg-red-100 " },
+    // { text: "Urgent", color: "bg-red-800 text-white border border-red-500" },
+    { text: "Pending", color: "text-yellow-700 border border-yellow-500 bg-yellow-100 " },
+    // { text: "Pending", color: "bg-yellow-800 text-black border-yellow-500" },
   ];
 
   const updateStatus = async (id, option, TOKEN) => {
@@ -50,7 +57,7 @@ const SelectOptionsTemplate = (props) => {
   return (
     <>
       <select
-        className={`${colorIt} rounded-full text-[12px] w-[74px] h-[28px] font-bold  text-center appearance-none`}
+        className={`${colorIt} rounded-full text-[11px] w-[74px] h-[28px] font-semibold  text-center appearance-none`}
         value={selectedOption}
         onChange={handleSelectChange}
       >

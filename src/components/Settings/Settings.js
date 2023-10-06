@@ -18,8 +18,9 @@ import Billing from "./SettingsPages/Billing"
 import { useLocation } from "react-router-dom";
 
 
-const Settings = () => {
-   const navigate = useNavigate();
+const Settings = (props) => {
+
+  const navigate = useNavigate();
   const work_space = ['General', 'Billing', 'Team', 'Usage', 'Integrations'];
   const personal_settings = ['Profile'];
 
@@ -236,11 +237,11 @@ const Settings = () => {
                     null
                 :
                     <main className=" bg-white relative overflow-scroll">
-                        {currentPath === 'general' ? <Profile /> : null}
-                        {currentPath === 'usage' ? <Usage /> : null}
-                        {currentPath === 'integrations' ? <Integrations /> : null}
-                        {currentPath === 'team' ? <Team /> : null}
-                        {currentPath === 'billing' ? <Billing /> : null}
+                        {currentPath === 'general' ? <Profile  AUTH_TOKEN={props.AUTH_TOKEN} /> : null}
+                        {currentPath === 'usage' ? <Usage AUTH_TOKEN={props.AUTH_TOKEN}/> : null}
+                        {currentPath === 'integrations' ? <Integrations AUTH_TOKEN={props.AUTH_TOKEN}/> : null}
+                        {currentPath === 'team' ? <Team AUTH_TOKEN={props.AUTH_TOKEN}/> : null}
+                        {currentPath === 'billing' ? <Billing AUTH_TOKEN={props.AUTH_TOKEN}/> : null}
                         {currentPath === 'general' ||
                         currentPath === 'usage' ||
                         currentPath === 'integrations' ||

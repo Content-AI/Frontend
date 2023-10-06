@@ -1431,9 +1431,9 @@ export default function EditDocuments() {
                                       ?
                                         <>
                                           {/* =============Template inner value==================== */}
-                                          <div className="grow mt-2 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
-                                          {/* <div className="grow xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto"> */}
-                                          <div id={document_id} className="mt-2 mb-7">
+                                          <div className="grow mt-2 xl:p-1 xl:pb-28 flex-1 xl:overflow-y-auto">
+                                          
+                                          <div id={document_id} className=" mb-7">
                                           {TemplateData &&
                                             TemplateData[0]['template_fields'].map((data, index) => {
                                               const textLength = fieldValues[index]?.value?.length || 0;

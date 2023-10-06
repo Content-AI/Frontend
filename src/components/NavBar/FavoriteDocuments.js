@@ -61,13 +61,14 @@ const FavoriteDocuments = ({TOKEN}) => {
 
   return (
     <div className="overflow-y-auto max-h-[120px]">
+    
       <div className="grid grid-cols-1">
       {favoriteDocuments &&
         <>
             {favoriteDocuments.map((document) => (
             <div
                 key={document.id}
-                className="p-2 m-1 hover:bg-slate-300 hover:rounded-md flex items-center justify-between  group relative"
+                className="p-[6px] m-[2px] hover:bg-slate-200 hover:rounded-md flex items-center justify-between  group relative"
             >
 
                 <div className="text-sm cursor-pointer"
@@ -87,6 +88,7 @@ const FavoriteDocuments = ({TOKEN}) => {
         </>
       }
       </div>
+
     </div>
   );
 };

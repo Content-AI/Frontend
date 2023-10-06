@@ -64,6 +64,13 @@ import TooltipInfo from "../../../components/Icons/TooltipInfo";
 import IconChat from "../../Icons/IconChat";
 import ChatIconNine from "../../Icons/ChatIconNine";
 import ChatIconFifth from "../../Icons/ChatIconFifth";
+import ChatIconSix from "../../Icons/ChatIconSix";
+import ChatIconEle from "../../Icons/ChatIconEle";
+import ChatIconTw from "../../Icons/ChatIconTw";
+import ChatIconM from "../../Icons/ChatIconM";
+import ChatIconN from "../../Icons/ChatIconN";
+import ChatIconP from "../../Icons/ChatIconP";
+import ChatIconR from "../../Icons/ChatIconR";
 
 
 
@@ -1501,9 +1508,14 @@ const Chat = ({ AUTH_TOKEN }) => {
                   {/* ====================================================== */}
                 </div>
                 
+                {/* <div
+                  ref={popRef}
+                  className="chatbox relative flex flex-col w-full py-2 px-4 @lg:py-4 max-w-xl m-auto"
+                > */}
+                
                 <div
                   ref={popRef}
-                  className="chatbox relative flex flex-col w-full py-2 px-4 @lg:py-4 max-w-7xl m-auto"
+                  className="chatbox relative flex flex-col w-full  @lg:py-4 max-w-7xl m-auto"
                 >
 
                 {check_to_stop_typing
@@ -1519,171 +1531,126 @@ const Chat = ({ AUTH_TOKEN }) => {
                   null
                 }
 
-                  <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
-                    <button
-                      className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
-                      onClick={handleClickOpen}
-                    >
-                      <svg
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 text-grey-600 group-hover:text-grey-700"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M13 13V5.74264C13 5.47742 12.8946 5.22307 12.7071 5.03553L9.96447 2.29289C9.77693 2.10536 9.52258 2 9.25736 2H4C3.44772 2 3 2.44772 3 3V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13ZM4 0C2.34315 0 1 1.34315 1 3V13C1 14.6569 2.34315 16 4 16H12C13.6569 16 15 14.6569 15 13V5.74264C15 4.94699 14.6839 4.18393 14.1213 3.62132L11.3787 0.87868C10.8161 0.316071 10.053 0 9.25736 0H4ZM5 10C5 9.44771 5.44772 9 6 9H9C9.55228 9 10 9.44771 10 10C10 10.5523 9.55228 11 9 11H6C5.44772 11 5 10.5523 5 10ZM6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7H8C8.55229 7 9 6.55228 9 6C9 5.44772 8.55229 5 8 5H6Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                      <p  className="text-[15px] font-semibold" >Browse prompts</p>
-                    </button>
-                    <button
-                      className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
-                      onClick={handlePopoverOpen}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M3.28,8.68c-.3,.46-.47,1-.47,1.59,0,1.63,1.34,2.95,2.99,2.95s2.92-1.25,2.99-2.83"
-                          fill="none"
-                          stroke="#1C64F2"
-                          strokeWidth={1}
-                        />
-                        <path
-                          d="M12.61,11.58L2.53,8.45C.39,7.79,.39,4.75,2.53,4.09L12.61,.96c.22-.07,.45-.12,.67-.05,2.39,.79,2.39,9.92,0,10.72-.22,.07-.45,.02-.67-.05Z"
-                          fill="none"
-                          stroke="#1C64F2"
-                          strokeWidth={1}
-                          strokeLinejoin="round"
-                        />
-                      </svg>
 
-                      <p  className="text-[15px] font-semibold" >Browse voice</p>
+                  <div className="flex w-full ">
 
-                    </button>
-                    {/* ==================Tone to show=================== */}
-                    {show_summarize_tone ? (
-                      <>
-                        {selectedSummarizes.map((data, index) => {
-                          return (
+                    <div className="w-full mr-[40px]">
+                        <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
+                          <button
+                            className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
+                            onClick={handleClickOpen}
+                          >
+                            <ChatIconP/>
+                            <p  className="text-[15px] font-semibold" >Browse prompts</p>
+                          </button>
+                          <button
+                            className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
+                            onClick={handlePopoverOpen}
+                          >
+                            <ChatIconR/>
+
+                            <p  className="text-[15px] font-semibold" >Browse voice</p>
+
+                          </button>
+                          
+                          {/* ==================Tone to show=================== */}
+                          {show_summarize_tone ? (
                             <>
-                              <div
-                                key={index}
-                                className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center"
-                              >
-                                <div className="mr-2 w-3 h-3 flex items-center justify-center">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    data-name="Layer 1"
-                                    viewBox="0 0 100 125"
-                                    x="0px"
-                                    y="0px"
-                                  >
-                                    <path d="M12.54,71a33.93,33.93,0,0,0,6.29,3.3L17.18,92a2.5,2.5,0,0,0,2.26,2.72h.24a2.5,2.5,0,0,0,2.49-2.27L23.7,75.88c1.11.28,2.23.54,3.4.74a55.44,55.44,0,0,0,9.46.83q2.31,0,4.57-.21a9.78,9.78,0,0,0,8.61-12,10.6,10.6,0,0,1,.56-2.92L50.79,61a4.5,4.5,0,0,0-.26-3.56,4.41,4.41,0,0,0-2.72-2.21c-3.85-1.06-6.24-3.06-6.93-5.77A36.38,36.38,0,0,0,52.72,49a2.5,2.5,0,0,0,1.92-2.32L55,39.58a14.33,14.33,0,0,0,6-3.23,6.58,6.58,0,0,0,1.43-7.72,8,8,0,0,0-3.06-3.11,15,15,0,0,1-6.91-13.24,40.5,40.5,0,0,0,0-4.67,2.5,2.5,0,0,0-5,.34,35.3,35.3,0,0,1,0,4.1A19.91,19.91,0,0,0,56.59,29.7a4.25,4.25,0,0,1,1.31,1.11,1.61,1.61,0,0,1-.34,1.88A10.56,10.56,0,0,1,52.1,35.1,2.5,2.5,0,0,0,50,37.46l-.31,7a32.38,32.38,0,0,1-8.49,0,4.79,4.79,0,0,0-5.32,5.74c.56,2.67,2.6,7.42,10,9.67l-.3.86a13.87,13.87,0,0,0-.79,5.3,2.61,2.61,0,0,0,.06.31,4.79,4.79,0,0,1-.72,4,4.74,4.74,0,0,1-3.45,2A48.51,48.51,0,0,1,28,71.69a32.42,32.42,0,0,1-12.63-4.84A17,17,0,0,1,9.56,61a2.5,2.5,0,0,0-4.42,2.33A21.87,21.87,0,0,0,12.54,71Z" />
-                                    <path d="M60.38,61.69a2.5,2.5,0,1,0,2.68,4.22,12.4,12.4,0,0,0,4.22-16.36,2.5,2.5,0,1,0-4.39,2.4A7.39,7.39,0,0,1,60.38,61.69Z" />
-                                    <path d="M70.83,76a2.49,2.49,0,0,0,1.56-.55A25.64,25.64,0,0,0,80,45.73a2.5,2.5,0,0,0-4.62,1.91,20.62,20.62,0,0,1-6.16,23.88A2.5,2.5,0,0,0,70.83,76Z" />
-                                    <path d="M89.42,40.31A2.5,2.5,0,0,0,88,43.54a33.73,33.73,0,0,1-9.71,37.63A2.5,2.5,0,1,0,81.49,85,38.74,38.74,0,0,0,92.64,41.76,2.5,2.5,0,0,0,89.42,40.31Z" />
-                                  </svg>
-                                </div>
-                                <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
-                                  {data.label}
-                                </div>
-                                <div
-                                  className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
-                                  onClick={() => handleDeleteClick(data.label)}
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path
-                                      d="M14.87,14.87L1.13,1.13"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth="1"
-                                      strokeLinecap="round"
-                                    ></path>
-                                    <path
-                                      d="M1.13,14.87L14.87,1.13"
-                                      fill="none"
-                                      stroke="#0D121C"
-                                      strokeWidth="1"
-                                      strokeLinecap="round"
-                                    ></path>
-                                  </svg>
-                                </div>
-                              </div>
+                              {selectedSummarizes.map((data, index) => {
+                                return (
+                                  <>
+                                    <div
+                                      key={index}
+                                      className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center"
+                                    >
+                                      <div className="mr-2 w-3 h-3 flex items-center justify-center">
+                                        <ChatIconN/>
+                                      </div>
+                                      <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
+                                        {data.label}
+                                      </div>
+                                      <div
+                                        className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
+                                        onClick={() => handleDeleteClick(data.label)}
+                                      >
+                                        <ChatIconM/>
+                                      </div>
+                                    </div>
+                                  </>
+                                );
+                              })}
                             </>
-                          );
-                        })}
-                      </>
-                    ) : null}
-                    {/* ==================Tone to show=================== */}
+                          ) : null}
+                          {/* ==================Tone to show=================== */}
+                        </div>
+
+                      <div className="inputbox relative chat-message" ref={latestMessageRef}>
+
+                        <textarea
+                            className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-auto min-h-14"
+                            type="text"
+                            rows="1"
+                            placeholder="Ask or Search anything"
+                            value={ChatText || chatFill}
+                            onChange={(e) => {
+                              setChatText(e.target.value);
+                              adjustTextareaHeight(e.target);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                submitChatText();
+                              }
+                            }}
+                        />
+                      
+                        {check_to_stop_typing
+                        ?
+                            <button
+                                className="absolute bottom-6 right-3 w-6 h-6"
+                              onClick={handleStopTyping}>
+                                <ChatStopIcon/>
+                            </button>
+                        :
+                          <>
+                            <button
+                              className="absolute bottom-6 right-3 w-6 h-6"
+                              onClick={() => {
+                                submitChatText();
+                                setChatFill("");
+                              }}
+                            >
+                              {Loading ? (
+                                  <ChatLoading/>
+                              ) : (
+                                  <ChatIconForChat/>
+                              )}
+                            </button>
+                          </>
+                        }
+                      </div>
+
+                    </div>
+
+                    <div className="absolute bottom-7 right-[-9px] w-6 h-6 mr-[20px]">
+                        <button
+                          onClick={listening ? stopListening : startListening}
+                          className="p-2 bg-slate-200 rounded-full"
+                        >
+                            {
+                                listening 
+                                ?
+                                  <BsFillMicMuteFill width={30} height={30}/>
+                                :
+                                  <BsFillMicFill width={30} height={30}/>
+                            }
+                        </button>
+                    </div>
+
                   </div>
 
-                  <div className="inputbox relative chat-message" ref={latestMessageRef}>
-                    <textarea
-                      className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-auto min-h-14"
-                      type="text"
-                      rows="1"
-                      placeholder="Ask or Search anything"
-                      value={ChatText || chatFill}
-                      onChange={(e) => {
-                        setChatText(e.target.value);
-                        adjustTextareaHeight(e.target);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          submitChatText();
-                        }
-                      }}
-                    />
-                   
-                    {check_to_stop_typing
-                    ?
-                        <button
-                          className="absolute bottom-6 right-3 w-6 h-6"
-                         onClick={handleStopTyping}>
-                          <ChatStopIcon/>
-                         </button>
-                    :
-                      <>
-                      <button
-                        className="absolute bottom-6 right-3 w-6 h-6"
-                        onClick={() => {
-                          submitChatText();
-                          setChatFill("");
-                        }}
-                      >
-                        {Loading ? (
-                            <ChatLoading/>
-                        ) : (
-                            <ChatIconForChat/>
-                        )}
-                      </button>
-                      </>
-                    }
-                  </div>
-                      <div className="absolute bottom-7 right-[-9px] w-6 h-6">
-                      <button
-                        onClick={listening ? stopListening : startListening}
-                      >
-                          {
-                              listening 
-                              ?
-                                <BsFillMicMuteFill width={30} height={30}/>
-                              :
-                                <BsFillMicFill width={30} height={30}/>
-                          }
-                      </button>
-                      </div>
                 </div>
+
+
               </div>
             </div>
           </div>
@@ -1725,28 +1692,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                 </label>
                 <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                   <div className="flex items-center grow gap-2 py-1.5">
-                    <svg
-                      className="w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z"
-                        fill="none"
-                        stroke="#4B5563"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M15.11,15.11l-4-4"
-                        fill="none"
-                        stroke="#4B5563"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ChatIconSix/>
                     <div className="flex gap-1 grow">
                       <input
                         id="search-chat-threads"
@@ -1841,32 +1787,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   onClick={() => handleEditClick(index)}
                                 >
                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <svg
-                                      className="w-4 h-4"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                    >
-                                      <path
-                                        d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                        fill="transparent"
-                                      />
-                                      <path
-                                        d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
+                                   <ChatIconEle/>
                                   </span>
                                 </button>
                                 <button
@@ -1886,51 +1807,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   }}
                                 >
                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                    <svg
-                                      className="w-4 h-4"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 16 16"
-                                    >
-                                      <path
-                                        d="M.86,4.28H15.14"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                      />
-                                      <path
-                                        d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M6.29,7.34v4.73"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M9.71,7.34v4.73"
-                                        fill="none"
-                                        stroke="#0D121C"
-                                        strokeWidth={1}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
+                                   <ChatIconTw/>
                                   </span>
                                 </button>
                               </>
@@ -2545,13 +2422,7 @@ const Chat = ({ AUTH_TOKEN }) => {
         </label>
         <div className="py-1 md:!mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
           <div className="flex items-center grow gap-2 py-1.5">
-            <svg
-              className="w-4 h-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-            >
               <ChatIconFifth/>
-            </svg>
             <div className="flex gap-1 grow">
               <input
                 id="search"

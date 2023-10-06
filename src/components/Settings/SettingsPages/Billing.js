@@ -47,6 +47,7 @@ const Billing = (props) => {
       // setshowInvoice(false)
     }
   const edit_detials = async() =>{
+
     setshowBillsData(true)
     const resp = await fetchData(BACKEND_URL+BACK_END_API_INVOICE_PORTAL,props.AUTH_TOKEN)
     if(resp.status==200){

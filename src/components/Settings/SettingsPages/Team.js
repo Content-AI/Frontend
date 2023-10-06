@@ -839,7 +839,7 @@ const Team = () => {
                                           <div className="h-10 w-10 flex-shrink-0">
                                             <img
                                               className='flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white bg-slate-400'
-                                              src="http://localhost:3000/default.png"
+                                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                                             />
                                           </div>
                                           <div className="ml-4 truncate">

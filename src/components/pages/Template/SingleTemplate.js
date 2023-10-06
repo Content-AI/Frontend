@@ -421,16 +421,21 @@ useEffect(()=>{
 
 
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
+
+                 
+
+                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                  <div className="w-10 h-10">
+
                     <button
                         onClick={() => {
                           navigate("/templates");
                         }}
-                        className="z-20 top-7 left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                        className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
                       >
                         <IoMdArrowBack />
                       </button>
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
-                  <div className="w-10 h-10">
+
                     <img
                       className="w-full h-full object-contain"
                       src={TemplateData[0].icon}

@@ -376,7 +376,7 @@ const Projects = (props) => {
 
                             <div className="flex flex-1 pl-2">
                               <div className="grid content-center w-full">
-                                <span className="flex-grow block text-sm text-gray-500 whitespace-nowrap">
+                                <span className="flex-grow block text-[12px] font-bold text-gray-500 whitespace-nowrap">
                                   Created on {data.created_at}
                                 </span>
                               </div>

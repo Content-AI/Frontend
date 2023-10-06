@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { current } from "@reduxjs/toolkit";
 
 export default function Editor({ data, setData }) {
+
   const [isActive, setIsActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState("");
@@ -72,26 +73,6 @@ export default function Editor({ data, setData }) {
     }
   };
 
-  // document.addEventListener("keydown", function (event) {
-  //   console.log("key stat", isActive + " activeIndex", activeIndex);
-  //   if (isActive && activeIndex) {
-  //     if (event.key === "Enter") {
-  //       event.preventDefault();
-
-  //       console.log("PRESSED ENTER KEY");
-
-  //       const currentBlock =
-  //           document.getElementsByClassName("ce-block")[activeIndex],
-  //         holder = currentBlock.getElementsByClassName("ce-paragraph")[0];
-
-  //       setCurrentQuestion(holder.innerHTML);
-  //       currentBlock.classList.add("loading");
-  //       holder.innerHTML = "...";
-  //       holder.focus();
-  //     }
-  //   }
-  // });
-
   const ReactEditorJS = createReactEditorJS();
 
   const handleInitialize = useCallback((instance) => {
@@ -110,7 +91,7 @@ export default function Editor({ data, setData }) {
       const savedData = await editorCore.current.save();
       const targetBlock = document.getElementsByClassName("ce-block");
 
-      console.log("savedData", savedData);
+      // console.log("targetBlock ",targetBlock)
 
       if (!activeIndex) {
         savedData.blocks.forEach((item, index) => {
@@ -138,9 +119,10 @@ export default function Editor({ data, setData }) {
 
   useEffect(() => {
     if (activeIndex) {
-      const targetBlock =
-          document.getElementsByClassName("ce-block")[activeIndex],
-        holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+
+      const targetBlock = document.getElementsByClassName("ce-block")[activeIndex]
+      const holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+
 
       targetBlock.classList.add("active");
       holder.innerHTML = "";
@@ -177,6 +159,7 @@ export default function Editor({ data, setData }) {
     };
   }, [isActive]);
 
+
   useEffect(() => {
     if (currentQuestion) {
       const targetBlock =
@@ -187,11 +170,18 @@ export default function Editor({ data, setData }) {
     }
   }, [currentQuestion]);
 
+
+
+
   useEffect(() => {
     if (currentAnswer) {
+
+      
+      
       const targetBlock =
-          document.getElementsByClassName("ce-block")[activeIndex],
-        holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+      document.getElementsByClassName("ce-block")[activeIndex],
+      holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
+      
 
       targetBlock.classList.remove("active");
       targetBlock.classList.remove("loading");
@@ -203,6 +193,11 @@ export default function Editor({ data, setData }) {
       setIsActive(false);
     }
   }, [currentAnswer]);
+
+
+  useEffect(()=>{
+    console.log("data ",data)
+  },[data])
 
   return (
     <div className="editor-container">

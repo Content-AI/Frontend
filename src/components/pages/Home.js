@@ -342,7 +342,7 @@ useEffect(()=>{
 
 
         <div className="flex flex-col cursor-pointer hover:bg-slate-100" title="Chat Now">
-          <div className="h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
+          <div className="sm:h-[300px] grid grid-cols-2 gap-6 w-full bg-gray-light border border-border p-6 rounded-lg overflow-hidden">
             <div className="flex flex-col gap-y-4">
               <div className="titlewrap flex gap-x-3">
                 <svg
@@ -360,7 +360,7 @@ useEffect(()=>{
                 </svg>
                 <h4 className="text-md font-bold">Chat</h4>
               </div>
-              <p className="text-sm min-h-[62px]">
+              <p className="sm:text-sm sm:min-h-[62px] text-[10px]">
                 Generate ideas, images, and content by chatting directly with
                 Jasper.
               </p>
