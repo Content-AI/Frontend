@@ -48,7 +48,7 @@ import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import TextTypingAnimation from "./TextTypingAnimation";
+import TypingAnimation from './TypingAnimation'
 
 import ChatLoading from '../../Icons/ChatLoading'
 import ChatIconForChat from '../../Icons/ChatIconForChat'
@@ -1048,6 +1048,18 @@ const Chat = ({ AUTH_TOKEN }) => {
 
 
 
+  const [isFinishedTyping, setIsFinishedTyping] = useState(false);
+
+  const handleFinishTyping = (finished) => {
+    setIsFinishedTyping(finished);
+    if(isFinishedTyping==false){
+      setShowStopBtn(false)
+      setLoading(false)
+      setIsTypingFinished(true);
+      setcheck_to_stop_typing(false)
+      setIsFinishedTyping(false)
+    }
+  };
 
 
   return (
@@ -1063,21 +1075,24 @@ const Chat = ({ AUTH_TOKEN }) => {
             
           {/* <div className="scale-0 lg:scale-100 sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2"> */}
           <div className=" sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
-            <div className="flex-1 text-xl font-semibold">
-              <div>                  
-
-                <input
-                    className="w-full truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                    type="text"
-                    placeholder="Title of Room"
-                    data-testid="EditableChatTitle"
-                    value={TitleOfChat}
-                    onChange={TitleChage}
-                    onKeyPress={TitleInputKeyPressed}
-                    onBlur={mousemovedawayfrominput}
-                  />
-              </div>
+            
+          <div className="h-[25px] flex-1 text-xl font-semibold relative">
+            {/* <span className="absolute top-0 mb-3 text-[10px] font-bold">Title of Room</span> */}
+            <div className="">
+              <input
+                className="w-full mb-4 text-[20px] truncate bg-transparent outline-none focus:ring pointer-events-auto"
+                type="text"
+                placeholder="Title of Room"
+                data-testid="EditableChatTitle"
+                value={TitleOfChat}
+                onChange={TitleChage}
+                onKeyPress={TitleInputKeyPressed}
+                onBlur={mousemovedawayfrominput}
+              />
             </div>
+          </div>
+
+
             <button
               type="button"
               className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
@@ -1177,6 +1192,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                               const data_ = renderHTMLDataForChatting(
                                 CurrentAnswer[length_of_obj - 1]["content"]
                               );
+                              
                               return CurrentAnswer.map((data, index) => (
                                 <div
                                   className="flex flex-col mb-3 mt-4"
@@ -1215,24 +1231,24 @@ const Chat = ({ AUTH_TOKEN }) => {
                                     >
                                       {CurrentAnswer.length == length_of_obj ? (
                                         <>
-                                        {/* <TextTypingAnimation 
-                                          data={data_}
-                                        /> */}
-                                          <Typed
+                                        {isFinishedTyping
+                                            ?
+                                              <RenderHtmlData
+                                                htmldata={data["content"]}
+                                              />
+                                            :
+                                              <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
+                                          }
+                                          {/* <Typed
                                             typedRef={(typed) => {setTypedComp(typed)}}
                                             strings={[data_]}
-                                            typeSpeed={10}
+                                            typeSpeed={1}
                                             showCursor={true}
                                             onComplete={handleTypingDone}
-                                          />
+                                          /> */}
                                         </>
                                       ) : (
                                         <>
-                                        {/* <ReactMarkdown
-                                          children={data["content"]}
-                                          remarkPlugins={[remarkMath,remarkGfm]}
-                                          rehypePlugins={[rehypeKatex]}
-                                        /> */}
                                         <RenderHtmlData
                                           htmldata={data["content"]}
                                         />
@@ -1264,11 +1280,6 @@ const Chat = ({ AUTH_TOKEN }) => {
                               </div>
                               <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
                                 <RenderHtmlData htmldata={CurrentQuestion} />
-                                {/* <ReactMarkdown
-                                      children={CurrentQuestion}
-                                      remarkPlugins={[remarkMath,remarkGfm]}
-                                      rehypePlugins={[rehypeKatex]}
-                                    /> */}
                               </div>
                             </div>
 
@@ -1307,6 +1318,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 const data_ = renderHTMLDataForChatting(
                                   CurrentAnswerIni[length_of_obj - 1]["content"]
                                 );
+                                
+
                                 return CurrentAnswerIni.map((data, index) => (
                                   <div
                                     className="flex flex-col mb-3 mt-4"
@@ -1325,11 +1338,6 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         <RenderHtmlData
                                           htmldata={data["question"]}
                                         />
-                                         {/* <ReactMarkdown
-                                          children={data["question"]}
-                                          remarkPlugins={[remarkMath,remarkGfm]}
-                                          rehypePlugins={[rehypeKatex]}
-                                        /> */}
                                       </div>
                                     </div>
 
@@ -1349,16 +1357,22 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         {CurrentAnswerIni.length ==
                                         length_of_obj ? (
                                           <>
-                                          {/* <TextTypingAnimation 
-                                          data={data_}
-                                        /> */}
-                                            <Typed
+                                          {isFinishedTyping
+                                            ?
+                                              <RenderHtmlData
+                                                htmldata={data["content"]}
+                                              />
+                                            :
+                                              <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
+                                          }
+                                          {/* {isFinishedTyping && <p>Typing is finished!</p>} */}
+                                            {/* <Typed
                                               typedRef={(typed) => {setTypedComp(typed)}}
                                               strings={[data_]}
-                                              typeSpeed={10}
+                                              typeSpeed={1}
                                               showCursor={true}
                                               onComplete={handleTypingDone}
-                                            />
+                                            /> */}
                                           </>
                                         ) : (
                                           <>
@@ -1366,11 +1380,6 @@ const Chat = ({ AUTH_TOKEN }) => {
                                           <RenderHtmlData
                                             htmldata={data["content"]}
                                           />
-                                           {/* <ReactMarkdown
-                                          children={data["question"]}
-                                          remarkPlugins={[remarkMath,remarkGfm]}
-                                          rehypePlugins={[rehypeKatex]}
-                                        /> */}
                                           
                                           </>
                                         )}
@@ -1518,7 +1527,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                   className="chatbox relative flex flex-col w-full  @lg:py-4 max-w-7xl m-auto"
                 >
 
-                {check_to_stop_typing
+                {/* {check_to_stop_typing
                 ?
                   <button
                   className={clsx("stop-generator absolute -top-10 left-1/2 -translate-x-1/2 text-white bg-red-500 px-4 py-1 rounded-md transition-all",
@@ -1529,12 +1538,12 @@ const Chat = ({ AUTH_TOKEN }) => {
                   </button>
                 :
                   null
-                }
+                } */}
 
 
                   <div className="flex w-full ">
 
-                    <div className="w-full mr-[40px]">
+                    <div className="w-full mr-[60px]">
                         <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
                           <button
                             className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
@@ -1631,17 +1640,17 @@ const Chat = ({ AUTH_TOKEN }) => {
 
                     </div>
 
-                    <div className="absolute bottom-7 right-[-9px] w-6 h-6 mr-[20px]">
+                    <div className="absolute bottom-9 right-[-9px]  w-6 h-6 mr-[40px]">
                         <button
                           onClick={listening ? stopListening : startListening}
-                          className="p-2 bg-slate-200 rounded-full"
+                          className="p-3 h-[50px] w-[50px] bg-slate-200 rounded-full"
                         >
-                            {
+                                 {
                                 listening 
                                 ?
-                                  <BsFillMicMuteFill width={30} height={30}/>
+                                  <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
                                 :
-                                  <BsFillMicFill width={30} height={30}/>
+                                  <BsFillMicFill className="h-[23px] w-[23px]"/>
                             }
                         </button>
                     </div>

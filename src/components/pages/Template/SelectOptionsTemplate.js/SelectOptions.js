@@ -8,13 +8,14 @@ const SelectOptionsTemplate = (props) => {
 
   const options = [
     // { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
-    { text: "Completed", color: "text-green-800 border border-green-200 bg-[#9FE2BF] " },
+    // { text: "Completed", color: "text-green-800 border border-green-200 bg-purple-200"},
+    { text: "Completed", color: "text-green-800 border border-green-500  bg-[#9FE2BF] " },
     // { text: "Completed", color: "text-green-700 border border-green-500 bg-green-200 " },
-    { text: "Working", color: "text-black border border-blue-100 bg-blue-300 " },
+    { text: "Working", color: "text-black border border-blue-500 bg-blue-200 " },
     // { text: "Working", color: "bg-blue-700 text-white border border-blue-900" },
-    { text: "Publish", color: "text-indigo-700 border border-indigo-100 bg-indigo-300 " },
+    { text: "Publish", color: "text-indigo-700 border border-indigo-500 bg-indigo-100 " },
     // { text: "Publish", color: "bg-indigo-800 text-white border border-indigo-500 " },
-    { text: "Draft", color: "text-gray-700 border border-gray-400 bg-gray-200 " },
+    { text: "Draft", color: "text-gray-700 border border-gray-500 bg-gray-200 " },
     // { text: "Draft", color: "bg-gray-800 text-white  border border-gray-500" },
     { text: "Urgent", color: "text-red-700 border border-red-500 bg-red-100 " },
     // { text: "Urgent", color: "bg-red-800 text-white border border-red-500" },

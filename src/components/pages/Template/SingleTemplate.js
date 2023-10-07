@@ -11,6 +11,7 @@ import {
   BACK_END_API_GET_CUSTOM_TEMPLATE,
   BACK_END_API_EXAMPLE_VALUE,
 } from "../../../apis/urls";
+import { NavIcons, SealCheck } from "../../Icons";
 import { fetchData, postData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -98,6 +99,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
 
+
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
 
 
   const [renderKey, setRenderKey] = useState(0);
@@ -407,6 +412,7 @@ useEffect(()=>{
     get_example_value_api()  
   }
 },[])
+
 
 
 
@@ -724,15 +730,55 @@ useEffect(()=>{
                   ?
                       null
                   :
-                    <div className="flex justify-center">
-                      <button type="button"
-                        className="text-slate-500  font-semibold hover:text-slate-900"
-                      onClick={()=>{
-                        navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
-                      }}>
-                        Save this  template as custom
+                  <>
+                  {subscriptions_details &&
+                  <>
+                  {subscriptions_details.user.status=='trial'
+                  ?
+                    <div className="flex justify-center items-center">
+                      <button
+                        type="submit"
+                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
+                        id="generateBtn1"
+                        title="Upgrade plan to save custom template"
+                        onClick={()=>{
+                          navigate("/settings/subscription_plan")
+                        }}
+
+                      >
+                      <span className="flex space-x-2 select-none">
+                        <SealCheck classes="w-6 h-6 mr-2" />
+                            Upgrade to Pro
+                        </span>
                       </button>
                     </div>
+                  :
+                  <>
+                      <div className="flex justify-center">
+                        <button type="button"
+                          className="text-slate-500  font-semibold hover:text-slate-900"
+                        onClick={()=>{
+                          navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
+                        }}>
+                          Save this  template as custom
+                        </button>
+                        {subscriptions_details.user.plan=='premium'
+                        ?
+                          <div className="mt-2">
+                            <TooltipInfo text="Your plan can create 10 templates" />
+                          </div>
+                        :
+                          <div className="mt-2">
+                            <TooltipInfo text="Your plan can create 20 templates" />
+                          </div>
+                        }
+                      </div>
+                    </>
+
+                  }
+                  </>
+                  }
+                  </>
                   }
                 </div>
                  

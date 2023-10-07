@@ -68,16 +68,19 @@ const FavoriteDocuments = ({TOKEN}) => {
             {favoriteDocuments.map((document) => (
             <div
                 key={document.id}
-                className="p-[6px] m-[2px] hover:bg-slate-200 hover:rounded-md flex items-center justify-between  group relative"
+                // font-size: 12px;
+                // line-height: 0.25rem;
+                // padding: 4px;
+                className="p-[2px] ml-[2px] hover:bg-slate-200 hover:rounded-md flex items-center justify-between  group relative"
             >
 
-                <div className="text-sm cursor-pointer"
+                <div className="text-sm cursor-pointer pl-[3px]"
                 onClick={()=>{
                     navigate(`/template_data/${document.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                 }}>{document.title}</div>
                 <div className="flex items-center space-x-1 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
-                    className="text-red-500 hover:text-red-600 text-sm"
+                    className="text-red-500 hover:text-red-600 "
                     onClick={() => removeFromFavorites(document.id)}
                 >
                     <FaTimes size={16} />

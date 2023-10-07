@@ -211,17 +211,21 @@ const BuildcustomTemplate = (props) => {
         formData["key_feature"] = key_feature;
       }
     }
-    console.log(formData)
+    // console.log(formData)
     setloading(true)
     const resp = await postData(formData,BACKEND_URL+BACK_END_API_CUSTOM_TEMPLATE,props.AUTH_TOKEN)
     if(resp.status==201){
       try{
-        navigate(`/template/${resp.data.id}?custom=user`)
+        // navigate(`/template/${resp.data.id}?custom=user`)
       }catch(e){
         navigate(`/`)
       }
     }else{
-      notifyerror("something went wrong")
+      try{
+        notifyerror(resp.response.data.message)
+      }catch(e){
+        notifyerror("something went wrong")
+      }
     }
     setloading(false)
   };

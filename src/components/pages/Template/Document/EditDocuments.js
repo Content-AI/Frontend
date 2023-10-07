@@ -480,10 +480,19 @@ export default function EditDocuments() {
   }, []);
 
 
+  const title_change_every_word = async (title_text) => {
+      const formData = {
+        title: title_text
+      }
+      await patchData(formData, BACKEND_URL + BACK_END_API_DOCUMENTS + "/" + document_id + "/", TOKEN)
+    }
+
   const handleTitleChange = (event) => {
     const inputValue = event.target.value
     settitle(inputValue)
+    title_change_every_word(event.target.value)
   };
+
 
   const handleTitleApi = async (event) => {
     if (event.key === 'Enter') {
