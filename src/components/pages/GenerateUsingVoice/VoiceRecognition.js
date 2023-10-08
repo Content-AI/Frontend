@@ -4,6 +4,10 @@ import SpeechRecognition, {
   } from "react-speech-recognition";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
+import { BsFillMicFill } from 'react-icons/bs';
+import { BsFillMicMuteFill } from 'react-icons/bs';
+
 import {
   BACKEND_URL,
   BACK_END_API_HISTORY_AUDIO_VIDEO,
@@ -188,19 +192,20 @@ const get_summarize = async() =>{
   return (
     <>
       <div className="relative lg:-m-6">
-        <button
-          onClick={() => {
-            navigate("/create_new_content");
-          }}
-          className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
-        >
-          <IoMdArrowBack />
-        </button>
           <>
             <div className="flex flex-col lg:flex-row h-[100vh]">
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
                 <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
+                      <button
+                        onClick={() => {
+                          navigate("/create_new_content");
+                        }}
+                        // className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
+                        className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                      >
+                        <IoMdArrowBack />
+                      </button>
                     <img
                       className="w-full h-full object-contain rounded-full"
                       src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-01+at+10.40.56+AM.png"
@@ -231,7 +236,7 @@ const get_summarize = async() =>{
                         <div className="voice-recognition-container">
                             <div className="mt-4">
                                 <p className="text-sm font-bold ml-3">
-                                    Transcribe speech
+                                  Transcribe speech
                                 </p>
                             </div>
                             <div className="flex mt-4">
@@ -244,15 +249,12 @@ const get_summarize = async() =>{
                                     }
                                     
                                 >
-                                    <span role="img" className="ml-1 mr-1" aria-label="Microphone">
-                                    🎤
-                                    </span>
                                     {
                                         listening 
                                         ? 
-                                            "Stop" 
+                                          <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
                                         :
-                                            "Start"
+                                          <BsFillMicFill className="h-[23px] w-[23px]"/>
                                     }
                                 </button>
                                 {/* <button

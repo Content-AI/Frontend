@@ -14,10 +14,10 @@ const CardDoc = (props) => {
       title={"open " + props.title}
     >
       <div className="icon flex-none w-10 h-10 md:w-14 md:h-14 p-2 bg-blue-700/10 rounded-xl">
-        <img src={props.icon} alt="" className="block w-full" />
+        <img src='https://aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com/icons/1.png' alt="" className="block w-full" />
       </div>
       <div className="content relative flex-auto pl-2 md:pl-4">
-        <div className="title mb-2">
+        <div className="mb-2">
           <h4 className="text-sm md:text-base font-bold leading-none">
             {props.title}
           </h4>
@@ -26,8 +26,8 @@ const CardDoc = (props) => {
               Premium
             </span>
           )}
-        </div>
         <p className="text-xs md:text-sm">{props.description}</p>
+        </div>
       </div>
     </div>
   );

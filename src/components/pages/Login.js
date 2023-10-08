@@ -149,7 +149,8 @@ export default function Login() {
                 if(response.response.data.detail=="You do not have permission to perform this action."){
                     notifyerror("To Many attempts wait for Minutes")
                 }else{
-                    notifyerror("supply valid email")
+                    notifyerror(response.response.data.detail)
+                    // notifyerror("supply valid email")
                 }
             }
             

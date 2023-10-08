@@ -1,5 +1,5 @@
-const local = true
-// const local=false
+// const local = true
+const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -42,6 +42,8 @@ if (local == true) {
 export const FRONT_END_URL_PARAM = `${FRONT_END_URL_LINKEDIN}${LINKEDIN_PARAM}`
 
 export const AWS_FRONT_END_IMAGES = "https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/"
+
+export const AWS_FRONT_END_ICONS = "https://aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com/"
 
 export const BACK_API_LOGIN_URL =
   "/v1/accounts/accounts_data/login_using_token/";
@@ -252,3 +254,12 @@ export const BACK_END_API_HISTORY_URL = "/v1/template/history_url";
 export const BACK_END_API_HISTORY_AUDIO_VIDEO = "/v1/template/history_audio_video";
 
 export const BACK_END_API_HISTORY_TRANSCRIBE = "/v1/template/history_transcribe";
+
+
+export const BACK_END_API_BUSINESS_PLAN = "/v1/business_plan/contact_sales";
+
+
+export const BACK_END_API_TICKETS_CREATION = "/v1/accounts/create-tickets/";
+
+export const BACK_END_API_ISSUES_LIST_TICKETS = "/v1/accounts/create-tickets/";
+export const BACK_END_API_WHY_PLAN = "/v1/accounts/why-subscribe/?why_subs=";

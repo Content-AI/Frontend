@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { BACKEND_URL,BACK_END_API_TEMPLATE ,BACK_END_API_CATEGORIES, BACK_END_API_CUSTOM_TEMPLATE} from "../../../apis/urls";
+import { BACKEND_URL,BACK_END_API_TEMPLATE ,AWS_FRONT_END_ICONS,BACK_END_API_CATEGORIES, BACK_END_API_CUSTOM_TEMPLATE} from "../../../apis/urls";
 import { fetchData } from "../../../apis/apiService";
 import LoadingPage from "../../LoadingPage";
 import { useNavigate } from "react-router-dom";
@@ -132,7 +132,81 @@ const Template = ({AUTH_TOKEN}) => {
   },[search_parameter])
 
 
-  // ============select category=============
+  // ============select Multiple category=============
+  // const [categoryTmp, setCategoryTmp] = useState(["All"]);
+  // const [selectedCategories, setSelectedCategories] = useState("All");
+
+  // const capitalizeFrontText = (text) => {
+  //   return text.charAt(0).toUpperCase() + text.slice(1);
+  // };
+
+  // const handleCategoryClick = (selectedCategory) => {
+  //   console.log("selectedCategory",selectedCategory)  
+  //   if(selectedCategory=="custom" || selectedCategory=="Custom"){
+  //     setCategoryTmp(["Custom","custom"]);
+  //     get_custome_template()
+  //     return;
+  //   }
+  //   if (selectedCategory === "all") {
+  //     if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
+  //       // If only "All" is selected, deselect it
+  //       setCategoryTmp([]);
+  //     } else {
+  //       // If other categories are selected, select only "All"
+  //       setCategoryTmp(["all"]);
+  //     }
+  //   } else {
+  //     if (categoryTmp.includes("all")) {
+  //       // If "All" is selected, deselect it and select the clicked category
+  //       setCategoryTmp([selectedCategory]);
+  //     } else {
+  //       // Toggle the selection of the clicked category
+  //       // setCategoryTmp([selectedCategory])
+  //       setCategoryTmp((prevCategoryTmp) =>
+  //         prevCategoryTmp.includes(selectedCategory)
+  //           ? prevCategoryTmp.filter((item) => item !== selectedCategory)
+  //           : [...prevCategoryTmp, selectedCategory]
+  //       );
+  //     }
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //   if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
+  //     setSelectedCategories("All");
+  //   }else{
+  //     setSelectedCategories(
+  //       categoryTmp
+  //       .filter((category) => category !== "all")
+  //       .map(capitalizeFrontText)
+  //       .join(",")
+  //       );
+  //     }
+  // }, [categoryTmp]);
+
+  // const get_template_categories_new = async(url,token,category) =>{
+  //   const response_data = await fetchData(url+"?category="+category,token)
+  //   if(response_data.status==200){
+  //     settemplateData(response_data.data)
+  //   }else{
+  //     navigate("/logout")
+  //   }
+  // }
+
+
+  // useEffect(()=>{
+  //   if(selectedCategories!=null){
+  //     if(categoryTmp!="custom"){
+  //       get_template_categories_new(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,selectedCategories)
+  //     }
+  //   }
+  // },[selectedCategories])
+  // ============select Multiple category=============
+  
+  
+  
+  // ============select Single category=============
   const [categoryTmp, setCategoryTmp] = useState(["All"]);
   const [selectedCategories, setSelectedCategories] = useState("All");
 
@@ -141,11 +215,11 @@ const Template = ({AUTH_TOKEN}) => {
   };
 
   const handleCategoryClick = (selectedCategory) => {
-    console.log("selectedCategory",selectedCategory)
+    // console.log("selectedCategory",selectedCategory)  
     if(selectedCategory=="custom" || selectedCategory=="Custom"){
-      setCategoryTmp(["Custom","custom"]);
+      setCategoryTmp(["Custom"]);
       get_custome_template()
-      return true
+      return;
     }
     if (selectedCategory === "all") {
       if (categoryTmp.length === 1 && categoryTmp.includes("all")) {
@@ -161,11 +235,7 @@ const Template = ({AUTH_TOKEN}) => {
         setCategoryTmp([selectedCategory]);
       } else {
         // Toggle the selection of the clicked category
-        setCategoryTmp((prevCategoryTmp) =>
-          prevCategoryTmp.includes(selectedCategory)
-            ? prevCategoryTmp.filter((item) => item !== selectedCategory)
-            : [...prevCategoryTmp, selectedCategory]
-        );
+        setCategoryTmp([selectedCategory])
       }
     }
   };
@@ -196,13 +266,14 @@ const Template = ({AUTH_TOKEN}) => {
 
   useEffect(()=>{
     if(selectedCategories!=null){
-      if(categoryTmp!="custom"){
+      if(categoryTmp!="Custom"){
         get_template_categories_new(BACKEND_URL+BACK_END_API_TEMPLATE,AUTH_TOKEN,selectedCategories)
       }
     }
   },[selectedCategories])
-
-
+  // ============select Single category=============
+  
+  
 
   // =============get the custom template===========
   const get_custome_template = async() =>{
@@ -240,6 +311,9 @@ const Template = ({AUTH_TOKEN}) => {
         {category
         ?
         <>
+
+
+        {/* this is for multiple select */}
         {category.slice()
         .sort((a, b) => a.localeCompare(b)) // Sort the categories in ascending order
         .map((item, index) => (
@@ -261,6 +335,32 @@ const Template = ({AUTH_TOKEN}) => {
                 </button>
           </>
         ))}
+        {/* this is for multiple select */}
+
+
+        {/* this is for single select */}
+        {/* {category.slice()
+          .sort((a, b) => a.localeCompare(b))
+          .map((item, index) => (
+            <button
+              key={index}
+              className={clsx(
+                "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
+                {
+                  "active text-white bg-blue border-blue": selectedCategories === item,
+                  "hover:bg-blue/10": selectedCategories !== item,
+                }
+              )}
+              onClick={() => {
+                handleCategoryClick(item);
+              }}
+            >
+              {capitalizeFrontText(item)}
+            </button>
+          ))} */}
+          {/* this is for single select */}
+
+
             </>
           :
             <LoadingPage/>
@@ -276,43 +376,59 @@ const Template = ({AUTH_TOKEN}) => {
                 <>
                 {templateData.map((items, index) => {
                   return (
-                    <div
-                        key={items.id}
-                        className="card flex p-6 border border-border rounded-xl cursor-pointer"
-                        onClick={() => {
-                          if (items.premium) {
-                            if (subscriptions_check.status === "trial") {
-                              notifyerror(
-                                "To use this Template you need to upgrade your plan"
-                              );
-                              return true;
-                            }
-                          }
-                          if (items.custome === "user") {
-                            navigate(`/template/${items.id}?custom=user`);
-                          } else {
-                            navigate(`/template/${items.id}?custom=normal_user`);
-                          }
-                        }}
-                      >
-                        <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
-                          <img src={items.icon} alt="" className="block w-full" />
-                        </div>
-                        <div className="content relative flex-auto pl-4">
-                          <div className="title flex items-center justify-between gap-2 mb-2">
-                            <h4 className="text-sm font-bold leading-none">
-                              {items.title}
-                            </h4>
-                            {items.premium && (
-                              <span className="md:inline text-xs md:text-sm lg:text-base text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
-                                Premium
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-sm leading-none">{items.description}</p>
-                        </div>
-                      </div>
+                    <div className="flex">
+                      <div className="flex flex-col rounded-lg border border-border cursor-pointer hover:bg-slate-100" 
+                              onClick={() => {
+                                if (items.premium) {
+                                    if (subscriptions_check.status === "trial") {
+                                      notifyerror(
+                                        "To use this Template you need to upgrade your plan"
+                                      );
+                                      return true;
+                                    }
+                                  }
+                                  if (items.custome === "user") {
+                                    navigate(`/template/${items.id}?custom=user`);
+                                  } else {
+                                    navigate(`/template/${items.id}?custom=normal_user`);
+                                  }
+                              }}
+                              >
+                                        
+                            <div className="bg-gray-light p-6 rounded-lg">
 
+                              <div className="flex">
+                              <div>
+                                <div className="flex">
+                                  <div>
+                                    <img 
+                                      src="https://aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com/icons/1.png" alt={items.title} 
+                                      className="w-5 h-5" />
+                                  </div>
+                                  <div>
+                                    <p className="text-md font-bold ml-3">{items.title}</p>
+                                  </div>
+                                  {items.premium && (
+                                    <span className="ml-4 w-[75px] h-[30px] text-xs md:text-sm text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                                      Premium
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div 
+                                    title={items.description}
+                                  >
+                                    <p className="text-sm min-h-[50px] mt-8">
+                                      {(items.description).slice(0,300)+".."}
+                                    </p>
+                                </div>
+
+                          </div>
+                          </div>
+
+                          </div>
+                        </div>
+                    </div>
                   );
                 })
                 }

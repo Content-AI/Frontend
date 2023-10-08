@@ -58,6 +58,14 @@ export const HitUrl = async (url) => {
     return err
   }
 };
+export const fetchDataEx = async (url) => {
+  try{
+    const res = await axios.get(url)
+    return res
+  }catch(err){
+    return err
+  }
+};
 
 export const deleteData = async (url,ACCESS_TOKEN) => {
 

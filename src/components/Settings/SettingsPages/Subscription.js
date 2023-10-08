@@ -5,8 +5,8 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useNavigate } from 'react-router-dom';
-import { fetchData, postData } from '../../../apis/apiService';
-import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_CHARGE,BACK_END_API_SUBCRIPTION_DIRECT,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK,BACK_END_API_SUBSCRIBE_USER } from '../../../apis/urls';
+import { fetchData, fetchDataEx, postData } from '../../../apis/apiService';
+import { BACK_END_API_PROFILE,BACK_END_API_SUBCRIPTION_CHARGE,BACK_END_API_WHY_PLAN,BACK_END_API_SUBCRIPTION_DIRECT,BACKEND_URL,BACK_END_API_SUBSCRIBE_CHECK,BACK_END_API_SUBSCRIBE_USER } from '../../../apis/urls';
 import LoadingPage from '../../LoadingPage';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLocation } from "react-router-dom";
@@ -203,9 +203,50 @@ const Subscription = (props) => {
         },
       });
 
-    const monthly_plan=["Jasper Chat","50+ AI templates","Browser extension","Support for 30+ languages","Email support"]
-    const annually_plan=["Up to 5 users","Automated workflows","Google Docs style editor","Compose & command features","Live chat users"]
-    const enterprise_plan=["Collaborate with more than 5 users","Tailored AI Brand Voice","API access","Personalized onboarding & training","Dedicated accounnt manager"]
+    
+    // const monthly_plan=["Jasper Chat",
+    // "50+ AI templates",
+    // "Browser extension",
+    // "Support for 30+ languages","Email support"
+    // ]
+    //     const annually_plan=["Up to 5 users",
+    //     "Automated workflows",
+    //     "Google Docs style editor",
+    //     "Compose & command features",
+    //     "Live chat users"
+    // ]
+    //     const enterprise_plan=["Collaborate with more than 5 users",
+    //     "Tailored AI Brand Voice",
+    //     "API access",
+    //     "Personalized onboarding & training"
+    //     ,"Dedicated accounnt manager"
+    // ]
+
+    const [enterprise_plan,setenterprise_plan]=useState(['Collaborate with more than 5 users'])
+    const [annually_plan,setannually_plan]=useState(['50+ AI templates'])
+    const [monthly_plan,setmonthly_plan]=useState(['50+ AI templates'])
+
+
+    const get_why_plans_data = async()=>{
+        const resp_enterprise = await fetchDataEx(BACKEND_URL+BACK_END_API_WHY_PLAN+"enterprise")
+        const resp_yearly = await fetchDataEx(BACKEND_URL+BACK_END_API_WHY_PLAN+"yearly")
+        const resp_monthly = await fetchDataEx(BACKEND_URL+BACK_END_API_WHY_PLAN+"monthly")
+        if(resp_enterprise.status==200){
+            setenterprise_plan(resp_enterprise.data)
+        }
+        if(resp_yearly.status==200){
+            setannually_plan(resp_yearly.data)
+        }
+        if(resp_monthly.status==200){
+            setmonthly_plan(resp_monthly.data)
+        }
+        
+    }
+
+
+    useEffect(()=>{
+        get_why_plans_data()
+    },[])
 
 
       const request_subcription = async() =>{
@@ -779,8 +820,10 @@ const Subscription = (props) => {
                                         <div className="col-span-4 text-right">
                                         <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                                         onClick={()=>{
-                                            notifysucces("comming soon")
-                                        }}><span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                            // notifysucces("comming soon")
+                                            navigate("/company_registration_form?process=contact_sales_person_email")
+                                        }}>
+                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
                                         
                                         Contact Sales
                                         </span></button></div>

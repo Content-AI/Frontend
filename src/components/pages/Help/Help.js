@@ -4,7 +4,9 @@ import LiveChat from './LiveChat';
 import TicketForm from './TicketForm'; 
 import Guide from './Guide';
 
-const Help = () => {
+const Help = (props) => {
+
+
   return (
     <div className=" min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       {/* ================================== */}
@@ -13,8 +15,8 @@ const Help = () => {
         <p className="mt-3 text-xl text-gray-500 max-w-prose">Our platform will provide you with the best help and support.</p>
         <div className="mt-12">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              <LiveChat/>
-              <TicketForm/>
+              <LiveChat AUTH_TOKEN={props.AUTH_TOKEN}/>
+              <TicketForm AUTH_TOKEN={props.AUTH_TOKEN}/>
             </div>
         </div>
       </div>

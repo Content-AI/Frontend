@@ -856,7 +856,7 @@ const Projects = (props) => {
                       <div className="flex flex-col items-center justify-center align-middle">
                         <button
                           tabIndex="0"
-                          className="bg-[#334977] text-white focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring- my-4 h-10 w-40 justify-center"
+                          className="bg-[#334977] text-white focus:outline-none flex select-none items-center rounded py-3 text-[15px] font-medium ring-offset-2 focus:ring- my-4 h-10 w-40 justify-center"
                           onClick={() => {
                             create_folder();
                           }}

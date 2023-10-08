@@ -473,7 +473,8 @@ const ListOfDocument = (props) => {
         ?
         <LoadingPage />
         :
-        <div className="space-y-8 px-4 md:px-10 " ref={popupRef}>
+        <div className="space-y-8 px-4 md:px-10  w-full" ref={popupRef}>
+        
           {props.SHOW == "trash"
             ?
             <>
@@ -673,7 +674,10 @@ const ListOfDocument = (props) => {
                   :
                     null
                   }
-                  <div className="w-full rounded-lg outline outline-1 outline-gray-200 overflow-scroll">
+
+                  
+                  <div className="w-full rounded-lg outline outline-1 outline-gray-200">
+
                     <table className="w-full">
 
                       <thead className="">
@@ -687,12 +691,6 @@ const ListOfDocument = (props) => {
                               class="mr-[15px] mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             />
                           </th>
-                          {/* <th scope="col" class="p-2 m-3">
-                          <input 
-                            checked={selectAll}
-                            onChange={handleSelectAll}
-                            type="checkbox" id="" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"/>
-                        </th> */}
                           <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
                           <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"></th>
                           <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
@@ -1167,6 +1165,7 @@ const ListOfDocument = (props) => {
                       :
                       null}
                   </div>
+
                   </>
                   :
                   null
@@ -1414,27 +1413,28 @@ const ListOfDocument = (props) => {
 
             {showModalForDelete ? (
               <>
-              {/* <div className="fixed inset-0 z-10 overflow-y-auto custom-backdrop-blur bg-opacity-50"> */}
-              <div className="fixed inset-0 z-10 overflow-y-auto  ">
-                  <div
-                    className="fixed inset-0 w-full h-full"
-                    onClick={() => setshowModalForDelete(false)}
-                  ></div>
-                  <div className="flex items-center min-h-screen px-4 py-8">
-                    <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-2xl">
-                      <div className="mt-3 sm:flex flex items-center justify-center">
-                        {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
-                                       
-                                    </div> */}
-                        <div className=" flex items-center justify-center flex-col mt-2 text-center sm:ml-4 sm:text-left">
-                          <div>
-                            <DangerIcon/>
-                          </div>
-                          <div>
-                            <h4 className="text-2xl font-medium text-red-500 m-3">
-                              Move to Trash !!
-                            </h4>
-                            <div className="items-center gap-2 mt-3 sm:flex">
+              <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
+                          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                            <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                              <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+
+                              <div className="flex">
+                                <div className="mt-5 ml-4 mr-5 ">
+                                  <DangerIcon/>  
+                                </div>
+                              <div>
+                                <h3 className="text-lg font-semibold">
+                                    Move to Trash !!
+                                </h3>
+                              </div>
+                              </div>
+                              </div>
+                              <div className="flex flex-col p-6">
+                                
+                                <div className="p-6 flex items-center gap-4 justify-end">
+
+
                               <button
                                 className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                                 onClick={() => {
@@ -1446,6 +1446,8 @@ const ListOfDocument = (props) => {
                               >
                                 Delete
                               </button>
+
+
                               <button
                                 className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                 onClick={() => {
@@ -1453,14 +1455,13 @@ const ListOfDocument = (props) => {
                                 }}
                               >
                                 Cancel
-                              </button>
+                              </button> 
+                              </div>
+
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </>
             ) : null}
 
@@ -1470,58 +1471,50 @@ const ListOfDocument = (props) => {
 
             {showModalForPermanentlyDelete ? (
               <>
-              {/* <div className="fixed inset-0 z-10 overflow-y-auto custom-backdrop-blur"> */}
-              <div className="fixed inset-0 z-10 overflow-y-auto">
-                  <div
-                    className="fixed inset-0 w-full h-full"
-                    onClick={() => {
-                      setshowModalForPermanentlyDelete(false)
-                      }}
-                  ></div>
-                  <div className="flex items-center min-h-screen px-4 py-8">
-                    <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-2xl">
-                      <div className="mt-3 sm:flex flex items-center justify-center">
-                        {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
-                                       
-                                    </div> */}
-                        <div className=" flex items-center justify-center flex-col mt-2 text-center sm:ml-4 sm:text-left">
-                          <div>
-                            <DangerIcon/>
-                          </div>
-                          <div>
-                            <h4 className="text-2xl font-medium text-red-500 m-3">
-                              Delete it permanently.
-                            </h4>
-                            <h4 className="text-2xl font-medium text-red-500 m-3">
-                                Once delete cannot be recover.
-                            </h4>
-                            <div className="items-center gap-2 mt-3 sm:flex">
-                              <button
-                                className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
-                                onClick={() => {
-                                  const formData = {
-                                      "id":DeleteFolderId
-                                  }
-                                  permanently_delete_multiple_data(formData,"Deleted")
-                                }}
-                              >
-                                Delete
-                              </button>
-                              <button
-                                className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
-                                onClick={() => {
-                                  setshowModalForPermanentlyDelete(false)
-                                }}
-                              >
-                                Cancel
-                              </button>
+              <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
+                          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                            <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                              <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+
+                              <div className="flex">
+                                <div className="mt-10 ml-4 mr-5 ">
+                                  <DangerIcon/>  
+                                </div>
+                              <div>
+                                <h3 className="text-2xl font-helv font-medium text-red-800">
+                                    Delete it permanently.Once delete cannot be recover.
+                                </h3>
+                              </div>
+                              </div>
+                              </div>
+                                
+                                <div className="p-6 flex items-center gap-4 justify-end">
+
+
+                                <button
+                                  className="w-full p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
+                                  onClick={() => {
+                                    const formData = {
+                                        "id":DeleteFolderId
+                                    }
+                                    permanently_delete_multiple_data(formData,"Deleted")
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                                <button
+                                  className="w-full  p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                  onClick={() => {
+                                    setshowModalForPermanentlyDelete(false)
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </>
             ) : null}
 
