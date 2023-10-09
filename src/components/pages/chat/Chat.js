@@ -1076,22 +1076,21 @@ const Chat = ({ AUTH_TOKEN }) => {
           {/* <div className="scale-0 lg:scale-100 sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2"> */}
           <div className=" sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
             
-          <div className="h-[25px] flex-1 text-xl font-semibold relative">
-            {/* <span className="absolute top-0 mb-3 text-[10px] font-bold">Title of Room</span> */}
-            <div className="">
-              <input
-                className="w-full mb-4 text-[20px] truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                type="text"
-                placeholder="Title of Room"
-                data-testid="EditableChatTitle"
-                value={TitleOfChat}
-                onChange={TitleChage}
-                onKeyPress={TitleInputKeyPressed}
-                onBlur={mousemovedawayfrominput}
-              />
+            <div className="h-[25px] flex-1 text-xl font-semibold">
+              <span className="absolute text-[10px] font-bold ">Title of Room</span>
+              <div className="">              
+                    <input
+                        className="w-full mb-4 text-[20px] truncate bg-transparent outline-none focus:ring pointer-events-auto"
+                        type="text"
+                        placeholder="Title of Room"
+                        data-testid="EditableChatTitle"
+                        value={TitleOfChat}
+                        onChange={TitleChage}
+                        onKeyPress={TitleInputKeyPressed}
+                        onBlur={mousemovedawayfrominput}
+                      />
+              </div>
             </div>
-          </div>
-
 
             <button
               type="button"
