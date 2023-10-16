@@ -71,6 +71,14 @@ import ChatIconM from "../../Icons/ChatIconM";
 import ChatIconN from "../../Icons/ChatIconN";
 import ChatIconP from "../../Icons/ChatIconP";
 import ChatIconR from "../../Icons/ChatIconR";
+import ChaticonII from "../../Icons/ChatIconII";
+import ChatArrow from "../../Icons/ChatArrow";
+import ChatIconRR from "../../Icons/ChatIconRR";
+import ChatIconEditFirst from "../../Icons/ChatIconEditFirst";
+
+import ChatIconDialogF from "../../Icons/ChatIconDialogF";
+import FirstUserQuestion from "./ChatDiv/FirstUserQuestion";
+import FirstBotAnswer from "./ChatDiv/FirstBotAnswer";
 
 
 
@@ -1064,281 +1072,88 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   return (
     <>
-      <div className="z-20 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] -mx-6 sm:mx-0 h-full sm:h-screen flex">
+     
+     <div className=" z-20 relative sm:fixed top-0 right-0 sm:w-[calc(100%-256px)] min-h-screen -mx-6 sm:mx-0  flex">
+     {/* <div className="bg-slate-500"> */}
+
+
+     <div className="flex-auto flex flex-col h-full">
         
-
-
-
-        <div className=" flex-auto flex flex-col h-full">
-
-
-            
-          {/* <div className="scale-0 lg:scale-100 sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2"> */}
-          <div className=" sm:w-full bg-white px-4 py-2 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
-            
-            <div className="h-[25px] flex-1 text-xl font-semibold">
-              <span className="absolute text-[10px] font-bold ">Title of Room</span>
-              <div className="">              
-                    <input
-                        className="w-full mb-4 text-[20px] truncate bg-transparent outline-none focus:ring pointer-events-auto"
-                        type="text"
-                        placeholder="Title of Room"
-                        data-testid="EditableChatTitle"
-                        value={TitleOfChat}
-                        onChange={TitleChage}
-                        onKeyPress={TitleInputKeyPressed}
-                        onBlur={mousemovedawayfrominput}
-                      />
+     <div className=" sm:w-full bg-white px-4 py-2 mt-1 lg:px-10 lg:py-5 border border-gray-200 flex gap-2">
+              
+              <div className="h-[25px] flex-1 text-xl font-semibold">
+                  <div className="">              
+                        <input
+                            className="w-full mb-4 text-[20px] truncate bg-transparent outline-none focus:ring pointer-events-auto"
+                            type="text"
+                            placeholder="Title of Room"
+                            data-testid="EditableChatTitle"
+                            value={TitleOfChat}
+                            onChange={TitleChage}
+                            onKeyPress={TitleInputKeyPressed}
+                            onBlur={mousemovedawayfrominput}
+                          />
+                  </div>
               </div>
-            </div>
 
-            <button
-              type="button"
-              className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-              onClick={(e) => setSidebarStatus(!sidebarStatus)}
-            >
-              <span className="flex items-center justify-center gap-x-2 mx-auto select-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  className={clsx("w-3 h-3", {
-                    "order-last rotate-180": sidebarStatus,
-                  })}
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>{sidebarStatus ? "Hide" : "View"} conversations</span>
-              </span>
-            </button>
+              <button
+                type="button"
+                className="h-[30px] float-right  transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                onClick={(e) => setSidebarStatus(!sidebarStatus)}
+              >
+                <span className="flex items-center justify-center gap-x-2 mx-auto select-none">
+                    <ChatArrow clsx={clsx} sidebarStatus={sidebarStatus}/>
+                  <span>{sidebarStatus ? "Hide" : "View"} conversations</span>
+                </span>
+              </button>
+        </div>
 
 
+        <div className="flex-auto w-full flex-grow flex flex-col items-center pt-4 pb-5 overflow-hidden h-screen">
 
-          </div>
+          <div className="relative flex flex-col overflow-hidden h-full w-full bg-white max-w-[832px]">
+            <div className="flex flex-col flex-auto h-full w-full">
+             
+              <div className="flex-1 flex max-h-full overflow-x-hidden overflow-y-auto w-full">
 
-          <div className="flex-auto w-full flex-grow flex flex-col items-center pt-4 pb-5 overflow-hidden">
-            <div className="relative flex flex-col overflow-hidden h-full w-full bg-white grow max-w-[832px]">
-              <div className="flex flex-col flex-auto h-full w-full">
-                <div className="flex-1 flex max-h-full overflow-x-hidden overflow-y-auto w-full">
-                
-                
-                  {/* =================chat data initially================== */}
+                    {/* =================chat data initially================== */}
 
-                  {AllChatText &&
-                    (AllChatText.length > 0 ? (
-                      <div
-                        ref={chatContainerRef}
-                        className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
-                      >
-                        {/* Chat messages */}
-                        {AllChatText.map((chat_data, index) => (
-                          <div key={index} className="flex flex-col mb-3 mt-4" >
-                            {/* User */}
-                            <div className="relative flex flex-col items-end">
-                              <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                <img
-                                  className="w-full h-full rounded-full"
-                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                  alt="User"
-                                />
-                              </div>
-                              <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl ">
-                              {/* <ReactMarkdown
-                                children={chat_data.question}
-                                remarkPlugins={[remarkMath,remarkGfm]}
-                                rehypePlugins={[rehypeKatex]}
-                              /> */}
-                                <RenderHtmlData htmldata={chat_data.question} />
-                              </div>
-                            </div>
+                    {AllChatText &&
+                      (AllChatText.length > 0 ? (
 
-                            {/* Bot */}
-                            <div className="relative flex flex-col">
-                              <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                <img
-                                  className="w-full h-full rounded-full"
-                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                  alt="ChatBot"
-                                />
-                              </div>
-                              <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
-                              {/* <ReactMarkdown
-                                children={chat_data.content}
-                                remarkPlugins={[remarkMath,remarkGfm]}
-                                rehypePlugins={[rehypeKatex]}
-                              /> */}
-                                <RenderHtmlData htmldata={chat_data.content} />
-                                {/* ============all sorts of btn================ */}
-                                <Differentbtn
-                                  all_data={chat_data}
-                                  data={chat_data.content}
-                                />
-                                {/* ============all sorts of btn================ */}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-
-                        {CurrentAnswer.length > 0 ? (
-                          <>
-                            {(() => {
-                              let length_of_obj = CurrentAnswer.length;
-                              const data_ = renderHTMLDataForChatting(
-                                CurrentAnswer[length_of_obj - 1]["content"]
-                              );
-                              
-                              return CurrentAnswer.map((data, index) => (
-                                <div
-                                  className="flex flex-col mb-3 mt-4"
-                                  key={index}
-                                >
-                                  <div className="relative flex flex-col items-end">
-                                    <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                      <img
-                                        className="w-full h-full rounded-full"
-                                        src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                        alt="User"
-                                      />
-                                    </div>
-                                    <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                    {/* <ReactMarkdown
-                                      children={data["question"]}
-                                      remarkPlugins={[remarkMath,remarkGfm]}
-                                      rehypePlugins={[rehypeKatex]}
-                                    /> */}
-                                      <RenderHtmlData htmldata={data["question"]} />
-                                    </div>
-                                  </div>
-
-                                  <div className="relative flex flex-col">
-                                    <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                      <img
-                                        className="w-full h-full rounded-full"
-                                        src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                        alt="ChatBot"
-                                      />
-                                    </div>
-                                    <div
-                                      className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                      tabIndex={0}
-                                      ref={divRef}
-                                    >
-                                      {CurrentAnswer.length == length_of_obj ? (
-                                        <>
-                                        {isFinishedTyping
-                                            ?
-                                              <RenderHtmlData
-                                                htmldata={data["content"]}
-                                              />
-                                            :
-                                              <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
-                                          }
-                                          {/* <Typed
-                                            typedRef={(typed) => {setTypedComp(typed)}}
-                                            strings={[data_]}
-                                            typeSpeed={1}
-                                            showCursor={true}
-                                            onComplete={handleTypingDone}
-                                          /> */}
-                                        </>
-                                      ) : (
-                                        <>
-                                        <RenderHtmlData
-                                          htmldata={data["content"]}
-                                        />
-                                        </>
-                                      )}
-                                      {/* ============all sorts of btn================ */}
-                                      <Differentbtn
-                                        all_data={data}
-                                        data={data_}
-                                      />
-                                      {/* ============all sorts of btn================ */}
-                                    </div>
-                                  </div>
-                                </div>
-                              ));
-                            })()}
-                          </>
-                        ) : null}
-
-                        {CurrentQuestion ? (
-                          <div className="flex flex-col mb-3 mt-4">
-                            <div className="relative flex flex-col items-end">
-                              <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                <img
-                                  className="w-full h-full rounded-full"
-                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                  alt="User"
-                                />
-                              </div>
-                              <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                <RenderHtmlData htmldata={CurrentQuestion} />
-                              </div>
-                            </div>
-
-                            {/* Bot */}
-                            <div className="relative flex flex-col">
-                              <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                <img
-                                  className="w-full h-full rounded-full"
-                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                  alt="ChatBot"
-                                />
-                              </div>
-                              <div
-                                className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                tabIndex={0}
-                                ref={chatLoadingRef}
-                              >
-                                <>
-                                  <IconChat />
-                                </>
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    ) : (
-                      <>
                         <div
                           ref={chatContainerRef}
                           className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
                         >
-                          {CurrentAnswerIni.length > 0 ? (
+                          {/* Chat messages */}
+                          {AllChatText.map((chat_data, index) => (
+
+                            <div key={index} className="flex flex-col mb-3 mt-4" >
+                              {/* User */}
+                              <FirstUserQuestion question={chat_data.question} />
+
+                              {/* Bot */}                             
+                              <FirstBotAnswer chat_data={chat_data} content={chat_data.content}/>
+
+                            </div>
+                          ))}
+
+
+                          {CurrentAnswer.length > 0 ? (
                             <>
                               {(() => {
-                                let length_of_obj = CurrentAnswerIni.length;
+                                let length_of_obj = CurrentAnswer.length;
                                 const data_ = renderHTMLDataForChatting(
-                                  CurrentAnswerIni[length_of_obj - 1]["content"]
+                                  CurrentAnswer[length_of_obj - 1]["content"]
                                 );
                                 
-
-                                return CurrentAnswerIni.map((data, index) => (
+                                return CurrentAnswer.map((data, index) => (
                                   <div
                                     className="flex flex-col mb-3 mt-4"
                                     key={index}
                                   >
-                                    <div className="relative flex flex-col items-end">
-                                      <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                        <img
-                                          className="w-full h-full rounded-full"
-                                          // src="default.png"
-                                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                          alt="User"
-                                        />
-                                      </div>
-                                      <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                        <RenderHtmlData
-                                          htmldata={data["question"]}
-                                        />
-                                      </div>
-                                    </div>
+
+                                    <FirstUserQuestion question={data["question"]} />
 
                                     <div className="relative flex flex-col">
                                       <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
@@ -1353,50 +1168,44 @@ const Chat = ({ AUTH_TOKEN }) => {
                                         tabIndex={0}
                                         ref={divRef}
                                       >
-                                        {CurrentAnswerIni.length ==
-                                        length_of_obj ? (
+                                        {CurrentAnswer.length == length_of_obj ? (
                                           <>
                                           {isFinishedTyping
-                                            ?
-                                              <RenderHtmlData
-                                                htmldata={data["content"]}
-                                              />
-                                            :
-                                              <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
-                                          }
-                                          {/* {isFinishedTyping && <p>Typing is finished!</p>} */}
-                                            {/* <Typed
-                                              typedRef={(typed) => {setTypedComp(typed)}}
-                                              strings={[data_]}
-                                              typeSpeed={1}
-                                              showCursor={true}
-                                              onComplete={handleTypingDone}
-                                            /> */}
+                                              ?
+                                                <RenderHtmlData
+                                                  htmldata={data["content"]}
+                                                />
+                                              :
+                                                <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
+                                            }
                                           </>
                                         ) : (
                                           <>
-
                                           <RenderHtmlData
                                             htmldata={data["content"]}
                                           />
-                                          
                                           </>
                                         )}
                                         {/* ============all sorts of btn================ */}
                                         <Differentbtn
                                           all_data={data}
-                                          data={data["content"]}
+                                          data={data_}
                                         />
                                         {/* ============all sorts of btn================ */}
                                       </div>
                                     </div>
+
+
                                   </div>
+
+
                                 ));
                               })()}
                             </>
                           ) : null}
 
-                          {CurrentQuestionIni ? (
+                          {CurrentQuestion ? (
+                            
                             <div className="flex flex-col mb-3 mt-4">
                               <div className="relative flex flex-col items-end">
                                 <div className="w-6 h-6 rounded-full order-last overflow-hidden">
@@ -1407,12 +1216,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   />
                                 </div>
                                 <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                  <RenderHtmlData htmldata={CurrentQuestionIni} />
-                                  {/* <ReactMarkdown
-                                          children={CurrentQuestionIni}
-                                          remarkPlugins={[remarkMath,remarkGfm]}
-                                          rehypePlugins={[rehypeKatex]}
-                                        /> */}
+                                  <RenderHtmlData htmldata={CurrentQuestion} />
                                 </div>
                               </div>
 
@@ -1431,263 +1235,334 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   ref={chatLoadingRef}
                                 >
                                   <>
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="30"
-                                      height="30"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <circle
-                                        cx="18"
-                                        cy="12"
-                                        r="0"
-                                        fill="currentColor"
-                                      >
-                                        <animate
-                                          attributeName="r"
-                                          begin=".67"
-                                          calcMode="spline"
-                                          dur="1.5s"
-                                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                                          repeatCount="indefinite"
-                                          values="0;2;0;0"
-                                        />
-                                      </circle>
-                                      <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="0"
-                                        fill="currentColor"
-                                      >
-                                        <animate
-                                          attributeName="r"
-                                          begin=".33"
-                                          calcMode="spline"
-                                          dur="1.5s"
-                                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                                          repeatCount="indefinite"
-                                          values="0;2;0;0"
-                                        />
-                                      </circle>
-                                      <circle
-                                        cx="6"
-                                        cy="12"
-                                        r="0"
-                                        fill="currentColor"
-                                      >
-                                        <animate
-                                          attributeName="r"
-                                          begin="0"
-                                          calcMode="spline"
-                                          dur="1.5s"
-                                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                                          repeatCount="indefinite"
-                                          values="0;2;0;0"
-                                        />
-                                      </circle>
-                                    </svg>
+                                    <IconChat />
                                   </>
                                 </div>
                               </div>
                             </div>
+
                           ) : null}
 
-                          {AfterTypeDontShowIni ? null : (
-                            <div className="flex flex-auto flex-col items-center justify-center">
-                              <div className="py-10 text-center">
-                                <img
-                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat-hero.png"
-                                  className="w-64 mb-8"
-                                  alt="Chat Hero"
-                                />
-                                <h2 className="text-2xl font-bold mb-8">
-                                  AI Chat
-                                </h2>
-                                <p className="text-sm font-medium leading-none max-w-[300px]">
-                                  Choose a prompt below or write your own to
-                                  start chatting with our Best AI.
-                                </p>
-                              </div>
-                            </div>
-                          )}
+
                         </div>
-                      </>
-                    ))}
-                  {/* ====================================================== */}
-                </div>
-                
-                {/* <div
-                  ref={popRef}
-                  className="chatbox relative flex flex-col w-full py-2 px-4 @lg:py-4 max-w-xl m-auto"
-                > */}
-                
-                <div
-                  ref={popRef}
-                  className="chatbox relative flex flex-col w-full  @lg:py-4 max-w-7xl m-auto"
-                >
+                      ) : (
+                        <>
 
-                {/* {check_to_stop_typing
-                ?
-                  <button
-                  className={clsx("stop-generator absolute -top-10 left-1/2 -translate-x-1/2 text-white bg-red-500 px-4 py-1 rounded-md transition-all",
-                  { "hidden -top-2" : !showStopBtn })}
-                  onClick={handleTypeStop}
-                  >
-                    Stop Generating
-                  </button>
-                :
-                  null
-                } */}
-
-
-                  <div className="flex w-full ">
-
-                    <div className="w-full mr-[60px]">
-                        <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
-                          <button
-                            className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
-                            onClick={handleClickOpen}
+                          <div
+                            ref={chatContainerRef}
+                            className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
                           >
-                            <ChatIconP/>
-                            <p  className="text-[15px] font-semibold" >Browse prompts</p>
-                          </button>
-                          <button
-                            className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
-                            onClick={handlePopoverOpen}
-                          >
-                            <ChatIconR/>
+                            {CurrentAnswerIni.length > 0 ? (
+                              <>
+                                {(() => {
+                                  let length_of_obj = CurrentAnswerIni.length;
+                                  const data_ = renderHTMLDataForChatting(
+                                    CurrentAnswerIni[length_of_obj - 1]["content"]
+                                  );
+                                  
 
-                            <p  className="text-[15px] font-semibold" >Browse voice</p>
-
-                          </button>
-                          
-                          {/* ==================Tone to show=================== */}
-                          {show_summarize_tone ? (
-                            <>
-                              {selectedSummarizes.map((data, index) => {
-                                return (
-                                  <>
+                                  return CurrentAnswerIni.map((data, index) => (
+                                   
                                     <div
+                                      className="flex flex-col mb-3 mt-4"
                                       key={index}
-                                      className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center"
                                     >
-                                      <div className="mr-2 w-3 h-3 flex items-center justify-center">
-                                        <ChatIconN/>
+                                      <div className="relative flex flex-col items-end">
+                                        <div className="w-6 h-6 rounded-full order-last overflow-hidden">
+                                          <img
+                                            className="w-full h-full rounded-full"
+                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                            alt="User"
+                                          />
+                                        </div>
+                                        <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
+                                          <RenderHtmlData
+                                            htmldata={data["question"]}
+                                          />
+                                        </div>
                                       </div>
-                                      <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
-                                        {data.label}
-                                      </div>
-                                      <div
-                                        className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
-                                        onClick={() => handleDeleteClick(data.label)}
-                                      >
-                                        <ChatIconM/>
+
+                                      <div className="relative flex flex-col">
+                                        <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
+                                          <img
+                                            className="w-full h-full rounded-full"
+                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
+                                            alt="ChatBot"
+                                          />
+                                        </div>
+                                        <div
+                                          className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                          tabIndex={0}
+                                          ref={divRef}
+                                        >
+                                          {CurrentAnswerIni.length ==
+                                          length_of_obj ? (
+                                            <>
+                                            {isFinishedTyping
+                                              ?
+                                                <RenderHtmlData
+                                                  htmldata={data["content"]}
+                                                />
+                                              :
+                                                <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
+                                            }
+                                            </>
+                                          ) : (
+                                            <>
+
+                                            <RenderHtmlData
+                                              htmldata={data["content"]}
+                                            />
+                                            
+                                            </>
+                                          )}
+                                          {/* ============all sorts of btn================ */}
+                                          <Differentbtn
+                                            all_data={data}
+                                            data={data["content"]}
+                                          />
+                                          {/* ============all sorts of btn================ */}
+                                        </div>
                                       </div>
                                     </div>
-                                  </>
-                                );
-                              })}
+
+                                  ));
+                                })()}
+                              </>
+                            ) : null}
+
+                            {CurrentQuestionIni ? (
+
+                              <div className="flex flex-col mb-3 mt-4">
+                                <div className="relative flex flex-col items-end">
+                                  <div className="w-6 h-6 rounded-full order-last overflow-hidden">
+                                    <img
+                                      className="w-full h-full rounded-full"
+                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                      alt="User"
+                                    />
+                                  </div>
+                                  <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
+                                    <RenderHtmlData htmldata={CurrentQuestionIni} />
+                                  </div>
+                                </div>
+
+                                {/* Bot */}
+                                <div className="relative flex flex-col">
+                                  <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
+                                    <img
+                                      className="w-full h-full rounded-full"
+                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
+                                      alt="ChatBot"
+                                    />
+                                  </div>
+                                  <div
+                                    className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                    tabIndex={0}
+                                    ref={chatLoadingRef}
+                                  >
+                                    <>
+                                      <ChatIconRR/>
+                                    </>
+                                  </div>
+                                </div>
+                              </div>
+
+                            ) : null}
+
+                            {AfterTypeDontShowIni ? null : (
+                              <div className="flex flex-auto flex-col items-center justify-center">
+                                <div className="py-10 text-center">
+                                  <img
+                                    src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat-hero.png"
+                                    className="w-64 mb-8"
+                                    alt="Chat Hero"
+                                  />
+                                  <h2 className="text-2xl font-bold mb-8">
+                                    AI Chat
+                                  </h2>
+                                  <p className="text-sm font-medium leading-none max-w-[300px]">
+                                    Choose a prompt below or write your own to
+                                    start chatting with our Best AI.
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      ))}
+
+
+                    {/* ====================================================== */}
+                  
+                  
+                  </div>
+                  
+                  
+                  <div
+                    ref={popRef}
+                    className="chatbox relative flex flex-col w-full  @lg:py-4 max-w-7xl m-auto"
+                  >
+
+                    <div className="mb-[70px] flex w-full ">
+
+                      <div className="w-full mr-[60px]">
+                          <div className="p-2 bg-gray-50 w-full flex items-center rounded-t-xl">
+                            <button
+                              className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
+                              onClick={handleClickOpen}
+                            >
+                              <ChatIconP/>
+                              <p  className="text-[15px] font-semibold" >Browse prompts</p>
+                            </button>
+                            <button
+                              className="group inline-flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-md duration-300 hover:bg-blue-900 hover:text-grey-900 focus:shadow-none"
+                              onClick={handlePopoverOpen}
+                            >
+                              <ChatIconR/>
+
+                              <p  className="text-[15px] font-semibold" >Browse voice</p>
+
+                            </button>
+                            
+                            {/* ==================Tone to show=================== */}
+                            {show_summarize_tone ? (
+                              <>
+                                {selectedSummarizes.map((data, index) => {
+                                  return (
+                                    <>
+                                      <div
+                                        key={index}
+                                        className="text-xs font-medium rounded-full py-1 border ml-2 px-3 border-gray-200 bg-white flex items-center"
+                                      >
+                                        <div className="mr-2 w-3 h-3 flex items-center justify-center">
+                                          <ChatIconN/>
+                                        </div>
+                                        <div className="truncate text-ellipsis max-w-[4rem] @md:max-w-[40rem]">
+                                          {data.label}
+                                        </div>
+                                        <div
+                                          className="ml-2 w-2.5 h-2.5 flex items-center justify-center cursor-pointer"
+                                          onClick={() => handleDeleteClick(data.label)}
+                                        >
+                                          <ChatIconM/>
+                                        </div>
+                                      </div>
+                                    </>
+                                  );
+                                })}
+                              </>
+                            ) : null}
+                            {/* ==================Tone to show=================== */}
+                          </div>
+
+                        <div className=" inputbox relative chat-message" ref={latestMessageRef}>
+
+                          <textarea
+                              className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-auto min-h-14"
+                              type="text"
+                              rows="1"
+                              placeholder="Ask or Search anything"
+                              value={ChatText || chatFill}
+                              onChange={(e) => {
+                                setChatText(e.target.value);
+                                adjustTextareaHeight(e.target);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  submitChatText();
+                                }
+                              }}
+                          />
+                        
+                          {check_to_stop_typing
+                          ?
+                              <button
+                                  className="absolute bottom-6 right-3 w-6 h-6"
+                                onClick={handleStopTyping}>
+                                  <ChatStopIcon/>
+                              </button>
+                          :
+                            <>
+                              <button
+                                className="absolute bottom-6 right-3 w-6 h-6"
+                                onClick={() => {
+                                  submitChatText();
+                                  setChatFill("");
+                                }}
+                              >
+                                {Loading ? (
+                                    <ChatLoading/>
+                                ) : (
+                                    <ChatIconForChat/>
+                                )}
+                              </button>
                             </>
-                          ) : null}
-                          {/* ==================Tone to show=================== */}
+                          }
                         </div>
 
-                      <div className="inputbox relative chat-message" ref={latestMessageRef}>
+                      </div>
 
-                        <textarea
-                            className="w-full py-4 pl-4 pr-12 border border-border rounded-b-xl placeholder-text-black placeholder-opacity-100 placeholder-font-semibold focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:border-blue resize-none overflow-y-auto min-h-14"
-                            type="text"
-                            rows="1"
-                            placeholder="Ask or Search anything"
-                            value={ChatText || chatFill}
-                            onChange={(e) => {
-                              setChatText(e.target.value);
-                              adjustTextareaHeight(e.target);
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                submitChatText();
+                      <div className="absolute bottom-9 mb-[70px] right-[-9px]  w-6 h-6 mr-[40px]">
+                          <button
+                            onClick={listening ? stopListening : startListening}
+                            className="p-3 h-[50px] w-[50px] bg-slate-200 rounded-full"
+                          >
+                                  {
+                                  listening 
+                                  ?
+                                    <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
+                                  :
+                                    <BsFillMicFill className="h-[23px] w-[23px]"/>
                               }
-                            }}
-                        />
-                      
-                        {check_to_stop_typing
-                        ?
-                            <button
-                                className="absolute bottom-6 right-3 w-6 h-6"
-                              onClick={handleStopTyping}>
-                                <ChatStopIcon/>
-                            </button>
-                        :
-                          <>
-                            <button
-                              className="absolute bottom-6 right-3 w-6 h-6"
-                              onClick={() => {
-                                submitChatText();
-                                setChatFill("");
-                              }}
-                            >
-                              {Loading ? (
-                                  <ChatLoading/>
-                              ) : (
-                                  <ChatIconForChat/>
-                              )}
-                            </button>
-                          </>
-                        }
+                          </button>
                       </div>
 
                     </div>
 
-                    <div className="absolute bottom-9 right-[-9px]  w-6 h-6 mr-[40px]">
-                        <button
-                          onClick={listening ? stopListening : startListening}
-                          className="p-3 h-[50px] w-[50px] bg-slate-200 rounded-full"
-                        >
-                                 {
-                                listening 
-                                ?
-                                  <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
-                                :
-                                  <BsFillMicFill className="h-[23px] w-[23px]"/>
-                            }
-                        </button>
-                    </div>
-
                   </div>
 
+
                 </div>
-
-
               </div>
-            </div>
-          </div>
-
-
         </div>
 
+    </div>
+
+
+        {/* =========== start side bar div========= */}
+
+
         <div
-          className={clsx(
-            "z-10 absolute top-[50px] sm:top-0 -right-0 h-[calc(100%-50px)] sm:h-full sm:relative w-60 max-w-screen bg-gray-50 flex flex-col duration-300",
-            {
-              "sm:hidden !-right-full": !sidebarStatus,
-            }
-          )}
-        >
-          <div className="p-4 pb-2">
-            <button
-              type="button"
-              className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full"
-              onClick={() => {
-                create_new_room_for_chat();
-              }}
+              className={clsx(
+                "z-10 absolute top-[50px] sm:top-0 -right-0 sm:relative w-60 max-w-screen bg-gray-100 flex flex-col duration-300",
+                {
+                  "sm:hidden !-right-full": !sidebarStatus,
+                  "hidden": !sidebarStatus, // Add this line to hide the div when sidebarStatus is true
+                }
+              )}
+              style={{ maxHeight: "calc(100vh - 50px)", overflowY: "auto" }}
             >
-              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                + New chat conversation
-              </span>
-            </button>
-          </div>
-          <div className="flex flex-col items-center h-full flex-1">
+
+            <div className="p-4 pb-2">
+
+              <button
+                type="button"
+                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 w-full"
+                onClick={() => {
+                  create_new_room_for_chat();
+                }}
+              >
+                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                  + New chat conversation
+                </span>
+              </button>
+
+            </div>
+
+
+            
+
             <div className="w-full p-2 flex flex-col">
               <div className="space-y-1.5 w-full">
                 <label
@@ -1715,17 +1590,20 @@ const Chat = ({ AUTH_TOKEN }) => {
                 </div>
               </div>
             </div>
+
+
+
             {/* =======Title side bar======== */}
-            <div className="w-full grow overflow-y-auto flex-1">
+            <div className="w-full min-h-screen grow flex-1">
               {ChatTitleForSideBar && (
                 <>
                   {ChatTitleForSideBar.map((data, index) => {
                     return (
                       <div
                         key={index}
-                        className={`${data.id==IdOfTopTitleChat? "bg-slate-300 " : "bg-slate-100" }  cursor-pointer group border-b border-gray-200 flex items-center h-13  mt-1 mb-1 `}
+                        className={`${data.id==IdOfTopTitleChat? "bg-slate-300 " : "bg-slate-100" }   cursor-pointer group border-b border-gray-200 flex items-center h-13  mt-1 mb-1 `}
                       >
-                        <div className="p-4 flex flex-grow justify-between items-center truncate">
+                        <div className="p-4 w-[300px] flex flex-grow justify-between items-center truncate">
                           <div
                             className="truncate text-ellipsis w-full"
                             onClick={() => {
@@ -1770,19 +1648,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                                   aria-label="Edit conversation title"
                                   onClick={() => handleInputBlur(index)}
                                 >
-                                  <svg
-                                    className="w-6 h-6 mt-2"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                                    version="1.1"
-                                    x="0px"
-                                    y="0px"
-                                    viewBox="0 0 100 125"
-                                    xmlSpace="preserve"
-                                  >
-                                    <polygon points="38.6,43.2 32.7,48.7 47.7,64.8 81.1,31.4 75.5,25.7 47.9,53.3 " />
-                                    <path d="M50,83.4c18.5,0,33.4-15,33.4-33.4h-8C75.4,64,64,75.4,50,75.4S24.6,64,24.6,50S36,24.6,50,24.6l0,0v-8  c-18.5,0-33.4,15-33.4,33.4S31.5,83.4,50,83.4L50,83.4z" />
-                                  </svg>
+                                  <ChatIconEditFirst/>
                                 </button>
                               </>
                             ) : (
@@ -1830,707 +1696,692 @@ const Chat = ({ AUTH_TOKEN }) => {
             </div>
             {/* =============== */}
 
-          </div>
+
+
+
         </div>
 
-      </div>
-      
-      {/* =====================Browse prompts ============ */}
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullWidth={true}
-        maxWidth={"lg"}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className="rounded-lg max-w-[1088px] mx-auto"
-      >
-        <DialogContent>
-          <div className="mb-4 pr-12 flex w-full items-center justify-start">
-            <h3 className="w-52 text-xl font-bold">Prompts</h3>
-            <div className="relative w-full text-grey-600 focus-within:text-grey-400">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                <svg
-                  width={16}
-                  height={16}
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ml-1 h-4 w-4"
-                >
-                  <g clipPath="url(#clip0_5_371)">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 7C12 9.76142 9.76142 12 7 12C4.23858 12 2 9.76142 2 7C2 4.23858 4.23858 2 7 2C9.76142 2 12 4.23858 12 7ZM12.6064 11.1922C13.4816 10.0236 14 8.57234 14 7C14 3.13401 10.866 0 7 0C3.13401 0 0 3.13401 0 7C0 10.866 3.13401 14 7 14C8.57234 14 10.0236 13.4816 11.1922 12.6064L14.2929 15.7071C14.6834 16.0976 15.3166 16.0976 15.7071 15.7071C16.0976 15.3166 16.0976 14.6834 15.7071 14.2929L12.6064 11.1922Z"
-                      fill="currentColor"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_5_371">
-                      <rect width={16} height={16} fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </span>
-              <input
-                type="search"
-                className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
-                placeholder='Try "Sales" or "Email"'
-                autoComplete="off"
-                data-hj-allow="true"
-                value={search_chat_template} // Use the search_chat_template value here
-                onChange={handleChange}
-              />
-            </div>
-
-
-            <div
-              onClick={handleClose}
-              className="absolute top-0 right-0 p-8 cursor-pointer duration-300 hover:opacity-70"
-            >
-              <GrClose size={16} />
-            </div>
-
-          </div>
-
           
-          <div className="flex w-full items-start justify-start">
-            {/* =================the first template name================= */}
-            <div className="w-3/12 h-[500px] self-stretch overflow-scroll  pt-3 pr-1">
-            
-              <div
-                className="cursor-pointer truncate rounded-md p-3 capitalize hover:bg-blue-900 "
-                onClick={() => {
-                  set_show_only_custom(true);
-                }}
-              >
-                Custom
-              </div>
+       {/* ===========end side bar div========= */}
+        
 
-              <div className="my-4 opacity-40">
-               <div className="border-b  border-purple-100 h-0 w-full" />
-              </div>
-              {Chat_Template_Title && (
-                <>
-                  {Chat_Template_Title.length > 0 ? (
-                    <>
-                      {Chat_Template_Title.map((data, index) => {
-                        return (
-                          <>
-                            <div key={index}>
-                              <div
-                                className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize bg-blue-900 hover:bg-blue-900"
-                                onClick={() => {
-                                  second_layer_template(data.id);
-                                  set_show_only_custom(false);
-                                }}
-                              >
-                                {data.description}
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </>
-                  ) : null}
-                </>
-              )}
-            </div>
-            {/* =================the first template name================= */}
 
-            {/* ====================custome template===================== */}
 
-            {show_only_custom ? (
-              <>
-                <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
-                  {show_create_input ? (
-                    <>
-                      <input
-                        type="text"
-                        className="mb-2 p-3 text-sm text-black border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0"
-                        placeholder="Title of Template"
-                        autoComplete="off"
-                        value={newTitleName}
-                        onChange={handleNewTitleNameChange}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        type="button"
-                        className="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
-                        onClick={showinputtocreate}
+          {/* =====================Browse prompts ============ */}
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  fullWidth={true}
+                  maxWidth={"lg"}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                  className="rounded-lg max-w-[1088px] mx-auto"
+                >
+                  <DialogContent>
+                    <div className="mb-4 pr-12 flex w-full items-center justify-start">
+                      <h3 className="w-52 text-xl font-bold">Prompts</h3>
+                      <div className="relative w-full text-grey-600 focus-within:text-grey-400">
+                        <ChatIconDialogF/>
+                        <input
+                          type="search"
+                          className="resize-none rounded border border-blue-900 py-2 pl-10 text-sm text-black shadow-sm w-60 focus:outline-none placeholder-grey-400 transition-all duration-300 focus:w-full focus:border-border focus:ring-0"
+                          placeholder='Try "Sales" or "Email"'
+                          autoComplete="off"
+                          data-hj-allow="true"
+                          value={search_chat_template} // Use the search_chat_template value here
+                          onChange={handleChange}
+                        />
+                      </div>
+
+
+                      <div
+                        onClick={handleClose}
+                        className="absolute top-0 right-0 p-8 cursor-pointer duration-300 hover:opacity-70"
                       >
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          + Create Custom template
-                        </span>
-                      </button>
-                    </>
-                  )}
-                  {custome_chat_template && (
-                    <>
-                      {custome_chat_template.length > 0 ? (
-                        <>
-                          {custome_chat_template.map((data, index) => {
-                            return (
+                        <GrClose size={16} />
+                      </div>
+
+                    </div>
+
+                    
+                    <div className="flex w-full items-start justify-start">
+                      {/* =================the first template name================= */}
+                      <div className="w-3/12 h-[500px] self-stretch overflow-scroll  pt-3 pr-1">
+                      
+                        <div
+                          className="cursor-pointer truncate rounded-md p-3 capitalize hover:bg-blue-900 "
+                          onClick={() => {
+                            set_show_only_custom(true);
+                          }}
+                        >
+                          Custom
+                        </div>
+
+                        <div className="my-4 opacity-40">
+                        <div className="border-b  border-purple-100 h-0 w-full" />
+                        </div>
+                        {Chat_Template_Title && (
+                          <>
+                            {Chat_Template_Title.length > 0 ? (
                               <>
-                                <div
-                                  key={index}
-                                  className="w-full grow overflow-y-auto flex-1"
+                                {Chat_Template_Title.map((data, index) => {
+                                  return (
+                                    <>
+                                      <div key={index}>
+                                        <div
+                                          className="mb-1 cursor-pointer truncate rounded-md p-3 capitalize bg-blue-900 hover:bg-blue-900"
+                                          onClick={() => {
+                                            second_layer_template(data.id);
+                                            set_show_only_custom(false);
+                                          }}
+                                        >
+                                          {data.description}
+                                        </div>
+                                      </div>
+                                    </>
+                                  );
+                                })}
+                              </>
+                            ) : null}
+                          </>
+                        )}
+                      </div>
+                      {/* =================the first template name================= */}
+
+                      {/* ====================custome template===================== */}
+
+                      {show_only_custom ? (
+                        <>
+                          <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
+                            {show_create_input ? (
+                              <>
+                                <input
+                                  type="text"
+                                  className="mb-2 p-3 text-sm text-black border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0"
+                                  placeholder="Title of Template"
+                                  autoComplete="off"
+                                  value={newTitleName}
+                                  onChange={handleNewTitleNameChange}
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  className="open-modal-button w-full transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base  text-white bg-[#334977] ring-0 ring-blue-600 hover:ring-2 active:ring-0 my-2"
+                                  onClick={showinputtocreate}
                                 >
-                                  <div className="cursor-pointer group border-b mb-1 break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800">
-                                    <div className="flex flex-grow justify-between items-center truncate">
-                                      {EditCustomTemplateEditingTitleIndex ===
-                                      index ? (
-                                        <>
-                                          <div className="truncate text-ellipsis w-full">
-                                            <input
-                                              type="text"
-                                              value={
-                                                EditCustomTemplateEditedTitle
-                                              }
-                                              onChange={
-                                                EditCustomTemplateHandleTitleChange
-                                              }
-                                            />
-                                          </div>
-                                          <div className="sr-only group-hover:not-sr-only flex">
-                                            <button
-                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                              onClick={() => {
-                                                EditCustomTemplateHandleSaveClick(
-                                                  index,
-                                                  data.id
-                                                );
-                                              }}
-                                            >
-                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                <svg
-                                                  className="w-4 h-4"
-                                                  viewBox="0 0 24 24"
-                                                  fill="none"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                  <path
-                                                    d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z"
-                                                    fill="#292D32"
-                                                  />
-                                                </svg>
-                                              </span>
-                                            </button>
-                                            <button
-                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                              onClick={() => {
-                                                setEditCustomTemplateEditingTitleIndex(
-                                                  null
-                                                );
-                                              }}
-                                            >
-                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                <svg
-                                                  className="w-4 h-4 mt-[2px]"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                                                  xmlnsSerif="http://www.serif.com/"
-                                                  viewBox="0 0 20 25"
-                                                  version="1.1"
-                                                  xmlSpace="preserve"
-                                                  x="0px"
-                                                  y="0px"
-                                                  fillRule="evenodd"
-                                                  clipRule="evenodd"
-                                                  strokeLinejoin="round"
-                                                  strokeMiterlimit="2"
-                                                >
-                                                  <g transform="matrix(1,0,0,1,-350,-30)">
-                                                    <path
-                                                      d="M360,42.472L367.528,50L370,47.528L362.472,40L370,32.472L367.528,30L360,37.528L352.472,30L350,32.472L357.528,40L350,47.528L352.472,50L360,42.472Z"
-                                                      fillRule="nonzero"
-                                                    />
-                                                  </g>
-                                                </svg>
-                                              </span>
-                                            </button>
-                                          </div>
-                                        </>
-                                      ) : (
+                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                    + Create Custom template
+                                  </span>
+                                </button>
+                              </>
+                            )}
+                            {custome_chat_template && (
+                              <>
+                                {custome_chat_template.length > 0 ? (
+                                  <>
+                                    {custome_chat_template.map((data, index) => {
+                                      return (
                                         <>
                                           <div
-                                            className="truncate text-ellipsis w-full"
-                                            onClick={() => {
-                                              get_the_inner_value_of_custom_template(
-                                                data.id
-                                              );
-                                            }}
+                                            key={index}
+                                            className="w-full grow overflow-y-auto flex-1"
                                           >
-                                            {data.title}
-                                          </div>
-                                          <div className="sr-only group-hover:not-sr-only flex">
-                                            <button
-                                              type="button"
-                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                              onClick={() =>
-                                                EditCustomTemplateHandleEditClick(
-                                                  index
-                                                )
-                                              }
-                                            >
-                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                <svg
-                                                  className="w-4 h-4"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  viewBox="0 0 16 16"
-                                                >
-                                                  <path
-                                                    d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                                    fill="transparent"
-                                                  ></path>
-                                                  <path
-                                                    d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                  <path
-                                                    d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                </svg>
-                                              </span>
-                                            </button>
-                                            <button
-                                              type="button"
-                                              className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                                              onClick={() => {
-                                                delete_the_custom_template(
-                                                  data.id
-                                                );
-                                              }}
-                                            >
-                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                <svg
-                                                  className="w-4 h-4"
-                                                  xmlns="http://www.w3.org/2000/svg"
-                                                  viewBox="0 0 16 16"
-                                                >
-                                                  <path
-                                                    d="M.86,4.28H15.14"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                  ></path>
-                                                  <path
-                                                    d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                  <path
-                                                    d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                  <path
-                                                    d="M6.29,7.34v4.73"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                  <path
-                                                    d="M9.71,7.34v4.73"
-                                                    fill="none"
-                                                    stroke="#0D121C"
-                                                    strokeWidth="1"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  ></path>
-                                                </svg>
-                                              </span>
-                                            </button>
+                                            <div className="cursor-pointer group border-b mb-1 break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800">
+                                              <div className="flex flex-grow justify-between items-center truncate">
+                                                {EditCustomTemplateEditingTitleIndex ===
+                                                index ? (
+                                                  <>
+                                                    <div className="truncate text-ellipsis w-full">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          EditCustomTemplateEditedTitle
+                                                        }
+                                                        onChange={
+                                                          EditCustomTemplateHandleTitleChange
+                                                        }
+                                                      />
+                                                    </div>
+                                                    <div className="sr-only group-hover:not-sr-only flex">
+                                                      <button
+                                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                                        onClick={() => {
+                                                          EditCustomTemplateHandleSaveClick(
+                                                            index,
+                                                            data.id
+                                                          );
+                                                        }}
+                                                      >
+                                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                          <svg
+                                                            className="w-4 h-4"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                          >
+                                                            <path
+                                                              d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z"
+                                                              fill="#292D32"
+                                                            />
+                                                          </svg>
+                                                        </span>
+                                                      </button>
+                                                      <button
+                                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                                        onClick={() => {
+                                                          setEditCustomTemplateEditingTitleIndex(
+                                                            null
+                                                          );
+                                                        }}
+                                                      >
+                                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                          <svg
+                                                            className="w-4 h-4 mt-[2px]"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                                            xmlnsSerif="http://www.serif.com/"
+                                                            viewBox="0 0 20 25"
+                                                            version="1.1"
+                                                            xmlSpace="preserve"
+                                                            x="0px"
+                                                            y="0px"
+                                                            fillRule="evenodd"
+                                                            clipRule="evenodd"
+                                                            strokeLinejoin="round"
+                                                            strokeMiterlimit="2"
+                                                          >
+                                                            <g transform="matrix(1,0,0,1,-350,-30)">
+                                                              <path
+                                                                d="M360,42.472L367.528,50L370,47.528L362.472,40L370,32.472L367.528,30L360,37.528L352.472,30L350,32.472L357.528,40L350,47.528L352.472,50L360,42.472Z"
+                                                                fillRule="nonzero"
+                                                              />
+                                                            </g>
+                                                          </svg>
+                                                        </span>
+                                                      </button>
+                                                    </div>
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    <div
+                                                      className="truncate text-ellipsis w-full"
+                                                      onClick={() => {
+                                                        get_the_inner_value_of_custom_template(
+                                                          data.id
+                                                        );
+                                                      }}
+                                                    >
+                                                      {data.title}
+                                                    </div>
+                                                    <div className="sr-only group-hover:not-sr-only flex">
+                                                      <button
+                                                        type="button"
+                                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                                        onClick={() =>
+                                                          EditCustomTemplateHandleEditClick(
+                                                            index
+                                                          )
+                                                        }
+                                                      >
+                                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                          <svg
+                                                            className="w-4 h-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 16 16"
+                                                          >
+                                                            <path
+                                                              d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                                              fill="transparent"
+                                                            ></path>
+                                                            <path
+                                                              d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                            <path
+                                                              d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                          </svg>
+                                                        </span>
+                                                      </button>
+                                                      <button
+                                                        type="button"
+                                                        className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-2 py-1 text-xs text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                                                        onClick={() => {
+                                                          delete_the_custom_template(
+                                                            data.id
+                                                          );
+                                                        }}
+                                                      >
+                                                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                          <svg
+                                                            className="w-4 h-4"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 16 16"
+                                                          >
+                                                            <path
+                                                              d="M.86,4.28H15.14"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                            ></path>
+                                                            <path
+                                                              d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                            <path
+                                                              d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                            <path
+                                                              d="M6.29,7.34v4.73"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                            <path
+                                                              d="M9.71,7.34v4.73"
+                                                              fill="none"
+                                                              stroke="#0D121C"
+                                                              strokeWidth="1"
+                                                              strokeLinecap="round"
+                                                              strokeLinejoin="round"
+                                                            ></path>
+                                                          </svg>
+                                                        </span>
+                                                      </button>
+                                                    </div>
+                                                  </>
+                                                )}
+                                              </div>
+                                            </div>
                                           </div>
                                         </>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
+                                      );
+                                    })}
+                                  </>
+                                ) : null}
                               </>
-                            );
-                          })}
-                        </>
-                      ) : null}
-                    </>
-                  )}
-                </div>
-                {/* ====================custome template===================== */}
-              </>
-            ) : (
-              <>
-                {/* =================the second layer template name================= */}
-                <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
-                  {second_layer_title && (
-                    <>
-                      {Chat_Template_Title.length > 0 ? (
-                        <>
-                          {second_layer_title.map((data, index) => {
-                            return (
-                              <>
-                                <div
-                                  key={index}
-                                  className="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
-                                  onClick={() => {
-                                    get_value_of_template(data.id);
-                                  }}
-                                >
-                                  {data.chat_first_step_template_name}
-                                </div>
-                              </>
-                            );
-                          })}
+                            )}
+                          </div>
+                          {/* ====================custome template===================== */}
                         </>
                       ) : (
                         <>
-                          <LoadingPage />
+                          {/* =================the second layer template name================= */}
+                          <div className="w-4/12 h-[500px] self-stretch overflow-scroll border-r border-purple-100 p-3">
+                            {second_layer_title && (
+                              <>
+                                {Chat_Template_Title.length > 0 ? (
+                                  <>
+                                    {second_layer_title.map((data, index) => {
+                                      return (
+                                        <>
+                                          <div
+                                            key={index}
+                                            className="mb-1 cursor-pointer break-words rounded-md border-2 p-2.5 line-clamp-2 border-blue-800 bg-blue-800"
+                                            onClick={() => {
+                                              get_value_of_template(data.id);
+                                            }}
+                                          >
+                                            {data.chat_first_step_template_name}
+                                          </div>
+                                        </>
+                                      );
+                                    })}
+                                  </>
+                                ) : (
+                                  <>
+                                    <LoadingPage />
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </div>
+                          {/* =================the second layer template name================= */}
                         </>
                       )}
-                    </>
-                  )}
-                </div>
-                {/* =================the second layer template name================= */}
-              </>
-            )}
 
-            {show_only_custom ? (
-              <>
-                {show_create_input ? (
-                  <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-                    <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-                      <div className="editor-textarea h-full w-full">
-                        <div
-                          style={{
-                            maxHeight: 400,
-                            minHeight: 300,
-                            height: "100%",
-                          }}
-                          className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
-                          id="custom-prompt-editor-preview"
-                        >
-                          <div
-                            translate="no"
-                            className="ProseMirror [&_p]:py-1.5"
-                            contentEditable="false"
-                          >
-                            {/* =============typing description=================== */}
-                            <textarea
-                              className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
-                              placeholder="Create your own template
-                                  Start typing..."
-                              value={newDescription}
-                              onChange={handleNewDescriptionChange}
-                            />
-                            {/* =============typing description=================== */}
-                          </div>
-                        </div>
-                        <div className="flex w-full flex-row justify-between">
-                          <div />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {/* ====================Third layer which is value of chat template============ */}
+                      {show_only_custom ? (
+                        <>
+                          {show_create_input ? (
+                            <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                              <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
+                                <div className="editor-textarea h-full w-full">
+                                  <div
+                                    style={{
+                                      maxHeight: 400,
+                                      minHeight: 300,
+                                      height: "100%",
+                                    }}
+                                    className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
+                                    id="custom-prompt-editor-preview"
+                                  >
+                                    <div
+                                      translate="no"
+                                      className="ProseMirror [&_p]:py-1.5"
+                                      contentEditable="false"
+                                    >
+                                      {/* =============typing description=================== */}
+                                      <textarea
+                                        className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
+                                        placeholder="Create your own template
+                                            Start typing..."
+                                        value={newDescription}
+                                        onChange={handleNewDescriptionChange}
+                                      />
+                                      {/* =============typing description=================== */}
+                                    </div>
+                                  </div>
+                                  <div className="flex w-full flex-row justify-between">
+                                    <div />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <>
+                              {/* ====================Third layer which is value of chat template============ */}
 
-                    <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-                      <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-                        <span className="text-red-500 font-semibold text-[20px] sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
-                          Edit or Use ( Template )
-                         <TooltipInfo text="Use this template in chat" />
-                        </span>
-                        <div className="editor-textarea h-full w-full">
-                          <div
-                            style={{
-                              maxHeight: 400,
-                              minHeight: 300,
-                              height: "100%",
-                            }}
-                            className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
-                            id="custom-prompt-editor-preview"
-                          >
-                            <div
-                              translate="no"
-                              className="ProseMirror [&_p]:py-1.5"
-                              contentEditable="false"
-                            >
-                              {/* =============typing description=================== */}
-                              {innervalueofcustomechattemplate == "" ? null : (
-                                <textarea
-                                  className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
-                                  value={innervalueofcustomechattemplate}
-                                  onChange={handleChangeDescriptions}
-                                  placeholder="Your custome template
-                                Start typing..."
-                                />
-                              )}
-                              {/* =============typing description=================== */}
+                              <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                                <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
+                                  <span className="text-red-500 font-semibold text-[20px] sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
+                                    Edit or Use ( Template )
+                                  <TooltipInfo text="Use this template in chat" />
+                                  </span>
+                                  <div className="editor-textarea h-full w-full">
+                                    <div
+                                      style={{
+                                        maxHeight: 400,
+                                        minHeight: 300,
+                                        height: "100%",
+                                      }}
+                                      className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
+                                      id="custom-prompt-editor-preview"
+                                    >
+                                      <div
+                                        translate="no"
+                                        className="ProseMirror [&_p]:py-1.5"
+                                        contentEditable="false"
+                                      >
+                                        {/* =============typing description=================== */}
+                                        {innervalueofcustomechattemplate == "" ? null : (
+                                          <textarea
+                                            className="resize-none w-full h-[90%] p-10 absolute top-0 left-0 border-none bg-transparent focus:outline-none"
+                                            value={innervalueofcustomechattemplate}
+                                            onChange={handleChangeDescriptions}
+                                            placeholder="Your custome template
+                                          Start typing..."
+                                          />
+                                        )}
+                                        {/* =============typing description=================== */}
+                                      </div>
+                                    </div>
+                                    <div className="flex w-full flex-row justify-between">
+                                      <div />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              {/* ====================Third layer which is value of chat template End========= */}
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {/* ====================Third layer which is value of chat template============ */}
+
+                          <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
+                            <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
+                              <span className="text-red-500 sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
+                                PREVIEW (Template)
+                                <TooltipInfo text="Use this template in chat" />
+                              </span>
+                              <div className="editor-textarea h-full w-full">
+                                <div
+                                  style={{
+                                    maxHeight: 400,
+                                    minHeight: 300,
+                                    height: "100%",
+                                  }}
+                                  className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
+                                  id="custom-prompt-editor-preview"
+                                >
+                                  <div
+                                    translate="no"
+                                    className="ProseMirror [&_p]:py-1.5"
+                                    contentEditable="false"
+                                  >
+                                    {value_of_template_to_use && (
+                                      <>{value_of_template_to_use}</>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex w-full flex-row justify-between">
+                                  <div />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div className="flex w-full flex-row justify-between">
-                            <div />
-                          </div>
-                        </div>
-                      </div>
+                          {/* ====================Third layer which is value of chat template End========= */}
+                        </>
+                      )}
                     </div>
-                    {/* ====================Third layer which is value of chat template End========= */}
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {/* ====================Third layer which is value of chat template============ */}
-
-                <div className="w-5/12 h-[500px] flex flex-col items-end self-stretch border-r border-purple-100 pt-3 pl-3">
-                  <div className="relative w-full h-full rounded-md whitespace-pre-wrap text-gray-500 bg-blue-900 p-3 mb-3 overflow-y-scroll">
-                    <span className="text-red-500 sticky top-0 z-50 flex w-full overflow-y-scroll whitespace-pre-wrap bg-blue-900 pb-2 text-xs text-black/30">
-                      PREVIEW (Template)
-                      <TooltipInfo text="Use this template in chat" />
-                    </span>
-                    <div className="editor-textarea h-full w-full">
-                      <div
-                        style={{
-                          maxHeight: 400,
-                          minHeight: 300,
-                          height: "100%",
-                        }}
-                        className="focus:outline-none focus:expand no-scrollbar mb-2 w-full resize-none overflow-scroll rounded text-left text-grey-500 placeholder-purple-300 shadow-none  transition-all duration-300 focus:w-full focus:border-green-700 focus:ring-0 focus:ring-transparent"
-                        id="custom-prompt-editor-preview"
-                      >
-                        <div
-                          translate="no"
-                          className="ProseMirror [&_p]:py-1.5"
-                          contentEditable="false"
+                  </DialogContent>
+                  <DialogActions>
+                    {show_create_input ? (
+                      <>
+                        <button
+                          className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
+                          onClick={() => {
+                            create_new_template();
+                          }}
                         >
-                          {value_of_template_to_use && (
-                            <>{value_of_template_to_use}</>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex w-full flex-row justify-between">
-                        <div />
+                          create
+                        </button>
+                        <button
+                          className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
+                          onClick={() => {
+                            setshow_create_input(false);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : null}
+                    {show_button_to_edit_text_area_description ? (
+                      <>
+                        <button
+                          className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
+                          onClick={() => {
+                            update_the_description();
+                          }}
+                        >
+                          update
+                        </button>
+                        <button
+                          className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
+                          onClick={() => {
+                            setinnervalueofcustomechattemplate(
+                              previousinnervalueofcustomechattemplate
+                            );
+                            setshow_button_to_edit_text_area_description(false);
+                          }}
+                        >
+                          reset
+                        </button>
+                      </>
+                    ) : null}
+
+                    {show_only_custom ? (
+                      <button
+                        className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
+                        onClick={use_custome_text}
+                      >
+                        Use Prompt
+                      </button>
+                    ) : (
+                      <button
+                        className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
+                        onClick={use_choosen_text_to_question}
+                      >
+                        Use Prompt
+                      </button>
+                    )}
+                  </DialogActions>
+                </Dialog>
+
+                <Popover
+                  id={id}
+                  open={openPop}
+                  anchorEl={popStat}
+                  onClose={handlePopoverClose}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  className="shadow-none"
+                >
+                
+                <div className="w-full md:w-[800px] border border-grey-300 bg-white shadow-lg md:left-0 rounded-xl">
+            <div>
+              <div className="px-4 py-5">
+                <div className="space-y-1.5 w-full">
+                  <label htmlFor="search" className="sr-only">
+                    <span className="flex items-center space-x-1">
+                      <span>Search</span>
+                    </span>
+                  </label>
+                  <div className="py-1 md:!mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                    <div className="flex items-center grow gap-2 py-1.5">
+                        <ChatIconFifth/>
+                      <div className="flex gap-1 grow">
+                        <input
+                          id="search"
+                          type="search"
+                          className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                          placeholder="Search by entry name, tag, or tone"
+                          autoComplete="off"
+                          defaultValue=""
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* ====================Third layer which is value of chat template End========= */}
-              </>
-            )}
-          </div>
-        </DialogContent>
-        <DialogActions>
-          {show_create_input ? (
-            <>
-              <button
-                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
-                onClick={() => {
-                  create_new_template();
-                }}
-              >
-                create
-              </button>
-              <button
-                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
-                onClick={() => {
-                  setshow_create_input(false);
-                }}
-              >
-                Cancel
-              </button>
-            </>
-          ) : null}
-          {show_button_to_edit_text_area_description ? (
-            <>
-              <button
-                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-green-700 px-5"
-                onClick={() => {
-                  update_the_description();
-                }}
-              >
-                update
-              </button>
-              <button
-                className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-red text-white bg-red-600 px-5"
-                onClick={() => {
-                  setinnervalueofcustomechattemplate(
-                    previousinnervalueofcustomechattemplate
-                  );
-                  setshow_button_to_edit_text_area_description(false);
-                }}
-              >
-                reset
-              </button>
-            </>
-          ) : null}
-
-          {show_only_custom ? (
-            <button
-              className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
-              onClick={use_custome_text}
-            >
-              Use Prompt
-            </button>
-          ) : (
-            <button
-              className="focus:outline-none select-none items-center rounded py-3 text-sm font-medium ring-offset-2 focus:ring-2 flex justify-around bg-blue text-white px-5"
-              onClick={use_choosen_text_to_question}
-            >
-              Use Prompt
-            </button>
-          )}
-        </DialogActions>
-      </Dialog>
-
-      <Popover
-        id={id}
-        open={openPop}
-        anchorEl={popStat}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        className="shadow-none"
-      >
-      
-      <div className="w-full md:w-[800px] border border-grey-300 bg-white shadow-lg md:left-0 rounded-xl">
-  <div>
-    <div className="px-4 py-5">
-      <div className="space-y-1.5 w-full">
-        <label htmlFor="search" className="sr-only">
-          <span className="flex items-center space-x-1">
-            <span>Search</span>
-          </span>
-        </label>
-        <div className="py-1 md:!mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-          <div className="flex items-center grow gap-2 py-1.5">
-              <ChatIconFifth/>
-            <div className="flex gap-1 grow">
-              <input
-                id="search"
-                type="search"
-                className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                placeholder="Search by entry name, tag, or tone"
-                autoComplete="off"
-                defaultValue=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div className="mx-3 overflow-y-scroll flex items-center no-scrollbar">
-      <span className="pr-2 mb-2">
-        <button>
-          <div className="inline-block">
-            <div className="text-xs font-medium rounded-full text-gray-900 border py-1 px-3 border-gray-200 bg-white hover hover:bg-gray-100 cursor-pointer">
-              <strong className="font-semibold">
-                <div className="whitespace-nowrap">Tone</div>
-              </strong>
-            </div>
-          </div>
-        </button>
-      </span>
-    </div>
-    <div className="relative inline-block text-left w-full z-auto max-h-[12.875rem] overflow-y-auto overscroll-contain">
-      <div>
-        <div className="mx-4 text-gray-500 text-xs my-3 pb-2 border-b border-gray-200">
-          TONE
-        </div>
-
-        <div className="flex">
-          {brandVoice && (
-            <>
-              {brandVoice.length > 0 ? (
-                <>
-                  {brandVoice.map((data, index) => (
-                    <div key={index}>
-                      <ul className="py-1">
-                        <label className="flex text-center items-center rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 mx-4 px-4 py-2 text-sm cursor-pointer">
-                          <input
-                            data-testid={`menu-item-${data.id}`}
-                            type="checkbox"
-                            id={data.id}
-                            className="form-checkbox focus:ring-blue-500 h-4 w-4 mr-2 text-blue-800 border-gray-300"
-                            value={data.brand_voice}
-                            checked={selectedSummarizes.some(
-                              (item) => item.label === data.brand_voice
-                            )}
-                            onChange={handleBrandVoiceChange}
-                          />
-                          <div className="truncate text-ellipsis max-w-[12rem] md:max-w-[40rem]">
-                            {data.brand_voice}
-                          </div>
-                          <div className="ml-2">
-                            <svg
-                              className="w-4 h-4"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16"
-                            >
-                              <ChatIconNine/>
-                            </svg>
-                          </div>
-                        </label>
-                      </ul>
+              </div>
+              <div className="mx-3 overflow-y-scroll flex items-center no-scrollbar">
+                <span className="pr-2 mb-2">
+                  <button>
+                    <div className="inline-block">
+                      <div className="text-xs font-medium rounded-full text-gray-900 border py-1 px-3 border-gray-200 bg-white hover hover:bg-gray-100 cursor-pointer">
+                        <strong className="font-semibold">
+                          <div className="whitespace-nowrap">Tone</div>
+                        </strong>
+                      </div>
                     </div>
-                  ))}
-                </>
-              ) : null}
-            </>
-          )}
-        </div>
-      </div>
-      <div></div>
-    </div>
-  </div>
-  <div className="py-3 px-4 flex justify-end border-t border-gray-200">
-    <button
-      type="button"
-      className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 justify-end"
-      onClick={() => {
-        set_show_summarize_tone(true);
-        handlePopoverClose();
-      }}
-    >
-      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-        Apply to chat
-      </span>
-    </button>
-  </div>
-</div>
+                  </button>
+                </span>
+              </div>
+              <div className="relative inline-block text-left w-full z-auto max-h-[12.875rem] overflow-y-auto overscroll-contain">
+                <div>
+                  <div className="mx-4 text-gray-500 text-xs my-3 pb-2 border-b border-gray-200">
+                    TONE
+                  </div>
 
-        
-      </Popover>
+                  <div className="flex">
+                    {brandVoice && (
+                      <>
+                        {brandVoice.length > 0 ? (
+                          <>
+                            {brandVoice.map((data, index) => (
+                              <div key={index}>
+                                <ul className="py-1">
+                                  <label className="flex text-center items-center rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 mx-4 px-4 py-2 text-sm cursor-pointer">
+                                    <input
+                                      data-testid={`menu-item-${data.id}`}
+                                      type="checkbox"
+                                      id={data.id}
+                                      className="form-checkbox focus:ring-blue-500 h-4 w-4 mr-2 text-blue-800 border-gray-300"
+                                      value={data.brand_voice}
+                                      checked={selectedSummarizes.some(
+                                        (item) => item.label === data.brand_voice
+                                      )}
+                                      onChange={handleBrandVoiceChange}
+                                    />
+                                    <div className="truncate text-ellipsis max-w-[12rem] md:max-w-[40rem]">
+                                      {data.brand_voice}
+                                    </div>
+                                    <div className="ml-2">
+                                      <svg
+                                        className="w-4 h-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 16 16"
+                                      >
+                                        <ChatIconNine/>
+                                      </svg>
+                                    </div>
+                                  </label>
+                                </ul>
+                              </div>
+                            ))}
+                          </>
+                        ) : null}
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div></div>
+              </div>
+            </div>
+            <div className="py-3 px-4 flex justify-end border-t border-gray-200">
+              <button
+                type="button"
+                className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0 justify-end"
+                onClick={() => {
+                  set_show_summarize_tone(true);
+                  handlePopoverClose();
+                }}
+              >
+                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                  Apply to chat
+                </span>
+              </button>
+            </div>
+          </div>
 
-      <Toaster />
+                  
+                </Popover>
+          {/* =====================Browse prompts ============ */}
 
-      {/* =====================Browse prompts ============ */}
+
+     </div>
+  
+     
     </>
   );
 };

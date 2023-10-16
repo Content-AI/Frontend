@@ -473,7 +473,7 @@ const ListOfDocument = (props) => {
         ?
         <LoadingPage />
         :
-        <div className="space-y-8 px-4 md:px-10  w-full" ref={popupRef}>
+        <div className="space-y-8 min-w-min px-4 md:px-10 mt-8 w-full" ref={popupRef}>
         
           {props.SHOW == "trash"
             ?
@@ -492,7 +492,7 @@ const ListOfDocument = (props) => {
                   </svg>
                 </div>
               </div>
-              <div class="p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
+              <div className="p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
             </>
             :
             null
@@ -515,9 +515,8 @@ const ListOfDocument = (props) => {
                       <div className="flex items-center space-x-6">
                         <div className="w-80">
                           <div className="w-full space-y-1.5">
-                            <label htmlFor="search-content" className="sr-only"
-                            ><span className="flex items-center space-x-1"><span>Search content</span></span></label
-                            >
+                            <label htmlFor="search-content" className="sr-only">
+                            <span className="flex items-center space-x-1"><span>Search content</span></span></label>
 
 
                             <>
@@ -688,7 +687,7 @@ const ListOfDocument = (props) => {
                               checked={selectAll}
                               onChange={handleSelectAll}
                               type="checkbox"
-                              class="mr-[15px] mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                              className="mr-[15px] mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             />
                           </th>
                           <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
@@ -707,16 +706,16 @@ const ListOfDocument = (props) => {
                             {documentData.slice(0,10).map((data, index) => (
                               <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
 
-                                <td class="w-12 p-3.5">
-                                  <div class="absolute inset-y-0 left-0 w-0.5">
+                                <td className="w-12 p-3.5">
+                                  <div className="absolute inset-y-0 left-0 w-0.5">
 
                                   </div>
-                                  <div class="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-2">
                                     <input
                                       checked={selectedItems.includes(data.id) || selectAll}
                                       onChange={() => handleCheckboxChange(data.id)}
-                                      type="checkbox" id="" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                                    <label for="" class="block text-md font-medium text-gray-600">
+                                      type="checkbox" id="" className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                                    <label for="" className="block text-md font-medium text-gray-600">
                                     </label>
                                   </div>
                                 </td>
@@ -888,16 +887,16 @@ const ListOfDocument = (props) => {
                             {documentData.map((data, index) => (
                               <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
 
-                                <td class="w-12 p-3.5">
-                                  <div class="absolute inset-y-0 left-0 w-0.5">
+                                <td className="w-12 p-3.5">
+                                  <div className="absolute inset-y-0 left-0 w-0.5">
 
                                   </div>
-                                  <div class="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-2">
                                     <input
                                       checked={selectedItems.includes(data.id) || selectAll}
                                       onChange={() => handleCheckboxChange(data.id)}
-                                      type="checkbox" id="" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                                    <label for="" class="block text-md font-medium text-gray-600">
+                                      type="checkbox" id="" className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                                    <label for="" className="block text-md font-medium text-gray-600">
                                     </label>
                                   </div>
                                 </td>
@@ -1097,7 +1096,7 @@ const ListOfDocument = (props) => {
                                                   <path d="M6.58,8.02c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Zm4.27,0c0-.39-.32-.71-.71-.71s-.71,.32-.71,.71v4.72c0,.39,.32,.71,.71,.71s.71-.32,.71-.71v-4.72Z" fill="#E02424" fillRule="evenodd" role="none"></path>
                                                   <path d="M6.59,2.3c.37-.37,.88-.58,1.41-.58s1.04,.21,1.41,.58c.31,.31,.5,.7,.56,1.12h-3.95c.06-.42,.26-.82,.56-1.12Zm-2.29,1.12c.07-.88,.45-1.71,1.07-2.33C6.07,.39,7.02,0,8,0s1.93,.39,2.62,1.09c.63,.63,1.01,1.46,1.07,2.33h3.17c.47,0,.86,.38,.86,.86s-.38,.86-.86,.86H1.14c-.47,0-.86-.38-.86-.86s.38-.86,.86-.86h3.16Z" fill="#E02424" fillRule="evenodd" role="none"></path>
                                                 </svg>
-                                                <span role="none">Delete</span>
+                                                <span role="none">Move to Trash</span>
                                               </button>
                                             </div>
                                           </div>

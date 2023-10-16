@@ -114,8 +114,11 @@ useEffect(()=>{
 
   return (
     <div className="pl-6">
+
       <h1 className="text-2xl font-bold mb-6 p-8">Dashboard</h1>
+
       <div className="max-w-[843px] mx-auto mt-10 mb-12">
+      
         <div className="mb-6">
           <h1 className="text-[40px] font-bold">Welcome to Jasper</h1>
           <p className="text-sm">

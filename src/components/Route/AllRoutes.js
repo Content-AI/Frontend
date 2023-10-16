@@ -38,12 +38,24 @@ import AcceptInvitationPage from "../pages/AcceptInvitationPage";
 import { BsWhatsapp } from "react-icons/bs";
 import Workflow from "../pages/workflow/Workflow";
 
+
+
 import Help from "../pages/Help/Help";
 import VoiceRecognition from "../pages/GenerateUsingVoice/VoiceRecognition";
 import CompanyRegistrationForm from "../pages/BusinessPlan/CompanyRegistrationForm";
 
+
+import {
+  _hide_nav_,
+  _show_nav_,
+} from "../../features/HideShowNavBarGlobalState";
+
+
 const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   const location = useLocation();
+
+  const dispatch = useDispatch();
+
   const [isSettings,set_isSettings] = useState(false);
   const [show_invitation,setshow_invitation] = useState(false);
 
@@ -66,6 +78,7 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
   }, []);
 
 
+
   return (
     <>
       {TOKEN ? (
@@ -81,8 +94,6 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
                   null
                 :
                   ' flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white '
-                }
-              </>
               }
               `
               }

@@ -6,6 +6,8 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
+import ApiKeyInput from "../../pages/Template/ApiKeyInput";
+
 const ISwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
@@ -84,6 +86,13 @@ const Integrations = () => {
           <div className="flex items-center mb-4 justify-between">
               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mb-1 pb-1">Integrations</h2>
           </div>
+
+          <section className="p-6 mb-3  bg-slate-100 shadow-sm rounded">
+                <span className="flex flex-col flex-grow mr-2">
+                </span>
+                  <ApiKeyInput/>               
+          </section>
+
           <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
                 <span className="flex flex-col flex-grow mr-2">

@@ -18,6 +18,7 @@ import './Template.css'
 
 
 import CardDoc from "../../Card/CardDoc";
+import StreamingComponent from "./StreamingComponent";
 
 const buttonTags = [
   "All",
@@ -286,6 +287,9 @@ const Template = ({AUTH_TOKEN}) => {
 
   return (
     <div className="w-full ">
+
+      {/* <StreamingComponent /> */}
+
       <h1 className="text-2xl font-bold mb-6">Templates</h1>
 
       <div>
@@ -376,59 +380,42 @@ const Template = ({AUTH_TOKEN}) => {
                 <>
                 {templateData.map((items, index) => {
                   return (
-                    <div className="flex">
-                      <div className="flex flex-col rounded-lg border border-border cursor-pointer hover:bg-slate-100" 
-                              onClick={() => {
-                                if (items.premium) {
-                                    if (subscriptions_check.status === "trial") {
-                                      notifyerror(
-                                        "To use this Template you need to upgrade your plan"
-                                      );
-                                      return true;
-                                    }
-                                  }
-                                  if (items.custome === "user") {
-                                    navigate(`/template/${items.id}?custom=user`);
-                                  } else {
-                                    navigate(`/template/${items.id}?custom=normal_user`);
-                                  }
-                              }}
-                              >
-                                        
-                            <div className="bg-gray-light p-6 rounded-lg">
-
-                              <div className="flex">
-                              <div>
-                                <div className="flex">
-                                  <div>
-                                    <img 
-                                      src="https://aiprojectfilestorage.s3-ap-southeast-2.amazonaws.com/icons/1.png" alt={items.title} 
-                                      className="w-5 h-5" />
-                                  </div>
-                                  <div>
-                                    <p className="text-md font-bold ml-3">{items.title}</p>
-                                  </div>
-                                  {items.premium && (
-                                    <span className="ml-4 w-[75px] h-[30px] text-xs md:text-sm text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
-                                      Premium
-                                    </span>
-                                  )}
-                                </div>
-
-                                <div 
-                                    title={items.description}
-                                  >
-                                    <p className="text-sm min-h-[50px] mt-8">
-                                      {(items.description).slice(0,300)+".."}
-                                    </p>
-                                </div>
-
-                          </div>
-                          </div>
-
-                          </div>
+                    <div
+                        key={items.id}
+                        className="card flex p-6 border border-border rounded-xl cursor-pointer"
+                        onClick={() => {
+                          if (items.premium) {
+                            if (subscriptions_check.status === "trial") {
+                              notifyerror(
+                                "To use this Template you need to upgrade your plan"
+                              );
+                              return true;
+                            }
+                          }
+                          if (items.custome === "user") {
+                            navigate(`/template/${items.id}?custom=user`);
+                          } else {
+                            navigate(`/template/${items.id}?custom=normal_user`);
+                          }
+                        }}
+                      >
+                        <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                          <img src={items.icon} alt="" className="block w-full" />
                         </div>
-                    </div>
+                        <div className="content relative flex-auto pl-4">
+                          <div className="title flex items-center justify-between gap-2 mb-2">
+                            <h4 className="text-sm font-bold leading-none">
+                              {items.title}
+                            </h4>
+                            {items.premium && (
+                              <span className="md:inline text-xs md:text-sm lg:text-base text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                                Premium
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm leading-none">{items.description}</p>
+                        </div>
+                      </div>
                   );
                 })
                 }

@@ -118,7 +118,10 @@ export default function Editor({ data, setData }) {
   );
 
   useEffect(() => {
+
+
     if (activeIndex) {
+
 
       const targetBlock = document.getElementsByClassName("ce-block")[activeIndex]
       const holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
@@ -176,8 +179,6 @@ export default function Editor({ data, setData }) {
   useEffect(() => {
     if (currentAnswer) {
 
-      
-      
       const targetBlock =
       document.getElementsByClassName("ce-block")[activeIndex],
       holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
@@ -195,9 +196,9 @@ export default function Editor({ data, setData }) {
   }, [currentAnswer]);
 
 
-  useEffect(()=>{
-    console.log("data ",data)
-  },[data])
+  // useEffect(()=>{
+  //   console.log("data ",data)
+  // },[data])
 
   return (
     <div className="editor-container">

@@ -15,6 +15,13 @@ import { _save_user_profile } from './features/Fullprofile';
 import {
   _load_screen_
 } from "./features/LoadingScreen";
+
+import {
+  _hide_nav_,
+  _show_nav_,
+} from "./features/HideShowNavBarGlobalState";
+
+
 import { _delete_token_ } from "./features/AuthenticationToken";
 import { _delete_user_profile } from "./features/Fullprofile";
 import { _save_details_ } from "./features/Subscriptions";
@@ -318,6 +325,8 @@ function App() {
         // }
     }
   })
+
+
 
 
 

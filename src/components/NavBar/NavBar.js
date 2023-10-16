@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   _hide_nav_,
   _show_nav_,
 } from "../../features/HideShowNavBarGlobalState";
+
 import { _make_blur_ } from "../../features/BlurBg";
 import {
   MdCircle,
@@ -165,6 +166,33 @@ const Navbar = () => {
   };
 
 
+
+
+  // =========Hide small navbar when ever click in other div========  
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        // Call your function here when clicking outside the div
+        // For example, you can call a function like handleOutsideClick()
+        handleOutsideClick();
+      }
+    };
+
+    const handleOutsideClick = () => {
+      // console.log("Clicked outside the div");
+      // dispatch(_hide_nav_(false))
+      // You can put your logic or function call here
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       {show_invitation
@@ -178,7 +206,8 @@ const Navbar = () => {
             :
             <>
 
-              <div className="z-20 fixed top-0 left-0 right-0 flex items-center justify-between px-6 sm:pl-64 bg-white border-b border-border">
+              <div className="z-20 fixed top-0 left-0 right-0 flex items-center justify-between px-6 sm:pl-64 bg-white border-b border-border"
+              >
                 <div className="sm:hidden">
                   {NAV_BAR_CONDITION ? (
                     <>
@@ -204,7 +233,8 @@ const Navbar = () => {
                 </div>
 
                 {/* ==========the large navbar============= */}
-                <div className="sm:hidden pl-4">
+                <div className="sm:hidden pl-4"
+                >
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
                     className="w-[50px] h-[50px] rounded-full"
@@ -572,343 +602,345 @@ const Navbar = () => {
                 (
                   <>
 
-                  <div
-                    className={`${NAV_BAR_CONDITION ? "" : "-translate-x-full"
-                      } fixed left-0 top-0 w-64 h-full shadow-2xl bg-white transform z-[100] duration-500 mt-[40px]`}
-                    style={{ overflowY: 'hidden' }}
-                  >
+                    <div
+                      ref={divRef}
+                      className={`${NAV_BAR_CONDITION ? "" : "-translate-x-full"
+                        } fixed left-0 top-0 w-64 h-full shadow-2xl bg-white transform z-[100] duration-500 mt-[40px]`}
+                      style={{ overflowY: 'hidden' }}
+                    >
                    
-                   <div className="flex flex-col">
-                            <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
+                      <div className="flex flex-col">
+                              <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
 
-                              {navURL.map((items, index) => {
-                                const { title, link, offset } = items;
-                                return (
-                                    <div
-                                      key={"nav_" + index}
-                                      className={clsx({ "mt-auto": offset })}
-                                    >
-                                    <Link
-                                      to={link}
-                                      onClick={() => {
-                                        handleLinkClick(title)
-                                        dispatch(_hide_nav_(!NAV_BAR_CONDITION));
-                                        }}
-                                      className={clsx("flex items-center p-1", {
-                                        "font-bold text-blue bg-blue/10 rounded-lg":
-                                          activeLink === title,
-                                        "mb-4": navURL.length - 1 !== index,
-                                      })}
-                                    >
-                                        <span className="icon w-6 h-6 p-1 inline-flex items-center justify-center">
-                                          <NavIcons
-                                            icon={title.toLocaleLowerCase()}
-                                            fill={activeLink === title ? "#1D43FF" : "#343330"}
-                                          />
-                                        </span>
-                                        <p className="text-[14px] capitalize font-semibold ml-2">
-                                          {title}
-                                        </p>
-                                    </Link>
-                                  </div>
-                                );
-                              })}
-
-                                {/* ====favorite ===== */}
-
-                                <nav className="flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
-                                  <div className="flex">
-                                    <div>
-                                      <svg className="w-6 h-6 text-[14px] capitalize font-semibold ml-2 mt-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" x="0px" y="0px">
-                                        <path d="m51.5766791,13.4525611c.2421875,0,.4848633-.0874023.6772461-.2646484l2.2060547-2.0327148c.40625-.3740234.4321289-1.0068359.0576172-1.4130859s-1.0068359-.4335938-1.4130859-.0576172l-2.2060547,2.0327148c-.6763916.5797729-.1963501,1.7676392.6782227,1.7353516Z"/>
-                                        <path d="m52.8134955,17.4320533c.1187744.5425415.6699219.8783569,1.1948242.7563477l2.9272461-.6577148c.5390625-.1210938.8774414-.6557617.7563477-1.1948242-.121582-.5390625-.6582031-.8789062-1.1948242-.7563477l-2.9272461.6577148c-.5390625.1210938-.8774414.6557617-.7563477,1.1948242Z"/>
-                                        <path d="m46.6347846,10.7264869c.5128784.1647339,1.0890503-.1244507,1.2524414-.6567383l.894043-2.8637695c.1645508-.5268555-.1293945-1.0878906-.6567383-1.2524414-.5263672-.1650391-1.0878906.128418-1.2524414.6567383l-.894043,2.8637695c-.1645508.5268555.1293945,1.0878906.6567383,1.2524414Z"/>
-                                        <path d="m59.9804877,38.2767799l-19.8779297-7.206543c-.8056641-.2919922-1.6254883-.1899414-2.2524414.2773438-.6279297.4672852-.9609375,1.2246094-.9130859,2.0776367l1.184082,21.1098633c.0175171,2.0169067,2.6036377,3.8449707,4.3384399,2.5282593-.000061.000061,6.1679077-4.5873413,6.1679077-4.5873413l3.4355469,4.6191406c.7752075,1.085144,2.4128418,1.3299561,3.4716797.5101929,0,.000061,2.3774414-1.7680054,2.3774414-1.7680054,1.097168-.8164062,1.3261719-2.3740234.5092773-3.4711914l-3.4355469-4.6196289,6.1674805-4.5878906c1.7588501-1.2825928.7544556-4.2845459-1.1728516-4.8818359Zm-.0205078,3.2773438l-6.9702148,5.1845703c-.4433594.3295898-.5351562.9560547-.2055664,1.3989258l4.0327148,5.4223633c.1582031.2124023.1137695.5146484-.0986328.6728516l-2.3769531,1.7675781c-.2750854.1598511-.4551392.1314087-.6733398-.0986328l-4.0327148-5.421875c-.3121338-.4371948-.9733887-.5353394-1.3989258-.2055664l-6.9702148,5.1845703c-.1362305.1010742-.3569336.0166016-.4453125-.0258789-.3193359-.1494141-.6757812-.5292969-.7026367-1.0097656l-1.184082-21.1098633c-.0179443-.3515015.1531372-.4829712.4868164-.362793l19.8779297,7.2060547c.539917.1955566.9962158.9599609.6611328,1.3974609Z"/>
-                                        <path d="m26.5273627,47.7948463c.2219849.0509644.4783936.0487061.7006836,0,3.0810547-.8139648,6.0126953-1.875,8.7124023-3.152832,1.1801758-.5725098.3295898-2.3565674-.8555298-1.8076172-2.5424194,1.2036133-5.3026733,2.2070312-8.2069702,2.9838867-5.4370117-1.4589844-22.3032227-7.1113281-22.9262695-21.0249023-.3413086-7.6088867,4.9912109-11.8740234,10.4272461-12.7260742,4.5019531-.703125,9.9887695.9160156,11.4985352,6.1201172.1082764,1.1159058,1.7421265,1.2030029,1.9785156.1141968,1.4555664-5.2924194,6.9902344-6.9408569,11.515625-6.2352905,8.935791,1.2932129,13.1885376,10.7134399,8.6033325,19.5918579-.2542114.4901733-.0628052,1.093689.4279175,1.3475952.4902344.2543945,1.09375.0620117,1.3476562-.4277344,1.2392578-2.3911133,1.9296875-4.9799805,2.0512695-7.6948242.3964844-8.8486328-5.8022461-13.8051758-12.121582-14.7929688-4.6601562-.7250977-10.2358398.7114258-12.7983398,5.3232422-2.5668945-4.6152344-8.1459961-6.0522461-12.8125-5.3217773-6.3164062.9897461-12.512207,5.9467773-12.1157227,14.7915039.6904297,15.4160156,18.9833984,21.434082,24.5737305,22.9116211Z"/>
-                                        <path d="m12.715351,17.4623267c-.246582-.4941406-.8461914-.6958008-1.3408203-.4492188-3.8286133,1.9057617-5.5581055,6.9570312-3.7016602,10.8095703.2406616.5023804.848938.7040405,1.3349609.4667969.4975586-.2397461.706543-.8374023.4667969-1.3349609-1.3754883-2.8540039-.0449219-6.7392578,2.7915039-8.1513672.4941406-.2460938.6953125-.8461914.4492188-1.3408203Z"/>
-                                        <path d="m9.937519,29.9081275c-1.3264771.020813-1.315918,1.9783936.000061,2,1.3143921-.0223999,1.314209-1.9778442-.000061-2Z"/>
-                                      </svg>
-                                    </div>
-                                    <div className="text-[14px] capitalize font-semibold mt-2">
-                                      Favorites
-                                    </div>
-                                  </div>
-                                        <div className="space-y-2">
-                                          <FavoriteDocuments TOKEN={TOKEN}/>
-                                        </div>
-                                  </nav>
-
-                                {/* ====favorite ===== */}
-
-
-                                {/* ====== Profile ======== */}
-                                <div className="fixed bottom-0 w-64 p-2 mb-2 mr-3 bg-white ">
-                                <div className="relative">
-
-                                {isHovered && (
-
-                                  <div
-                                      className="absolute bottom-full left-0 w-[220px] bg-white border border-border rounded"
-                                      style={{
-                                        boxShadow:
-                                          "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
-                                      }}
-                                    >
-                                        <div className="absolute top-2 right-2 w-6 h-6">
-                                        <AiOutlineCloseCircle
-                                          onClick={() => {
-                                            setHovered(!isHovered);
+                                {navURL.map((items, index) => {
+                                  const { title, link, offset } = items;
+                                  return (
+                                      <div
+                                        key={"nav_" + index}
+                                        className={clsx({ "mt-auto": offset })}
+                                      >
+                                      <Link
+                                        to={link}
+                                        onClick={() => {
+                                          handleLinkClick(title)
+                                          dispatch(_hide_nav_(!NAV_BAR_CONDITION));
                                           }}
-                                          className="w-full h-full duration-300 hover:text-red-500 cursor-pointer"
-                                        />
+                                        className={clsx("flex items-center p-1", {
+                                          "font-bold text-blue bg-blue/10 rounded-lg":
+                                            activeLink === title,
+                                          "mb-4": navURL.length - 1 !== index,
+                                        })}
+                                      >
+                                          <span className="icon w-6 h-6 p-1 inline-flex items-center justify-center">
+                                            <NavIcons
+                                              icon={title.toLocaleLowerCase()}
+                                              fill={activeLink === title ? "#1D43FF" : "#343330"}
+                                            />
+                                          </span>
+                                          <p className="text-[14px] capitalize font-semibold ml-2">
+                                            {title}
+                                          </p>
+                                      </Link>
+                                    </div>
+                                  );
+                                })}
+
+                                  {/* ====favorite ===== */}
+
+                                  <nav className="flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
+                                    <div className="flex">
+                                      <div>
+                                        <svg className="w-6 h-6 text-[14px] capitalize font-semibold ml-2 mt-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" x="0px" y="0px">
+                                          <path d="m51.5766791,13.4525611c.2421875,0,.4848633-.0874023.6772461-.2646484l2.2060547-2.0327148c.40625-.3740234.4321289-1.0068359.0576172-1.4130859s-1.0068359-.4335938-1.4130859-.0576172l-2.2060547,2.0327148c-.6763916.5797729-.1963501,1.7676392.6782227,1.7353516Z"/>
+                                          <path d="m52.8134955,17.4320533c.1187744.5425415.6699219.8783569,1.1948242.7563477l2.9272461-.6577148c.5390625-.1210938.8774414-.6557617.7563477-1.1948242-.121582-.5390625-.6582031-.8789062-1.1948242-.7563477l-2.9272461.6577148c-.5390625.1210938-.8774414.6557617-.7563477,1.1948242Z"/>
+                                          <path d="m46.6347846,10.7264869c.5128784.1647339,1.0890503-.1244507,1.2524414-.6567383l.894043-2.8637695c.1645508-.5268555-.1293945-1.0878906-.6567383-1.2524414-.5263672-.1650391-1.0878906.128418-1.2524414.6567383l-.894043,2.8637695c-.1645508.5268555.1293945,1.0878906.6567383,1.2524414Z"/>
+                                          <path d="m59.9804877,38.2767799l-19.8779297-7.206543c-.8056641-.2919922-1.6254883-.1899414-2.2524414.2773438-.6279297.4672852-.9609375,1.2246094-.9130859,2.0776367l1.184082,21.1098633c.0175171,2.0169067,2.6036377,3.8449707,4.3384399,2.5282593-.000061.000061,6.1679077-4.5873413,6.1679077-4.5873413l3.4355469,4.6191406c.7752075,1.085144,2.4128418,1.3299561,3.4716797.5101929,0,.000061,2.3774414-1.7680054,2.3774414-1.7680054,1.097168-.8164062,1.3261719-2.3740234.5092773-3.4711914l-3.4355469-4.6196289,6.1674805-4.5878906c1.7588501-1.2825928.7544556-4.2845459-1.1728516-4.8818359Zm-.0205078,3.2773438l-6.9702148,5.1845703c-.4433594.3295898-.5351562.9560547-.2055664,1.3989258l4.0327148,5.4223633c.1582031.2124023.1137695.5146484-.0986328.6728516l-2.3769531,1.7675781c-.2750854.1598511-.4551392.1314087-.6733398-.0986328l-4.0327148-5.421875c-.3121338-.4371948-.9733887-.5353394-1.3989258-.2055664l-6.9702148,5.1845703c-.1362305.1010742-.3569336.0166016-.4453125-.0258789-.3193359-.1494141-.6757812-.5292969-.7026367-1.0097656l-1.184082-21.1098633c-.0179443-.3515015.1531372-.4829712.4868164-.362793l19.8779297,7.2060547c.539917.1955566.9962158.9599609.6611328,1.3974609Z"/>
+                                          <path d="m26.5273627,47.7948463c.2219849.0509644.4783936.0487061.7006836,0,3.0810547-.8139648,6.0126953-1.875,8.7124023-3.152832,1.1801758-.5725098.3295898-2.3565674-.8555298-1.8076172-2.5424194,1.2036133-5.3026733,2.2070312-8.2069702,2.9838867-5.4370117-1.4589844-22.3032227-7.1113281-22.9262695-21.0249023-.3413086-7.6088867,4.9912109-11.8740234,10.4272461-12.7260742,4.5019531-.703125,9.9887695.9160156,11.4985352,6.1201172.1082764,1.1159058,1.7421265,1.2030029,1.9785156.1141968,1.4555664-5.2924194,6.9902344-6.9408569,11.515625-6.2352905,8.935791,1.2932129,13.1885376,10.7134399,8.6033325,19.5918579-.2542114.4901733-.0628052,1.093689.4279175,1.3475952.4902344.2543945,1.09375.0620117,1.3476562-.4277344,1.2392578-2.3911133,1.9296875-4.9799805,2.0512695-7.6948242.3964844-8.8486328-5.8022461-13.8051758-12.121582-14.7929688-4.6601562-.7250977-10.2358398.7114258-12.7983398,5.3232422-2.5668945-4.6152344-8.1459961-6.0522461-12.8125-5.3217773-6.3164062.9897461-12.512207,5.9467773-12.1157227,14.7915039.6904297,15.4160156,18.9833984,21.434082,24.5737305,22.9116211Z"/>
+                                          <path d="m12.715351,17.4623267c-.246582-.4941406-.8461914-.6958008-1.3408203-.4492188-3.8286133,1.9057617-5.5581055,6.9570312-3.7016602,10.8095703.2406616.5023804.848938.7040405,1.3349609.4667969.4975586-.2397461.706543-.8374023.4667969-1.3349609-1.3754883-2.8540039-.0449219-6.7392578,2.7915039-8.1513672.4941406-.2460938.6953125-.8461914.4492188-1.3408203Z"/>
+                                          <path d="m9.937519,29.9081275c-1.3264771.020813-1.315918,1.9783936.000061,2,1.3143921-.0223999,1.314209-1.9778442-.000061-2Z"/>
+                                        </svg>
                                       </div>
-
-                                      <div className="flex flex-col justify-center ">
-                                        <div className="py-4 px-2">
-
-                                          {/* =================workspace==================== */}
-                                          <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
-                                          onClick={()=>{
-                                            dispatch(_hide_nav_(!NAV_BAR_CONDITION))
-                                            navigate("/change-work-space")
-                                          }}>
-                                            <div className="mr-2">
-                                            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" x="0px" y="0px">
-                                              <g dataName="Layer 27">
-                                                  <path d="M47,24H30V23a3,3,0,0,0-3-3H21a3,3,0,0,0-3,3v1H11a1,1,0,0,0,0-2H10V19a.965.965,0,0,0-.182-.542,1,1,0,0,0-.108-.168,1.2,1.2,0,0,0-.122-.078A.983.983,0,0,0,9,18H4V12H14v6H13a1,1,0,0,0,0,2h2a1,1,0,0,0,1-1V11a1,1,0,0,0-1-1H3a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1H8v2H7a1,1,0,0,0,0,2H1a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H2V47a1,1,0,0,0,2,0V30H15a1,1,0,0,0,0-2H2V26H18v1a3,3,0,0,0,3,3h2v4H19a3,3,0,0,0,0,6h4v3.586l-2.707,2.707a1,1,0,1,0,1.414,1.414L24,45.414l2.293,2.293a1,1,0,0,0,1.414-1.414L25,43.586V40h4a3,3,0,0,0,0-6H25V30h2a3,3,0,0,0,3-3V26H46v2H33a1,1,0,0,0,0,2h1V47a1,1,0,0,0,1,1H45a1,1,0,0,0,1-1V30h1a1,1,0,0,0,1-1V25A1,1,0,0,0,47,24ZM30,37a1,1,0,0,1-1,1H19a1,1,0,0,1,0-2H29A1,1,0,0,1,30,37ZM28,27a1,1,0,0,1-1,1H21a1,1,0,0,1-1-1V23a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1ZM44,40H36V36h8Zm-8,6V42h8v4Zm8-12H36V30h8Z"/>
-                                                  <path d="M24,10H47a1,1,0,0,0,1-1V1a1,1,0,0,0-1-1H23a1,1,0,0,0-1,1V17a1,1,0,0,0,1,1H47a1,1,0,0,0,1-1V13a1,1,0,0,0-2,0v3H33.816A2.966,2.966,0,0,0,34,15a3,3,0,0,0-3-3H29a3,3,0,0,0-3,3,2.966,2.966,0,0,0,.184,1H24Zm4,5a1,1,0,0,1,1-1h2a1,1,0,0,1,0,2H29A1,1,0,0,1,28,15ZM27,7.5v-2a.5.5,0,0,1,1,0v2a.5.5,0,0,1-1,0Zm16,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0ZM46,2V8H44.949A2.5,2.5,0,0,0,45,7.5v-2A2.5,2.5,0,0,0,42.5,3a2.471,2.471,0,0,0-1.5.513,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0A2.471,2.471,0,0,0,27.5,3,2.5,2.5,0,0,0,25,5.5v2a2.5,2.5,0,0,0,.051.5H24V2Z"/>
-                                              </g>
-                                            </svg>
-                                            </div>
-                                            <div>
-                                                Change Workspace
-                                            </div>
+                                      <div className="text-[14px] capitalize font-semibold mt-2">
+                                        Favorites
+                                      </div>
+                                    </div>
+                                          <div className="space-y-2">
+                                            <FavoriteDocuments TOKEN={TOKEN}/>
                                           </div>
-                                          {/* =================workspace==================== */}
+                                    </nav>
 
-                                          <Link
-                                            to="/settings/general?page=general"
+                                  {/* ====favorite ===== */}
+
+
+                                  {/* ====== Profile ======== */}
+                                  <div className="fixed bottom-0 w-64 p-2 mb-2 mr-3 bg-white ">
+                                  <div className="relative">
+
+                                  {isHovered && (
+
+                                    <div
+                                        className="absolute bottom-full left-0 w-[220px] bg-white border border-border rounded"
+                                        style={{
+                                          boxShadow:
+                                            "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
+                                        }}
+                                      >
+                                          <div className="absolute top-2 right-2 w-6 h-6">
+                                          <AiOutlineCloseCircle
                                             onClick={() => {
                                               setHovered(!isHovered);
-                                              dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                                             }}
-                                          >
+                                            className="w-full h-full duration-300 hover:text-red-500 cursor-pointer"
+                                          />
+                                        </div>
+
+                                        <div className="flex flex-col justify-center ">
+                                          <div className="py-4 px-2">
+
+                                            {/* =================workspace==================== */}
+                                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
+                                            onClick={()=>{
+                                              dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                                              navigate("/change-work-space")
+                                            }}>
+                                              <div className="mr-2">
+                                              <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" x="0px" y="0px">
+                                                <g dataName="Layer 27">
+                                                    <path d="M47,24H30V23a3,3,0,0,0-3-3H21a3,3,0,0,0-3,3v1H11a1,1,0,0,0,0-2H10V19a.965.965,0,0,0-.182-.542,1,1,0,0,0-.108-.168,1.2,1.2,0,0,0-.122-.078A.983.983,0,0,0,9,18H4V12H14v6H13a1,1,0,0,0,0,2h2a1,1,0,0,0,1-1V11a1,1,0,0,0-1-1H3a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1H8v2H7a1,1,0,0,0,0,2H1a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H2V47a1,1,0,0,0,2,0V30H15a1,1,0,0,0,0-2H2V26H18v1a3,3,0,0,0,3,3h2v4H19a3,3,0,0,0,0,6h4v3.586l-2.707,2.707a1,1,0,1,0,1.414,1.414L24,45.414l2.293,2.293a1,1,0,0,0,1.414-1.414L25,43.586V40h4a3,3,0,0,0,0-6H25V30h2a3,3,0,0,0,3-3V26H46v2H33a1,1,0,0,0,0,2h1V47a1,1,0,0,0,1,1H45a1,1,0,0,0,1-1V30h1a1,1,0,0,0,1-1V25A1,1,0,0,0,47,24ZM30,37a1,1,0,0,1-1,1H19a1,1,0,0,1,0-2H29A1,1,0,0,1,30,37ZM28,27a1,1,0,0,1-1,1H21a1,1,0,0,1-1-1V23a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1ZM44,40H36V36h8Zm-8,6V42h8v4Zm8-12H36V30h8Z"/>
+                                                    <path d="M24,10H47a1,1,0,0,0,1-1V1a1,1,0,0,0-1-1H23a1,1,0,0,0-1,1V17a1,1,0,0,0,1,1H47a1,1,0,0,0,1-1V13a1,1,0,0,0-2,0v3H33.816A2.966,2.966,0,0,0,34,15a3,3,0,0,0-3-3H29a3,3,0,0,0-3,3,2.966,2.966,0,0,0,.184,1H24Zm4,5a1,1,0,0,1,1-1h2a1,1,0,0,1,0,2H29A1,1,0,0,1,28,15ZM27,7.5v-2a.5.5,0,0,1,1,0v2a.5.5,0,0,1-1,0Zm16,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0Zm-3,0a.5.5,0,0,1-1,0v-2a.5.5,0,0,1,1,0ZM46,2V8H44.949A2.5,2.5,0,0,0,45,7.5v-2A2.5,2.5,0,0,0,42.5,3a2.471,2.471,0,0,0-1.5.513,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0,2.449,2.449,0,0,0-3,0A2.471,2.471,0,0,0,27.5,3,2.5,2.5,0,0,0,25,5.5v2a2.5,2.5,0,0,0,.051.5H24V2Z"/>
+                                                </g>
+                                              </svg>
+                                              </div>
+                                              <div>
+                                                  Change Workspace
+                                              </div>
+                                            </div>
+                                            {/* =================workspace==================== */}
+
+                                            <Link
+                                              to="/settings/general?page=general"
+                                              onClick={() => {
+                                                setHovered(!isHovered);
+                                                dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                                              }}
+                                            >
+                                              <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                                <div className="mr-2">
+                                                  <MdSettings size={18} />
+                                                </div>
+                                                <div>
+                                                  <p className="text-sm font-helv">Settings</p>
+                                                </div>
+                                              </div>
+                                            </Link>
                                             <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                                               <div className="mr-2">
-                                                <MdSettings size={18} />
+                                                <MdHelp size={18} />
                                               </div>
                                               <div>
-                                                <p className="text-sm font-helv">Settings</p>
-                                              </div>
-                                            </div>
-                                          </Link>
-                                          <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                            <div className="mr-2">
-                                              <MdHelp size={18} />
-                                            </div>
-                                            <div>
 
-                                            <Link to="/help">
-                                                    <p className="text-sm font-helv">Help</p>
-                                            </Link> 
-                                          </div>
-                                          </div>
-                                          {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                            <div className="mr-2">
-                                              <MdSearch size={18} />
+                                              <Link to="/help">
+                                                      <p className="text-sm font-helv">Help</p>
+                                              </Link> 
                                             </div>
-                                            <div>
-                                              <p className="text-sm font-helv">Search</p>
                                             </div>
-                                          </div> */}
-                                          <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                            <div className="mr-2">
-                                              <FaTrash size={18} />
-                                            </div>
-                                            <div>
-                                              <Link to="/trash">
-                                                <p className="text-sm font-helv">Trash</p>
-                                              </Link>
-                                            </div>
-                                          </div>
-                                          <Link
-                                            className="pt-2 mt-4 block border-t border-border"
-                                            to="/"
-                                            onClick={() => {
-                                              dispatch(_hide_nav_(!NAV_BAR_CONDITION))
-                                              handleLinkClick("logout");
-                                              localStorage.clear();
-                                              dispatch(_delete_token_(null));
-                                              dispatch(_save_survey_(null));
-                                              dispatch(_delete_user_profile(null));
-                                              dispatch(_save_details_(null));
-                                              dispatch(_save_sub_details_(null));
-                                              window.location.replace("/login");
-                                            }}
-                                          >
-                                            <div
-                                              className={`py-2 px-3 flex items-center ${
-                                                activeLink === "logout" ? "text-blue-500" : ""
-                                              }`}
-                                            >
+                                            {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
                                               <div className="mr-2">
-                                                <MdLogout size={18} />
+                                                <MdSearch size={18} />
                                               </div>
                                               <div>
-                                                <p className="text-sm font-helv">Logout</p>
+                                                <p className="text-sm font-helv">Search</p>
+                                              </div>
+                                            </div> */}
+                                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                              <div className="mr-2">
+                                                <FaTrash size={18} />
+                                              </div>
+                                              <div>
+                                                <Link to="/trash">
+                                                  <p className="text-sm font-helv">Trash</p>
+                                                </Link>
                                               </div>
                                             </div>
-                                          </Link>
+                                            <Link
+                                              className="pt-2 mt-4 block border-t border-border"
+                                              to="/"
+                                              onClick={() => {
+                                                dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                                                handleLinkClick("logout");
+                                                localStorage.clear();
+                                                dispatch(_delete_token_(null));
+                                                dispatch(_save_survey_(null));
+                                                dispatch(_delete_user_profile(null));
+                                                dispatch(_save_details_(null));
+                                                dispatch(_save_sub_details_(null));
+                                                window.location.replace("/login");
+                                              }}
+                                            >
+                                              <div
+                                                className={`py-2 px-3 flex items-center ${
+                                                  activeLink === "logout" ? "text-blue-500" : ""
+                                                }`}
+                                              >
+                                                <div className="mr-2">
+                                                  <MdLogout size={18} />
+                                                </div>
+                                                <div>
+                                                  <p className="text-sm font-helv">Logout</p>
+                                                </div>
+                                              </div>
+                                            </Link>
+                                          </div>
                                         </div>
-                                      </div>
+                                    </div>
+
+                                  )}
+                                    
+
                                   </div>
 
-                                )}
-                                  
-
-                                </div>
-
-                                <div className="flex flex-col bg-white">
-                                  {!isHovered && (
-                                    <>
-                                      {subscriptions_details
-                                      ?
-                                        <>
-                                        <div className="mb-2">
-                                        {subscriptions_details.user.trail_ends
+                                  <div className="flex flex-col bg-white">
+                                    {!isHovered && (
+                                      <>
+                                        {subscriptions_details
                                         ?
-                                          <div className="flex text-base justify-items-start items-center">
-                                            <div>
-                                                <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                                  <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
-                                                  <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
-                                                </svg>
-                                            </div>
-                                            <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
-                                          </div>
-                                        :
-                                          <div className="flex text-base justify-items-start items-center">
+                                          <>
+                                          <div className="mb-2">
+                                          {subscriptions_details.user.trail_ends
+                                          ?
+                                            <div className="flex text-base justify-items-start items-center">
                                               <div>
                                                   <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                                     <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
                                                     <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                                   </svg>
                                               </div>
-                                              <span className="text-sm pl-2 mb-2">Your current plans</span>
+                                              <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
                                             </div>
+                                          :
+                                            <div className="flex text-base justify-items-start items-center">
+                                                <div>
+                                                    <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                                                      <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
+                                                      <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
+                                                    </svg>
+                                                </div>
+                                                <span className="text-sm pl-2 mb-2">Your current plans</span>
+                                              </div>
+                                          }
+                                            <div className="">
+                                            <button
+                                              onClick={() => {
+                                                // console.log("pricing")
+                                                setShowpricingPopUpModal(true)
+                                                dispatch(_hide_nav_(!NAV_BAR_CONDITION))
+                                              }}
+                                              className="text-[25px]  transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-[200px] h-[30px] px-2 p-2  mr-3"
+                                            >
+                                              <span>View Details</span>
+                                            </button>
+                                          </div>
+                                          </div>
+                                          </>
+                                        :
+                                        <>
+                                          <LoadingPage />
+                                          </>
                                         }
-                                          <div className="">
-                                          <button
-                                            onClick={() => {
-                                              // console.log("pricing")
-                                              setShowpricingPopUpModal(true)
-                                              dispatch(_hide_nav_(!NAV_BAR_CONDITION))
-                                            }}
-                                            className="text-[25px]  transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-[200px] h-[30px] px-2 p-2  mr-3"
-                                          >
-                                            <span>View Details</span>
-                                          </button>
-                                        </div>
-                                        </div>
-                                        </>
-                                      :
-                                      <>
-                                        <LoadingPage />
-                                        </>
-                                      }
-                                    </>
-                                  )}
-                                  <div className="bg-white mb-6    w-full">
-                                    <Button
-                                      sx={{ textTransform: "none" }}
-                                      onClick={() => {
-                                        setHovered(!isHovered);
-                                      }}
-                                      className="flex items-center"
-                                    >
-                                      {PROFILE_DATA ? (
-                                        PROFILE_DATA.profile_pic ? (
-                                          <img
-                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                            alt="PP"
-                                            className="w-[40px] h-[40px] rounded-full"
-                                          />
+                                      </>
+                                    )}
+                                    <div className="bg-white mb-6    w-full">
+                                      <Button
+                                        sx={{ textTransform: "none" }}
+                                        onClick={() => {
+                                          setHovered(!isHovered);
+                                        }}
+                                        className="flex items-center"
+                                      >
+                                        {PROFILE_DATA ? (
+                                          PROFILE_DATA.profile_pic ? (
+                                            <img
+                                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                              alt="PP"
+                                              className="w-[40px] h-[40px] rounded-full"
+                                            />
+                                          ) : (
+                                            <img
+                                              src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
+                                              alt="Image"
+                                              className="w-[40px] h-[40px] rounded-full"
+                                            />
+                                          )
                                         ) : (
                                           <img
                                             src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                                             alt="Image"
                                             className="w-[40px] h-[40px] rounded-full"
                                           />
-                                        )
-                                      ) : (
-                                        <img
-                                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                          alt="Image"
-                                          className="w-[40px] h-[40px] rounded-full"
-                                        />
-                                      )}
-                                      <div className="text-left ml-2 w-full">
-                                        <p className="text-xs font-sans font-bold text-black">
-                                          {ChosenWorkspaceId &&
-                                            <>
-                                              {ChosenWorkspaceId["workspace_name"]}
-                                            </>
-                                          }
-                                        </p>
-                                        {subscriptions_details &&
-                                          <>
-                                            {subscriptions_details.user.status=='active'
-                                            ?
-                                              null
-                                            :
+                                        )}
+                                        <div className="text-left ml-2 w-full">
+                                          <p className="text-xs font-sans font-bold text-black">
+                                            {ChosenWorkspaceId &&
                                               <>
-                                                <p className="text-[10px] font-sans font-bold text-black">
-                                                  Free plan
-                                                </p>
+                                                {ChosenWorkspaceId["workspace_name"]}
                                               </>
                                             }
+                                          </p>
+                                          {subscriptions_details &&
+                                            <>
+                                              {subscriptions_details.user.status=='active'
+                                              ?
+                                                null
+                                              :
+                                                <>
+                                                  <p className="text-[10px] font-sans font-bold text-black">
+                                                    Free plan
+                                                  </p>
+                                                </>
+                                              }
 
-                                          </>
-                                        }
-                                      </div>
-                                      <span className="w-4 h-6 float-right ml-3">
-                                        <svg
-                                          width="14"
-                                          height="14"
-                                          viewBox="0 0 14 14"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          className="w-full h-full"
-                                        >
-                                          <g clipPath="url(#clip0_512_3040)">
-                                            <path
-                                              d="M10.8909 8.99179C11.0786 8.80401 11.3331 8.69847 11.5986 8.69838C11.864 8.69828 12.1186 8.80365 12.3064 8.99129C12.4942 9.17893 12.5997 9.43347 12.5998 9.69893C12.5999 9.96439 12.4946 10.219 12.3069 10.4068L8.00691 14.7068C7.81938 14.8943 7.56507 14.9996 7.29991 14.9996C7.03475 14.9996 6.78044 14.8943 6.59291 14.7068L2.29291 10.4068C2.10527 10.2189 1.99996 9.96413 2.00015 9.69858C2.00033 9.43303 2.106 9.17843 2.29391 8.99079C2.48182 8.80315 2.73657 8.69783 3.00212 8.69802C3.26767 8.69821 3.52227 8.80388 3.70991 8.99179L7.29991 12.5828L10.8909 8.99179ZM10.8909 5.00779L7.29991 1.41679L3.70891 5.00779C3.52127 5.19556 3.26672 5.3011 3.00126 5.3012C2.73581 5.30129 2.48118 5.19593 2.29341 5.00829C2.10564 4.82065 2.00009 4.5661 2 4.30064C1.99991 4.03518 2.10527 3.78056 2.29291 3.59279L6.59291 -0.707214C6.78044 -0.894685 7.03475 -1 7.29991 -1C7.56507 -1 7.81938 -0.894685 8.00691 -0.707214L12.3069 3.59279C12.3998 3.68576 12.4735 3.79613 12.5238 3.91758C12.574 4.03904 12.5999 4.1692 12.5998 4.30064C12.5998 4.43208 12.5738 4.56223 12.5235 4.68364C12.4732 4.80506 12.3994 4.91538 12.3064 5.00829C12.2134 5.1012 12.1031 5.17488 11.9816 5.22514C11.8602 5.2754 11.73 5.30124 11.5986 5.3012C11.4671 5.30115 11.337 5.27521 11.2156 5.22487C11.0941 5.17453 10.9838 5.10076 10.8909 5.00779Z"
-                                              fill="#36464E"
-                                            />
-                                          </g>
-                                          <defs>
-                                            <clipPath id="clip0_512_3040">
-                                              <rect width="14" height="14" fill="white" />
-                                            </clipPath>
-                                          </defs>
-                                        </svg>
-                                      </span>
-                                    </Button>
+                                            </>
+                                          }
+                                        </div>
+                                        <span className="w-4 h-6 float-right ml-3">
+                                          <svg
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 14 14"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="w-full h-full"
+                                          >
+                                            <g clipPath="url(#clip0_512_3040)">
+                                              <path
+                                                d="M10.8909 8.99179C11.0786 8.80401 11.3331 8.69847 11.5986 8.69838C11.864 8.69828 12.1186 8.80365 12.3064 8.99129C12.4942 9.17893 12.5997 9.43347 12.5998 9.69893C12.5999 9.96439 12.4946 10.219 12.3069 10.4068L8.00691 14.7068C7.81938 14.8943 7.56507 14.9996 7.29991 14.9996C7.03475 14.9996 6.78044 14.8943 6.59291 14.7068L2.29291 10.4068C2.10527 10.2189 1.99996 9.96413 2.00015 9.69858C2.00033 9.43303 2.106 9.17843 2.29391 8.99079C2.48182 8.80315 2.73657 8.69783 3.00212 8.69802C3.26767 8.69821 3.52227 8.80388 3.70991 8.99179L7.29991 12.5828L10.8909 8.99179ZM10.8909 5.00779L7.29991 1.41679L3.70891 5.00779C3.52127 5.19556 3.26672 5.3011 3.00126 5.3012C2.73581 5.30129 2.48118 5.19593 2.29341 5.00829C2.10564 4.82065 2.00009 4.5661 2 4.30064C1.99991 4.03518 2.10527 3.78056 2.29291 3.59279L6.59291 -0.707214C6.78044 -0.894685 7.03475 -1 7.29991 -1C7.56507 -1 7.81938 -0.894685 8.00691 -0.707214L12.3069 3.59279C12.3998 3.68576 12.4735 3.79613 12.5238 3.91758C12.574 4.03904 12.5999 4.1692 12.5998 4.30064C12.5998 4.43208 12.5738 4.56223 12.5235 4.68364C12.4732 4.80506 12.3994 4.91538 12.3064 5.00829C12.2134 5.1012 12.1031 5.17488 11.9816 5.22514C11.8602 5.2754 11.73 5.30124 11.5986 5.3012C11.4671 5.30115 11.337 5.27521 11.2156 5.22487C11.0941 5.17453 10.9838 5.10076 10.8909 5.00779Z"
+                                                fill="#36464E"
+                                              />
+                                            </g>
+                                            <defs>
+                                              <clipPath id="clip0_512_3040">
+                                                <rect width="14" height="14" fill="white" />
+                                              </clipPath>
+                                            </defs>
+                                          </svg>
+                                        </span>
+                                      </Button>
+                                    </div>
                                   </div>
-                                </div>
-                                </div>
-                                {/* ====== Profile ======== */}
+                                  </div>
+                                  {/* ====== Profile ======== */}
 
 
-                            </div>
-                        </div>
+                              </div>
+                      </div>
+
                   </div>
 
 
                   </>
                 )
                 :
-                null
+                  null
               }
             </>
           }

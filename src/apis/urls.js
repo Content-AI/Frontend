@@ -22,20 +22,20 @@ if (local == true) {
 
 } else {
 
-  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  // FRONT_END_URL = "http://copy-ai-ecru.vercel.app/"
+  // FRONT_END_URL_LINKEDIN = "http://copy-ai-ecru.vercel.app"
 
-  // FRONT_END_URL = "https://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "https://copy-ai-ecru.vercel.app"
+  // FRONT_END_URL = "http://copy-ai-ecru.vercel.app/"
+  // FRONT_END_URL_LINKEDIN = "http://copy-ai-ecru.vercel.app"
 
-  FRONT_END_URL = "http://52.66.4.200/"
-  FRONT_END_URL_LINKEDIN = "http://52.66.4.200"
+  FRONT_END_URL = "http://13.233.1.178/"
+  FRONT_END_URL_LINKEDIN = "http://13.233.1.178"
 
-  // FRONT_END_URL_GOOGLE_PARAM= "https://copy-ai-ecru.vercel.app/google"
-  // BACKEND_URL = "https://sunilsingh2019.pythonanywhere.com";
+  // FRONT_END_URL_GOOGLE_PARAM= "http://copy-ai-ecru.vercel.app/google"
+  // BACKEND_URL = "http://sunilsingh2019.pythonanywhere.com";
 
-  FRONT_END_URL_GOOGLE_PARAM = "http://52.66.4.200/google"
-  BACKEND_URL = "http://52.66.4.200";
+  FRONT_END_URL_GOOGLE_PARAM = "http://13.233.1.178/google"
+  BACKEND_URL = "http://13.233.1.178";
 
 }
 
@@ -263,3 +263,6 @@ export const BACK_END_API_TICKETS_CREATION = "/v1/accounts/create-tickets/";
 
 export const BACK_END_API_ISSUES_LIST_TICKETS = "/v1/accounts/create-tickets/";
 export const BACK_END_API_WHY_PLAN = "/v1/accounts/why-subscribe/?why_subs=";
+
+
+export const BACK_END_API_GET_API_KEY= "/v1/accounts/get_api_key/";
