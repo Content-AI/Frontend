@@ -4,14 +4,16 @@ import Upgradenow from '../../Settings/SettingsPages/Modal/Upgradenow';
 import { useNavigate } from 'react-router-dom'
 import { NavIcons, SealCheck } from "../../Icons";
 import { fetchData } from '../../../apis/apiService';
-import { BACKEND_URL,BACK_END_API_GET_API_KEY } from '../../../apis/urls';
+import { BACKEND_URL,BACK_END_API_GET_API_KEY,BACK_END_GENERATE_NEW_API_KEY } from '../../../apis/urls';
 
+import DangerIcon from '../../Icons/DangerIcon'
 
 import { AiFillEyeInvisible ,AiFillEye} from 'react-icons/ai';
 
 const ApiKeyInput = ({ apiKey, onChange }) => {
 
     const [showApiKey, setshowApiKey] = useState(false);
+    const [_show_confirmation, set_show_confirmation] = useState(false);
     const [ApiKey, setApiKey] = useState("**************");
     const navigate = useNavigate()
 
@@ -50,7 +52,16 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
         setshowApiKey(!showApiKey);
     };
 
+
+    const generate_new_key = async()=>{
+        const resp  = await fetchData(BACKEND_URL+BACK_END_GENERATE_NEW_API_KEY,TOKEN)
+        if(resp.status==200){
+            get_api_key()   
+        }
+    }
+
   return (
+    <>
     <div className="mb-4">
       <label htmlFor="api-key" className=" block text-sm font-medium text-gray-600 mb-2">
         API Key
@@ -80,6 +91,25 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
                             )}
                         </button>
             </div>
+            <button
+                className='text-red-500 font-semibold no-underline'
+                onClick={()=>{
+                    set_show_confirmation(true)
+                    // generate_another_key()
+                }}
+            >
+                Generate another key
+            </button>
+            <p className="mt-2 text-sm text-gray-500">
+                Your API key is a secret token used to authenticate requests to the API. Please keep it secure.
+                <button type='button'
+                    className='underline text-blue-500 font-semibold ml-2'
+                    onClick={()=>{
+                        window.location.href = BACKEND_URL+"/doc/"
+                    }}>
+                    API's Doc's
+                </button>
+            </p>
 
             </>
             :
@@ -100,17 +130,70 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
         }
         </>
       }
-      <p className="mt-2 text-sm text-gray-500">
-        Your API key is a secret token used to authenticate requests to the API. Please keep it secure.
-        <button type='button'
-            className='underline text-blue-500 font-semibold ml-2'
-            onClick={()=>{
-                window.location.href = BACKEND_URL+"/redoc/"
-            }}>
-            API's Doc's
-        </button>
-      </p>
     </div>
+
+    {_show_confirmation
+        ?
+        <>
+            <div className="fixed inset-0 z-40 overflow-y-auto">
+                <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50"></div>
+                        <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+
+                            <div className="w-full text-left flex justify-between items-center p-3 text-gray-900 ">
+
+                            <div className="flex">
+                            <div className="mt-5 ml-4 mr-5 ">
+                                {/* <DangerIcon/>   */}
+                            </div>
+                            <div>
+                            <h3 className="text-lg font-semibold">
+                                Please remember that if you generate a new key, all the previous keys will be revoked.
+                            </h3>
+                            <h3 className="text-lg font-semibold">
+                                Are you sure you want to proceed?
+                            </h3>
+                            </div>
+                            </div>
+                            </div>
+
+                            <div className="flex flex-col p-6">
+                                
+                                <div className="p-6 flex items-center gap-4 justify-end">
+
+
+                                <button
+                                    className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
+                                        onClick={() => {
+                                            generate_new_key()
+                                            set_show_confirmation(false)
+                                        }}
+                                        >
+                                    Generate
+                                </button>
+                                <button
+                                    className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                    onClick={() => {
+                                        set_show_confirmation(false)
+                                    }}
+                                >
+                                    Cancel  
+                                </button>
+
+                                </div>
+
+                            </div>
+
+                            </div>
+                    </div>
+            </div>
+        </>
+
+    :
+        null}
+
+    </>
+    
   );
 };
 

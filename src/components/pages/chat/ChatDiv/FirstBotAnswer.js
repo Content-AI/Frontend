@@ -1,6 +1,13 @@
 import React from 'react'
 import RenderHtmlData from '../../Template/RenderHtmlData'
 import Differentbtn from '../Differentbtn'
+import ReactMarkdown from 'react-markdown'
+import rehypeKatex from 'rehype-katex'
+
+import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import MarkdownRenderer from '../ChatRenders/MarkdownRenderer'
 
 const FirstBotAnswer = (props) => {
   return (
@@ -13,7 +20,18 @@ const FirstBotAnswer = (props) => {
       />
     </div>
     <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
-      <RenderHtmlData htmldata={props.content} />
+
+      {/* <RenderHtmlData htmldata={props.content} /> */}
+
+      <MarkdownRenderer content={props.content} />
+
+      {/* <ReactMarkdown
+          children={props.content}
+          remarkPlugins={[remarkMath,remarkGfm]}
+          rehypePlugins={[rehypeKatex]}
+        /> */}
+      
+
       {/* ============all sorts of btn================ */}
       <Differentbtn
         all_data={props.chat_data}

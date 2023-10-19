@@ -1,6 +1,7 @@
 import React from 'react'
 import RenderHtmlData from '../../Template/RenderHtmlData'
 
+
 const FirstUserQuestion = (props) => {
   return (
     
@@ -13,7 +14,8 @@ const FirstUserQuestion = (props) => {
             />
         </div>
         <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl ">
-            <RenderHtmlData htmldata={props.question} />
+            {/* <RenderHtmlData htmldata={props.question} /> */}
+            {props.question}
         </div>
         </div>
   )

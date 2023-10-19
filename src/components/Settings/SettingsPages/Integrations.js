@@ -5,6 +5,8 @@ import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import toast, { Toaster } from "react-hot-toast";
+
 
 import ApiKeyInput from "../../pages/Template/ApiKeyInput";
 
@@ -68,13 +70,31 @@ const Integrations = () => {
 
   const handleCheckboxChangeSEO = (event) => {
     setIsCheckedSEO(event.target.checked);
+    notifypopup("comming soon")
   };
   const handleCheckboxChangePlagarism = (event) => {
     setisCheckedPlagarism(event.target.checked);
+    notifypopup("comming soon")
+
   };
   const handleCheckboxChangeLanguage = (event) => {
     setisCheckedLanguage(event.target.checked);
   };
+
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
+  const notifypopup= (message) => toast.success(message, {
+    style: {
+      padding: '10px',
+      color: '#713200',
+    },
+    iconTheme: {
+      primary: '#713200',
+      secondary: '#FFFAEE',
+    },
+  });
 
 
   return (
@@ -96,10 +116,10 @@ const Integrations = () => {
           <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
                 <span className="flex flex-col flex-grow mr-2">
-                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900" id="headlessui-label-:R5ba36:">
+                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900">
                     SEO Wave
                     </span>
-                    <span className="text-sm text-gray-500" id="headlessui-description-:R9ba36:">
+                    <span className="text-sm text-gray-500" >
                     "Incorporate an "SEO" section into your document editor, offering robust SEO keyword research and metrics capabilities.
                     </span>
                 </span>
@@ -150,62 +170,6 @@ const Integrations = () => {
               </div>
           </section>
 
-          {/* <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded"> */}
-          <section className="p-6 mb-3  shadow-sm rounded">
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
-                <span className="flex flex-col flex-grow mr-2">
-                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900" id="headlessui-label-:R5fa36:">
-                      {/* Language Translation */}
-                    </span>
-                    <span className="text-sm text-gray-500" id="headlessui-description-:R9fa36:">
-                    {/* Effortlessly translate your content into multiple languages with just one click */}
-                    </span>
-                </span>
-                      {/* ======swip===== */}
-                      {/* <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <ISwitch
-                            sx={{ m: 1 }}
-                            checked={isCheckedLanguage}
-                            onChange={handleCheckboxChangeLanguage}
-                          />
-                        }
-                        label=""
-                      />
-                    </FormGroup> */}
-                      
-                    {/* ======swip===== */}
-              </div>
-              <div className="flex flex-col md:items-end justify-between mt-4 md:flex-row md:space-x-2">
-                <label className="text-sm space-y-2">
-                    {/* <span>Input language</span> */}
-                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
-                      <option value="EN" selected="">English</option>
-                      <option value="FR">France</option>
-                    </select> */}
-                </label>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="flex-shrink-0 text-gray-500 box-content w-4 self-center px-1 py-3 transform rotate-90 md:rotate-0 md:self-end">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                </svg> */}
-                <label className="text-sm space-y-2">
-                    {/* <span>Output language</span> */}
-                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate">
-                      <option value="EN-US" selected="">English (American)</option>
-                      <option value="EN-GB">English (British)</option>
-                      <option value="FR">France</option>
-                    </select> */}
-                </label>
-                <label className="text-sm space-y-2 flex-shrink-0 md:pl-4 opacity-60">
-                    {/* <span>Formality</span> */}
-                    {/* <select className="block w-full pr-12 text-gray-700 placeholder-gray-400 transition-shadow duration-150 ease-in-out bg-white border-gray-200 rounded-md shadow-sm outline-none resize-none focus:outline-none focus:ring-blue-800 focus:border-blue-800 form-select truncate" disabled="">
-                      <option value="default" selected="">Default</option>
-                      <option value="less">Less formal</option>
-                      <option value="more">More formal</option>
-                    </select> */}
-                </label>
-              </div>
-          </section>
           
         </div>
         </div>

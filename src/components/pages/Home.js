@@ -120,7 +120,7 @@ useEffect(()=>{
       <div className="max-w-[843px] mx-auto mt-10 mb-12">
       
         <div className="mb-6">
-          <h1 className="text-[40px] font-bold">Welcome to Jasper</h1>
+          <h1 className="text-[40px] font-bold">Welcome to [ Web Site Name ]</h1>
           <p className="text-sm">
             Follow these steps to get started and earn free credits as you go.
           </p>
@@ -129,9 +129,18 @@ useEffect(()=>{
           <thead className="p-6 border-b border-border">
             <tr>
               <th className="text-left p-6">Getting Started</th>
-              <th className="text-right p-6">
-                2000 free credits available
-              </th>
+              {subscriptions_details &&
+                <>
+                  {subscriptions_details.user.status=="trial"
+                  ?
+                    <th className="text-right p-6">
+                      2000 free credits available
+                    </th>
+                  :
+                    null
+                  }
+                </>
+              }
             </tr>
           </thead>
           <tbody className="[&_td]:px-6 [&_td]:py-2 [&_tr:first-child_td]:pt-6 [&_tr:last-child_td]:pb-6 [&_td:last-child]:text-right">

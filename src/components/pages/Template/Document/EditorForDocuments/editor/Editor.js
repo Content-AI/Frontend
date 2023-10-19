@@ -196,9 +196,6 @@ export default function Editor({ data, setData }) {
   }, [currentAnswer]);
 
 
-  // useEffect(()=>{
-  //   console.log("data ",data)
-  // },[data])
 
   return (
     <div className="editor-container">

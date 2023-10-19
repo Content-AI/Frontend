@@ -1,5 +1,5 @@
-const local = true
-// const local=false
+// const local = true
+const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -28,14 +28,14 @@ if (local == true) {
   // FRONT_END_URL = "http://copy-ai-ecru.vercel.app/"
   // FRONT_END_URL_LINKEDIN = "http://copy-ai-ecru.vercel.app"
 
-  FRONT_END_URL = "http://13.233.1.178/"
-  FRONT_END_URL_LINKEDIN = "http://13.233.1.178"
+  FRONT_END_URL = "http://13.232.215.102/"
+  FRONT_END_URL_LINKEDIN = "http://13.232.215.102"
 
   // FRONT_END_URL_GOOGLE_PARAM= "http://copy-ai-ecru.vercel.app/google"
   // BACKEND_URL = "http://sunilsingh2019.pythonanywhere.com";
 
-  FRONT_END_URL_GOOGLE_PARAM = "http://13.233.1.178/google"
-  BACKEND_URL = "http://13.233.1.178";
+  FRONT_END_URL_GOOGLE_PARAM = "http://13.232.215.102/google"
+  BACKEND_URL = "http://13.232.215.102";
 
 }
 
@@ -266,3 +266,5 @@ export const BACK_END_API_WHY_PLAN = "/v1/accounts/why-subscribe/?why_subs=";
 
 
 export const BACK_END_API_GET_API_KEY= "/v1/accounts/get_api_key/";
+
+export const BACK_END_GENERATE_NEW_API_KEY= "/v1/accounts/generate_new_api_key/";

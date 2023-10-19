@@ -79,6 +79,7 @@ import ChatIconEditFirst from "../../Icons/ChatIconEditFirst";
 import ChatIconDialogF from "../../Icons/ChatIconDialogF";
 import FirstUserQuestion from "./ChatDiv/FirstUserQuestion";
 import FirstBotAnswer from "./ChatDiv/FirstBotAnswer";
+import AnswerFroApi from "./ChatDiv/AnswerFroApi";
 
 
 
@@ -411,13 +412,7 @@ const Chat = ({ AUTH_TOKEN }) => {
     // setLoading(false);
   };
 
-  // useEffect(() => {
-  //   console.log("CurrentAnswer", CurrentAnswer);
-  // }, [CurrentAnswer]);
 
-  // useEffect(() => {
-  //   get_initial_chat();
-  // }, []);
 
   useEffect(() => {
     if (chatLoadingRef.current) {
@@ -930,7 +925,7 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   useEffect(() => {
     if (REPEAT_QUESTION != null) {
-      submitRepeat(REPEAT_QUESTION);
+      startStreaming(true,REPEAT_QUESTION);
     }
   }, [REPEAT_QUESTION]);
 
@@ -954,8 +949,6 @@ const Chat = ({ AUTH_TOKEN }) => {
   // =======typing done=========
   const [isTypingFinished, setIsTypingFinished] = useState(false);
   const [characterCount, setCharacterCount] = useState(0);
-
-
 
   const handleTypingDone = () => {
     setIsTypingFinished(true);
@@ -1015,7 +1008,6 @@ const Chat = ({ AUTH_TOKEN }) => {
   }, []);
 
 
-
   // The mic start and stop listening 
 
   const [listening, setListening] = useState(false);
@@ -1068,6 +1060,179 @@ const Chat = ({ AUTH_TOKEN }) => {
       setIsFinishedTyping(false)
     }
   };
+
+
+
+
+  // ================ event stream for chat modified=================
+  
+
+  const [streamedData, setStreamedData] = useState('');
+  const [abortController, setAbortController] = useState(new AbortController());
+
+  // Reusable function to make authorized requests with various methods and payload
+  const makeAuthorizedRequest = async (url, method, token, payload, signal) => {
+    const headers = {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    };
+
+    const requestOptions = {
+      method,
+      signal,
+      headers,
+    };
+
+    if (method === 'POST') {
+      requestOptions.body = JSON.stringify(payload);
+    }
+
+    return fetch(url, requestOptions);
+  };
+
+
+
+  const startStreaming = async (repeat_question,question) => {
+
+    let payload={}
+
+    if(repeat_question==false){
+
+        if(ChatText.length<=0){
+          notifyerror("Type somethings to ask.")
+          return
+        }
+        setCurrentQuestionIni(ChatText)
+        
+      }else{        
+        setCurrentQuestionIni(question)
+    }
+
+
+
+    let InTone = ``;
+    if (selectedSummarizes) {
+      selectedSummarizes.forEach((item) => {
+        InTone += `[Generate In Tone:${item.value}]`;
+      });
+    } else {
+      InTone = "Default";
+    }
+      // setCurrentQuestionIni(ChatText);
+      if (divRef.current) {
+        divRef.current.focus();
+      }
+
+    if(repeat_question==true){
+
+      payload = {
+        question: question,
+        Tone: InTone,
+        chat_root: IdOfTopTitleChat,
+      };
+
+    }else{
+
+      payload = {
+        question: ChatText,
+        Tone: InTone,
+        chat_root: IdOfTopTitleChat,
+      };
+
+    }
+    
+
+
+
+    const controller = new AbortController();
+    setAbortController(controller);
+
+    const url = BACKEND_URL+BACK_END_API_CHAT_ASK_QUESTION+"/"
+
+    setAfterTypeDontShowIni(true)
+
+
+    setChatText('')
+
+    const response = await makeAuthorizedRequest(
+      url,
+      'POST',
+      `Bearer ${AUTH_TOKEN}`,
+      payload,
+      controller.signal
+    );
+
+    try {
+
+      if (!response.ok) {
+        notifyerror("Check Your Network")
+      }
+
+      const reader = response.body.getReader();
+      let answer_response = ""
+
+      while (true) {
+
+        const { done, value } = await reader.read();
+
+        if (done || controller.signal.aborted) {
+          const final_single_result = {
+            question: payload.question,
+            content: answer_response,
+          };
+          setCurrentAnswer((prevMessages) => [...prevMessages, final_single_result]);
+          setCurrentQuestionIni("")
+          setStreamedData("")
+          break;
+        }
+
+        // in value there could be multiple or single data comming from stream
+        const textData = new TextDecoder().decode(value); // Convert binary data to text
+        // Use a regular expression to extract 'content' from the data
+        const regex = /'content': '([^']*)'/g;
+        let match;
+        let contents = [];
+
+        while ((match = regex.exec(textData)) !== null) {
+          const contentWithLineBreaks = match[1];
+          // Replace '\n' with actual line breaks
+          const contentWithActualLineBreaks = contentWithLineBreaks.replace(/\\n/g, '\n');
+          contents.push(contentWithActualLineBreaks);
+        }
+
+        const concatenatedContent = contents.join(' ');
+
+        if(concatenatedContent!="@@stop@@"){
+            setStreamedData(prevData => prevData + concatenatedContent);
+            answer_response+=concatenatedContent
+        }else{
+          abortController.abort();
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const stopStreaming = () => {
+    abortController.abort();
+
+    const final_single_result = {
+      question: CurrentQuestionIni,
+      content: streamedData,
+    };
+    setCurrentAnswer((prevMessages) => [...prevMessages, final_single_result]);
+
+    setCurrentQuestionIni("")
+    setStreamedData("")
+
+  };
+
+
+
+  // =======repeat the stream questioning==============
+  // const submitRepeat = async (repeat_ask_question) => {
+
 
 
   return (
@@ -1123,125 +1288,111 @@ const Chat = ({ AUTH_TOKEN }) => {
 
                         <div
                           ref={chatContainerRef}
-                          className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
+                          className="flex-1 mb-4 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
                         >
                           {/* Chat messages */}
                           {AllChatText.map((chat_data, index) => (
 
                             <div key={index} className="flex flex-col mb-3 mt-4" >
+
                               {/* User */}
                               <FirstUserQuestion question={chat_data.question} />
 
-                              {/* Bot */}                             
+                              {/* Bot */}                         
                               <FirstBotAnswer chat_data={chat_data} content={chat_data.content}/>
 
                             </div>
                           ))}
+                          
+                          {/* ==========after init question */}
 
-
-                          {CurrentAnswer.length > 0 ? (
+                          {CurrentAnswer &&
                             <>
-                              {(() => {
-                                let length_of_obj = CurrentAnswer.length;
-                                const data_ = renderHTMLDataForChatting(
-                                  CurrentAnswer[length_of_obj - 1]["content"]
-                                );
-                                
-                                return CurrentAnswer.map((data, index) => (
-                                  <div
-                                    className="flex flex-col mb-3 mt-4"
-                                    key={index}
-                                  >
-
-                                    <FirstUserQuestion question={data["question"]} />
-
-                                    <div className="relative flex flex-col">
-                                      <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                        <img
-                                          className="w-full h-full rounded-full"
-                                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                          alt="ChatBot"
-                                        />
-                                      </div>
-                                      <div
-                                        className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                        tabIndex={0}
-                                        ref={divRef}
+                              {CurrentAnswer.length>=0
+                                ?
+                                <>
+                                    {CurrentAnswer.map((data,index)=>{
+                                      return (
+                                        <div 
+                                        key={index}
                                       >
-                                        {CurrentAnswer.length == length_of_obj ? (
-                                          <>
-                                          {isFinishedTyping
-                                              ?
-                                                <RenderHtmlData
-                                                  htmldata={data["content"]}
-                                                />
-                                              :
-                                                <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
-                                            }
-                                          </>
-                                        ) : (
-                                          <>
-                                          <RenderHtmlData
-                                            htmldata={data["content"]}
-                                          />
-                                          </>
-                                        )}
-                                        {/* ============all sorts of btn================ */}
-                                        <Differentbtn
-                                          all_data={data}
-                                          data={data_}
-                                        />
-                                        {/* ============all sorts of btn================ */}
+                                        <FirstUserQuestion question={data.question} />
+
+                                          <div
+                                            index={2}
+                                            ref={latestMessageRef}
+                                          >
+                                            <FirstBotAnswer chat_data={data} content={data.content}/>
+                                            {/* <ShowAnswer data={data["content"]}/> */}
+                                          </div>
                                       </div>
-                                    </div>
-
-
-                                  </div>
-
-
-                                ));
-                              })()}
+                                      )
+                                    })}
+                                </>
+                                :
+                                  null
+                              }
                             </>
-                          ) : null}
+                            }
 
-                          {CurrentQuestion ? (
-                            
-                            <div className="flex flex-col mb-3 mt-4">
-                              <div className="relative flex flex-col items-end">
-                                <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                  <img
-                                    className="w-full h-full rounded-full"
-                                    src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                    alt="User"
-                                  />
-                                </div>
-                                <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                  <RenderHtmlData htmldata={CurrentQuestion} />
-                                </div>
-                              </div>
+                          {CurrentQuestionIni &&  (
+                            <>
+                                {CurrentQuestionIni.length>0
+                                ?
+                                    <>
+                                    {streamedData.length<=0
+                                    ?
+                                      <>
+                                          <div className="flex flex-col mb-3 mt-4">
+                                              <FirstUserQuestion question={CurrentQuestionIni}/>
 
-                              {/* Bot */}
-                              <div className="relative flex flex-col">
-                                <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                  <img
-                                    className="w-full h-full rounded-full"
-                                    src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                    alt="ChatBot"
-                                  />
-                                </div>
-                                <div
-                                  className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                  tabIndex={0}
-                                  ref={chatLoadingRef}
-                                >
-                                  <>
-                                    <IconChat />
-                                  </>
-                                </div>
-                              </div>
-                            </div>
+                                            {/* Bot */}
+                                            <div className="relative flex flex-col">
+                                              <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
+                                                <img
+                                                  className="w-full h-full rounded-full"
+                                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
+                                                  alt="ChatBot"
+                                                />
+                                              </div>
+                                              <div
+                                                className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                                tabIndex={0}
+                                                ref={chatLoadingRef}
+                                              >
+                                                <>
+                                                  <IconChat />
+                                                </>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </>
+                                      :
+                                        <>
+                                          <FirstUserQuestion question={CurrentQuestionIni} />
 
-                          ) : null}
+                                          <div
+                                            tabIndex={4}
+                                            // tabIndex={0}
+                                            ref={divRef}
+                                          >
+                                            <AnswerFroApi content={streamedData}/>
+
+                                          </div>
+                                        </>
+                                    }
+                                    </>
+                                :
+                                    null
+
+                                }
+
+                            </>
+                          )}
+
+
+
+                          
 
 
                         </div>
@@ -1250,125 +1401,95 @@ const Chat = ({ AUTH_TOKEN }) => {
 
                           <div
                             ref={chatContainerRef}
-                            className="flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
+                            className="mb-4 flex-1 flex flex-col item-start bg-white ml-auto mr-auto rounded-md p-3 text-sm overflow-y-auto"
                           >
-                            {CurrentAnswerIni.length > 0 ? (
-                              <>
-                                {(() => {
-                                  let length_of_obj = CurrentAnswerIni.length;
-                                  const data_ = renderHTMLDataForChatting(
-                                    CurrentAnswerIni[length_of_obj - 1]["content"]
-                                  );
-                                  
 
-                                  return CurrentAnswerIni.map((data, index) => (
-                                   
-                                    <div
-                                      className="flex flex-col mb-3 mt-4"
-                                      key={index}
-                                    >
-                                      <div className="relative flex flex-col items-end">
-                                        <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                          <img
-                                            className="w-full h-full rounded-full"
-                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                            alt="User"
-                                          />
-                                        </div>
-                                        <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                          <RenderHtmlData
-                                            htmldata={data["question"]}
-                                          />
-                                        </div>
+                          {CurrentAnswer &&
+                            <>
+                              {CurrentAnswer.length>=0
+                                ?
+                                <>
+                                    {CurrentAnswer.map((data,index)=>{
+                                      return (
+                                        <div 
+                                        key={index}
+                                      >
+                                        <FirstUserQuestion question={data.question} />
+
+                                          <div
+                                            index={2}
+                                            ref={latestMessageRef}
+                                          >
+                                            <FirstBotAnswer chat_data={data} content={data.content}/>
+                                            {/* <ShowAnswer data={data["content"]}/> */}
+                                          </div>
                                       </div>
+                                      )
+                                    })}
+                                </>
+                                :
+                                  null
+                              }
+                            </>
+                            }
 
-                                      <div className="relative flex flex-col">
-                                        <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                          <img
-                                            className="w-full h-full rounded-full"
-                                            src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                            alt="ChatBot"
-                                          />
-                                        </div>
-                                        <div
-                                          className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                          tabIndex={0}
-                                          ref={divRef}
-                                        >
-                                          {CurrentAnswerIni.length ==
-                                          length_of_obj ? (
-                                            <>
-                                            {isFinishedTyping
-                                              ?
-                                                <RenderHtmlData
-                                                  htmldata={data["content"]}
-                                                />
-                                              :
-                                                <TypingAnimation textToType={data_} onFinishTyping={handleFinishTyping} />
-                                            }
-                                            </>
-                                          ) : (
-                                            <>
-
-                                            <RenderHtmlData
-                                              htmldata={data["content"]}
-                                            />
-                                            
-                                            </>
-                                          )}
-                                          {/* ============all sorts of btn================ */}
-                                          <Differentbtn
-                                            all_data={data}
-                                            data={data["content"]}
-                                          />
-                                          {/* ============all sorts of btn================ */}
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                  ));
-                                })()}
-                              </>
-                            ) : null}
-
-                            {CurrentQuestionIni ? (
-
-                              <div className="flex flex-col mb-3 mt-4">
-                                <div className="relative flex flex-col items-end">
-                                  <div className="w-6 h-6 rounded-full order-last overflow-hidden">
-                                    <img
-                                      className="w-full h-full rounded-full"
-                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
-                                      alt="User"
-                                    />
-                                  </div>
-                                  <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl">
-                                    <RenderHtmlData htmldata={CurrentQuestionIni} />
-                                  </div>
-                                </div>
-
-                                {/* Bot */}
-                                <div className="relative flex flex-col">
-                                  <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
-                                    <img
-                                      className="w-full h-full rounded-full"
-                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
-                                      alt="ChatBot"
-                                    />
-                                  </div>
-                                  <div
-                                    className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
-                                    tabIndex={0}
-                                    ref={chatLoadingRef}
-                                  >
+                          {CurrentQuestionIni &&  (
+                            <>
+                                {CurrentQuestionIni.length>0
+                                ?
                                     <>
-                                      <ChatIconRR/>
-                                    </>
-                                  </div>
-                                </div>
-                              </div>
+                                    {streamedData.length<=0
+                                    ?
+                                      <>
+                                          <div className="flex flex-col mb-3 mt-4">
+                                              <FirstUserQuestion question={CurrentQuestionIni}/>
 
-                            ) : null}
+                                            {/* Bot */}
+                                            <div className="relative flex flex-col">
+                                              <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
+                                                <img
+                                                  className="w-full h-full rounded-full"
+                                                  src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/chat.png"
+                                                  alt="ChatBot"
+                                                />
+                                              </div>
+                                              <div
+                                                className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                                tabIndex={0}
+                                                ref={chatLoadingRef}
+                                              >
+                                                <>
+                                                  <IconChat />
+                                                </>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </>
+                                      :
+                                        <>
+                                          <FirstUserQuestion question={CurrentQuestionIni} />
+
+                                          <div
+                                            tabIndex={4}
+                                            // tabIndex={0}
+                                            ref={divRef}
+                                          >
+                                            <AnswerFroApi content={streamedData}/>
+
+                                          </div>
+                                        </>
+                                    }
+                                    </>
+                                :
+                                    null
+
+                                }
+
+                            </>
+                          )}
+
+                            
+
 
                             {AfterTypeDontShowIni ? null : (
                               <div className="flex flex-auto flex-col items-center justify-center">
@@ -1388,7 +1509,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                 </div>
                               </div>
                             )}
+
                           </div>
+
                         </>
                       ))}
 
@@ -1463,17 +1586,40 @@ const Chat = ({ AUTH_TOKEN }) => {
                               type="text"
                               rows="1"
                               placeholder="Ask or Search anything"
-                              value={ChatText || chatFill}
+                              value={ChatText}
                               onChange={(e) => {
                                 setChatText(e.target.value);
                                 adjustTextareaHeight(e.target);
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                  submitChatText();
+                                  // submitChatText();
+                                  startStreaming(false,"")
                                 }
                               }}
-                          />
+                          /> 
+
+                          {streamedData &&
+                          <>
+                              {streamedData.length>0
+                              ?
+                                <>
+                                    <button
+                                    className="fixed bottom-[145px] ml-[100px] left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all"
+                                    onClick={()=>{
+                                      stopStreaming()
+                                    }}
+                                  >
+                                    Stop Generating
+                                  </button>
+                                </>
+                              :
+                                null
+                              }
+
+                          </>
+                          }
+                         
                         
                           {check_to_stop_typing
                           ?
@@ -1487,8 +1633,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                               <button
                                 className="absolute bottom-6 right-3 w-6 h-6"
                                 onClick={() => {
-                                  submitChatText();
-                                  setChatFill("");
+                                  // submitChatText();
+                                  startStreaming(false,"")
+                                  // setChatFill("");
                                 }}
                               >
                                 {Loading ? (
@@ -1499,6 +1646,7 @@ const Chat = ({ AUTH_TOKEN }) => {
                               </button>
                             </>
                           }
+
                         </div>
 
                       </div>
