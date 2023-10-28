@@ -9,30 +9,18 @@ export var BACKEND_URL;
 
 
 if (local == true) {
-  // FRONT_END_URL = "http://localhost:3000"
   FRONT_END_URL = "http://localhost:8000"
 
-  // FRONT_END_URL_LINKEDIN = "http://localhost:3000"
   FRONT_END_URL_LINKEDIN = "http://localhost:8000"
 
-  // FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
   FRONT_END_URL_GOOGLE_PARAM = "http://localhost:8000/google"
 
   BACKEND_URL = "http://localhost:8000"
 
 } else {
 
-  // FRONT_END_URL = "http://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "http://copy-ai-ecru.vercel.app"
-
-  // FRONT_END_URL = "http://copy-ai-ecru.vercel.app/"
-  // FRONT_END_URL_LINKEDIN = "http://copy-ai-ecru.vercel.app"
-
   FRONT_END_URL = "http://13.232.215.102/"
   FRONT_END_URL_LINKEDIN = "http://13.232.215.102"
-
-  // FRONT_END_URL_GOOGLE_PARAM= "http://copy-ai-ecru.vercel.app/google"
-  // BACKEND_URL = "http://sunilsingh2019.pythonanywhere.com";
 
   FRONT_END_URL_GOOGLE_PARAM = "http://13.232.215.102/google"
   BACKEND_URL = "http://13.232.215.102";

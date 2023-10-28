@@ -10,6 +10,8 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
 import MarkdownRenderer from '../ChatRenders/MarkdownRenderer'
+import MarkdownPreview from "@uiw/react-markdown-preview";
+
 
 
 
@@ -27,9 +29,14 @@ const AnswerFroApi = (props) => {
         </div>
         <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
 
+
         {/* <RenderHtmlData htmldata={props.content} /> */}
 
-        <MarkdownRenderer content={props.content} />
+        <div data-color-mode="light ">
+        <MarkdownPreview source={props.content} />
+      </div>
+
+        {/* <MarkdownRenderer content={props.content} /> */}
 
         {/* <ReactMarkdown
           children={props.content}

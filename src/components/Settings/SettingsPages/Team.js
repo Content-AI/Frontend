@@ -17,6 +17,8 @@ import CopyIcon from '../../Icons/CopyIcon';
 import DeleteIcon from '../../Icons/DeleteIcon';
 import Upgradenow from './Modal/Upgradenow';
 import AddMoreSeat from './Modal/AddMoreSeat';
+import { NavIcons, SealCheck } from "../../Icons";
+
 
 
 const Team = () => {
@@ -431,200 +433,238 @@ const Team = () => {
                 <div className="flex grow flex-col gap-2">
 
 
-                 {/* monthly trail starter no team member */}
-                  {SubscriptionsData &&
-                    <>
-                      {SubscriptionsData.user.status == "trial" 
-                      && 
-                      SubscriptionsData.user.plan=="starter"
-                      && 
-                      SubscriptionsData.user.subscription_type=="monthly"
-                      ||
-                      SubscriptionsData.user.status == "trial" 
-                      && 
-                      SubscriptionsData.user.plan=="starter"
-                      && 
-                      SubscriptionsData.user.subscription_type=="annually"
-                        ?
-                        <>
-                          <div className="container mt-3 w-[300px]">
-                              <span className="font-bold">
-                                1 Team member.
-                              </span>
-                          </div>
-                          <TeamInviteDisable/>
+                {SubscriptionsData &&
+                  <>
+                    {/* no team member in starter */}
+                    {SubscriptionsData.user.plan=="starter"
+                    ?
+                      <>
 
-                          {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                          <div>
-                            <span>
-                              Need more seats ?
-                                <AddMoreSeat
-                                  subscription_data={SubscriptionsData}
-                                  TOKEN={TOKEN}
-                                />
-
+                      <div className="container mt-3 w-[300px]">
+                            <ProgressBar value={1} maxValue={1} />
+                            <span className="font-bold">
+                              Out of 1 member.
+                              <p>
+                                1 team member already exists.
+                              </p>
                             </span>
                           </div>
-                        </>
-                        :
+                           {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                           <div className="mt-4 md:mt-0 break-words bg-red-400 text-black p-2 w-full shadow-lg rounded-md">                 
+                              <span class="font-semibold">
+                                For inviting team member.
+                                Need to be premium user ?
+                                <button class="font-semibold underline underline-offset-2 cursor-pointer"
+                                onClick={()=>{
+                                  navigate("/settings/subscription_plan")
+                                }}>
+                                Upgrade now
+                                </button>
+                                </span>
+                            </div>
+                      </>
+                    :
+                    <>
+                    {/* monthly trail starter no team member */}
+                      {SubscriptionsData &&
                         <>
-                        {/* when the user is trail or all payment in premium */}
-                          {workspacelist &&
-                          <>
-                          {Subscriptions.status == "trial"
-                          ?
-                            <div className="container mt-3 w-[300px]">
-                                  <ProgressBar value={1} maxValue={1} />
-                                  <span className="font-bold">
-                                    Out of {team_limit+1} member.
-                                    <p>
-                                      {workspacelist &&
-                                        workspacelist[0]["member_no"] + " "
-                                      }
-                                      team member already exists.
-                                    </p>
-                                  </span>
-                                  
-                                </div>
-                          :
+                          {SubscriptionsData.user.status == "trial" 
+                          && 
+                          SubscriptionsData.user.plan=="starter"
+                          && 
+                          SubscriptionsData.user.subscription_type=="monthly"
+                          ||
+                          SubscriptionsData.user.status == "trial" 
+                          && 
+                          SubscriptionsData.user.plan=="starter"
+                          && 
+                          SubscriptionsData.user.subscription_type=="annually"
+                            ?
+                            <>
                               <div className="container mt-3 w-[300px]">
-                                <ProgressBar value={workspacelist[0]["member_no"]} maxValue={team_limit} />
-                                <span className="font-bold">
-                                  Out of {team_limit} member.
-                                  <p>
-                                    {workspacelist &&
-                                      workspacelist[0]["member_no"] + " "
-                                    }
-                                    team member already exists.
-                                  </p>
+                                  <span className="font-bold">
+                                    1 Team member.
+                                  </span>
+                              </div>
+                              <TeamInviteDisable/>
+
+                              {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                              <div>
+                                <span>
+                                  Need more seats ?
+                                    <AddMoreSeat
+                                      subscription_data={SubscriptionsData}
+                                      TOKEN={TOKEN}
+                                    />
+
                                 </span>
                               </div>
-                          }
-                          </>
-                            
-                          }
-
-
-                          {Subscriptions &&
+                            </>
+                            :
                             <>
+                            {/* when the user is trail or all payment in premium */}
+                              {workspacelist &&
+                              <>
                               {Subscriptions.status == "trial"
-                                ?
+                              ?
+                                <div className="container mt-3 w-[300px]">
+                                      <ProgressBar value={1} maxValue={1} />
+                                      <span className="font-bold">
+                                        Out of {team_limit+1} member.
+                                        <p>
+                                          {workspacelist &&
+                                            workspacelist[0]["member_no"] + " "
+                                          }
+                                          team member already exists.
+                                        </p>
+                                      </span>
+                                      
+                                    </div>
+                              :
+                                  <div className="container mt-3 w-[300px]">
+                                    <ProgressBar value={workspacelist[0]["member_no"]} maxValue={team_limit} />
+                                    <span className="font-bold">
+                                      Out of {team_limit} member.
+                                      <p>
+                                        {workspacelist &&
+                                          workspacelist[0]["member_no"] + " "
+                                        }
+                                        team member already exists.
+                                      </p>
+                                    </span>
+                                  </div>
+                              }
+                              </>
+                                
+                              }
+
+
+                              {Subscriptions &&
                                 <>
-                                  {workspacelist &&
+                                  {Subscriptions.status == "trial"
+                                    ?
                                     <>
-                                      {
-                                        workspacelist[0]["member_no"] >= total_limit_check
-                                          ?
-                                          <>
-                                          <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0">
-                                              <TeamInviteDisable />
-                                          </button>
-                                          </>
-                                          :
-                                          <>
-                                            {invite_check
+                                      {workspacelist &&
+                                        <>
+                                          {
+                                            workspacelist[0]["member_no"] >= total_limit_check
                                               ?
                                               <>
-                                                <button type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" 
-                                                      title="Invite Member"
-                                                  onClick={() => {
-                                                    invite_modal()
-                                                  }}
-                                                >
-                                                  <InviteTeamMember />
-                                                </button>
-                                                 {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                                                    <div>
-                                                      <span>
-                                                        Need more seats ?
-                                                          <AddMoreSeat
-                                                            subscription_data={SubscriptionsData}
-                                                            TOKEN={TOKEN}
-                                                          />
-
-                                                      </span>
-                                                    </div>
+                                              <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0">
+                                                  <TeamInviteDisable />
+                                              </button>
                                               </>
                                               :
                                               <>
-                                                <button disabled className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
-                                                  title="Contact Your admin">
-                                                  <TeamInviteDisable />
-                                                </button>
-                                                {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                                                <div>
-                                                      <span>
-                                                        Need more seats ?
-                                                          <AddMoreSeat
-                                                            subscription_data={SubscriptionsData}
-                                                            TOKEN={TOKEN}
-                                                          />
+                                                {invite_check
+                                                  ?
+                                                  <>
+                                                    <button type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" 
+                                                          title="Invite Member"
+                                                      onClick={() => {
+                                                        invite_modal()
+                                                      }}
+                                                    >
+                                                      <InviteTeamMember />
+                                                    </button>
+                                                    {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                                        <div>
+                                                          <span>
+                                                            Need more seats ?
+                                                              <AddMoreSeat
+                                                                subscription_data={SubscriptionsData}
+                                                                TOKEN={TOKEN}
+                                                              />
 
-                                                      </span>
-                                                    </div>
+                                                          </span>
+                                                        </div>
+                                                  </>
+                                                  :
+                                                  <>
+                                                    <button disabled className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                                                      title="Contact Your admin">
+                                                      <TeamInviteDisable />
+                                                    </button>
+                                                    {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                                    <div>
+                                                          <span>
+                                                            Need more seats ?
+                                                              <AddMoreSeat
+                                                                subscription_data={SubscriptionsData}
+                                                                TOKEN={TOKEN}
+                                                              />
+
+                                                          </span>
+                                                        </div>
+                                                  </>
+                                                }
                                               </>
-                                            }
-                                          </>
+                                          }
+                                        </>
                                       }
-                                    </>
-                                  }
-                                </>
-                                :
-                                <>
-                                  {invite_check
-                                    ?
-                                    <>
-                                      <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
-                                        onClick={() => {
-                                          invite_modal()
-                                        }}
-                                      >
-                                        <InviteTeamMember />
-                                      </button>
-                                      {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                                      <div>
-                                          <span>
-                                            Need more seats ?
-                                              <AddMoreSeat
-                                                subscription_data={SubscriptionsData}
-                                                TOKEN={TOKEN}
-                                              />
-
-                                          </span>
-                                        </div>
-                                                  
                                     </>
                                     :
                                     <>
-                                        <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
-                                          title="Contact Your admin">
-                                          <TeamInviteDisable />
-                                        </button>
-                                        {/* upgrade to premium mode monthly or yearly get 2 team extra */}
-                                        <div>
-                                        <span>
-                                          Need more seats ?
-                                            <AddMoreSeat
-                                              subscription_data={SubscriptionsData}
-                                              TOKEN={TOKEN}
-                                            />
+                                      {invite_check
+                                        ?
+                                        <>
+                                          <button disabled="" type="button" className="w-[200px] relative rounded-md border-0 bg-[#334977] px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0" title="Invite Member"
+                                            onClick={() => {
+                                              invite_modal()
+                                            }}
+                                          >
+                                            <InviteTeamMember />
+                                          </button>
+                                          {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                          <div>
+                                              <span>
+                                                Need more seats ?
+                                                  <AddMoreSeat
+                                                    subscription_data={SubscriptionsData}
+                                                    TOKEN={TOKEN}
+                                                  />
 
-                                        </span>
-                                      </div>
+                                              </span>
+                                            </div>
+                                                      
+                                        </>
+                                        :
+                                        <>
+                                            <button disabled type="button" className="w-[200px] relative rounded-md border-0 bg-gray-400 px-3 py-1.5 text-sm font-semibold text-white shadow-sm outline-none ring-0 ring-blue-600 transition-all duration-200 hover:outline-none hover:ring-0 focus:outline-none active:ring-0"
+                                              title="Contact Your admin">
+                                              <TeamInviteDisable />
+                                            </button>
+                                            {/* upgrade to premium mode monthly or yearly get 2 team extra */}
+                                            <div>
+                                            <span>
+                                              Need more seats ?
+                                                <AddMoreSeat
+                                                  subscription_data={SubscriptionsData}
+                                                  TOKEN={TOKEN}
+                                                />
+
+                                            </span>
+                                          </div>
+                                        </>
+                                      }
                                     </>
+
                                   }
                                 </>
 
                               }
+
                             </>
 
                           }
-
                         </>
-
                       }
                     </>
                   }
+                </>
+                }
+
+
 
 
                   

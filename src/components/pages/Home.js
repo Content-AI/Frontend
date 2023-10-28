@@ -120,7 +120,7 @@ useEffect(()=>{
       <div className="max-w-[843px] mx-auto mt-10 mb-12">
       
         <div className="mb-6">
-          <h1 className="text-[40px] font-bold">Welcome to [ Web Site Name ]</h1>
+          <h1 className="text-[40px] font-bold">Welcome to Jyra AI</h1>
           <p className="text-sm">
             Follow these steps to get started and earn free credits as you go.
           </p>

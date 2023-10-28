@@ -8,6 +8,8 @@ import { useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import SearchIconTemplate from '../../Icons/SearchIconTemplate'
 
+import { PremiumIc } from "../ImageGenerator/PremiumIc";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   _load_screen_
@@ -380,9 +382,10 @@ const Template = ({AUTH_TOKEN}) => {
                 <>
                 {templateData.map((items, index) => {
                   return (
+
                     <div
                         key={items.id}
-                        className="card flex p-6 border border-border rounded-xl cursor-pointer"
+                        className="flex p-3 border border-border  rounded-xl cursor-pointer"
                         onClick={() => {
                           if (items.premium) {
                             if (subscriptions_check.status === "trial") {
@@ -398,23 +401,32 @@ const Template = ({AUTH_TOKEN}) => {
                             navigate(`/template/${items.id}?custom=normal_user`);
                           }
                         }}
-                      >
-                        <div className="icon flex-none w-14 h-14 p-2 bg-blue-700/10 rounded-xl">
+                      >                        
+
+                        <div className="icon flex-none w-14 h-14 p-2  bg-blue-700/10 rounded-xl">
                           <img src={items.icon} alt="" className="block w-full" />
                         </div>
-                        <div className="content relative flex-auto pl-4">
-                          <div className="title flex items-center justify-between gap-2 mb-2">
-                            <h4 className="text-sm font-bold leading-none">
+
+                        <div className="content flex-auto pl-4">
+                          
+                          <div className="flex items-center justify-between gap-2 mb-2">
+
+                            <h4 className="text-sm  font-bold leading-none">
                               {items.title}
                             </h4>
+
                             {items.premium && (
-                              <span className="md:inline text-xs md:text-sm lg:text-base text-green py-1 px-2 bg-green/10 border border-green rounded-3xl">
+                              <span className="md:inline text-xs md:text-sm lg:text-sm text-green py-1 px-1 bg-green/10 border border-green rounded-3xl">
                                 Premium
                               </span>
                             )}
+                            
                           </div>
+                          
                           <p className="text-sm leading-none">{items.description}</p>
                         </div>
+
+
                       </div>
                   );
                 })

@@ -192,7 +192,7 @@ const create_blank_document = async() => {
                                 {/* <h1 className="mb-2 text-lg font-semibold text-gray-900">Get started with new content powered by  <b> AI</b></h1> */}
 
                                 <div className="w-full text-left flex justify-between items-center  text-gray-900">
-                                    <h3 className="text-lg font-semibold">Get started with new content powered by  <b> AI</b></h3>
+                                    <h3 className="text-lg font-semibold">Get started with new content powered by  <b>Jyra AI</b></h3>
                                     <button className="p-2 hover:bg-gray-100 rounded-full hover:cursor-pointer"
                                     onClick={handleGoBack}>
                                         <Closeicons/>

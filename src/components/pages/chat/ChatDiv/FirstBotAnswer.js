@@ -8,6 +8,8 @@ import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for 
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import MarkdownRenderer from '../ChatRenders/MarkdownRenderer'
+import MarkdownPreview from "@uiw/react-markdown-preview";
+
 
 const FirstBotAnswer = (props) => {
   return (
@@ -21,9 +23,16 @@ const FirstBotAnswer = (props) => {
     </div>
     <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
 
+
       {/* <RenderHtmlData htmldata={props.content} /> */}
 
-      <MarkdownRenderer content={props.content} />
+      {/* <MarkdownRenderer content={props.content} /> */}
+
+
+      <div data-color-mode="light ">
+        <MarkdownPreview source={props.content} />
+      </div>
+
 
       {/* <ReactMarkdown
           children={props.content}
