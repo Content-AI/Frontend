@@ -19,11 +19,11 @@ if (local == true) {
 
 } else {
 
-  FRONT_END_URL = "http://13.232.215.102/"
-  FRONT_END_URL_LINKEDIN = "http://13.232.215.102"
+  FRONT_END_URL = "https://uffai.com/"
+  FRONT_END_URL_LINKEDIN = "https://uffai.com"
 
-  FRONT_END_URL_GOOGLE_PARAM = "http://13.232.215.102/google"
-  BACKEND_URL = "http://13.232.215.102";
+  FRONT_END_URL_GOOGLE_PARAM = "https://uffai.com/google"
+  BACKEND_URL = "https://uffai.com";
 
 }
 

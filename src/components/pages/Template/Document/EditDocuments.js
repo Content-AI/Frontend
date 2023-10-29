@@ -880,6 +880,7 @@ export default function EditDocuments() {
                 {/* ========top button======= */}
 
                 <div className="hidden md:flex flex-none items-center justify-center">
+                  
                   <div className="
                   flex items-center transform
                   [&amp;_.active_button]:bg-indigo-100
@@ -889,8 +890,13 @@ export default function EditDocuments() {
                   [&amp;_:first-child_button]:!rounded-r-none
                   [&amp;_:last-child_button]:!rounded-l-none
                   ">
-                   
-                    <span className="relative hover:z-10">
+
+
+
+
+                      {/* for now chat is disabled */}
+
+                    {/* <span className="relative hover:z-10">
                       <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                       onClick={()=>{
                         set_show_chat(!show_chat)
@@ -901,7 +907,7 @@ export default function EditDocuments() {
                           </span>
                         </span>
                       </button>
-                    </span>
+                    </span> */}
 
 
                     <span className="relative hover:z-10">
@@ -1234,89 +1240,6 @@ export default function EditDocuments() {
 
 
               </div>
-              {/* <div className="flex md:hidden py-2 px-1 space-x-2 justify-between">
-                <span className="basis-1/3 flex items-center justify-start"></span>
-                <span className="basis-1/3 flex items-center justify-center">
-                  <div className="
-                  flex items-center transform
-                  [&amp;_.active_button]:bg-indigo-100
-                  [&amp;_.active_button]:text-indigo-600
-                  [&amp;_.active_button]:ring-indigo-700
-                  [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                  [&amp;_:first-child_button]:!rounded-r-none
-                  [&amp;_:last-child_button]:!rounded-l-none
-                  ">
-                    <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4">
-                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"></path>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                    <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4">
-                              <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
-                              <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                    <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <svg className="w-4 h-4" viewBox="0 0 44 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M25 28.5H28.5C29 28.5 29.3 28.1 29.3 27.7V11.4C29.3 10.9 28.9 10.6 28.5 10.6H25C24.5 10.6 24.2 11 24.2 11.4V27.7C24.2 28.1 24.6 28.5 25 28.5ZM6 9V18.5V20.5V21.5H8L6 24.4L4 27.3L2 24.4L0 21.5H2.1V20.5V18.5V9C2.1 4.1 6.1 0 11.1 0H32.2C37.1 0 41.2 4 41.2 9H37.3C37.3 6.2 35 4 32.3 4H11C8.3 3.9 6 6.2 6 9ZM39.1 11.7L41.1 14.6L43.1 17.5H41.1V18.5V19.4V30C41.1 34.9 37.1 39 32.1 39H11C6.1 39 2 35 2 30H6C6 32.8 8.3 35 11 35H32.1C34.9 35 37.1 32.7 37.1 30V19.5V18.6V17.6H35.1L37.1 14.7L39.1 11.7ZM14.6 28.5H18.1C18.6 28.5 18.9 28.1 18.9 27.7V17.3C18.9 16.8 18.5 16.5 18.1 16.5H14.6C14.1 16.5 13.8 16.9 13.8 17.3V27.6C13.8 28.1 14.2 28.5 14.6 28.5Z" fill="currentColor"></path>
-                              <defs></defs>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                    <span className="active z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <svg className="w-4 h-4" viewBox="0 0 16 14" fill="none">
-                              <path fillRule="evenodd" clipRule="evenodd" d="M14 1.6001H7V12.3999H14C14.1025 12.3999 14.1963 12.3611 14.2671 12.2974C14.3486 12.2244 14.3999 12.1182 14.3999 12V2C14.3999 1.87915 14.3462 1.77075 14.2612 1.69727C14.1914 1.63672 14.1001 1.6001 14 1.6001ZM2 0C0.895508 0 0 0.895508 0 2V12C0 13.1045 0.895508 14 2 14H14C15.1045 14 16 13.1045 16 12V2C16 0.895508 15.1045 0 14 0H2ZM5 4H2V5H5V4ZM2 6H5V7H2V6ZM5 8H2V9H5V8Z" fill="currentColor"></path>
-                            </svg>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                  </div>
-                </span>
-                <span className="basis-1/3 flex items-center justify-end space-x-2">
-                  <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-2 py-1 text-xs bg-white bg-opacity-20 text-gray-600 ring-1 ring-gray-50 active:ring-1 hover:ring-gray-100 hover:ring-2 active:ring-gray-300 hover:text-gray-800 active:text-gray-800 aspect-1">
-                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 92" className="jsx-628cec04c4b4a2cc w-4 h-4 text-slate-400 group-hover:text-slate-500">
-                        <circle cx="46" cy="46" fill="currentColor" r="46" className="jsx-628cec04c4b4a2cc"></circle>
-                        <path d="M55.1 52.2c-1.9 0-3.4 1.7-3.1 3.7.3 1.5 1.7 2.5 3.2 2.5H60l2.8-.4c-4.5 6.6-12.2 9.6-20.7 8.2-6.9-1.1-12.8-5.8-15.3-12.3-5.7-14.8 5.1-29 19.2-29 7.3 0 13.8 4.3 17.5 9.5v.1c1 1.4 2.9 1.8 4.3.8 1.3-.9 1.7-2.7.9-4.1-5.1-8-14.3-13.1-24.6-12.4C30.7 19.9 19.8 30.9 19 44.4c-.9 15.7 11.5 28.4 27 28.4 8.1 0 15.4-3.5 20.3-9.3l-.6 3.3v3c0 1.5 1 2.9 2.5 3.2 2 .4 3.7-1.2 3.7-3.1V52.2z" fill="#fff" className="jsx-628cec04c4b4a2cc"></path>
-                      </svg>
-                    </span>
-                  </button>
-                  <div className="relative z-500" data-headlessui-state="">
-                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-2 py-1 text-xs bg-white bg-opacity-20 text-gray-600 ring-1 ring-gray-50 active:ring-1 hover:ring-gray-100 hover:ring-2 active:ring-gray-300 hover:text-gray-800 active:text-gray-800 aspect-1" aria-expanded="false" data-headlessui-state="" id="headlessui-popover-button-:r2:">
-                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M8,15.14c3.94,0,7.14-3.2,7.14-7.14S11.94,.86,8,.86,.86,4.05,.86,8s3.2,7.14,7.14,7.14Z" fill="none" stroke="#374151" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                          <path d="M5.14,8.71l2.08,2.14c.98-2.81,1.79-4.04,3.64-5.71" fill="none" stroke="#374151" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                        </svg>
-                      </span>
-                    </button>
-                  </div>
-                </span>
-              </div> */}
-
             </div>
 
 
@@ -1328,18 +1251,6 @@ export default function EditDocuments() {
                       null
                     :
                     <>
-                    {/* {show_chat
-                    ?
-                      <>
-                        <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
-                          <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
-                              <ChatInEditor
-                                AUTH_TOKEN={TOKEN}
-                              />
-                          </div>
-                        </div>
-                      </>
-                    : */}
                       <>
                             <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
                             <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
@@ -1705,10 +1616,8 @@ export default function EditDocuments() {
                                                     get_history(templateValue)
                                                   }
                                                     setShowHideHistory(false)
-                                                    // setTemplateResponseData(null)
                                                 }}
                                                 >
-                                                {/* <span className="relative">New outputs {ContentOutputNumber.toString()}</span> */}
                                                 <span className="relative">
                                                   New outputs {ContentOutputNumber}
                                                 </span>
@@ -1722,10 +1631,7 @@ export default function EditDocuments() {
                                                       } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
 
                                                 onClick={()=>{
-                                                  // if()
-                                                    // get_history(templateValue)
                                                     setShowHideHistory(true)
-                                                    // setTemplateResponseData(null)
                                                 }}>
                                                 <span className="relative">History</span>
                                                 </button>
