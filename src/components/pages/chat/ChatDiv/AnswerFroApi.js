@@ -27,14 +27,17 @@ const AnswerFroApi = (props) => {
             alt="ChatBot"
         />
         </div>
-        <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
+        <div 
+          className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100"
+          // className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+        >
 
 
         {/* <RenderHtmlData htmldata={props.content} /> */}
 
         <div data-color-mode="light ">
-        <MarkdownPreview source={props.content} />
-      </div>
+          <MarkdownPreview source={props.content} />
+        </div>
 
         {/* <MarkdownRenderer content={props.content} /> */}
 

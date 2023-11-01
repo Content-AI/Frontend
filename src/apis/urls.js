@@ -1,5 +1,5 @@
-// const local = true
-const local=false
+const local = true
+// const local=false
 export var GOOGLE_PARAM = "/google"
 export var LINKEDIN_PARAM = "/linkedin"
 export var FRONT_END_URL;
@@ -9,21 +9,21 @@ export var BACKEND_URL;
 
 
 if (local == true) {
-  FRONT_END_URL = "http://localhost:8000"
+  FRONT_END_URL = "http://localhost:3000"
 
-  FRONT_END_URL_LINKEDIN = "http://localhost:8000"
+  FRONT_END_URL_LINKEDIN = "http://localhost:3000"
 
-  FRONT_END_URL_GOOGLE_PARAM = "http://localhost:8000/google"
+  FRONT_END_URL_GOOGLE_PARAM = "http://localhost:3000/google"
 
   BACKEND_URL = "http://localhost:8000"
 
 } else {
 
-  FRONT_END_URL = "https://uffai.com/"
-  FRONT_END_URL_LINKEDIN = "https://uffai.com"
+  FRONT_END_URL = "https://app.uffai.com/"
+  FRONT_END_URL_LINKEDIN = "https://app.uffai.com"
 
-  FRONT_END_URL_GOOGLE_PARAM = "https://uffai.com/google"
-  BACKEND_URL = "https://uffai.com";
+  FRONT_END_URL_GOOGLE_PARAM = "https://app.uffai.com/google"
+  BACKEND_URL = "https://app.uffai.com";
 
 }
 

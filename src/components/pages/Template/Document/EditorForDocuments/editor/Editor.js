@@ -174,27 +174,43 @@ export default function Editor({ data, setData }) {
   }, [currentQuestion]);
 
 
-
-
   useEffect(() => {
     if (currentAnswer) {
 
       const targetBlock =
       document.getElementsByClassName("ce-block")[activeIndex],
       holder = targetBlock.getElementsByClassName("ce-paragraph")[0];
-      
 
       targetBlock.classList.remove("active");
       targetBlock.classList.remove("loading");
       holder.innerHTML = currentAnswer;
       holder.focus();
+      
+      
+      const tmp_data = data
+      
+      // Check if activeIndex is within a valid range
+      if (activeIndex >= 0 && activeIndex < tmp_data.blocks.length) {
+        // Update the "text" property of the block at the activeIndex
+        tmp_data.blocks[activeIndex].data.text = currentAnswer;
+      } else {
+        console.log("Active index is out of range.");
+      }
+
+      // If you want to convert tmp_data back to a JSON string:
+      // const updatedDataJSON = JSON.stringify(tmp_data);
+      
+      // after update send post request data to api
+      save_document_data(tmp_data)
 
       setActiveIndex(null);
       setCurrentAnswer(null);
       setIsActive(false);
+      
+      
+
     }
   }, [currentAnswer]);
-
 
 
   return (

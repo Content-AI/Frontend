@@ -102,13 +102,19 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
             </button>
             <p className="mt-2 text-sm text-gray-500">
                 Your API key is a secret token used to authenticate requests to the API. Please keep it secure.
-                <button type='button'
+                <a type='link'
+                    target='_blank'
+                    className='underline text-blue-500 font-semibold ml-2'
+                    href={BACKEND_URL+"/doc/"}>
+                    API's Doc's
+                </a>
+                {/* <button type='button'
                     className='underline text-blue-500 font-semibold ml-2'
                     onClick={()=>{
                         window.location.href = BACKEND_URL+"/doc/"
                     }}>
                     API's Doc's
-                </button>
+                </button> */}
             </p>
 
             </>

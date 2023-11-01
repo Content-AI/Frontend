@@ -917,7 +917,7 @@ const ListOfDocument = (props) => {
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                                   }}
-                                >{(data.title).slice(0,7)+".."}</td>
+                                >{(data.title).slice(0,25)+".."}</td>
 
 
                                 <td className="hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"

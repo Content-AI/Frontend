@@ -123,9 +123,10 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
+
   const notifymessage = (message) =>
     toast(message, {
-      icon: "👏",
+      icon: "🙂",
       style: {
         borderRadius: "10px",
         background: "#333",
@@ -1069,9 +1070,12 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   const [streamedData, setStreamedData] = useState('');
   const [abortController, setAbortController] = useState(new AbortController());
+  
+  const [restrict_after_asking_question_once,set_restrict_after_asking_question_once]=useState(false)
 
   // Reusable function to make authorized requests with various methods and payload
   const makeAuthorizedRequest = async (url, method, token, payload, signal) => {
+    set_restrict_after_asking_question_once(true)
     const headers = {
       Authorization: token,
       'Content-Type': 'application/json',
@@ -1092,7 +1096,14 @@ const Chat = ({ AUTH_TOKEN }) => {
 
 
 
+
   const startStreaming = async (repeat_question,question) => {
+
+    if(restrict_after_asking_question_once){
+        notifymessage("Wait for response to finish")
+        return
+    }
+
 
     let payload={}
 
@@ -1183,6 +1194,7 @@ const Chat = ({ AUTH_TOKEN }) => {
           setCurrentAnswer((prevMessages) => [...prevMessages, final_single_result]);
           setCurrentQuestionIni("")
           setStreamedData("")
+          set_restrict_after_asking_question_once(false)
           break;
         }
 
@@ -1206,6 +1218,7 @@ const Chat = ({ AUTH_TOKEN }) => {
             setStreamedData(prevData => prevData + concatenatedContent);
             answer_response+=concatenatedContent
         }else{
+          set_restrict_after_asking_question_once(false)
           abortController.abort();
         }
       }
@@ -1225,7 +1238,7 @@ const Chat = ({ AUTH_TOKEN }) => {
 
     setCurrentQuestionIni("")
     setStreamedData("")
-
+    set_restrict_after_asking_question_once(false)
   };
 
 
@@ -1355,8 +1368,9 @@ const Chat = ({ AUTH_TOKEN }) => {
                                                   alt="ChatBot"
                                                 />
                                               </div>
-                                              <div
-                                                className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                              <div 
+                                                className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100"
+                                                // className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
                                                 tabIndex={0}
                                                 ref={chatLoadingRef}
                                               >
@@ -1454,7 +1468,8 @@ const Chat = ({ AUTH_TOKEN }) => {
                                                 />
                                               </div>
                                               <div
-                                                className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+                                                className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100"
+                                                // className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
                                                 tabIndex={0}
                                                 ref={chatLoadingRef}
                                               >
@@ -1604,14 +1619,18 @@ const Chat = ({ AUTH_TOKEN }) => {
                               {streamedData.length>0
                               ?
                                 <>
-                                    <button
-                                    className="fixed bottom-[145px] ml-[100px] left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all"
-                                    onClick={()=>{
-                                      stopStreaming()
-                                    }}
-                                  >
-                                    Stop Generating
-                                  </button>
+                                <button
+                                  className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all"
+                                  style={{
+                                    marginBottom: '145px', // Adjust this value as needed
+                                  }}
+                                  onClick={() => {
+                                    stopStreaming();
+                                  }}
+                                >
+                                  Stop Generating
+                                </button>
+
                                 </>
                               :
                                 null

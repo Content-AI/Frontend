@@ -13,7 +13,8 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 
 const FirstBotAnswer = (props) => {
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex flex-col ">
+
     <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
       <img
         className="w-full h-full rounded-full"
@@ -21,7 +22,9 @@ const FirstBotAnswer = (props) => {
         alt="ChatBot"
       />
     </div>
-    <div className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl">
+
+    {/* <div className="text-black  bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"> */}
+    <div className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100">
 
 
       {/* <RenderHtmlData htmldata={props.content} /> */}
@@ -48,6 +51,8 @@ const FirstBotAnswer = (props) => {
       />
       {/* ============all sorts of btn================ */}
     </div>
+
+
   </div>
   )
 }

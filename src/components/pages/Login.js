@@ -87,6 +87,8 @@ export default function Login() {
 
     const [wholePageLoading, setwholePageLoading] = useState(false)
     const [loading, setloading] = useState(false)
+    
+    const [timer_start_to_show_message, settimer_start_to_show_message] = useState(false)
 
 
     let TOKEN = useSelector(
@@ -120,6 +122,7 @@ export default function Login() {
     };
 
     const handleSubmit = async (event) => {
+        settimer_start_to_show_message(true)
         event.preventDefault();
         setloading(true)
 
@@ -145,7 +148,10 @@ export default function Login() {
                 // setsendOTP(true)
                 setOpen(true)
                 // setFormData({ email: ''});
+                settimer_start_to_show_message(false)
+
             } else {
+                settimer_start_to_show_message(false)
                 if(response.response.data.detail=="You do not have permission to perform this action."){
                     notifyerror("To Many attempts wait for Minutes")
                 }else{
@@ -222,6 +228,30 @@ export default function Login() {
     };
 
 
+    // =====show message in button while sending token======
+    const [message, setMessage] = useState("Thinking...");
+
+    useEffect(() => {
+
+        if(timer_start_to_show_message){
+            const timers = [
+            { time: 2000, message: "Validating email" },
+            { time: 4000, message: "Creating account" },
+            { time: 6000, message: "Creating Workspace" },
+            { time: 8000, message: "Sending Token" },
+            { time: 9000, message: "Finalizing" }
+            ];
+        
+            timers.forEach(({ time, message }) => {
+            setTimeout(() => {
+                setMessage(message);
+            }, time);
+            });
+        }
+
+      }, [timer_start_to_show_message]);
+
+
     return (
         <>
             {popupgoogle ? <GoogleOneTap /> : null}
@@ -287,7 +317,7 @@ export default function Login() {
                             {loading
                                 ?
                                 <button disabled className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform rounded-md focus:outline-none bg-red-700">
-                                    Sending token
+                                    {message}
                                 </button>
                                 :
                                 <button className="w-full text-[15px] px-4 py-2 tracking-wide text-blue-800 bg-slate-700 font-bold transition-colors duration-200 transform rounded-md hover:bg-blue-600 focus:outline-none focus:bg-purple-600">
