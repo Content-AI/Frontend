@@ -229,15 +229,15 @@ export default function Login() {
 
 
     // =====show message in button while sending token======
-    const [message, setMessage] = useState("Thinking...");
+    const [message, setMessage] = useState("Validating email");
 
     useEffect(() => {
 
         if(timer_start_to_show_message){
             const timers = [
             { time: 2000, message: "Validating email" },
-            { time: 4000, message: "Creating account" },
-            { time: 6000, message: "Creating Workspace" },
+            { time: 4000, message: "Validating account" },
+            { time: 6000, message: "Validating Workspace" },
             { time: 8000, message: "Sending Token" },
             { time: 9000, message: "Finalizing" }
             ];

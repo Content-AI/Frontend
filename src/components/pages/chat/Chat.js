@@ -1619,18 +1619,15 @@ const Chat = ({ AUTH_TOKEN }) => {
                               {streamedData.length>0
                               ?
                                 <>
-                                <button
-                                  className="fixed bottom-0 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all"
-                                  style={{
-                                    marginBottom: '145px', // Adjust this value as needed
-                                  }}
-                                  onClick={() => {
-                                    stopStreaming();
-                                  }}
-                                >
-                                  Stop Generating
-                                </button>
-
+                                    <button
+                                      className="stop-generator  absolute -top-[100px] left-1/2 -translate-x-1/2 text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 transition-all"
+                                    // className="fixed bottom-[145px] ml-[100px] left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-all"
+                                    onClick={()=>{
+                                      stopStreaming()
+                                    }}
+                                  >
+                                    Stop Generating
+                                  </button>
                                 </>
                               :
                                 null
