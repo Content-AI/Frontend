@@ -5,11 +5,8 @@
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-
-# production
-/build
+# vscode local settings
+/.vscode
 
 # misc
 .DS_Store
