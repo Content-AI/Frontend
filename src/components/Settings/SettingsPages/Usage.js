@@ -116,7 +116,7 @@ const Usage = (props) => {
         {/* <div className="ml-[50px] mr-[50px] sm:ml-[100px] mt-10 scrollable-div"> */}
         <div className="max-w-4xl">
           <div className="justify-flex-start mb-4 flex items-center">
-            <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
+            <h2 className="dark:text-white mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Usage</h2>
           </div>
 
             {/* ========select options for individual and teams=======+ */}
@@ -132,8 +132,8 @@ const Usage = (props) => {
                   }}
                   type="button"
                   className={selectedButton 
-                  ? " justify-center  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 " 
-                  : "justify-center  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700  "
+                  ? " justify-center dark:bg-gray-800 dark:text-gray-300  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 " 
+                  : "justify-center dark:bg-gray-800 dark:text-gray-300 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-slate-100 text-sm font-medium text-gray-700  "
                   }
                 >
                   Team Member
@@ -149,8 +149,8 @@ const Usage = (props) => {
                   }}
                   type="button"
                   className={selectedButton 
-                  ? " justify-center  rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm bg-slate-100 font-medium text-gray-700  " 
-                  : "justify-center  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  ? " justify-center dark:bg-gray-800 dark:text-gray-300 rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm bg-slate-100 font-medium text-gray-700  " 
+                  : "justify-center dark:bg-gray-800 dark:text-gray-300  rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                   }
                 >
                   Individual
@@ -163,9 +163,9 @@ const Usage = (props) => {
               <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
 
 
-                <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+                <div title="info about creation" className="dark:bg-gray-800 dark:border-slate-600 dark:text-gray-300 rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
                   <div className="flex items-center text-sm font-medium text-gray-500">
-                    <div>Words generated</div>
+                    <div className='dark:text-gray-300'>Words generated</div>
                     <div>
 
                       <TooltipInfo
@@ -175,23 +175,23 @@ const Usage = (props) => {
                     </div>
                   </div>
 
-                  <div className="my-1 text-3xl font-semibold text-gray-900">
+                  <div className="dark:text-gray-300 my-1 text-3xl font-semibold text-gray-900">
                     {userTotalToken && userTotalToken}
                   </div>
 
                 </div>
 
 
-                <div title="info about creation" className=" rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
-                  <div className="flex items-center  text-sm font-medium text-gray-500">
-                    <div>Templates</div>
+                <div title="info about creation" className="dark:bg-gray-800 dark:border-slate-600 dark:text-gray-300 rounded-lg bg-white px-4 py-5 ring-1 ring-gray-200 sm:p-6">
+                  <div className="flex items-center text-sm font-medium text-gray-500">
+                    <div className='dark:text-gray-300'>Templates</div>
                       <div>
                         <TooltipInfo
                           text="Template Used"
                         />
                       </div>
                     </div>
-                    <div className="my-1 text-3xl font-semibold text-gray-900">
+                    <div className="dark:text-gray-300 my-1 text-3xl font-semibold text-gray-900">
                     {template_used && template_used}
                     </div>
                 </div>

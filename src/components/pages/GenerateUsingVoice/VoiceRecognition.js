@@ -195,14 +195,14 @@ const get_summarize = async() =>{
           <>
             <div className="flex flex-col lg:flex-row h-[100vh]">
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
                       <button
                         onClick={() => {
                           navigate("/create_new_content");
                         }}
                         // className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
-                        className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                        className="dark:bg-black dark:text-white z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
                       >
                         <IoMdArrowBack />
                       </button>
@@ -230,12 +230,12 @@ const get_summarize = async() =>{
 
                 </div>
 
-                <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
                     <div>
 
                         <div className="voice-recognition-container">
                             <div className="mt-4">
-                                <p className="text-sm font-bold ml-3">
+                                <p className="dark:text-white text-sm font-bold ml-3">
                                   Transcribe speech
                                 </p>
                             </div>
@@ -245,7 +245,7 @@ const get_summarize = async() =>{
                                     className={listening ?
                                         "mr-3 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-red-500"
                                     :
-                                    "mr-3 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-blue-500"
+                                    "dark:text-white mr-3 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-blue-500"
                                     }
                                     
                                 >
@@ -272,13 +272,13 @@ const get_summarize = async() =>{
                                     className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                                     >
                                     <span className="flex items-center space-x-1">
-                                        <span>Your statement was</span>
+                                        <span className="dark:text-white">Your statement was</span>
                                     </span>
                                     </label>
-                                    <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                    <div className="dark:bg-gray-800 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                                     <textarea
                                        id="form-field-productInfo"
-                                    className="block w-full h-[150px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                                    className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[150px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                                     value={statement_of_user}
                                     maxLength="100"
                                     onChange={(event) => {
@@ -301,12 +301,12 @@ const get_summarize = async() =>{
                             className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                             >
                             <span className="flex items-center space-x-1">
-                                <span>Tone of Voice</span>
+                                <span className="dark:text-white">Tone of Voice</span>
                             </span>
                             </label>
                         </div>
 
-                        <div className="flex justify-between flex-col space-y-2 mt-3">
+                        <div className="flex justify-between flex-col space-y-2 mt-3 dark:text-black">
                             <CreatableSelect
                             isClearable
                             isDisabled={isLoading}
@@ -380,7 +380,7 @@ const get_summarize = async() =>{
 
                  
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                  <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                  <div className="dark:bg-black flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     <button
                       type="button"
                       className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1"
@@ -466,14 +466,14 @@ const get_summarize = async() =>{
                 </div>
               </div>
 
-              <div className="lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-white relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         setShowHideHistory(false);
                       }}
@@ -483,7 +483,7 @@ const get_summarize = async() =>{
                       </span>
                     </button>
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-white relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         setShowHideHistory(true);
                         get_history()

@@ -89,7 +89,7 @@ const [formData, setFormData] = useState(initialFormData);
   };
 
   return (
-    <div className="fixed inset-0 flex z-50 bg-white overflow-auto">
+    <div className="dark:text-gray-300 dark:bg-gray-800 fixed inset-0 flex z-50 bg-white overflow-auto">
         <button
             type="button"
             className="transition-all h-[40px] p-3 m-3 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1 flex items-center space-x-1"
@@ -109,7 +109,7 @@ const [formData, setFormData] = useState(initialFormData);
                     <p class="mt-4 text-sm leading-7 text-gray-500 font-regular uppercase">
                         Contact
                     </p>
-                    <h3 class="text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
+                    <h3 class="dark:text-white text-3xl sm:text-4xl leading-normal font-extrabold tracking-tight text-gray-900">
                         Contact <span class="text-indigo-600">Sales</span>
                     </h3>
                 </div>
@@ -117,11 +117,11 @@ const [formData, setFormData] = useState(initialFormData);
             <form class="w-full" onSubmit={handleSubmit}>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                <label class="dark:text-white block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                 Full Name <span className="text-red-700">*</span>
                 </label>
                 <input 
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="dark:bg-gray-800 dark:text-gray-200 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     type="text"
                     id="fullName"
                     name="fullName"
@@ -134,11 +134,11 @@ const [formData, setFormData] = useState(initialFormData);
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                <label class="dark:text-white block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Email Address  <span className="text-red-700">*</span>
                 </label>
                 <input 
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                    class="dark:bg-gray-800 dark:text-gray-200 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                     type="email"
                     id="email"
                     name="email"
@@ -150,11 +150,11 @@ const [formData, setFormData] = useState(initialFormData);
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                <label class="dark:text-white block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Company Name <span className="text-red-700">*</span>
                 </label>
                 <input 
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                    class="dark:bg-gray-800 dark:text-gray-200 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                     type="text"
                     id="companyName"
                     name="companyName"
@@ -167,11 +167,11 @@ const [formData, setFormData] = useState(initialFormData);
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                <label class="dark:text-white block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Phone
                 </label>
                 <input 
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                    class="dark:bg-gray-800 dark:text-gray-200 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                     type="text"
                     id="phone"
                     name="phone"
@@ -185,12 +185,12 @@ const [formData, setFormData] = useState(initialFormData);
                 
                 <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full px-3">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                <label class="dark:text-white block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Message Details <span className="text-red-700">*</span>
                 </label>
                 <textarea 
                     rows="10"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    class="dark:bg-gray-800 dark:text-gray-200 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="messageDetails"
                     name="messageDetails"
                     placeholder="Message Details"

@@ -21,7 +21,7 @@ import CreatableSelect from "react-select/creatable";
 
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import LoadingPage from "../../LoadingPage";
+// import LoadingPage from "../../LoadingPage";
 import toast, { Toaster } from "react-hot-toast";
 
 import RenderHtml from "../Template/RenderHtml";
@@ -32,7 +32,7 @@ import { _save_details_ } from "../../../features/Subscriptions";
 import TooltipInfo from "../../Icons/TooltipInfo";
 
 import ResponseTemplate from "../Template/ResponseTemplate";
-import SelectOptionsTemplate from "../Template/SelectOptionsTemplate.js/SelectOptions";
+import SelectOptionsTemplate from "../Template/SelectOptionsTemplate/SelectOptions";
 
 
 
@@ -480,13 +480,13 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
           <>
             <div className="flex flex-col lg:flex-row h-[100vh]">
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
                     <button
                       onClick={() => {
                         navigate("/create_new_content");
                       }}
-                      className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                      className="dark:bg-black dark:text-white z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
                     >
                       <IoMdArrowBack />
                     </button>
@@ -539,7 +539,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
 
                 </div>
 
-                <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                <div className="dark:bg-black grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
 
                 <div className="flex flex-col">
                   <div>
@@ -560,8 +560,8 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                       className={`${
                         selectedTab === "url"
                           ? " text-black border-t-2 border-r-2  border-l-2"
-                          : "text-gray-400 border-t-2 border-r-2 border-b-2 border-l-2"
-                      } p-1 text-sm font-bold rounded-l-md cursor-pointer transition duration-300`}
+                          : "text-gray-400  border-t-2 border-r-2 border-b-2 border-l-2"
+                      } dark:border-slate-500 p-1 text-sm font-bold rounded-l-md cursor-pointer transition duration-300 dark:text-white`}
                       tabIndex="-1"
                       type="button"
                       onClick={() => {
@@ -578,7 +578,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                         selectedTab === "upload"
                           ? "  text-black border-t-2 border-r-2"
                           : " text-gray-400 border-t-2 border-r-2 border-b-2"
-                      } p-1 text-sm font-bold rounded-r-md cursor-pointer transition duration-300`}
+                      } dark:border-slate-500 p-1 text-sm font-bold rounded-r-md cursor-pointer transition duration-300 dark:text-white`}
                       tabIndex="0"
                       type="button"
                       onClick={() => {
@@ -602,15 +602,15 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                         htmlFor="form-field-productInfo"
                         className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                         >
-                        <span className="font-bold flex items-center space-x-1 ">
+                        <span className="dark:text-white font-bold flex items-center space-x-1 ">
                             Add a YouTube URL
                         </span>
-                        <span>Paste a link to a YouTube video</span>
+                        <span className="dark:text-white">Paste a link to a YouTube video</span>
                         </label>
-                        <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                        <div className="dark:bg-gray-800 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                         <input
                             id="form-field-productInfo"
-                            className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                            className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                             value={url}
                             onChange={handleInputChange}
                             placeholder="https://www.youtube.com/watch?v=Tuw8hxrFBH8&t"
@@ -630,9 +630,9 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <>
                       {subscriptions_details.user.status=="trial"
                         ?
-                        <div className="flex mt-4 items-center bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
-                          <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
-                          <p>You can only use 10 minutes videos in trial</p>
+                        <div className="flex mt-4 items-center dark:bg-gray-600 bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
+                          <svg className="fill-current w-4 h-4 mr-2 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
+                          <p className="dark:text-white">You can only use 10 minutes videos in trial</p>
                         </div>
                         
                         :
@@ -653,7 +653,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                 >Upload File Content Here</p>
                 {/* Add your file upload input or content here */}
                 <div
-                  className={`w-full mt-3 p-8 bg-white border-2 border-dashed rounded-lg ${
+                  className={`w-full mt-3 p-8 bg-white border-2 border-dashed rounded-lg dark:text-white  dark:bg-gray-600 ${
                     dragging ? "border-green-500" : "border-gray-300"
                   }`}
                   onDrop={handleDrop}
@@ -751,14 +751,14 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                     <>
                       {subscriptions_details.user.status=="trial"
                         ?
-                        <div className="flex flex-col mt-4  bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
+                        <div className="dark:bg-gray-600 flex flex-col mt-4  bg-blue-400 text-white text-sm font-bold px-4 py-3" role="alert">
                                 <div className="flex">
                                   <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.432 0c1.34 0 2.01.912 2.01 1.957 0 1.305-1.164 2.512-2.679 2.512-1.269 0-2.009-.75-1.974-1.99C9.789 1.436 10.67 0 12.432 0zM8.309 20c-1.058 0-1.833-.652-1.093-3.524l1.214-5.092c.211-.814.246-1.141 0-1.141-.317 0-1.689.562-2.502 1.117l-.528-.88c2.572-2.186 5.531-3.467 6.801-3.467 1.057 0 1.233 1.273.705 3.23l-1.391 5.352c-.246.945-.141 1.271.106 1.271.317 0 1.357-.392 2.379-1.207l.6.814C12.098 19.02 9.365 20 8.309 20z"/></svg>
-                                  <p>You can only use 10 minutes videos in trial</p>
+                                  <p className="dark:text-white">You can only use 10 minutes videos in trial</p>
                                 </div>
                                 <div className="ml-6">
-                                  <p>Upload Only 24MB of Video of format 
-                                  <strong className="ml-3">
+                                  <p className="dark:text-white">Upload Only 24MB of Video of format 
+                                  <strong className="ml-3 dark:text-white">
                                   .mp3, .mp4, .srt .avi
                                   </strong>
                                   </p>
@@ -785,7 +785,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                 </div>
                  
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                  <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                  <div className="dark:bg-black flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     <button
                       type="button"
                       className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1"
@@ -925,14 +925,14 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                 </div>
               </div>
 
-              <div className="lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500  lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500  sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="relative dark:bg-gray-700 dark:text-white whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         setShowHideHistory(false);
                       }}
@@ -942,7 +942,7 @@ const RecapBuilder = ({ AUTH_TOKEN }) => {
                       </span>
                     </button>
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="relative dark:bg-gray-700 dark:text-white whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         setShowHideHistory(true);
                         get_history()

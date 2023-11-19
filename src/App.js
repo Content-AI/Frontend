@@ -21,6 +21,8 @@ import {
   _show_nav_,
 } from "./features/HideShowNavBarGlobalState";
 
+import { _dark_mode_ } from './features/DarkMode';
+
 
 import { _delete_token_ } from "./features/AuthenticationToken";
 import { _delete_user_profile } from "./features/Fullprofile";
@@ -42,7 +44,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   
-
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -77,6 +78,14 @@ function App() {
   // Get the value of the access_token parameter of google auth
   const google_auth_code = params.get('access_token');
 
+
+
+  // check dark mode from local storage 
+  useEffect(()=>{
+    try{
+      dispatch(_dark_mode_(localStorage.getItem('DarkMode')))
+    }catch(e){}
+  })
 
 
 

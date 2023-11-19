@@ -46,6 +46,7 @@
     "editorjs-html": "3.4.2",
     "faker": "^6.6.6",
     "flowbite": "^1.8.1",
+    "flowbite-react": "^0.6.4",
     "font-awesome": "^4.7.0",
     "html-react-parser": "^3.0.4",
     "markdown-table": "^3.0.3",

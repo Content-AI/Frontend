@@ -188,6 +188,11 @@ code {
   background-size: contain;
   background-repeat: no-repeat;
 }
+ 
+.dark .ce-block.loading .ce-block__content::after {
+  /* background-color: #2d3748; */
+  background-color: #4a5568;
+}
 
 .ce-block.active {
   margin-left: -10px;

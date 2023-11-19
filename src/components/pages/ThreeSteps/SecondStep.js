@@ -70,7 +70,7 @@ const SecondStep = () => {
               <div className="my-7">
                 <Dots steps="second" />
               </div>
-              <h3 className="text-sm font-bold mb-5">
+              <h3 className="text-sm font-bold mb-5 text-black dark:text-black">
                 What do you need to make?
               </h3>
               <div className="grid grid-cols-2 gap-4">

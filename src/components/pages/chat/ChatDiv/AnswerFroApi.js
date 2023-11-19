@@ -1,21 +1,16 @@
-import React from 'react'
-import RenderHtmlData from '../../Template/RenderHtmlData'
+import React, { useEffect, useState } from 'react'
 
 import Dummybn from '../Dummybn'
-import ReactMarkdown from 'react-markdown'
-import rehypeKatex from 'rehype-katex'
-
-import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-
-import MarkdownRenderer from '../ChatRenders/MarkdownRenderer'
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
-
+import { useSelector, useDispatch } from "react-redux";
 
 
 const AnswerFroApi = (props) => {
+
+  const DarkModeState = useSelector((state)=>state.SetDarkMode.DarkMode)
+  // darkModeStatus={checkDarkMode}
+
   return (
     
     <>
@@ -28,24 +23,22 @@ const AnswerFroApi = (props) => {
         />
         </div>
         <div 
-          className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100"
-          // className="text-black bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"
+          className="text-black  dark:bg-black dark:border-slate-500  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100"
         >
 
 
-        {/* <RenderHtmlData htmldata={props.content} /> */}
 
-        <div data-color-mode="light ">
+        {props.darkModeStatus
+      ?
+        <div data-color-mode="dark">
           <MarkdownPreview source={props.content} />
         </div>
+      :
+        <div data-color-mode="light">
+          <MarkdownPreview source={props.content} />
+        </div>
+      }
 
-        {/* <MarkdownRenderer content={props.content} /> */}
-
-        {/* <ReactMarkdown
-          children={props.content}
-          remarkPlugins={[remarkMath,remarkGfm]}
-          rehypePlugins={[rehypeKatex]}
-        /> */}
         {/* ============all sorts of btn================ */}
         <Dummybn
             all_data={props.chat_data}

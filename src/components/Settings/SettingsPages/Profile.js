@@ -92,7 +92,7 @@ const Profile = () => {
                     <div className='mt-3'>
                     <label
                             htmlFor="first_name"
-                            className="block text-sm font-semibold text-gray-800"
+                            className="dark:text-white block text-sm font-semibold text-gray-800"
                         >
                             First Name
                         </label>
@@ -105,13 +105,13 @@ const Profile = () => {
                                 setfirstName(e.target.value)
                             }}
                             autoComplete="off"
-                            className="block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                            className="dark:text-gray-300 dark:bg-gray-800  block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
                     <div className='mt-3'>
                     <label
                             htmlFor="last_name"
-                            className="block text-sm font-semibold text-gray-800"
+                            className="block dark:text-white text-sm font-semibold text-gray-800"
                         >
                             Last Name
                         </label>
@@ -124,13 +124,13 @@ const Profile = () => {
                                 setlastName(e.target.value)
                             }}
                             autoComplete="off"
-                            className="block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                            className="dark:text-gray-300 dark:bg-gray-800 block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
                     <div className='mt-3'>
                     <label
                             htmlFor="email"
-                            className="block text-sm font-semibold text-gray-800"
+                            className="dark:text-white block text-sm font-semibold text-gray-800"
                         >
                             Email
                         </label>
@@ -144,7 +144,7 @@ const Profile = () => {
                             //     setEmailUser(e.target.value)
                             // }}
                             autoComplete="off"
-                            className="block w-[400px] px-4 py-2 mt-2 resize-none outline-none bg-white text-gray-400 placeholder:text-gray-300"
+                            className="dark:text-gray-300 dark:bg-gray-800 block w-[400px] px-4 py-2 mt-2 resize-none outline-none bg-white text-gray-400 placeholder:text-gray-300"
                         />
                     </div>
 

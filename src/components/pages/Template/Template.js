@@ -297,22 +297,21 @@ const Template = ({AUTH_TOKEN}) => {
       <div>
 
 
-      <div className="relative mb-6 ml-0 sm:ml-[40%]">
-  <div className="icon absolute top-1/2 left-4 -translate-y-1/2 w-6 h-6">
-    <SearchIconTemplate />
-  </div>
-  <input
-    className="w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder-both-screens"
-    type="text"
-    placeholder="Search content types like Facebook Ads, Email, Blog ideas..."
-    onChange={(e) => {
-      setsearch_parameter(e.target.value);
-    }}
-  />
-</div>
+      <div className="dark:text-white relative mb-6 ml-0 sm:ml-[40%]">
+        <div className="dark:text-white icon absolute top-1/2 left-4 -translate-y-1/2 w-6 h-6">
+          <SearchIconTemplate />
+        </div>
+        <input
+          className="dark:bg-gray-600 dark:text-white  w-full h-10 py-2.5 pr-4 pl-[52px] border border-border rounded-3xl placeholder:text-black placeholder-both-screens"
+          type="text" 
+          placeholder="Search content types like Facebook Ads, Email, Blog ideas..."
+          onChange={(e) => {
+            setsearch_parameter(e.target.value);
+          }}
+        />
+      </div>
 
 
-        
         <div className="searchtags flex flex-wrap gap-2 mb-6">
         {category
         ?
@@ -327,7 +326,7 @@ const Template = ({AUTH_TOKEN}) => {
                 <button
                   key={index}
                   className={clsx(
-                    "text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
+                    "dark:bg-black dark:text-gray-200 dark:border-slate-500 dark:hover:bg-gray-500 text-sm text-black px-4 py-2 border border-border rounded-3xl duration-300",
                     {
                       "active text-white bg-blue border-blue": categoryTmp.includes(item),
                       "hover:bg-blue/10": !categoryTmp.includes(item),

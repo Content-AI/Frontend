@@ -104,22 +104,22 @@ const Integrations = () => {
 
       <div className="mx-auto px-4 sm:px-6 max-w-4xl">
           <div className="flex items-center mb-4 justify-between">
-              <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mb-1 pb-1">Integrations</h2>
+              <h2 className="dark:text-gray-300  text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate mb-1 pb-1">Integrations</h2>
           </div>
 
-          <section className="p-6 mb-3  bg-slate-100 shadow-sm rounded">
+          <section className="p-6 mb-3 dark:border dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500  bg-slate-100 shadow-sm rounded">
                 <span className="flex flex-col flex-grow mr-2">
                 </span>
                   <ApiKeyInput/>               
           </section>
 
-          <section className="p-6 mb-3 bg-slate-100 shadow-sm rounded">
+          <section className="dark:bg-gray-800 dark:text-gray-200 dark:border dark:border-slate-500 p-6 mb-3 bg-slate-100 shadow-sm rounded">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
                 <span className="flex flex-col flex-grow mr-2">
-                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900">
+                    <span className="dark:text-gray-300 flex items-center mb-1 text-lg font-medium text-gray-900">
                     SEO Wave
                     </span>
-                    <span className="text-sm text-gray-500" >
+                    <span className="text-sm text-gray-500 dark:text-gray-300" >
                     "Incorporate an "SEO" section into your document editor, offering robust SEO keyword research and metrics capabilities.
                     </span>
                 </span>
@@ -140,13 +140,13 @@ const Integrations = () => {
                 {/* ======swip===== */}
               </div>
           </section>
-          <section className="p-6 mb-3  bg-slate-100 shadow-sm rounded">
+          <section className="p-6 mb-3 dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 dark:border bg-slate-100 shadow-sm rounded">
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 items-center justify-between w-full">
                 <span className="flex flex-col flex-grow mr-2">
-                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900" id="headlessui-label-:R5da36:">
+                    <span className="flex items-center mb-1 text-lg font-medium text-gray-900 dark:text-gray-300" >
                     Originality Check
                     </span>
-                    <span className="text-sm text-gray-500" id="headlessui-description-:R9da36:">
+                    <span className="text-sm text-gray-500 dark:text-gray-300" >
                     Utilize a text scanning feature to check for content originality, safeguarding your reputation and search engine rankings.
                     </span>
                 </span>

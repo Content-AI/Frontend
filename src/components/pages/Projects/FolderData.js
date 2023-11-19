@@ -180,9 +180,9 @@ const FolderData = (props) => {
                             
                             {/* ====================Folder Name=================== */}
                             <div className="flex items-center justify-between pt-4">
-                                <div className="flex items-center justify-start">
-                                <p className="font-bold text-[15px] mt-2 cursor-pointer pb-2">
-                                <button type='button'
+                                <div className="dark:text-white flex items-center justify-start">
+                                <p className="dark:text-white font-bold text-[15px] mt-2 cursor-pointer pb-2">
+                                <button type='dark:text-white button'
                                 onClick={()=>{
                                     navigate("/projects")
                                 }}>
@@ -200,7 +200,7 @@ const FolderData = (props) => {
                                     {
                                         FolderData
                                         ?
-                                            <span className="pl-2">{FolderData.project_name}</span>
+                                            <span className="dark:text-white pl-2">{FolderData.project_name}</span>
                                         :
                                             <div className="ml-2 animate-spin rounded-full h-4 w-4 border-t-4 border-blue-500"></div>
                                     }
@@ -279,8 +279,6 @@ const FolderData = (props) => {
                                                 className="w-full h-8 text-sm font-bold border border-border rounded-md bg-white px-8 py-1"
                                             >
                                                 <option>Last Modified</option>
-                                                <option>Last Modified</option>
-                                                <option>Last Modified</option>
                                             </select>
                                             </div>
                                         </div>
@@ -296,13 +294,13 @@ const FolderData = (props) => {
                                     {ListOrGrid
                                         ?
                                         <>
-                                        <div className="mt-6 items-start grid max-w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                        <div className=" mt-6 items-start grid max-w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                         {FolderData.details.length>0
                                         ?
                                             <>
                                                 {FolderData.details.map((data,index)=>{
                                                     return (
-                                                            <div  key={index} className="group flex h-74 flex-1 flex-col overflow-hidden rounded-xl border shadow-sm transition-top duration-200 hover:-top-1
+                                                            <div  key={index} className="dark:bg-gray-700 dark:text-white dark:border-slate-500 group flex h-74 flex-1 flex-col overflow-hidden rounded-xl border shadow-sm transition-top duration-200 hover:-top-1
                                                             border-purple-100 bg-white">
                                                             <div className="tooltip-container" title={"Open "+data.title+" Document"}
                                                                 onClick={()=>{
@@ -322,7 +320,7 @@ const FolderData = (props) => {
                                                                             </div>
                                                                         </div> */}
                                                                 </div>
-                                                                <div className="h-20 text-[8px] bg-white cursor-pointer rounded-xl px-3 grow break-words space-y-2 overflow-hidden">
+                                                                <div className="dark:bg-gray-700 dark:text-white dark:border-slate-500 h-20 text-[8px] bg-white cursor-pointer rounded-xl px-3 grow break-words space-y-2 overflow-hidden">
                                                                     <RenderHtml htmldata={data.document_content}/>
                                                                 </div>
                                                                 {/* <span className="tooltip-text">Open {data.title} Document</span> */}
@@ -365,12 +363,12 @@ const FolderData = (props) => {
                                                                 {/* =============menu mini list=============== */}
                                                                 {openPopUpMiniMenu === index && (
                                                                 <div className="ml-5 shadow-lg" ref={popupRef}>
-                                                                    <div className=" right-2 bottom-2 absolute mt-2 origin-top-right w-52 focus:outline-none z-50 overflow-hidden rounded-md border border-purple-100 bg-white shadow-overlay" aria-labelledby="headlessui-menu-button-386" id="headlessui-menu-items-391" role="menu" tabIndex="0">
+                                                                    <div className="dark:bg-gray-600 dark:text-white  dark:border-slate-500 right-2 bottom-2 absolute mt-2 origin-top-right w-52 focus:outline-none z-50 overflow-hidden rounded-md border border-purple-100 bg-white shadow-overlay" role="menu" tabIndex="0">
                                                                     <div role="none">
-                                                                        <div className="!pb-1 text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-392" role="menuitem" tabIndex="-1">
+                                                                        <div className="!pb-1 text-grey-600 flex flex-1  cursor-pointer items-center px-4 py-2 text-xs font-medium"  role="menuitem" tabIndex="-1">
                                                                         </div>
-                                                                        <div className="text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-395" role="menuitem" tabIndex="-1">
-                                                                            <button className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                        <div className="text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" role="menuitem" tabIndex="-1">
+                                                                            <button className="flex hover:bg-gray-100 dark:hover:bg-slate-600 active:bg-blue-100" role="none"
                                                                             type="button"
                                                                             onClick={()=>{
                                                                                 setFolderRenameDiv(true)
@@ -386,7 +384,7 @@ const FolderData = (props) => {
                                                                         </div>
                                                                         <div className="text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-396" role="menuitem" tabIndex="-1">
                                                                         <button type="button" 
-                                                                            className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                            className="flex hover:bg-gray-100 active:bg-blue-100 dark:hover:bg-slate-600" role="none"
                                                                         onClick={()=>{
                                                                                 setChangeFolderDiv(true)
                                                                                 setRenameDocumentId(data.id)
@@ -401,7 +399,7 @@ const FolderData = (props) => {
                                                                         </div>
                                                                         <div className="border-t border-grey-300  text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-397" role="menuitem" tabIndex="-1">
                                                                         <button type="button" 
-                                                                            className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                            className="flex hover:bg-gray-100 active:bg-blue-100 dark:hover:bg-slate-600" role="none"
                                                                         onClick={()=>{
                                                                             setshowModalForDelete(true)
                                                                             setDeleteFolderId(data.id)
@@ -429,7 +427,7 @@ const FolderData = (props) => {
                                             </>
                                         :
                                                 <div className="flex justify-center items-center">
-                                                    <p className="font-bold text-[20px]">You don't have any projects in this folder yet!</p>
+                                                    <p className="dark:text-white font-bold text-[20px]">You don't have any projects in this folder yet!</p>
                                                 </div>
                                         }
                                         </div>
@@ -441,8 +439,8 @@ const FolderData = (props) => {
                                     <>
                                         {FolderData.details.map((data,index)=>{
                                             return (
-                                                <div key={index} className="mt-6 items-start flex flex-col divide-y divide-purple-100 rounded border border-purple-100">
-                                                <div className="group relative flex w-full cursor-pointer items-center transition-none border-purple-100 bg-white">
+                                                <div key={index} className=" mt-6 items-start flex flex-col divide-y divide-purple-100 rounded border border-purple-100">
+                                                <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 group relative flex w-full cursor-pointer items-center transition-none border-purple-100 bg-white">
                                                     <div className="flex cursor-text border-purple-100">       
                                                         <div className="pl-3 p-2"><span className="flex flex-1 outline-none max-w-full rounded-md border-none text-md cursor-pointer focus:ring-0 p-2 line-clamp-1" data-testid="project-title-field">
                                                         {data.title}
@@ -491,10 +489,10 @@ const FolderData = (props) => {
                                                                 <div className="ml-5 shadow-lg" ref={popupRef}>
                                                                     <div className=" right-2 bottom-2 absolute mt-2 origin-top-right w-52 focus:outline-none z-50 overflow-hidden rounded-md border border-purple-100 bg-white shadow-overlay" aria-labelledby="headlessui-menu-button-386" id="headlessui-menu-items-391" role="menu" tabIndex="0">
                                                                     <div role="none">
-                                                                        <div className="!pb-1 text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-392" role="menuitem" tabIndex="-1">
+                                                                        <div className="dark:bg-gray-800 dark:text-white !pb-1 text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-392" role="menuitem" tabIndex="-1">
                                                                         </div>
-                                                                        <div className="text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-395" role="menuitem" tabIndex="-1">
-                                                                            <button className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                        <div className="dark:bg-gray-800 dark:text-white text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-395" role="menuitem" tabIndex="-1">
+                                                                            <button className="flex dark:hover:bg-gray-800 hover:bg-gray-100 active:bg-blue-100" role="none"
                                                                             type="button"
                                                                             onClick={()=>{
                                                                                 setFolderRenameDiv(true)
@@ -505,12 +503,12 @@ const FolderData = (props) => {
                                                                                 }
                                                                             }}>
                                                                         
-                                                                            <span role="none mr-1">Rename</span>
+                                                                            <span role="none mr-1 dark:text-white">Rename</span>
                                                                             </button>
                                                                         </div>
-                                                                        <div className="text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-396" role="menuitem" tabIndex="-1">
+                                                                        <div className="dark:bg-gray-800 dark:text-white text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-396" role="menuitem" tabIndex="-1">
                                                                         <button type="button" 
-                                                                            className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                            className="flex dark:hover:bg-gray-800 hover:bg-gray-100 active:bg-blue-100" role="none"
                                                                         onClick={()=>{
                                                                                 setChangeFolderDiv(true)
                                                                                 setRenameDocumentId(data.id)
@@ -518,14 +516,14 @@ const FolderData = (props) => {
                                                                                     setopenPopUpMiniMenu(null);
                                                                                 }
                                                                         }}>
-                                                                            <span>
+                                                                            <span className="dark:text-white">
                                                                                 Move to Folder
                                                                             </span>
                                                                         </button>
                                                                         </div>
-                                                                        <div className="border-t border-grey-300  text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-397" role="menuitem" tabIndex="-1">
+                                                                        <div className="dark:bg-gray-800 dark:text-white border-t border-grey-300  text-grey-600 flex flex-1 cursor-pointer items-center px-4 py-2 text-xs font-medium" id="headlessui-menu-item-397" role="menuitem" tabIndex="-1">
                                                                         <button type="button" 
-                                                                            className="flex hover:bg-gray-100 active:bg-blue-100" role="none"
+                                                                            className="flex dark:hover:bg-gray-800 hover:bg-gray-100 active:bg-blue-100 " role="none"
                                                                         onClick={()=>{
                                                                             setshowModalForDelete(true)
                                                                             setDeleteFolderId(data.id)
@@ -533,7 +531,7 @@ const FolderData = (props) => {
                                                                                 setopenPopUpMiniMenu(null);
                                                                             }
                                                                         }}>
-                                                                            <span>
+                                                                            <span className="dark:text-white">
                                                                                 Delete
                                                                             </span>
                                                                         </button>
@@ -574,13 +572,13 @@ const FolderData = (props) => {
                 <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                 <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
                 <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
-                    <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                    <h3 className="text-lg font-semibold">Rename Folder</h3>
+                    <div className="dark:bg-gray-800  dark:border-slate-500 w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                    <h3 className="text-lg font-semibold dark:text-white">Rename Folder</h3>
                     </div>
-                    <div className="flex flex-col p-6">
+                    <div className="dark:bg-gray-800 flex flex-col p-6">
                         <div className="p-6">
                         <div className="space-y-1.5 w-full">
-                            <label htmlFor="rename-title" className="sr-only"><span className="flex items-center space-x-1"><span>Rename document</span></span></label>
+                            <label htmlFor="rename-title" className="sr-only"><span className="flex items-center space-x-1"><span className="dark:text-white">Rename document</span></span></label>
                             <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                             <div className="flex items-center grow gap-2 py-1.5">
                                 <div className="flex gap-1 grow">
@@ -624,13 +622,13 @@ const FolderData = (props) => {
                 <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                 <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
                 <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
-                    <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                    <h3 className="text-lg font-semibold">Move to folder</h3>
+                    <div className="dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                    <h3 className="text-lg font-semibold dark:text-white">Move to folder</h3>
                     </div>
-                    <div className="flex flex-col p-6">
+                    <div className="flex flex-col p-6 dark:bg-gray-700">
                         <div className="p-6">
                         <div className="space-y-1.5 w-full">
-                                <div className="relative inline-block text-left w-full">
+                                <div className="relative inline-block text-left w-full ">
                                     {/* ============select field================= */}
                                         <select
                                             className="p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
@@ -638,7 +636,7 @@ const FolderData = (props) => {
                                             value={selectedValue}
                                             onChange={handleSelectChange}
                                         >
-                                            <option value="">choose your folder ...</option>
+                                            <option value="" className="text-black">choose your folder ...</option>
                                             
                                             {SelectedOptions &&
                                                 SelectedOptions.map((data,index)=>{
@@ -653,10 +651,10 @@ const FolderData = (props) => {
                                 </div>
                         </div>
                         </div>
-                        <div className="p-6 flex items-center gap-4 justify-end"><button
+                        <div className="p-6 flex items-center gap-4 justify-end "><button
                         onClick={() => {
                             setChangeFolderDiv(false)
-                        }} type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                        }} type="button" className="dark:bg-gray-600  dark:text-white transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">
                         Cancel</span></button>
                         <button
                             onClick={()=>{
@@ -687,7 +685,7 @@ const FolderData = (props) => {
                             onClick={() => setshowModalForDelete(false)}
                         ></div>
                         <div className="flex items-center min-h-screen px-4 py-8">
-                            <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
+                            <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
                                 <div className="mt-3 sm:flex flex items-center justify-center">
                                     {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
                                        
@@ -709,7 +707,7 @@ const FolderData = (props) => {
                                             </svg>
                                         </div>
                                         <div>
-                                        <h4 className="text-2xl font-medium text-red-500 m-3">
+                                        <h4 className="text-2xl font-medium text-red-500 m-3 dark:text-white">
                                              Are you sure want to Delete ??
                                         </h4>
                                         <div className="items-center gap-2 mt-3 sm:flex">
@@ -725,7 +723,7 @@ const FolderData = (props) => {
                                                 Delete
                                             </button>
                                             <button
-                                                className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                                className="dark:text-white w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                                 onClick={() =>{
                                                     setshowModalForDelete(false)
                                                 }}

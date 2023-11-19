@@ -34,7 +34,7 @@ const LiveChat = () => {
 
   return (
     <div className="pt-6">
-    <div className="flow-root px-6 pb-8 rounded-lg bg-slate-50 hover:bg-slate-100 ring-1 ring-gray-200 h-full">
+    <div className="dark:bg-gray-800 flow-root px-6 pb-8 rounded-lg bg-slate-50 hover:bg-slate-100 ring-1 ring-gray-200 h-full">
       <div className="flex flex-col justify-between h-full">
           <div>
             <div>
@@ -44,8 +44,8 @@ const LiveChat = () => {
                   </svg>
                 </span>
             </div>
-            <h3 className="mt-6 text-xl font-medium tracking-tight text-gray-900">Help center / Knowledge base</h3>
-            <p className="mt-3 text-base text-gray-500 pt-3">Look in our support area to find information about how things work for different products and your account.</p>
+            <h3 className=" dark:text-white mt-6 text-xl font-medium tracking-tight text-gray-900">Help center / Knowledge base</h3>
+            <p className="dark:text-white mt-3 text-base text-gray-500 pt-3">Look in our support area to find information about how things work for different products and your account.</p>
           </div>
           <button type="button" 
            className={`mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${

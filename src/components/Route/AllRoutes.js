@@ -87,13 +87,13 @@ const AllRoutes = ({ _TOKEN_FOR_VALIDATION_NAVBAR_ }) => {
             className={` 
             ${isSettings
               ? 
-                ' flex flex-col sm:ml-64 sm:mt-[40px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white ' 
+                'dark:bg-black dark:text-gray-200 dark:border-slate-500 flex flex-col sm:ml-64 sm:mt-[40px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white ' 
               :
                 show_invitation
                 ?
                   null
                 :
-                  ' flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white '
+                  'dark:bg-black dark:text-gray-200 dark:border-slate-500 flex flex-col sm:ml-64 sm:mt-[74px] min-h-[calc(100vh-80px)] pt-[74px] sm:pt-6 p-6 text-black bg-white '
               }
               `
               }

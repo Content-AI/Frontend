@@ -1,19 +1,19 @@
-import React from 'react'
-import RenderHtmlData from '../../Template/RenderHtmlData'
+import React,{useState,useEffect} from 'react'
 import Differentbtn from '../Differentbtn'
-import ReactMarkdown from 'react-markdown'
-import rehypeKatex from 'rehype-katex'
-
-import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import MarkdownRenderer from '../ChatRenders/MarkdownRenderer'
+import { useSelector, useDispatch } from "react-redux";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
 
 const FirstBotAnswer = (props) => {
+
+
+  const DarkModeState = useSelector((state)=>state.SetDarkMode.DarkMode)
+  // darkModeStatus={checkDarkMode}
+
+
   return (
-    <div className="relative flex flex-col ">
+
+    <div className="relative flex flex-col">
 
     <div className="w-7 h-7 mt-2 rounded-full order-last overflow-hidden">
       <img
@@ -23,26 +23,21 @@ const FirstBotAnswer = (props) => {
       />
     </div>
 
-    {/* <div className="text-black  bg-blue-800 outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl"> */}
-    <div className="text-black  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100">
+    <div className=" text-black  dark:bg-black dark:border-slate-500  bg-white outline-none px-4 py-3 mx-4 md:max-w-[90%] rounded-2xl border border-sky-100">
 
 
-      {/* <RenderHtmlData htmldata={props.content} /> */}
 
-      {/* <MarkdownRenderer content={props.content} /> */}
+        {props.darkModeStatus
+          ?
+            <div data-color-mode="dark">
+              <MarkdownPreview source={props.content} />
+            </div>
+          :
+            <div data-color-mode="light">
+              <MarkdownPreview source={props.content} />
+            </div>
+        }
 
-
-      <div data-color-mode="light ">
-        <MarkdownPreview source={props.content} />
-      </div>
-
-
-      {/* <ReactMarkdown
-          children={props.content}
-          remarkPlugins={[remarkMath,remarkGfm]}
-          rehypePlugins={[rehypeKatex]}
-        /> */}
-      
 
       {/* ============all sorts of btn================ */}
       <Differentbtn
@@ -53,7 +48,8 @@ const FirstBotAnswer = (props) => {
     </div>
 
 
-  </div>
+    </div>
+
   )
 }
 

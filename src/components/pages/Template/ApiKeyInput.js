@@ -63,7 +63,7 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
   return (
     <>
     <div className="mb-4">
-      <label htmlFor="api-key" className=" block text-sm font-medium text-gray-600 mb-2">
+      <label className=" block dark:text-white text-sm font-medium text-gray-600 mb-2">
         API Key
       </label>
       {subscriptions_details &&
@@ -146,24 +146,24 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
                     <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50"></div>
                         <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
 
-                            <div className="w-full text-left flex justify-between items-center p-3 text-gray-900 ">
+                            <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 w-full text-left flex justify-between items-center p-3 text-gray-900 ">
 
                             <div className="flex">
                             <div className="mt-5 ml-4 mr-5 ">
                                 {/* <DangerIcon/>   */}
                             </div>
                             <div>
-                            <h3 className="text-lg font-semibold">
+                            <h3 className="dark:text-white text-lg font-semibold">
                                 Please remember that if you generate a new key, all the previous keys will be revoked.
                             </h3>
-                            <h3 className="text-lg font-semibold">
+                            <h3 className="dark:text-white text-lg font-semibold">
                                 Are you sure you want to proceed?
                             </h3>
                             </div>
                             </div>
                             </div>
 
-                            <div className="flex flex-col p-6">
+                            <div className="dark:bg-gray-800 black dark:text-gray-200 dark:border-slate-500 flex flex-col p-6">
                                 
                                 <div className="p-6 flex items-center gap-4 justify-end">
 
@@ -178,7 +178,7 @@ const ApiKeyInput = ({ apiKey, onChange }) => {
                                     Generate
                                 </button>
                                 <button
-                                    className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                    className="dark:text-white w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                     onClick={() => {
                                         set_show_confirmation(false)
                                     }}

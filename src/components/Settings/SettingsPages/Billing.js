@@ -227,9 +227,9 @@ function calculateBackgroundColor(total) {
       {/* <Settings/> */}
 
       <div className='ml-[50px] mr-[50px] sm:ml-[100px] mt-10 '>
-        <p className="font-bold text-[25px] text-black mb-1">Billing </p>
-        <div className="m-1 px-6 pt-6 bg-white text-black rounded-md shadow-xs ring-1 ring-gray-300">
-              <h3 className="text-xl font-medium leading-6 text-gray-700">Subscription</h3>
+        <p className="dark:text-gray-300 font-bold text-[25px] text-black mb-1">Billing </p>
+        <div className=" dark:bg-gray-800 dark:border-slate-500 m-1 px-6 pt-6 bg-white text-black rounded-md shadow-xs ring-1 ring-gray-300">
+              <h3 className="dark:text-gray-300 text-xl font-medium leading-6 text-gray-700">Subscription</h3>
                 <div>
                   {/* ============================= */}
                   <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6">
@@ -246,10 +246,10 @@ function calculateBackgroundColor(total) {
 
                     <div className="flex w-full flex-col sm:col-span-6 md:w-120">
                         <div className="flex flex-row ">
-                        <strong className="font-medium text-black">
+                        <strong className="dark:text-gray-300 font-medium text-black">
                         Words Generated
                         </strong>
-                        <strong className="font-medium text-black sm:ml-[400px] ml-[120px]">
+                        <strong className="dark:text-gray-300 font-medium text-black sm:ml-[400px] ml-[120px]">
                         {SubscriptionsData &&
                           <>
                             {SubscriptionsData.user.status=="trial"
@@ -314,18 +314,18 @@ function calculateBackgroundColor(total) {
                         onClick={()=>{
                           edit_detials()
                           }} 
-                          className="transition-all mt-2 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
+                          className="dark:bg-black  dark:hover:bg-gray-500 transition-all mt-2 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
                           >
-                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                              <span className="dark:text-gray-300 flex items-center justify-center mx-auto space-x-2 select-none">
                               Edit payment details
                               </span>
                             </button>
                         }
-                          <button type="button" className="mt-2 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
+                          <button type="button" className="dark:bg-black  dark:hover:bg-gray-500  mt-2 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1 w-full md:w-auto"
                           onClick={()=>{
                             navigate("/settings/subscription_plan")
                           }}>
-                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            <span className="dark:text-gray-300 flex items-center justify-center mx-auto space-x-2 select-none">
                             Edit plan
                             </span>
                           </button>
@@ -354,11 +354,11 @@ function calculateBackgroundColor(total) {
                 </div>
               </div>
           </div> */}
-          <div className="m-1">
-              <div className="flex items-center p-6 transition-all duration-150 bg-white rounded-md  ring-gray-300 ring-1">
+          <div className="m-1 dark:border-slate-700">
+              <div className="dark:bg-gray-800  dark:text-gray-200  flex items-center p-6 transition-all duration-150 bg-white rounded-md  ring-gray-300 ring-1">
                 <div className="flex-grow">
-                    <h3 className="text-xl font-semibold text-gray-900">Invoices</h3>
-                    <p className="text-gray-500 text-sm">View your payment history</p>
+                    <h3 className="dark:text-gray-300 text-xl font-semibold text-gray-900">Invoices</h3>
+                    <p className="dark:text-gray-300 text-gray-500 text-sm">View your payment history</p>
                 </div>
                 {showInvoice
                     ?
@@ -381,7 +381,7 @@ function calculateBackgroundColor(total) {
               </div>
           </div>
           <div className="space-y-2 py-8">
-              <h2 className="text-xl font-semibold text-gray-900">Cancel Subscription</h2>
+              <h2 className="dark:text-gray-300 text-xl font-semibold text-gray-900">Cancel Subscription</h2>
               <p className="text-gray-500 text-sm">
                 <span className="block mb-2">
                   {/* Kindly take note that if you decide to delete your account, all your saved content will be delete. */}
@@ -405,8 +405,8 @@ function calculateBackgroundColor(total) {
                     subscription_feedback()
                     // openDialog()
                   }}
-                  className="w-[200px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
-                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                  className="dark:bg-black dark:hover:bg-gray-500 bg-white w-[200px] transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1">
+                  <span className="dark:text-gray-300 flex items-center justify-center mx-auto space-x-2 select-none">
                     Cancel Subscription
                   </span>
                 </button>
@@ -421,16 +421,16 @@ function calculateBackgroundColor(total) {
 
       <CSSTransition
         in={isDialogOpen}
-        timeout={500} // Adjust the duration of the transition
+        // timeout={100} // Adjust the duration of the transition
         classNames="dialog"
         unmountOnExit
       >
-         <div className="fixed inset-0 flex justify-center items-center bg-slate-50 bg-opacity-20 z-20">
-          <div className="bg-white w-[600px] p-6 rounded shadow-lg">
-            <h2 className="text-2xl font-semibold mb-4">Cancel Subscription</h2>
+         <div className="fixed inset-0 flex justify-center items-center bg-slate-100 bg-opacity-20 z-20">
+          <div className="dark:bg-gray-800 bg-white w-[600px] p-6 rounded shadow-lg">
+            <h2 className="text-2xl font-semibold mb-4 dark:text-gray-300">Cancel Subscription</h2>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-6 ">
-                <label className="block text-lg font-medium mb-2 text-[#4B5563]">
+                <label className="dark:text-gray-300 block text-lg font-medium mb-2 text-[#4B5563]">
                   Why are you canceling the subscription?
                 </label>
                 <label className="flex items-center mb-3">
@@ -441,7 +441,7 @@ function calculateBackgroundColor(total) {
                     onChange={handleInputChangeCancelSubscription}
                     className="mr-2 text-red-500"
                   />
-                  <span className="text-[#4B5563]">
+                  <span className="text-[#4B5563] dark:text-gray-300">
                     Not satisfied with the service
                   </span>
                 </label>
@@ -453,7 +453,7 @@ function calculateBackgroundColor(total) {
                     onChange={handleInputChangeCancelSubscription}
                     className="mr-2 text-red-500"
                   />
-                  <span className="text-[#4B5563]">Found an alternative</span>
+                  <span className="text-[#4B5563] dark:text-gray-300">Found an alternative</span>
                 </label>
                 <label className="flex items-center mb-3">
                   <input
@@ -463,7 +463,7 @@ function calculateBackgroundColor(total) {
                     onChange={handleInputChangeCancelSubscription}
                     className="mr-2 text-red-500"
                   />
-                  <span className="text-[#4B5563]">
+                  <span className="text-[#4B5563] dark:text-gray-300">
                     Service features not meeting requirements
                   </span>
                 </label>
@@ -475,18 +475,18 @@ function calculateBackgroundColor(total) {
                     onChange={handleInputChangeCancelSubscription}
                     className="mr-2 text-red-500 "
                   />
-                  <span className="text-[#4B5563]">Financial reasons</span>
+                  <span className="text-[#4B5563] dark:text-gray-300">Financial reasons</span>
                 </label>
                 {/* Add more reasons here */}
               </div>
               <div className="mb-6">
-                <label className="block text-lg font-medium mb-2">
+                <label className="block text-lg font-medium mb-2 dark:text-gray-300">
                   Additional Comments (optional)
                 </label>
                 <textarea
                   name="additionalComments"
                   onChange={handleInputChangeCancelSubscription}
-                  className="border p-3 w-full rounded font-helvetica"
+                  className="dark:bg-gray-800 dark:text-gray-200 border p-3 w-full rounded font-helvetica"
                   rows="4"
                 ></textarea>
               </div>
@@ -506,7 +506,7 @@ function calculateBackgroundColor(total) {
                     cancel_subscription_feedback()
                   }}
                   // className=" text-gray-600 hover:text-gray-800"
-                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                  className="dark:text-gray-300 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                 >
                   Confirm Cancel
                 </button>

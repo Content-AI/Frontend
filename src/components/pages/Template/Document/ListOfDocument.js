@@ -12,7 +12,7 @@ import { _fav_data_ } from "../../../../features/Favorite";
 import { _save_doc_data_ } from "../../../../features/DocumentsData";
 import DocumentsIcons from "../../../Icons/DocumentsIcons";
 
-import SelectOptionsTemplate from "../SelectOptionsTemplate.js/SelectOptions";
+import SelectOptionsTemplate from "../SelectOptionsTemplate/SelectOptions";
 import ThreeDotsIcon from "../../../Icons/ThreeDotsIcon";
 import DangerIcon from "../../../Icons/DangerIcon";
 import './style.css'
@@ -492,7 +492,7 @@ const ListOfDocument = (props) => {
                   </svg>
                 </div>
               </div>
-              <div className="p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
+              <div className="dark:bg-gray-700 dark:text-white p-3 text-sm text-center text-gray-500 bg-gray-100 rounded-lg">Items will be permanently deleted after 60 days</div>
             </>
             :
             null
@@ -520,17 +520,17 @@ const ListOfDocument = (props) => {
 
 
                             <>
-                              <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
-                                <div className="flex grow items-center gap-2 py-1.5">
-                                  <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <div className="dark:bg-gray-800 !mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
+                                <div className="dark:bg-gray-800 flex grow items-center gap-2 py-1.5">
+                                  <svg className="dark:bg-gray-800h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                     <path d="M6.67,12.44c3.19,0,5.78-2.59,5.78-5.78S9.86,.89,6.67,.89,.89,3.48,.89,6.67s2.59,5.78,5.78,5.78Z" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                                     <path d="M15.11,15.11l-4-4" fill="none" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                                   </svg>
-                                  <div className="flex grow gap-1">
+                                  <div className="dark:bg-gray-800 flex grow gap-1">
                                     <input
                                       id="search-content"
                                       type="search"
-                                      className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
+                                      className="dark:text-gray-300 dark:bg-gray-800 block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
                                       placeholder="Search content"
                                       value={searchText}
                                       onChange={handleSearchText}
@@ -669,15 +669,15 @@ const ListOfDocument = (props) => {
                   ?
                   <>
                   {props.DASHBOARD?
-                    <h4 className="">Recent Documents</h4>
+                    <h4 className="dark:text-gray-500">Recent Documents</h4>
                   :
                     null
                   }
 
                   
-                  <div className="w-full rounded-lg outline outline-1 outline-gray-200">
+                  <div className="w-full  rounded-lg outline outline-1 outline-gray-200">
 
-                    <table className="w-full">
+                    <table className="w-full  ">
 
                       <thead className="">
                         <tr>
@@ -687,24 +687,26 @@ const ListOfDocument = (props) => {
                               checked={selectAll}
                               onChange={handleSelectAll}
                               type="checkbox"
-                              className="mr-[15px] mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                              className="mr-[15px] dark:bg-black dark:text-gray-400 mt-[5px] w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                             />
                           </th>
-                          <th scope="col" className="text-left text-xs font-semibold uppercase text-gray-700">Name</th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"></th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Status</th>
-                          <th scope="col" className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Last modified</th>
-                          <th scope="col" className="w-12  px-3.5 py-3.5"><span className="sr-only">More options</span></th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 text-left text-xs font-semibold uppercase text-gray-700">Name</th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"></th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Created by</th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Status</th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell">Last modified</th>
+                          <th scope="col" className="dark:bg-black dark:text-gray-400 w-12  px-3.5 py-3.5"><span className="sr-only">More options</span></th>
                         </tr>
+
                       </thead>
-                      <tbody className="divide-y ">
+
+                      <tbody className="divide-y  dark:bg-black dark:text-white ">
 
                         {props.ShowDashboard
                         ?
                         <>
                             {documentData.slice(0,10).map((data, index) => (
-                              <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
+                              <tr className="group relative cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-600 dark:bg-black dark:text-white dark:border-slate-500 " key={index}>
 
                                 <td className="w-12 p-3.5">
                                   <div className="absolute inset-y-0 left-0 w-0.5">
@@ -720,7 +722,7 @@ const ListOfDocument = (props) => {
                                   </div>
                                 </td>
 
-                                <td className="w-12 px-3.5 py-3.5" title={"open " + data.title}
+                                <td className="w-12 px-3.5 py-3.5 dark:text-gray-400" title={"open " + data.title}
                                   onClick={() => {
 
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
@@ -728,7 +730,7 @@ const ListOfDocument = (props) => {
                                     <ListDocIconFirst/>
                                 </td>
 
-                                <td className="max-w-[10rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700"
+                                <td className="max-w-[10rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700 dark:text-gray-400"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
@@ -736,14 +738,14 @@ const ListOfDocument = (props) => {
                                 >{data.title}</td>
 
 
-                                <td className="hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
+                                <td className="hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase dark:text-gray-400 text-gray-700 sm:table-cell"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                                   }}>me</td>
 
 
-                                <td className="hidden max-w-[6rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700 sm:table-cell md:max-w-[10rem]">
+                                <td className="hidden max-w-[6rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm dark:text-gray-400 text-gray-700 sm:table-cell md:max-w-[10rem]">
                                     <SelectOptionsTemplate
                                       id={data.id}
                                       options_selected={data}
@@ -751,13 +753,14 @@ const ListOfDocument = (props) => {
                                     />
                                 </td>
 
-                                <td className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
+                                <td className="hidden text-left text-xs font-semibold uppercase text-gray-700 dark:text-gray-400 sm:table-cell"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                                   }}>{data.updated_at}</td>
-                                <td className="w-12 pr-4">
-                                  <span className="relative inline-block text-left" data-headlessui-state="">
+
+                                <td className="w-12 pr-4 dark:text-gray-400">
+                                  <span className="relative inline-block text-left">
                                     <button type="button" className="relative rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-600 shadow-sm outline-none ring-1 ring-gray-200 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-1" id="headlessui-menu-button-:r61:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state=""
                                       onClick={() => handlePopUpMenu(index)}
                                     >
@@ -793,12 +796,12 @@ const ListOfDocument = (props) => {
                                       :
                                       <>
                                         {openPopupIndex === index && (
-                                          <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" >
+                                          <div className="dark:bg-gray-700 dark:text-gray-200 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" >
 
                                             <div role="none">
                                               {data.favorite
                                                 ?
-                                                <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                <button type="button" className="dark:hover:bg-gray-500 dark:text-white flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                   onClick={() => {
                                                     remove_to_fav(data.id)
                                                   }}>
@@ -808,7 +811,7 @@ const ListOfDocument = (props) => {
                                                   <span role="none">Remove from favorites</span>
                                                 </button>
                                                 :
-                                                <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                <button type="button" className=" dark:hover:bg-gray-100 dark:text-white flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                   onClick={() => {
                                                     add_to_fav(data.id)
                                                   }}>
@@ -819,7 +822,7 @@ const ListOfDocument = (props) => {
                                                 </button>
 
                                               }
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              <button className="flex dark:hover:bg-gray-100 dark:text-white items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                 onClick={() => {
                                                   setRenameDiv(true)
                                                   setRenameId(data.id)
@@ -836,7 +839,7 @@ const ListOfDocument = (props) => {
                                                 <span role="none">Rename</span>
                                               </button>
 
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              <button className="flex dark:hover:bg-gray-100 dark:text-gray-300 items-center px-3.5 py-2.5  w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                 onClick={() => {
                                                   setChangeFolderDiv(true)
                                                   setRenameDocumentId(data.id)
@@ -854,7 +857,7 @@ const ListOfDocument = (props) => {
                                             </div>
 
                                             <div role="none">
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                              <button className="flex dark:hover:bg-gray-600 dark:text-white items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                 onClick={() => {
                                                   setshowModalForDelete(true)
                                                   setDeleteFolderId(data.id)
@@ -878,6 +881,7 @@ const ListOfDocument = (props) => {
 
                                   </span>
                                 </td>
+
                               </tr>
                             ))
                             }
@@ -885,13 +889,13 @@ const ListOfDocument = (props) => {
                         :
                           <>
                             {documentData.map((data, index) => (
-                              <tr className="group relative cursor-pointer hover:bg-blue-50" key={index}>
+                              <tr className=" relative cursor-pointer  dark:text-white  dark:hover:bg-gray-600   hover:bg-blue-50" key={index}>
 
-                                <td className="w-12 p-3.5">
+                                <td className="w-12 p-3.5  dark:text-white ">
                                   <div className="absolute inset-y-0 left-0 w-0.5">
 
                                   </div>
-                                  <div className="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-2 ">
                                     <input
                                       checked={selectedItems.includes(data.id) || selectAll}
                                       onChange={() => handleCheckboxChange(data.id)}
@@ -901,7 +905,7 @@ const ListOfDocument = (props) => {
                                   </div>
                                 </td>
 
-                                <td className="w-12 px-3.5 py-3.5" title={"open " + data.title}
+                                <td className="w-12 px-3.5 py-3.5  dark:text-gray-400 " title={"open " + data.title}
                                   onClick={() => {
 
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
@@ -912,7 +916,7 @@ const ListOfDocument = (props) => {
                                   </svg>
                                 </td>
 
-                                <td className="max-w-[10rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700"
+                                <td className=" dark:text-gray-400  max-w-[10rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
@@ -920,14 +924,14 @@ const ListOfDocument = (props) => {
                                 >{(data.title).slice(0,25)+".."}</td>
 
 
-                                <td className="hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
+                                <td className=" dark:text-gray-400  hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                                   }}>me</td>
 
 
-                                <td className="hidden max-w-[6rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700 sm:table-cell md:max-w-[10rem]">
+                                <td className=" dark:text-gray-400  hidden max-w-[6rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700 sm:table-cell md:max-w-[10rem]">
                                     <SelectOptionsTemplate
                                       id={data.id}
                                       options_selected={data}
@@ -935,12 +939,12 @@ const ListOfDocument = (props) => {
                                     />
                                 </td>
 
-                                <td className="hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
+                                <td className=" dark:text-gray-400  hidden text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
                                   title={"open " + data.title}
                                   onClick={() => {
                                     navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                                   }}>{data.updated_at}</td>
-                                <td className="w-12 pr-4">
+                                <td className="w-12 pr-4 ">
                                   <span className="relative inline-block text-left" data-headlessui-state="">
                                     <button type="button" className="relative rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-600 shadow-sm outline-none ring-1 ring-gray-200 transition-all duration-200 hover:outline-none hover:ring-2 focus:outline-none active:ring-1" id="headlessui-menu-button-:r61:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state=""
                                       onClick={() => handlePopUpMenu(index)}
@@ -953,9 +957,11 @@ const ListOfDocument = (props) => {
                                       <>
                                         {openPopupIndex === index && (
                                           <>
-                                            <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
-                                              <div role="none">
-                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                            <div 
+                                              className="dark:bg-slate-700 bg-white  dark:text-gray-400 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md  text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100"
+                                              >
+                                              <div role="none" >
+                                                <button className="dark:bg-slate-700 flex dark:hover:bg-gray-500 bg-white items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                   onClick={() => {
                                                     const formData = {
                                                       trash: false
@@ -973,7 +979,7 @@ const ListOfDocument = (props) => {
                                                   </svg>
                                                   <span role="none">Restore</span>
                                                 </button>
-                                                <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                                <button className="dark:bg-slate-700 flex dark:hover:bg-gray-500 bg-white items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                   onClick={() => {
                                                       setDeleteFolderId([data.id])
                                                       setshowModalForPermanentlyDelete(true)
@@ -996,12 +1002,12 @@ const ListOfDocument = (props) => {
                                       :
                                       <>
                                         {openPopupIndex === index && (
-                                          <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                          <div className="dark:bg-gray-700 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
 
                                             <div role="none">
                                               {data.favorite
                                                 ?
-                                                <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                <button type="button" className="dark:hover:bg-gray-500 dark:text-gray-400 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                   onClick={() => {
                                                     remove_to_fav(data.id)
                                                   }}>
@@ -1011,7 +1017,7 @@ const ListOfDocument = (props) => {
                                                   <span role="none">Remove from favorites</span>
                                                 </button>
                                                 :
-                                                <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                                <button type="button" className="dark:hover:bg-gray-100 dark:text-gray-400 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                   onClick={() => {
                                                     add_to_fav(data.id)
                                                   }}>
@@ -1022,7 +1028,7 @@ const ListOfDocument = (props) => {
                                                 </button>
 
                                               }
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              <button className=" dark:text-gray-300 dark:hover:bg-gray-100 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                 onClick={() => {
                                                   setRenameDiv(true)
                                                   setRenameId(data.id)
@@ -1039,7 +1045,7 @@ const ListOfDocument = (props) => {
                                                 <span role="none">Rename</span>
                                               </button>
 
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
+                                              <button className="dark:text-gray-300 dark:hover:bg-gray-100 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none"
                                                 onClick={() => {
                                                   setChangeFolderDiv(true)
                                                   setRenameDocumentId(data.id)
@@ -1082,7 +1088,7 @@ const ListOfDocument = (props) => {
                                             </div>
 
                                             <div role="none">
-                                              <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
+                                              <button className="dark:text-gray-300 dark:hover:bg-gray-100 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                                 onClick={() => {
                                                   setshowModalForDelete(true)
                                                   setDeleteFolderId(data.id)
@@ -1118,51 +1124,7 @@ const ListOfDocument = (props) => {
 
 
 
-                    {RenameDiv
-                      ?
-                      <>
-                        <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
-                          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
-                            <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
-                              <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                                <h3 className="text-lg font-semibold">Rename document</h3>
-                              </div>
-                              <div className="flex flex-col p-6">
-                                <div className="p-6">
-                                  <div className="space-y-1.5 w-full">
-                                    <label htmlFor="rename-document" className="sr-only"><span className="flex items-center space-x-1"><span>Rename document</span></span></label>
-                                    <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                      <div className="flex items-center grow gap-2 py-1.5">
-                                        <div className="flex gap-1 grow">
-                                          <input
-                                            value={inputText} onChange={handleInputChange}
-                                            id="rename-document" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="Document name" name="name" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="p-6 flex items-center gap-4 justify-end"><button
-                                  onClick={() => {
-                                    setRenameDiv(false)
-                                  }} type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Cancel</span></button>
-                                  <button
-                                    onClick={() => {
-                                      const formData = {
-                                        title: inputText
-                                      }
-                                      _update_name_(formData, RenameId, "Title updated")
-                                    }}
-                                    type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Save</span></button></div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                      :
-                      null}
+                    
                   </div>
 
                   </>
@@ -1176,9 +1138,9 @@ const ListOfDocument = (props) => {
                 <div className="flex flex-wrap">
                   {documentData.map((data, index) => {
                     return (
-                      <div key={index} title={"Open " + data.title} className="relative m-3 transition-all p-3 group cursor-pointer hover:bg-blue-50 border rounded-xl w-[240px] h-[280px]">
+                      <div key={index} title={"Open " + data.title} className="dark:bg-black dark:text-gray-200 dark:border-slate-500 relative m-3 transition-all p-3 group cursor-pointer hover:bg-blue-50 border rounded-xl w-[240px] h-[280px]">
 
-                        <div className="opacity-0 group-hover:opacity-100 absolute right-5 top-5">
+                        <div className="dark:bg-gray-800 opacity-0 group-hover:opacity-100 absolute right-5 top-5">
                           <span className="relative inline-block text-left" data-headlessui-state="">
                             <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r2e:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state=""
                               onClick={() => handlePopUpMenu(index)}
@@ -1190,7 +1152,7 @@ const ListOfDocument = (props) => {
                               <>
                                 {openPopupIndex === index && (
                                   <>
-                                    <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                    <div className=" z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
                                       <div role="none">
                                         <button className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600" role="none"
                                           onClick={() => {
@@ -1218,9 +1180,9 @@ const ListOfDocument = (props) => {
                               :
                               <>
                                 {openPopupIndex === index && (
-                                  <div className="z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
+                                  <div className="dark:bg-gray-800  dark:text-gray-300 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100" aria-labelledby="headlessui-menu-button-:r6e:" id="headlessui-menu-items-:r79:" role="menu" tabIndex="0" data-headlessui-state="open">
                                     <div role="none">
-                                      <button type="button" className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
+                                      <button type="button" className="dark:hover:bg-gray-100 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100" role="none">
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="none">
                                           <path d="M8,0c.22,0,.41,.13,.51,.33l2.23,4.51,4.78,.82c.21,.04,.39,.19,.45,.41,.07,.21,.01,.45-.14,.61l-3.4,3.62,.73,5.02c.03,.22-.06,.45-.23,.58-.17,.13-.4,.15-.6,.05l-4.34-2.27-4.32,2.27c-.19,.1-.42,.08-.6-.05-.17-.13-.26-.36-.23-.58l.73-5.02L.17,6.67c-.15-.16-.2-.4-.14-.61,.07-.21,.24-.37,.46-.41l4.79-.82L7.49,.33c.1-.2,.3-.33,.51-.33Z" fill="#9CA3AF" fillRule="evenodd" role="none"></path>
                                         </svg>
@@ -1274,16 +1236,16 @@ const ListOfDocument = (props) => {
                             navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
                           }}
                         >
-                          <div className="text-[8px] bg-white border rounded-xl px-3 grow break-words space-y-2 overflow-hidden">
+                          <div className="text-[8px] dark:bg-slate-500 dark:text-white bg-white border rounded-xl px-3 grow break-words space-y-2 overflow-hidden">
                             <RenderHtml htmldata={data.document_content} />
                           </div>
-                          <div className="text-gray-700 text-sm font-medium pt-1 pb-1.5">{data.title}</div>
+                          <div className="text-gray-700 text-sm font-medium pt-1 pb-1.5 dark:text-white">{data.title}</div>
                           <div className="flex flex-row text-gray-500 text-xs font-normal">
                             <div>{data.updated_at}</div>
                           </div>
                           <div className="absolute right-1.5 bottom-1.5">
                             <div className="relative" data-headlessui-state="">
-                              <button id="headlessui-menu-button-:r2f:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
+                              <button >
                                 <span className="sr-only">DRAFT</span>
                                 <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path fillRule="evenodd" clipRule="evenodd" d="M12.9999 0.429993C9.41404 0.429993 6.49152 1.44118 4.46633 3.46639C2.44112 5.49158 1.42993 8.4141 1.42993 12C1.42993 15.5859 2.44112 18.5083 4.46633 20.5337C6.49152 22.5589 9.41404 23.57 12.9999 23.57C16.5858 23.57 19.5083 22.5589 21.5336 20.5337C23.5588 18.5083 24.5699 15.5859 24.5699 12C24.5699 8.4141 23.5588 5.49158 21.5336 3.46639C19.5083 1.44118 16.5858 0.429993 12.9999 0.429993Z" fill="#F3F4F6"></path>
@@ -1293,53 +1255,7 @@ const ListOfDocument = (props) => {
                             </div>
                           </div>
                         </div>
-                        {RenameDiv
-                          ?
-                          <>
-                            <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
-                              <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                                <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
-                                <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
-                                  <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                                    <h3 className="text-lg font-semibold">Rename document</h3>
-                                  </div>
-                                  <div className="flex flex-col p-6">
-                                    <form className="-m-6 divide-y divide-gray-200">
-                                      <div className="p-6">
-                                        <div className="space-y-1.5 w-full">
-                                          <label htmlFor="rename-document" className="sr-only"><span className="flex items-center space-x-1"><span>Rename document</span></span></label>
-                                          <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                            <div className="flex items-center grow gap-2 py-1.5">
-                                              <div className="flex gap-1 grow">
-                                                <input
-                                                  value={inputText} onChange={handleInputChange}
-                                                  id="rename-document" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="Document name" name="name" />
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className="p-6 flex items-center gap-4 justify-end"><button
-                                        onClick={() => {
-                                          setRenameDiv(false)
-                                        }} type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Cancel</span></button>
-                                        <button
-                                          onClick={() => {
-                                            const formData = {
-                                              title: inputText
-                                            }
-                                            _update_name_(formData, RenameId, "Title updated")
-                                          }}
-                                          type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Save</span></button></div>
-                                    </form>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                          :
-                          null
-                        }
+                        
 
 
                       </div>
@@ -1348,28 +1264,73 @@ const ListOfDocument = (props) => {
                 </div>
               </>
             }
+            {RenameDiv
+                      ?
+                      <>
+                        <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
+                          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                            <div className="fixed inset-0 transition-opacity bg-gray-600 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                            <div className="dark:bg-gray-700 dark:text-gray-200  relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                              <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                                <h3 className="dark:text-gray-400 text-lg font-semibold">Rename document</h3>
+                              </div>
+                              <div className="flex flex-col p-6">
+                                <div className="p-6">
+                                  <div className="space-y-1.5 w-full">
+                                    <label htmlFor="rename-document" className="sr-only "><span className="flex items-center space-x-1"><span>Rename document</span></span></label>
+                                    <div className="dark:bg-gray-800 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                      <div className="dark:bg-gray-800 flex items-center grow gap-2 py-1.5">
+                                        <div className="dark:bg-gray-800 flex gap-1 grow">
+                                          <input
+                                            value={inputText} onChange={handleInputChange}
+                                            id="rename-document" type="text" className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="Document name" name="name" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="p-6 flex items-center gap-4 justify-end"><button
+                                  onClick={() => {
+                                    setRenameDiv(false)
+                                  }} type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Cancel</span></button>
+                                  <button
+                                    onClick={() => {
+                                      const formData = {
+                                        title: inputText
+                                      }
+                                      _update_name_(formData, RenameId, "Title updated")
+                                    }}
+                                    type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-blue-600 text-white ring-0 ring-blue-600 hover:ring-2 active:ring-0"><span className="flex items-center justify-center mx-auto space-x-2 select-none">Save</span></button></div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                      :
+                      null}
             {ChangeFolderDiv
               ?
               <>
                 <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
                   <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
-                    <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                    <div className="fixed inset-0 transition-opacity bg-gray-600 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                    <div className="dark:bg-gray-700  dark:text-gray-200 dark:border-slate-500 relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
                       <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                        <h3 className="text-lg font-semibold">Move to folder</h3>
+                        <h3 className="dark:text-white text-lg font-semibold">Move to folder</h3>
                       </div>
                       <div className="flex flex-col p-6">
                         <div className="p-6">
                           <div className="space-y-1.5 w-full">
-                            <div className="relative inline-block text-left w-full">
+                            <div className="relative inline-block text-left w-full ">
                               {/* ============select field================= */}
                               <select
-                                className="p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
+                                className="dark:text-black p-1 ring-1 font-semibold ring-gray-200 w-[200px] text-left space-y-3 hover:ring-gray-300 active:ring-gray-400"
                                 id="selectField"
                                 value={selectedValue}
                                 onChange={handleSelectChange}
                               >
-                                <option value="">choose your folder ...</option>
+                                <option value="" >choose your folder ...</option>
 
                                 {SelectedOptions &&
                                   SelectedOptions.map((data, index) => {
@@ -1414,8 +1375,8 @@ const ListOfDocument = (props) => {
               <>
               <div className="fixed inset-0 z-40 overflow-y-auto" id="headlessui-dialog-:rdn:" role="dialog" aria-modal="true" data-headlessui-state="open">
                           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
-                            <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                            <div className="fixed inset-0 transition-opacity bg-gray-600 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
+                            <div className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
                               <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
 
                               <div className="flex">
@@ -1423,7 +1384,7 @@ const ListOfDocument = (props) => {
                                   <DangerIcon/>  
                                 </div>
                               <div>
-                                <h3 className="text-lg font-semibold">
+                                <h3 className="dark:text-white text-lg font-semibold">
                                     Move to Trash !!
                                 </h3>
                               </div>
@@ -1435,7 +1396,7 @@ const ListOfDocument = (props) => {
 
 
                               <button
-                                className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
+                                className="dark:text-white w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                                 onClick={() => {
                                   const formData = {
                                     trash: true
@@ -1448,7 +1409,7 @@ const ListOfDocument = (props) => {
 
 
                               <button
-                                className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                className="dark:text-white w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                 onClick={() => {
                                   setshowModalForDelete(false)
                                 }}
@@ -1474,21 +1435,21 @@ const ListOfDocument = (props) => {
                           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                             <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50" id="headlessui-dialog-overlay-:rdo:" aria-hidden="true" data-headlessui-state="open"></div>
                             <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
-                              <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                              <div className="dark:bg-slate-700 dark:text-white w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
 
                               <div className="flex">
                                 <div className="mt-10 ml-4 mr-5 ">
                                   <DangerIcon/>  
                                 </div>
                               <div>
-                                <h3 className="text-2xl font-helv font-medium text-red-800">
+                                <h3 className="dark:bg-slate-700 dark:text-white  text-2xl font-helv font-medium text-red-800">
                                     Delete it permanently.Once delete cannot be recover.
                                 </h3>
                               </div>
                               </div>
                               </div>
                                 
-                                <div className="p-6 flex items-center gap-4 justify-end">
+                                <div className="dark:bg-slate-700 dark:text-white  p-6 flex items-center gap-4 justify-end">
 
 
                                 <button
@@ -1503,7 +1464,7 @@ const ListOfDocument = (props) => {
                                   Delete
                                 </button>
                                 <button
-                                  className="w-full  p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                  className="dark:text-white w-full  p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                   onClick={() => {
                                     setshowModalForPermanentlyDelete(false)
                                   }}

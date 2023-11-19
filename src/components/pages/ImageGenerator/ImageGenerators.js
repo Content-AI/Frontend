@@ -22,7 +22,7 @@ import { _save_details_ } from "../../../features/Subscriptions";
 import TooltipInfo from "../../Icons/TooltipInfo";
 
 import ResponseTemplate from "../Template/ResponseTemplate";
-import SelectOptionsTemplate from "../Template/SelectOptionsTemplate.js/SelectOptions";
+import SelectOptionsTemplate from "../Template/SelectOptionsTemplate/SelectOptions";
 
 
 
@@ -180,14 +180,14 @@ const [imageUrls, setImageUrls] = useState([]);
           <>
             <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)]">
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
                   <div className="w-10 h-10">
                       <button
                         onClick={() => {
                           navigate("/create_new_content");
                         }}
                         // className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
-                        className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                        className="dark:bg-black dark:text-white z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
                       >
                         <IoMdArrowBack />
                       </button>
@@ -245,7 +245,7 @@ const [imageUrls, setImageUrls] = useState([]);
                   </div>
                 </div>
 
-                <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                <div className="dark:bg-black grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
                   <div id="id-art">
                     
 
@@ -257,13 +257,13 @@ const [imageUrls, setImageUrls] = useState([]);
                         className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                         >
                         <span className="flex items-center space-x-1">
-                            <span>Image Description</span>
+                            <span className="dark:text-white">Image Description</span>
                         </span>
                         </label>
-                        <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                        <div className="dark:bg-gray-800 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                         <textarea
                             id="form-field-productInfo"
-                            className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                            className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                             name=""
                             placeholder="Magical forest with glowing trees, a colorful serpent, a ghostly harpist, and glowing flowers, where dreams come to life."
                             value={text}
@@ -288,7 +288,7 @@ const [imageUrls, setImageUrls] = useState([]);
                 </div>
                  
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                  <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                  <div className="dark:bg-black flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     <button
                       type="button"
                       className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1"
@@ -374,8 +374,8 @@ const [imageUrls, setImageUrls] = useState([]);
                 </div>
               </div>
 
-              <div className="lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
@@ -384,7 +384,7 @@ const [imageUrls, setImageUrls] = useState([]);
                   </nav>
                   <div>
                     <button
-                      className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black-400 transition-all duration-150 hover:text-gray-600"
+                      className=" relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black-400 transition-all duration-150 hover:text-gray-600"
                       onClick={() => {
                         setImageUrls([])
                       }}

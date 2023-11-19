@@ -22,6 +22,8 @@ import ChosenWorkspaceId from '../features/ChosenWorkspaceId'
 import Favorite from '../features/Favorite'
 import TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate from '../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate'
 
+import DarkMode from '../features/DarkMode'
+
 export const store = configureStore({
     reducer: {
         SetAuthenticationToken: AuthenticationToken,
@@ -46,6 +48,7 @@ export const store = configureStore({
         SetChosenWorkspaceId:ChosenWorkspaceId,
         SetFavorite:Favorite,
         SetTriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate:TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate,
+        SetDarkMode:DarkMode,
     }
 })
 

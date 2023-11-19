@@ -9,7 +9,7 @@ const RenderHtmlData = ({ htmldata }) => {
     .join('');
 
   return (
-        <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
+        <div className='dark:text-gray-400' dangerouslySetInnerHTML={{ __html: formattedContent }} />
     )};
 
 export default RenderHtmlData;

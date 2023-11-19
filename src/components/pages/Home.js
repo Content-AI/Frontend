@@ -115,20 +115,20 @@ useEffect(()=>{
   return (
     <div className="pl-6">
 
-      <h1 className="text-2xl font-bold mb-6 p-8">Dashboard</h1>
+      <h1 className="dark:text-gray-500 text-2xl font-bold mb-6 p-8">Dashboard</h1>
 
       <div className="max-w-[843px] mx-auto mt-10 mb-12">
       
         <div className="mb-6">
-          <h1 className="text-[40px] font-bold">Welcome to Jyra AI</h1>
-          <p className="text-sm">
+          <h1 className="text-[40px] font-bold dark:text-gray-500">Welcome to Jyra AI</h1>
+          <p className="text-sm dark:text-gray-500">
             Follow these steps to get started and earn free credits as you go.
           </p>
         </div>
-        <table className="table w-full table-auto border border-border">
-          <thead className="p-6 border-b border-border">
+        <table className="table w-full table-auto border border-border dark:border-slate-600">
+          <thead className="p-6 border-b border-border dark:border-slate-600">
             <tr>
-              <th className="text-left p-6">Getting Started</th>
+              <th className="text-left p-6 dark:text-gray-500">Getting Started</th>
               {subscriptions_details &&
                 <>
                   {subscriptions_details.user.status=="trial"
@@ -145,7 +145,7 @@ useEffect(()=>{
           </thead>
           <tbody className="[&_td]:px-6 [&_td]:py-2 [&_tr:first-child_td]:pt-6 [&_tr:last-child_td]:pb-6 [&_td:last-child]:text-right">
             <tr>
-              <td className="">Create an account</td>
+              <td className="dark:text-gray-500">Create an account</td>
               <td className="">
                 <div className="inline-block">
                   <CkCheck />
@@ -153,14 +153,14 @@ useEffect(()=>{
               </td>
             </tr>
             <tr>
-              <td className="px-6 py-4">Generate your first blog post</td>
+              <td className="px-6 py-4 dark:text-gray-500">Generate your first blog post</td>
               <td className="px-6 py-4 text-right">
                 <button 
                   onClick={()=>{
                     notifysucces("Coming soon")
                   }}
                 className="inline-flex items-center justify-center text-white bg-[#304572] px-3 py-1.5 gap-x-2 rounded-md">
-                  <span>Try it</span>
+                  <span  className="dark:text-gray-500">Try it</span>
                   <svg
                     width="14"
                     height="14"
@@ -238,9 +238,9 @@ useEffect(()=>{
           {imp_manaully.map((data,index)=>{
             return (
 
-                <div className="flex flex-col cursor-pointer hover:bg-slate-100" title={data["title"]}>
+                <div className=" flex flex-col cursor-pointer " title={data["title"]}>
                   
-                    <div className="bg-gray-light border border-border p-6 rounded-lg">
+                    <div className="dark:bg-slate-700 dark:hover:bg-gray-600 hover:bg-gray-100 dark:border-slate-500 border border-border p-6 rounded-lg ">
 
                       <div className="flex">
                       <div>
@@ -249,7 +249,7 @@ useEffect(()=>{
                             <img src={data["img"]} alt={data["title"]} className="w-6 h-6" />
                           </div>
                           <div>
-                            <p className="text-md font-bold ml-4">{data["title"]}</p>
+                            <p className="dark:text-gray-500 text-md font-bold ml-4">{data["title"]}</p>
                           </div>
                         </div>
 
@@ -271,7 +271,7 @@ useEffect(()=>{
                                   Upgrade
                                 </button>
                               :
-                                <button className="text-white w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                                <button className="text-white dark:text-gray-300 w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
                                     onClick={()=>{
                                       navigate(data["link"])
                                     }}>
@@ -286,7 +286,7 @@ useEffect(()=>{
                         <img
                           src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
                           alt=""
-                          className="w-full h-full"
+                          className="w-full h-full dark:opacity-60"
                         />
                       </div>
                    </div>

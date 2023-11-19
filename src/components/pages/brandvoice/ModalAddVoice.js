@@ -144,9 +144,16 @@ const ModalAddVoice = (props) => {
             setshowTextUrl(true)
             setanalyze_url_tone(false)
             setanalyzingdata(false)
-            notifyerror("we cannot read this ulr sorry")
-        }
-      } else {
+            // =="That's limit for trail"
+            if(resp.response.data.message){
+              // console.log(resp.response.data.message)
+              notifyerror(resp.response.data.message)
+            }else{
+              notifyerror("we cannot read this ulr sorry")
+            }
+              
+          }
+        } else {
         notifyerror("Please enter a valid URL.")
       }
       setanalyze_url_tone(false)
@@ -231,9 +238,10 @@ const handleUploadFile = async () => {
   return (
     <>
  
-            <div className="flex flex-col bg-gray-50 p-3">
-                <div className="border border-gray-200 bg-white rounded-2xl mb-8 p-6 h-auto">
+            <div className="flex flex-col bg-gray-50 p-3 dark:bg-slate-700">
+                <div className="border dark:bg-slate-800 border-gray-200 bg-white rounded-2xl mb-8 p-6 h-auto">
                 <button
+                    className='dark:text-white'
                     onClick={() => {
                         setshowTextInputBox(false)
                         setshowTextUrl(false)
@@ -256,12 +264,12 @@ const handleUploadFile = async () => {
                 :
                 <>
                     <div className="flex justify-between">
-                        <h2 className="font-semibold text-lg">Incorporate your content to enable AI to emulate your unique writing style.</h2>
+                        <h2 className="dark:text-white font-semibold text-lg">Incorporate your content to enable AI to emulate your unique writing style.</h2>
                         <p className="text-gray-500 text-sm font-bold">
                         {showInitialsetup?"1/3":null}{showTextInputBox?"2/3":null}{analyzingdata?"3/3":null}
                         </p>
                     </div>
-                    <p className="text-gray-600 text-sm pb-3">AI, can deduce your brand's voice from your website, text, or document. Choose one of the methods below to input your brand content into Jasper.</p>
+                    <p className="dark:text-white text-gray-600 text-sm pb-3">AI, can deduce your brand's voice from your website, text, or document. Choose one of the methods below to input your brand content into Jasper.</p>
                 </>
                 }
 
@@ -270,23 +278,23 @@ const handleUploadFile = async () => {
                 {showInitialsetup ? (
   <>
     <button
-      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+      className="flex-1 border dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 bg-gray-50 rounded-2xl cursor-pointer mr-3"
       onClick={() => {
         setshowInitialsetup(false);
         setshowTextUrl(true);
       }}
     >
-      <div className="py-6 text-center">
-        <div className="flex justify-center">
+      <div className=" py-6 text-center">
+        <div className="flex justify-center dark:text-white">
           <UrlIcon />
         </div>
-        <h3 className="font-medium">Using Urls</h3>
-        <p className="text-gray-600 text-xs">copy and paste url</p>
+        <h3 className="dark:text-white font-medium">Using Urls</h3>
+        <p className="dark:text-white text-gray-600 text-xs">copy and paste url</p>
       </div>
     </button>
 
     <button
-      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
       onClick={() => {
         setshowInitialsetup(false);
         setanalyzingdata(false);
@@ -297,13 +305,13 @@ const handleUploadFile = async () => {
         <div className="flex justify-center">
           <FileIcon />
         </div>
-        <h3 className="font-medium">From File</h3>
-        <p className="text-gray-600 text-xs">Upload Your File we will analyze the tone</p>
+        <h3 className="font-medium dark:text-white">From File</h3>
+        <p className="text-gray-600 text-xs dark:text-white">Upload Your File we will analyze the tone</p>
       </div>
     </button>
 
     <button
-      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3"
+      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
       onClick={() => {
         setshowInitialsetup(false);
         setanalyzingdata(false);
@@ -314,8 +322,8 @@ const handleUploadFile = async () => {
         <div className="flex justify-center">
           <FileTextUrl />
         </div>
-        <h3 className="font-medium">From text</h3>
-        <p className="text-gray-600 text-xs">Write or copy and paste text</p>
+        <h3 className="font-medium dark:text-white">From text</h3>
+        <p className="text-gray-600 text-xs dark:text-white">Write or copy and paste text</p>
       </div>
     </button>
   </>
@@ -326,38 +334,39 @@ const handleUploadFile = async () => {
                     {file_upload_form
                     ?
                     <>
-                    <div className="space-y-1.5 w-full">
+                                  <div className="space-y-1.5 w-full">
                                         <div className="flex justify-between">
-                                            <h1 className="text-base font-semibold pb-2">Name this voice</h1>
+                                            <h1 className="dark:text-white text-base font-semibold pb-2">Name this voice</h1>
                                         </div>
-                                        <div className="space-y-1.5 w-full">
-                                            <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span>Make it easier to know which tone you're using when writing</span></span></label>
-                                            <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                                <div className="flex items-center grow gap-2 py-1.5">
-                                                <div className="flex gap-1 grow">
-                                                    <input id="name" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" 
+                                        <div className="dark:bg-gray-800 space-y-1.5 w-full">
+                                            <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span className='dark:text-white'>Make it easier to know which tone you're using when writing</span></span></label>
+                                            <div className="dark:bg-gray-800 dark:text-white py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                <div className="dark:bg-gray-800 flex items-center grow gap-2 py-1.5">
+                                                <div className="dark:bg-gray-800 flex gap-1 grow">
+                                                    <input id="name" type="text" 
+                                                    className="dark:bg-gray-800 dark:text-gray-300 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" 
                                                     placeholder="e.g. My Brand voice for Blog, article" 
                                                     name="brandVoiceFileTitle"
                                                     value={brandVoiceFileTitle}
                                                     onChange={handleBrandVoiceFileTitleChange}
                                                     />
                                                 </div>
-                                                <div className="flex items-center gap-2"><span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                                <div className="flex items-center gap-2"><span className="dark:text-white ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
                                                     {brandVoiceFileTitle.length}/30</span>
                                                 </div>
                                                 </div>
                                             </div>
-                                                <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing .
-                                                <strong className='ml-1'>
+                                                <div className="dark:text-white block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing .
+                                                <strong className='ml-1 dark:text-white'>
                                                 only .txt , .docx , .pdf of ( 10MB )
                                                 </strong></div>
-                                                    <label htmlFor="text" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
+                                                    <label htmlFor="text" className="dark:text-white text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
                                                         
                                                     </label>
-                                                    <div className="py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                    <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                                                     <div className="mb-4">
-                                                    <label className="block text-gray-700 text-sm font-bold mb-2">Select File:</label>
-                                                    <input type="file" name="file" onChange={handleFileChange} className="border rounded px-3 py-2 w-full" />
+                                                    <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Select File:</label>
+                                                    <input type="file" name="file dark:text-white" onChange={handleFileChange} className="border rounded px-3 py-2 w-full" />
                                                     </div>
                                                     </div>
                                         </div>
@@ -396,7 +405,7 @@ const handleUploadFile = async () => {
                         <>
                         {responseData &&
                             <div className="flex items-center justify-center flex-col m-4 p-3">
-                                <p className='text-[20px]  font-bold'>{responseData.content_summarize}</p>
+                                <p className='dark:text-white text-[20px]  font-bold'>{responseData.content_summarize}</p>
                             </div>                        
                         }
                         </>
@@ -408,39 +417,41 @@ const handleUploadFile = async () => {
                         <>
                             <div className="space-y-1.5 w-full">
                                 <div className="flex justify-between">
-                                    <h1 className="text-base font-semibold pb-2">Name this voice</h1>
+                                    <h1 className="dark:text-white text-base font-semibold pb-2">Name this voice</h1>
                                 </div>
-                                <div className="space-y-1.5 w-full">
-                                    <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span>Make it easier to know which tone you're using when writing</span></span></label>
-                                    <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                        <div className="flex items-center grow gap-2 py-1.5">
-                                        <div className="flex gap-1 grow">
-                                            <input id="name" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="e.g. My Brand voice for Blog, article" name="name"
+                                <div className="dark:bg-gray-800 space-y-1.5 w-full">
+                                    <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span className='dark:text-white'>Make it easier to know which tone you're using when writing</span></span></label>
+                                    <div className="dark:bg-gray-800 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <div className="dark:bg-gray-800 flex items-center grow gap-2 py-1.5">
+                                        <div className="dark:bg-gray-800 flex gap-1 grow">
+                                            <input id="name" type="text" className="dark:bg-gray-800 dark:text-gray-300 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="e.g. My Brand voice for Blog, article" name="name"
                                             value={titletext}
                                             onChange={handleTexttitleChange}
                                             />
                                         </div>
-                                        <div className="flex items-center gap-2"><span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                        <div className="flex items-center gap-2">
+                                        <span className="dark:text-white ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
                                             {titlelen}/30</span>
                                         </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div>
+                                <div className="block text-sm font-normal text-gray-500 pt-3 dark:text-white">Make it easy to know which voice you're using when writing.</div>
                             <label htmlFor="text" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
                                 <span className="flex items-center space-x-1">
-                                <span>Write your Brand Voice </span>
+                                <span className='dark:text-white'>Write your Brand Voice </span>
                                   <TooltipInfo text="Write your brand details" />
                                 </span>
                             </label>
-                            <div className="py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                <textarea id="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto" placeholder="Write or paste in any content written in your brand voice..." rows="5" name="text" 
+                            <div className="dark:bg-gray-800  py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                <textarea id="text" className="dark:bg-gray-800 dark:text-gray-300 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto" placeholder="Write or paste in any content written in your brand voice..." rows="5" name="text" 
                                 value={text}
                                 onChange={handleTextareaChange}
                                 >
                                 </textarea>
                             </div>
-                            <div className="flex items-center gap-2"><span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                            <div className="flex items-center gap-2">
+                            <span className="dark:text-white ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
                             {textlen}/6500</span>
                             
                             </div>
@@ -455,17 +466,17 @@ const handleUploadFile = async () => {
                         <div className="space-y-1.5 w-full p-6">
                             <div className="space-y-1.5 w-[60%] m-auto">
                             <div className="flex justify-between">
-                                <h1 className="text-base font-semibold pb-2">Tone Name</h1>
+                                <h1 className="dark:text-white text-base font-semibold pb-2">Tone Name</h1>
                             </div>
                             <div className="space-y-1.5 w-full">
-                                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                <div className="flex items-center grow gap-2 py-1.5">
-                                    <div className="flex gap-1 grow">
+                                <div className="dark:bg-gray-800 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                <div className="dark:bg-gray-800 flex items-center grow gap-2 py-1.5">
+                                    <div className="dark:bg-gray-800 flex gap-1 grow">
                                     <input
                                         id="brand_voice_url"
                                         placeholder='Eg. My custom Tone'
                                         type="text"
-                                        className={`block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none`}
+                                        className="dark:text-gray-300 dark:bg-gray-800 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                         value={brandVoiceUrl}
                                         onChange={handleInputChangeBrandVoiceUrl}
                                     />
@@ -475,16 +486,16 @@ const handleUploadFile = async () => {
                             </div>
 
                             <div className="flex justify-between">
-                                <h1 className="text-base font-semibold pb-2">Website Url</h1>
+                                <h1 className="dark:text-white text-base font-semibold pb-2">Website Url</h1>
                             </div>
-                                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                <div className="flex items-center grow gap-2 py-1.5">
-                                    <div className="flex gap-1 grow">
+                                <div className="dark:bg-gray-800 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                <div className="dark:bg-gray-800  flex items-center grow gap-2 py-1.5">
+                                    <div className="dark:bg-gray-800  flex gap-1 grow">
                                     <input
                                         id="name"
                                         placeholder='Eg. www.https://articles.com/have_tone'
                                         type="text"
-                                        className={`block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none ${
+                                        className={`dark:text-gray-300 dark:bg-gray-800 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none ${
                                         !isValidUrl ? 'border-red-500' : ''
                                         }`}
                                         value={url}
@@ -510,7 +521,7 @@ const handleUploadFile = async () => {
 
 
                 
-                <div className="font-normal text-gray-700 text-xs pb-6">Ownership or permission for content submission to AI is required. Utilizing our website to infringe upon others' rights constitutes a breach of our <a target="_blank" href="/">Terms of Service</a></div>
+                <div className="dark:text-white font-normal text-gray-700 text-xs pb-6">Ownership or permission for content submission to AI is required. Utilizing our website to infringe upon others' rights constitutes a breach of our <a target="_blank" href="/">Terms of Service</a></div>
                 </div>
                 <div className="flex justify-end items-center">
                 {showTextInputBox

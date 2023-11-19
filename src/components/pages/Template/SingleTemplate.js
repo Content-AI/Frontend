@@ -32,16 +32,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { _save_details_ } from "../../../features/Subscriptions";
 import TooltipInfo from "../../Icons/TooltipInfo";
 
-
-import SelectOptionsTemplate from "./SelectOptionsTemplate.js/SelectOptions";
-
-
-// import ReactMarkdown from 'react-markdown'
-// import rehypeKatex from 'rehype-katex'
-
-// import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
-// import remarkGfm from 'remark-gfm';
-// import remarkMath from 'remark-math';
+import SelectOptionsTemplate from "./SelectOptionsTemplate/SelectOptions";
 
 const SingleTemplate = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
@@ -75,8 +66,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const [history_answer, set_history_answer] = useState(null);
 
-  const [range_of_text_from_browser, setrange_of_text_from_browser] =
-    useState(0);
+  const [range_of_text_from_browser, setrange_of_text_from_browser] = useState(0);
 
   const [ContentOutputNumber, setContentOutputNumber] = useState(2);
 
@@ -86,7 +76,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   let ChosenWorkspaceId = useSelector(
     (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
-    );	
+    );
+
+
+  let DarkMode = useSelector((state)=>state.SetDarkMode.DarkMode)
 
 
   const { template_id } = useParams();
@@ -430,14 +423,15 @@ useEffect(()=>{
 
                  
 
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                  
                   <div className="w-10 h-10">
 
                     <button
                         onClick={() => {
                           navigate("/templates");
                         }}
-                        className="z-20 top-9  left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                        className="z-20 top-9 dark:bg-black dark:text-gray-200 left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
                       >
                         <IoMdArrowBack />
                       </button>
@@ -455,7 +449,7 @@ useEffect(()=>{
                   </div>
                 </div>
 
-                <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
                   <div id={TemplateData[0]["id"]}>
                     {TemplateData[0]["template_fields"].map((data, index) => {
                       const textLength = fieldValues[index]?.value?.length || 0;
@@ -466,16 +460,16 @@ useEffect(()=>{
                             <div className="space-y-1.5 w-full">
                               <label
                                 htmlFor="form-field-productInfo"
-                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                className=" text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
-                                <span className="flex items-center space-x-1">
+                                <span className="flex items-center space-x-1 dark:text-white ">
                                   <span>{data.label}</span>
                                 </span>
                               </label>
-                              <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                              <div className="dark:bg-gray-800 dark:text-gray-200 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                                 <textarea
                                   id="form-field-productInfo"
-                                  className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                                  className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                                   maxLength={data.range_of_text}
                                   name={data.title}
                                   placeholder={data.placeholder}
@@ -503,16 +497,15 @@ useEffect(()=>{
                               htmlFor="form-field-productName"
                               className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                             >
-                              <span className="flex items-center space-x-1">
+                              <span className="flex items-center space-x-1 dark:text-white">
                                 <span>{data.label}</span>
                               </span>
                             </label>
-                            <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                              <div className="flex items-center grow gap-2 py-1.5">
-                                <div className="flex gap-1 grow">
+                            <div className="dark:bg-gray-800 dark:text-gray-200 py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                              <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
                                   <input
-                                    id="form-field-productName"
-                                    className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                    className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                     maxLength={data.range_of_text}
                                     name={data.title}
                                     type={data.component}
@@ -538,34 +531,34 @@ useEffect(()=>{
                         )) ||
                         (data.component === "Example" && (
                           <>
-                            <div>
+                            <div className="mt-3">
                               <label
                                 htmlFor="form-field-productInfo"
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
                                 <span className="flex items-center space-x-1">
-                                  <span>Example</span>
+                                  <span className="dark:text-gray-300">Example</span>
                                 </span>
                               </label>
                             </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner}">
+                            <div className=" flex justify-between flex-col space-y-2 key={index_inner}">
                               {inputs.map((input, index_inner) => (
                                 <div
-                                  className="flex justify-between flex-col space-y-2"
+                                  className=" flex justify-between flex-col space-y-2"
                                   key={index_inner}
                                 >
-                                  <div className="flex items-center justify-between space-x-2">
-                                    <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                  <div className=" flex items-center justify-between space-x-2">
+                                    <div className="bg-gray-300/20 dark:text-white text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                       {index_inner + 1}
                                     </div>
-                                    <div className="space-y-1.5 w-full">
-                                      <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                        <div className="flex items-center grow gap-2 py-1.5">
-                                          <div className="flex gap-1 grow">
+                                    <div className="dark:bg-gray-800 dark:text-gray-200 space-y-1.5 w-full">
+                                      <div className="dark:bg-gray-800 dark:text-gray-200 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                          <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
                                             <input
                                               id={`example-${index_inner + 1}`}
                                               type="text"
-                                              className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                              className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                               placeholder={displayText(
                                                 index_inner
                                               )}
@@ -599,7 +592,7 @@ useEffect(()=>{
                                     {/* Delete button */}
                                     <button
                                       type="button"
-                                      className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                      className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
                                       onClick={() =>
                                         handleMultipleInputDelete(index_inner)
                                       }
@@ -629,7 +622,7 @@ useEffect(()=>{
                               <span className="self-end">
                                 <button
                                   type="button"
-                                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                  className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                                   // onClick={handleAdd}
                                   onClick={() => setInputs([...inputs, { key: "", value: "" }])}
                                 >
@@ -656,12 +649,32 @@ useEffect(()=>{
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
                                 <span className="flex items-center space-x-1">
-                                  <span>{data.label}</span>
+                                  <span className="text-white">{data.label}</span>
                                 </span>
                               </label>
                             </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                            <div className="dark:bg-gray-800 dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                            {DarkMode
+                            ?
                               <CreatableSelect
+                                isClearable
+                                isDisabled={isLoading}
+                                isLoading={isLoading}
+                                onChange ={(newValue ) => setValue(newValue)}
+                                onCreate Option ={handleCreate }
+                                options={ options }
+                                  value={ value }
+                                  styles={{
+                                    control :  ( provided ) => ({ 
+                                    ...provided, 
+                                    backgroundColor:"#1f2937"}),
+                                  singleValue: (provided) =>  ({
+                                    ...provided,
+                                    color:"white"}),
+                                }}
+                              />
+                              :
+                               <CreatableSelect
                                 isClearable
                                 isDisabled={isLoading}
                                 isLoading={isLoading}
@@ -670,6 +683,7 @@ useEffect(()=>{
                                 options={options}
                                 value={value}
                               />
+                            }
                             </div>
                           </>
                         ))
@@ -756,7 +770,7 @@ useEffect(()=>{
                   <>
                       <div className="flex justify-center">
                         <button type="button"
-                          className="text-slate-500  font-semibold hover:text-slate-900"
+                          className="text-slate-500  font-semibold hover:text-slate-900 dark:hover:text-slate-300"
                         onClick={()=>{
                           navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
                         }}>
@@ -783,7 +797,7 @@ useEffect(()=>{
                 </div>
                  
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                  <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                  <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
                     <button
                       type="button"
@@ -850,14 +864,14 @@ useEffect(()=>{
                 </div>
               </div>
 
-              <div className="lg:w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 lg:w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-gray-200  relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         get_history(template_id);
                         setShowHideHistory(false);
@@ -869,7 +883,7 @@ useEffect(()=>{
                       </span>
                     </button>
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-gray-200 relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
                         get_history(template_id);
                         setShowHideHistory(true);

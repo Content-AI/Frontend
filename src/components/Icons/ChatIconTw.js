@@ -9,14 +9,14 @@ const ChatIconTw = () => {
   >
     <path
       d="M.86,4.28H15.14"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"
     />
     <path
       d="M13.13,4.28H2.86c-.17,3-.16,5.97,.28,8.95,.17,1.1,1.11,1.91,2.22,1.91h5.26c1.11,0,2.06-.81,2.22-1.91,.45-2.98,.45-5.95,.28-8.95Z"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"
@@ -24,7 +24,7 @@ const ChatIconTw = () => {
     />
     <path
       d="M5.14,4.28v-.57c0-.76,.3-1.48,.84-2.02,.53-.54,1.26-.84,2.02-.84s1.48,.3,2.02,.84c.53,.54,.83,1.26,.83,2.02v.57"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"
@@ -32,7 +32,7 @@ const ChatIconTw = () => {
     />
     <path
       d="M6.29,7.34v4.73"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"
@@ -40,7 +40,7 @@ const ChatIconTw = () => {
     />
     <path
       d="M9.71,7.34v4.73"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"

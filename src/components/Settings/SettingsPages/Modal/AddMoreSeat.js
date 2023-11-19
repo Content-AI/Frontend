@@ -67,7 +67,7 @@ export default function AddMoreSeat(props) {
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-2 border-b border-solid border-slate-200 rounded-t">
+                <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 flex items-start justify-between p-2 border-b border-solid border-slate-200 rounded-t">
                   <h3 className="text-1xl font-semibold ml-3">Add seat per Required</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -80,9 +80,9 @@ export default function AddMoreSeat(props) {
                 </div>
                 {/*body*/}
 
-                <div className="relative p-1 flex-auto w-[500px]">
+                <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 relative p-1 flex-auto w-[500px]">
 
-                  <div className="px-5 mt-1 mb-2 pb-5">
+                  <div className=" px-5 mt-1 mb-2 pb-5">
 
                   <div className="flex items-center justify-between">
                       <div className="text-lg font-semibold">
@@ -91,7 +91,7 @@ export default function AddMoreSeat(props) {
                     </div>
 
                     <div className="mb-4 mt-4">
-                        <p className="mb-2 text-gray-600 p-1 font-helv">Number of seats</p>
+                        <p className="mb-2 dark:text-white text-gray-600 p-1 font-helv">Number of seats</p>
                         <div className="flex items-center">
                         <button
                             className="px-2 py-1 bg-[#334977] text-white rounded-md mr-2 text-sm"
@@ -101,7 +101,7 @@ export default function AddMoreSeat(props) {
                         </button>
                         <input
                             type="number"
-                            className="w-20 p-2 border border-gray-300 rounded-lg text-center"
+                            className="w-20 dark:text-black p-2 border border-gray-300 rounded-lg text-center"
                             value={numSeats}
                             onChange={(e) => setNumSeats(Math.min(maxSeats, parseInt(e.target.value, 10)))}
                         />
@@ -153,7 +153,7 @@ export default function AddMoreSeat(props) {
                   </div>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold  px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"

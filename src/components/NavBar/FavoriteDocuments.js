@@ -71,7 +71,7 @@ const FavoriteDocuments = ({TOKEN}) => {
                 // font-size: 12px;
                 // line-height: 0.25rem;
                 // padding: 4px;
-                className="p-[2px] ml-[2px] hover:bg-slate-200 hover:rounded-md flex items-center justify-between  group relative"
+                className="dark:bg-dark dark:text-gray-200 p-[2px] ml-[2px] dark:hover:bg-gray-600 hover:bg-slate-200 hover:rounded-md flex items-center justify-between  group relative"
             >
 
                 <div className="text-sm cursor-pointer pl-[3px]"

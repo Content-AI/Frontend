@@ -9,11 +9,11 @@ const ChatIconEle = () => {
   >
     <path
       d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-      fill="transparent"
+      fill="white"
     />
     <path
       d="M6.8,13.68l7.39-7c1.23-1.16,1.13-3.22-.21-4.54-1.31-1.29-3.31-1.38-4.47-.2L2.32,9.28s1.59,.63,2.71,1.73c1.12,1.1,1.76,2.67,1.76,2.67Z"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"
@@ -21,7 +21,7 @@ const ChatIconEle = () => {
     />
     <path
       d="M1.74,14.99l5.05-1.3s-.64-1.57-1.76-2.67c-1.12-1.1-2.71-1.74-2.71-1.74L.99,14.23c-.12,.43,.32,.87,.75,.76Z"
-      fill="none"
+      fill="white"
       stroke="#0D121C"
       strokeWidth={1}
       strokeLinecap="round"

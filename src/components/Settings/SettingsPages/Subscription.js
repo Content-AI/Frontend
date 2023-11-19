@@ -182,7 +182,7 @@ const Subscription = (props) => {
     const [all_cost_data,setall_cost_data] = useState([{
         plan:"starter",
         actual_plan:"starter",
-        cost:78,
+        cost:30,
         monthly_anually:"monthly",
         plan_time:"monthly"
     }]);
@@ -203,24 +203,6 @@ const Subscription = (props) => {
         },
       });
 
-    
-    // const monthly_plan=["Jasper Chat",
-    // "50+ AI templates",
-    // "Browser extension",
-    // "Support for 30+ languages","Email support"
-    // ]
-    //     const annually_plan=["Up to 5 users",
-    //     "Automated workflows",
-    //     "Google Docs style editor",
-    //     "Compose & command features",
-    //     "Live chat users"
-    // ]
-    //     const enterprise_plan=["Collaborate with more than 5 users",
-    //     "Tailored AI Brand Voice",
-    //     "API access",
-    //     "Personalized onboarding & training"
-    //     ,"Dedicated accounnt manager"
-    // ]
 
     const [enterprise_plan,setenterprise_plan]=useState(['Collaborate with more than 5 users'])
     const [annually_plan,setannually_plan]=useState(['50+ AI templates'])
@@ -454,7 +436,7 @@ const Subscription = (props) => {
                 {/*body*/}
                 <div>
             {/* ==================the message ============= */}
-            <div className="min-h-screen min-w-screen bg-gray-50 pb-[150px]">
+            <div className="dark:bg-gray-800 dark:text-gray-300 min-h-screen min-w-screen bg-gray-50 pb-[150px]">
             {message=="upgrade"
             ?
                 <>
@@ -499,7 +481,7 @@ const Subscription = (props) => {
                 </>
             :
                 <>
-                    <div className="flex jusitfy-start pt-10 pb-5 px-5 lg:px-10">
+                    <div className="dark:bg-gray-800 dark:text-gray-300 flex jusitfy-start pt-10 pb-5 px-5 lg:px-10">
                     <button
                     type="button"
                     className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-white bg-[#334977] ring-1 ring-gray-200 hover:ring-2 active:ring-1 flex items-center space-x-1"
@@ -527,17 +509,17 @@ const Subscription = (props) => {
                 :
                     null
                 }
-                    <div className="flex justify-center w-full p-5">
+                    <div className="dark:bg-gray-800 dark:text-gray-300 flex justify-center w-full p-5">
                         <div className="md:grid md:grid-cols-3 md:gap-6 max-w-[1100px]">
                             <div className="md:col-span-2 mb-5">
                                 <div className="rounded shadow bg-white border border-gray-300">
-                                <div className="flex justify-between p-5 border-b border-gray-300 text-lg text-gray-600 font-medium transition-all items-center">
+                                <div className="dark:bg-gray-800 dark:text-gray-300 flex justify-between p-5 border-b border-gray-300 text-lg text-gray-600 font-medium transition-all items-center">
                                     <div>Choose your plan</div>
                                 </div>
                                 <div className="">
 
 
-                                    <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer "
+                                    <div className="dark:bg-gray-800 dark:text-gray-300 grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer "
                                     onClick={()=>{
 
                                         if(isCheckedPlan){
@@ -619,7 +601,7 @@ const Subscription = (props) => {
                                             }
 
                                             </div>
-                                            <div className="text-sm text-gray-600 mb-3">
+                                            <div className=" dark:text-gray-300 text-sm text-gray-600 mb-3">
                                                 For the hobbyist just getting started.The economic option for individuals who want to use Generative AI casually for hobbies and work.
                                             </div>
                                             <div className="text-sm text-gray-600">
@@ -638,7 +620,7 @@ const Subscription = (props) => {
                                             </div>
                                         </div>
                                         <div className="col-span-4 text-right">
-                                            <div className="uppercase text-xs font-medium text-gray-600">Starts at</div>
+                                            <div className=" dark:text-white uppercase text-xs font-medium text-gray-600">Starts at</div>
                                             <div>
                                             {isCheckedPlan
                                             ?
@@ -669,7 +651,7 @@ const Subscription = (props) => {
                                     </div>
 
 
-                                    <div className="grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer"
+                                    <div className="dark:bg-gray-800 dark:text-gray-300 grid grid-cols-12 gap-6 p-5 hover:bg-gray-50 transition-all hover:cursor-pointer"
                                     onClick={()=>{
                                         if(isCheckedPlan){
                                             setall_cost_data(
@@ -730,7 +712,7 @@ const Subscription = (props) => {
                                                     null
                                                 }
                                             </div>
-                                            <div className="text-sm text-gray-600 mb-3">
+                                            <div className=" dark:text-white text-sm text-gray-600 mb-3">
                                             For individuals and small items.The most popular option for professionals who want to use automations and write-long-form.items
                                             </div>
                                             <div className="text-sm text-gray-600">
@@ -778,12 +760,12 @@ const Subscription = (props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-12 gap-6 p-5">
+                                    <div className="dark:bg-gray-800 dark:text-gray-300 grid grid-cols-12 gap-6 p-5">
                                         <div className="col-span-8">
                                             <div className="flex justify-start">
                                             <div className="text-xl mb-2 font-medium mr-2">Business</div>
                                             </div>
-                                            <div className="text-sm text-gray-600 mb-3">
+                                            <div className=" dark:text-white text-sm text-gray-600 mb-3">
                                                 For growing teams and businesses.The AI built for teams with the ability to learn your brand voice, and the support you need to scale.
                                             </div>
                                             <div className="text-sm text-gray-600">
@@ -793,7 +775,7 @@ const Subscription = (props) => {
                                                         <path d="M4 9L6.90909 12C8.278 8.06771 9.41805 6.34218 12 4" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     </svg>
                                                 </div>
-                                                <span className="ml-2">Customize your number of seats</span>
+                                                <span className=" dark:text-white ml-2">Customize your number of seats</span>
                                             </div>
                                             <div className="flex items-center">
                                                 <div className="w-4 h-4 items-center">
@@ -801,7 +783,7 @@ const Subscription = (props) => {
                                                         <path d="M4 9L6.90909 12C8.278 8.06771 9.41805 6.34218 12 4" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
                                                     </svg>
                                                 </div>
-                                                <span className="ml-2">Unlimited tones</span>
+                                                <span className="ml-2  dark:text-white">Unlimited tones</span>
                                             </div>
                                             {enterprise_plan.map((data,index)=>{
                                                 return (
@@ -869,8 +851,8 @@ const Subscription = (props) => {
 
                                 <div className="mb-5">
                                 <div className="rounded shadow bg-white border border-gray-300">
-                                    <div className="p-3 flex justify-center text-sm text-gray-600 items-center font-medium">
-                                    <span>Bill annually
+                                    <div className="dark:bg-gray-800  p-3 flex justify-center text-sm text-gray-600 items-center font-medium">
+                                    <span className='dark:text-white'>Bill annually
                                 </span><span className="mx-3">
                                     
                                     {/* ======swipe===== */}
@@ -893,7 +875,7 @@ const Subscription = (props) => {
                                 </span></div>
                                 </div>
                                 </div>
-                                <div className="rounded shadow bg-white border border-gray-300">
+                                <div className="dark:bg-gray-800 dark:text-gray-300 rounded shadow bg-white border border-gray-300">
                                 <div className="p-5">
                                     <div className="text-xl font-semibold flex justify-center my-3">Review changes</div>
                                     
@@ -919,7 +901,7 @@ const Subscription = (props) => {
                                                     all_cost_data.length>0
                                                     ?
                                                     <>
-                                                    <p className='text-[13px]'>
+                                                    <p className='dark:text-white text-[13px]'>
                                                     ${all_cost_data[0]["cost"]}/{all_cost_data[0]["plan_time"]}
                                                     </p>
                                                     </>
@@ -930,7 +912,7 @@ const Subscription = (props) => {
                                         <div className="py-4 flex justify-between items-center border-b border-gray-200">
                                             <div>
                                             <div className="flex items-center">
-                                                <div className="uppercase text-xs text-gray-500 mr-2 font-medium">Total</div>
+                                                <div className="dark:text-white uppercase text-xs text-gray-500 mr-2 font-medium">Total</div>
                                                 <TooltipInfo
                                                     text="Total Payment user will Pay"
                                                 />
@@ -940,7 +922,7 @@ const Subscription = (props) => {
                                             {all_cost_data &&
                                                     all_cost_data.length>0
                                                     ?
-                                                    <p className='text-[13px]'>
+                                                    <p className='dark:text-white text-[13px]'>
                                                     ${all_cost_data[0]["cost"]}/{all_cost_data[0]["plan_time"]}
                                                     </p>
                                                     :

@@ -424,7 +424,7 @@ const Team = () => {
         :
         <>
           <div className="px-4 sm:px-6 ml-[50px] mr-[50px] sm:ml-[100px] mt-10">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="dark:text-white mb-4 flex items-center justify-between">
               <h2 className="mb-1 pb-1 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">Team</h2>
             </div>
             <div className="flex flex-col">
@@ -675,25 +675,25 @@ const Team = () => {
               <div>
 
                 {/* =====choose pending or see team member================= */}
-                <div className="relative inline-block text-left w-[180px]  mt-4 mb-4">
-                  <div>
+                <div className="dark:bg-gray-800 dark:text-gray-300 relative inline-block text-left w-[180px]  mt-4 mb-4">
+                  <div className='dark:bg-gray-800 dark:text-gray-300'>
                     <button
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       type="button"
-                      className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="dark:bg-gray-800 dark:text-gray-300 inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       {selectedItem}
                       <DropDowIcon />
                     </button>
                   </div>
                   {isDropdownOpen && (
-                    <div className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div className="dark:bg-gray-800 dark:text-gray-300 origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                       <div className="py-1">
                         {menuItems.map((item, index) => (
                           <button
                             key={item}
                             onClick={() => handleMenuItemSelect(item)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                            className="dark:bg-gray-800 dark:text-gray-300 block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                           >
                             {item}
                           </button>
@@ -935,10 +935,10 @@ const Team = () => {
               <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
               <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[640px] opacity-100 translate-y-0 sm:scale-100">
                 <div className="flex flex-col p-6">
-                  <div className="-m-6 divide-y divide-gray-200">
-                    <div className="p-6 space-y-4">
+                  <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 -m-6 divide-y divide-gray-200">
+                    <div className=" p-6 space-y-4">
                       <div className="space-y-1">
-                        <h1 className="mb-2 text-lg font-semibold text-gray-900">
+                        <h1 className="dark:text-white mb-2 text-lg font-semibold text-gray-900">
                           Select a Workspace
                         </h1>
                         <div className="flex">
@@ -950,10 +950,10 @@ const Team = () => {
                         <div>
                           <div>
                             {emails.map((enteredEmail, index) => (
-                              <span key={index} className="bg-gray-300 p-1 m-1 rounded">
+                              <span key={index} className="dark:text-black bg-gray-300 p-1 m-1 rounded">
                                 {enteredEmail}
                                 <button
-                                  className="ml-3 font-bold text-[12px]"
+                                  className="ml-3 dark:text-black font-bold text-[12px]"
                                   onClick={() => handleRemoveEmail(index)}
                                 >
                                   X
@@ -967,7 +967,7 @@ const Team = () => {
                             value={email}
                             onChange={handleEmailChange}
                             onKeyDown={handleEmailKeyDown}
-                            className="border border-gray-300 p-2 rounded mt-2 w-full"
+                            className="dark:text-black border border-gray-300 p-2 rounded mt-2 w-full"
                           />
                         </div>
                         {emails &&
@@ -1009,9 +1009,9 @@ const Team = () => {
                         {initial_invitation_link
                           ?
                           <>
-                            <div className="flex flex-col gap-4 bg-white rounded-2xl border border-gray-200 p-4">
-                              <div className="text-gray-900 text-lg font-semibold">Generate a link</div>
-                              <div className="text-gray-600 text-sm">This link will expire on {initial_invitation_link.expire_time}</div>
+                            <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 flex flex-col gap-4 bg-white rounded-2xl border border-gray-200 p-4">
+                              <div className="text-gray-900 text-lg font-semibold dark:text-white">Generate a link</div>
+                              <div className="text-gray-600 text-sm dark:text-white">This link will expire on {initial_invitation_link.expire_time}</div>
                               <div className="flex gap-4 items-center">
                                 <div className="grow">
                                   <div className="space-y-1.5 w-full">
@@ -1060,9 +1060,9 @@ const Team = () => {
                           </>
                           :
                           <>
-                            <div className="flex flex-col gap-4 bg-white rounded-2xl border border-gray-200 p-4 mt-[10px]">
-                              <div className="text-gray-900 text-lg font-semibold ">Generate a link</div>
-                              <div className="text-gray-600 text-sm">Generate a unique link you can share with your team to join your account. This link will expire in 10 days.</div>
+                            <div className="dark:bg-gray-800 dark:text-gray-200 dark:border-slate-500 flex flex-col gap-4 bg-white rounded-2xl border border-gray-200 p-4 mt-[10px]">
+                              <div className="text-gray-900 text-lg font-semibold dark:text-white">Generate a link</div>
+                              <div className="text-gray-600 text-sm dark:text-white">Generate a unique link you can share with your team to join your account. This link will expire in 10 days.</div>
                               <div>
                                 <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                                   onClick={() => {
@@ -1079,7 +1079,7 @@ const Team = () => {
                       </div>
                     </div>
                     <div className='p-4 m-4'>
-                      <button className="float-right m-5 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 border-b-4 rounded"
+                      <button className="float-right m-5 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
                           setpopupinvitemodal(false)
                           setEmails([])

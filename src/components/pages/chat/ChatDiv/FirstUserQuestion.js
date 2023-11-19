@@ -14,7 +14,7 @@ const FirstUserQuestion = (props) => {
             alt="User"
             />
         </div>
-        <div className="text-white bg-blue px-4 py-3 mx-4 rounded-2xl ">
+        <div className="dark:bg-slate-600 dark:text-white text-white bg-blue px-4 py-3 mx-4 rounded-2xl ">
             {/* <RenderHtmlData htmldata={props.question} /> */}
             {props.question}
         </div>

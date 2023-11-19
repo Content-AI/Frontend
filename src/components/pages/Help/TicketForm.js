@@ -115,7 +115,7 @@ const TicketForm = (props) => {
     <>
 
         <div className="pt-6">
-          <div className="flow-root px-6 pb-8 rounded-lg bg-slate-50 hover:bg-slate-100 ring-1 ring-gray-200 h-full">
+          <div className="dark:bg-gray-800 flow-root px-6 pb-8 rounded-lg bg-slate-50 hover:bg-slate-100 ring-1 ring-gray-200 h-full">
           <div className="flex flex-col justify-between h-full">
               <div>
                 <div>
@@ -125,8 +125,8 @@ const TicketForm = (props) => {
                       </svg>
                     </span>
                 </div>
-                <h3 className="mt-6 text-xl font-medium tracking-tight text-gray-900">Create a Ticket</h3>
-                <p className="mt-3 text-base text-gray-500 pt-3">Submit a support ticket for assistance.</p>
+                <h3 className="dark:text-white mt-6 text-xl font-medium tracking-tight text-gray-900">Create a Ticket</h3>
+                <p className="dark:text-white mt-3 text-base text-gray-500 pt-3">Submit a support ticket for assistance.</p>
               </div>
               <button type="button" 
                       className="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#334977]"
@@ -150,7 +150,7 @@ const TicketForm = (props) => {
             unmountOnExit
           >
         <div className="fixed inset-0 flex justify-center items-center bg-slate-700 bg-opacity-20 z-20">
-          <div className="bg-white w-[800px] p-10 rounded shadow-2xl overflow-y-auto max-h-[90vh]">
+          <div className="dark:bg-gray-800 bg-white w-[800px] p-10 rounded shadow-2xl overflow-y-auto max-h-[90vh]">
 
             {/* <div className="fixed inset-0 flex justify-center items-center bg-slate-700 bg-opacity-20 z-20">
               <div className="bg-white w-[600px] p-6 rounded shadow-lg "> */}
@@ -160,7 +160,7 @@ const TicketForm = (props) => {
                   </h2>
                 <form onSubmit={handleFormSubmit}>
                   <div className="mb-6 ">
-                    <label className="block text-lg font-medium mb-2 text-[#4B5563]">
+                    <label className="dark:text-white  block text-lg font-medium mb-2 text-[#4B5563]">
                       Select Options that related to Issue ? ( subject ) <span className='text-red-700'>*</span>
                     </label>
 
@@ -176,7 +176,7 @@ const TicketForm = (props) => {
                                 onChange={handleInputChangeTickets}
                                 className="mr-2 text-red-500"
                               />
-                              <span className="text-[#4B5563]">
+                              <span className="text-[#4B5563] dark:text-white">
                                 {data}
                               </span>
                             </label>
@@ -186,14 +186,15 @@ const TicketForm = (props) => {
                     }
                   </div>
                   <div className="mb-6">
-                    <label className="block text-lg font-medium mb-2">
-                      Message <span className='text-red-700'>*</span>
+                    <label className="dark:text-white block text-lg font-medium mb-2">
+                      Message <span className='dark:text-white text-red-700'>*</span>
                     </label>
                     <textarea
                       name="content"
                       onChange={handleInputChangeTickets}
-                      className="border p-3 w-full rounded font-helvetica"
+                      className="dark:bg-gray-700 dark:text-white border p-3 w-full rounded font-helvetica"
                       rows="4"
+                      placeholder='message'
                     ></textarea>
                   </div>
                   <div className="flex justify-end">
@@ -211,14 +212,14 @@ const TicketForm = (props) => {
                       <button
                         type="submit"
                         disabled
-                        className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                        className="dark:text-white transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                       >
                         Creating Tickets ...
                       </button>
                     :
                       <button
                         type="submit"
-                        className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                        className="dark:text-white transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  text-black  ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                       >
                         Submit Ticket
                       </button>

@@ -12,6 +12,10 @@ const BuildcustomTemplate = (props) => {
     const navigate = useNavigate()
     const { template_id } = useParams();
 
+
+  let DarkMode = useSelector((state)=>state.SetDarkMode.DarkMode)
+
+
     const notifyerror = (message) => toast.error(message);
     const notifysucces = (message) => toast.success(message);
 
@@ -252,15 +256,16 @@ const BuildcustomTemplate = (props) => {
         <div class="fixed inset-0 z-40 overflow-y-auto backdrop-blur-sm">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 shadow-lg">
             <div class="fixed inset-0 transition-opacity  bg-opacity-30 opacity-40"></div>
-            <div class="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[900px] md:w-[900px] opacity-100 translate-y-0 sm:scale-100">
+            <div class="dark:bg-gray-800 relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[900px] md:w-[900px] opacity-100 translate-y-0 sm:scale-100">
               <div class="flex flex-col p-6">
                   <div class="-m-6 divide-y divide-gray-200">
                     <div class="p-6 space-y-4">
                         <div class="space-y-1">
-                          <h1 class="mb-2 text-lg font-semibold text-gray-900">Create Custom Template</h1>
-                          <button data-testid="close-modal" class="outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70" tabindex="0" aria-label="Close"
+                          <h1 class=" dark:text-gray-300 mb-2 text-lg font-semibold text-gray-900">Create Custom Template</h1>
+                          <button class="dark:text-gray-300 outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70" tabindex="0" aria-label="Close"
                           onClick={()=>
-                          handleGoBack()}>
+                                handleGoBack()
+                          }>
                               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path fill-rule="evenodd" clip-rule="evenodd" d="M13.7071 3.70711C14.0976 3.31658 14.0976 2.68342 13.7071 2.29289C13.3166 1.90237 12.6834 1.90237 12.2929 2.29289L8 6.58579L3.70711 2.29289C3.31658 1.90237 2.68342 1.90237 2.29289 2.29289C1.90237 2.68342 1.90237 3.31658 2.29289 3.70711L6.58579 8L2.29289 12.2929C1.90237 12.6834 1.90237 13.3166 2.29289 13.7071C2.68342 14.0976 3.31658 14.0976 3.70711 13.7071L8 9.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L9.41421 8L13.7071 3.70711Z" fill="currentColor"></path>
                               </svg>
@@ -284,14 +289,14 @@ const BuildcustomTemplate = (props) => {
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
                                 <span className="flex items-center space-x-1">
-                                  <span>Template Name</span>
+                                  <span className="dark:text-gray-300">Template Name</span>
                                 </span>
                               </label>
-                              <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                              <div className="dark:text-gray-300 dark:bg-gray-800  py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                                 <div className="flex items-center grow gap-2 py-1.5">
-                                  <div className="flex gap-1 grow">
+                                  <div className=" flex gap-1 grow">
                                     <input
-                                      className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                      className="dark:text-gray-300 dark:bg-gray-800 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                       maxLength="40"
                                       type="text"
                                       id="templateName"
@@ -315,61 +320,23 @@ const BuildcustomTemplate = (props) => {
                             const textLength = fieldValues[index]?.value?.length || 0;
 
                             return (
-                              (data.component === "textarea" && (
-                                <div className="last:mb-1 relative" key={index}>
-                                  <div className="space-y-1.5 w-full">
-                                    <label
-                                      htmlFor="form-field-productInfo"
-                                      className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                    >
-                                      <span className="flex items-center space-x-1">
-                                        <span>{data.label}</span>
-                                      </span>
-                                    </label>
-                                    <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                      <textarea
-                                        id="form-field-productInfo"
-                                        className="block w-full h-[150px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
-                                        maxLength={data.range_of_text}
-                                        name={data.title}
-                                        placeholder={data.placeholder}
-                                        value={
-                                          fieldValues[index]?.value ||
-                                          data.pre_define_value ||
-                                          ""
-                                        }
-                                        onChange={(event) =>
-                                          handleInputChange(event, index)
-                                        }
-                                      ></textarea>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                        {textLength}/{data.range_of_text}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              )) ||
-                              (data.component === "text" && (
-                                <div className="space-y-1.5 w-full" key={index}>
-                                  <label
-                                    htmlFor="form-field-productName"
-                                    className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                  >
-                                    <span className="flex items-center space-x-1">
-                                      <span>{data.label}</span>
-                                    </span>
-                                  </label>
-                                  <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                    <div className="flex items-center grow gap-2 py-1.5">
-                                      <div className="flex gap-1 grow">
-                                        <input
-                                          id="form-field-productName"
-                                          className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                (data.component === "textarea" && (
+                                  <div className="last:mb-1 relative" key={index}>
+                                    <div className="space-y-1.5 w-full">
+                                      <label
+                                        htmlFor="form-field-productInfo"
+                                        className=" text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                      >
+                                        <span className="flex items-center space-x-1 dark:text-white ">
+                                          <span>{data.label}</span>
+                                        </span>
+                                      </label>
+                                      <div className="dark:bg-gray-800 dark:text-gray-200 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <textarea
+                                          id="form-field-productInfo"
+                                          className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                                           maxLength={data.range_of_text}
                                           name={data.title}
-                                          type={data.component}
                                           placeholder={data.placeholder}
                                           value={
                                             fieldValues[index]?.value ||
@@ -379,135 +346,214 @@ const BuildcustomTemplate = (props) => {
                                           onChange={(event) =>
                                             handleInputChange(event, index)
                                           }
-                                        />
+                                        ></textarea>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                          {textLength}/{data.range_of_text}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-2">
-                                    <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                      {textLength}/{data.range_of_text}
-                                    </span>
-                                  </div>
-                                </div>
-                              )) ||
-                              (data.component === "Example" && (
-                                <>
-                                  <div>
+                                )) ||
+                                (data.component === "text" && (
+                                  <div className="space-y-1.5 w-full" key={index}>
                                     <label
-                                      htmlFor="form-field-productInfo"
+                                      htmlFor="form-field-productName"
                                       className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                                     >
-                                      <span className="flex items-center space-x-1">
-                                        <span>Example</span>
-                                      </span>
-                                    </label>
-                                  </div>
-                                  <div className="flex justify-between flex-col space-y-2 key={index_inner}">
-                                    {inputs.map((input, index_inner) => (
-                                      <div
-                                        className="flex justify-between flex-col space-y-2"
-                                        key={index_inner}
-                                      >
-                                        <div className="flex items-center justify-between space-x-2">
-                                          <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                            {index_inner + 1}
-                                          </div>
-                                          <div className="space-y-1.5 w-full">
-                                            <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                              <div className="flex items-center grow gap-2 py-1.5">
-                                                <div className="flex gap-1 grow">
-                                                  <input
-                                                    id={`example-${index_inner + 1}`}
-                                                    type="text"
-                                                    name="key_feature_input"
-                                                    className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                                    placeholder={displayText(
-                                                      index_inner
-                                                    )}
-                                                    value={input.value}
-                                                    onChange={(event) =>
-                                                      handleMultipleInputChange(
-                                                        event,
-                                                        index_inner,
-                                                        `key_${index_inner + 1}`
-                                                      )
-                                                    }
-                                                  />
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                          {/* Delete button */}
-                                          <button
-                                            type="button"
-                                            className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                            onClick={() =>
-                                              handleMultipleInputDelete(index_inner)
-                                            }
-                                          >
-                                            <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                              <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                                className="w-3"
-                                              >
-                                                <path
-                                                  fillRule="evenodd"
-                                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                  clipRule="evenodd"
-                                                ></path>
-                                              </svg>
-                                            </span>
-                                          </button>
-                                        </div>
-                                      </div>
-                                    ))}
-            
-
-                                    {/* + button */}
-                                    <span className="self-end">
-                                      <button
-                                        type="button"
-                                        className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                        // onClick={handleAdd}
-                                        onClick={() => setInputs([...inputs, { key: "", value: "" }])}
-                                      >
-                                        +
-                                      </button>
-                                    </span>
-                                  </div>
-                                </>
-                              )) ||
-                              (data.component === "select" && (
-                                <>
-                                  <div>
-                                    <label
-                                      htmlFor="form-field-productInfo"
-                                      className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                    >
-                                      <span className="flex items-center space-x-1">
+                                      <span className="flex items-center space-x-1 dark:text-white">
                                         <span>{data.label}</span>
                                       </span>
                                     </label>
+                                    <div className="dark:bg-gray-800 dark:text-gray-200 py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                      <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                        <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
+                                          <input
+                                            className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                            maxLength={data.range_of_text}
+                                            name={data.title}
+                                            type={data.component}
+                                            placeholder={data.placeholder}
+                                            value={
+                                              fieldValues[index]?.value ||
+                                              data.pre_define_value ||
+                                              ""
+                                            }
+                                            onChange={(event) =>
+                                              handleInputChange(event, index)
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                        {textLength}/{data.range_of_text}
+                                      </span>
+                                    </div>
                                   </div>
-                                  <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                                    <CreatableSelect
-                                      isClearable
-                                      isDisabled={isLoading}
-                                      isLoading={isLoading}
-                                      onChange={(newValue) => setValue(newValue)}
-                                      onCreateOption={handleCreate}
-                                      options={options}
-                                      value={value}
-                                    />
-                                  </div>
-                                </>
-                              ))
-                            );
-                          })}
+                                )) ||
+                                (data.component === "Example" && (
+                                  <>
+                                    <div className="mt-3">
+                                      <label
+                                        htmlFor="form-field-productInfo"
+                                        className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                      >
+                                        <span className="flex items-center space-x-1">
+                                        <span className="dark:text-gray-300">Example</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                    <div className=" flex justify-between flex-col space-y-2 key={index_inner}">
+                                      {inputs.map((input, index_inner) => (
+                                        <div
+                                          className=" flex justify-between flex-col space-y-2"
+                                          key={index_inner}
+                                        >
+                                          <div className=" flex items-center justify-between space-x-2">
+                                            <div className="bg-gray-300/20 dark:text-white text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                              {index_inner + 1}
+                                            </div>
+                                            <div className="dark:bg-gray-800 dark:text-gray-200 space-y-1.5 w-full">
+                                              <div className="dark:bg-gray-800 dark:text-gray-200 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                                  <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
+                                                    <input
+                                                      id={`example-${index_inner + 1}`}
+                                                      type="text"
+                                                      className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                      placeholder={displayText(
+                                                        index_inner
+                                                      )}
+                                                      value={input.value}
+                                                      onChange={(event) =>
+                                                        handleMultipleInputChange(
+                                                          event,
+                                                          index_inner,
+                                                          `key_${index_inner + 1}`
+                                                        )
+                                                      }
+                                                      // id={`example-${index_inner + 1}`}
+                                                      // type="text"
+                                                      // className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                      // placeholder={displayText(
+                                                      //   index_inner
+                                                      // )}
+                                                      // value={input.value}
+                                                      // onChange={(event) =>
+                                                      //   handleMultipleInputChange(
+                                                      //     event,
+                                                      //     index_inner
+                                                      //   )
+                                                      // }
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            {/* Delete button */}
+                                            <button
+                                              type="button"
+                                              className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                              onClick={() =>
+                                                handleMultipleInputDelete(index_inner)
+                                              }
+                                            >
+                                              <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                <svg
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  viewBox="0 0 20 20"
+                                                  fill="currentColor"
+                                                  aria-hidden="true"
+                                                  className="w-3"
+                                                >
+                                                  <path
+                                                    fillRule="evenodd"
+                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                  ></path>
+                                                </svg>
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      ))}
+              
+
+                                      {/* + button */}
+                                      <span className="self-end">
+                                        <button
+                                          type="button"
+                                          className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                          // onClick={handleAdd}
+                                          onClick={() => setInputs([...inputs, { key: "", value: "" }])}
+                                        >
+                                          +
+                                        </button>
+                                      </span>
+
+                                      {/* Submit button */}
+                                      {/* <button
+                                                        type="button"
+                                                        className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                        onClick={handleSubmit}
+                                                    >
+                                                        save
+                                                    </button> */}
+                                    </div>
+                                  </>
+                                )) ||
+                                (data.component === "select" && (
+                                  <>
+                                    <div>
+                                      <label
+                                        htmlFor="form-field-productInfo"
+                                        className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                      >
+                                        <span className="flex items-center space-x-1">
+                                          <span className="text-white">{data.label}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                    <div className="dark:bg-gray-800 dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                    {DarkMode
+                                    ?
+                                      <CreatableSelect
+                                        isClearable
+                                        isDisabled={isLoading}
+                                        isLoading={isLoading}
+                                        onChange ={(newValue ) => setValue(newValue)}
+                                        onCreate Option ={handleCreate }
+                                        options={ options }
+                                          value={ value }
+                                          styles={{
+                                            control :  ( provided ) => ({ 
+                                            ...provided, 
+                                            backgroundColor:"#1f2937"}),
+                                          singleValue: (provided) =>  ({
+                                            ...provided,
+                                            color:"white"}),
+                                        }}
+                                      />
+                                      :
+                                      <CreatableSelect
+                                        isClearable
+                                        isDisabled={isLoading}
+                                        isLoading={isLoading}
+                                        onChange={(newValue) => setValue(newValue)}
+                                        onCreateOption={handleCreate}
+                                        options={options}
+                                        value={value}
+                                      />
+                                    }
+                                    </div>
+                                  </>
+                                ))
+                              );
+                            })}
                         </div>
                         {/* ==========the template data=========== */}
                         </>

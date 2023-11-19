@@ -57,7 +57,7 @@ const TooltipInfo = ({ text }) => {
       </button>
       {isClicked && (
         <div
-          className="absolute bottom-5 left-1/2 transform -translate-x-1/2 opacity-100 pointer-events-auto transition-opacity duration-300 z-50"
+          className=" absolute bottom-5 left-1/2 transform -translate-x-1/2 opacity-100 pointer-events-auto transition-opacity duration-300 z-50"
           style={{ width: `${tooltipWidth}px` }}
         >
           <div className="bg-black text-white text-xs rounded p-2">{text}</div>

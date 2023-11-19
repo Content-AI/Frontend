@@ -40,8 +40,11 @@ import Template_Editor from '../../../Icons/Template_Editor'
 import WorkflowSteps from "../../workflow/WorkflowSteps";
 import { _change_state_ } from "../../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate";
 
+import DarkModeTemplate from "./DarkModeTemplate";
 
-export default function EditDocuments() {
+function EditDocuments() {
+
+
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const ref = useRef();
@@ -96,6 +99,9 @@ export default function EditDocuments() {
   let EDITOR_TEXT = useSelector(
     (state) => state.SetEditorText
   );
+
+  let DarkMode = useSelector((state)=>state.SetDarkMode.DarkMode)
+
 
   let TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate = useSelector(
     (state) => state.SetTriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate.TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate
@@ -506,44 +512,6 @@ export default function EditDocuments() {
 
 
 
-  // ===========get the document data=========
-
-  // useEffect(() => {
-
-  //   if (document_id.length > 0) {
-  //     get_document_content(document_id, templateValue)
-  //     if(custome=="user"){
-  //       get_custom_template_data(templateValue)
-  //     }else{
-  //       get_normal_template(templateValue)
-  //     }
-  //     get_history(templateValue)
-  //   }
-
-	// 	const fetchContent = async () => {
-	// 	  try {
-	// 		const response = await fetch('http://localhost:8000/v1/template/test');
-	// 		const data = await response.json();
-	// 		// console.log(data)
-	// 		// if (data.content) {
-	// 			// seteditorData(data);
-	// 		// }
-	// 	  } catch (error) {
-	// 		console.error('Failed to fetch data:', error);
-	// 	  }
-	// 	};
-	
-	// 	fetchContent();
-	//   }, []);
-
-	  // useEffect(()=>{
-		// console.log("data : ",editorData)
-	  // },[editorData])
-
-
-
-
-
 
     // ============sending email==================
     const [ListofUser, setListofUser] = useState(null);
@@ -840,579 +808,531 @@ export default function EditDocuments() {
 
 
 
+  // const DarkModeTemplate = () =>{
+  //   if(DarkMode){
+
+  //     return (<span className="flex items-center justify-center mx-auto">
+  //     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  //       <path d="M1.14,8H14.86" stroke="#FFFFFF" fill="none" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+  //       </path>
+  //       <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+  //       </path>
+  //   </svg>
+  //   </span>)
+
+  //   }else{
+
+  //     return (<span className="flex items-center justify-center mx-auto space-x-2 select-none">
+  //     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  //       <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+
+  //       </path>
+  //       <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+  //       </path>
+  //   </svg>
+  //   </span>)
+
+  //   }
+  // }
+
+
+
   return (
-    <div className="fixed z-50 top-0 left-0 right-0 h-screen bg-white">
-      <div className="relative z-10">
-        {/* ============================== */}
+      <div className="dark:bg-black fixed z-50 top-0 left-0 right-0 h-screen bg-white">
+        <div className="relative z-10 dark:bg-black">
+          {/* ============================== */}
 
-        <div>
-          <div className="jsx-1f9b1dd4731f1fae flex flex-col overflow-hidden h-[100vh] h-calc-vh-0" >
-            <div className="flex flex-col z-20 shadow-md shadow-slate-500/10 bg-white divide-y divide-slate-200 mb-1">
-              <div className="flex flex-wrap items-center justify-center py-1 overflow-visible space-x-2">
-                <div className="flex items-center justify-start space-x-2 px-3 flex-1">
-                  <div className="-mx-3">
-                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
-                      onClick={() => {
-                        navigate("/templates")
-                      }}
-                    >
-                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                          <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                        </svg>
-                        <span className="sr-only">Back</span>
-                      </span>
-                    </button>
+          <div>
+            <div className="flex flex-col overflow-hidden h-[100vh] h-calc-vh-0" >
+              <div className="dark:bg-black flex flex-col z-20 shadow-md shadow-slate-500/10 bg-white divide-y divide-slate-200 mb-1">
+                <div className="flex flex-wrap items-center justify-center py-1 overflow-visible space-x-2">
+                  <div className="flex items-center justify-start space-x-2 px-3 flex-1">
+                    <div className="-mx-3">
+                      <button type="button" className=" transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent"
+                        onClick={() => {
+                          navigate("/templates")
+                        }}
+                      >
+                        <DarkModeTemplate/>
+                      </button>
+                    </div>
+                    <input
+                      className="dark:bg-gray-700 dark:rounded-md dark:p-1 dark:text-white truncate outline-none focus:outline-none text-sm disabled:bg-white disabled:cursor-not-allowed"
+                      type="text"
+                      placeholder=""
+                      value={title}
+                      onChange={handleTitleChange}
+                      onKeyDown={handleTitleApi}
+                    />
+
                   </div>
-                  <input
-                    className="truncate outline-none focus:outline-none text-sm disabled:bg-white disabled:cursor-not-allowed"
-                    type="text"
-                    placeholder=""
-                    value={title}
-                    onChange={handleTitleChange}
-                    onKeyDown={handleTitleApi}
-                  />
-
-                </div>
 
 
-                {/* ========top button======= */}
+                  {/* ========top button======= */}
 
-                <div className="hidden md:flex flex-none items-center justify-center">
-                  
-                  <div className="
-                  flex items-center transform
-                  [&amp;_.active_button]:bg-indigo-100
-                  [&amp;_.active_button]:text-indigo-600
-                  [&amp;_.active_button]:ring-indigo-700
-                  [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                  [&amp;_:first-child_button]:!rounded-r-none
-                  [&amp;_:last-child_button]:!rounded-l-none
-                  ">
+                  <div className="hidden md:flex flex-none items-center justify-center">
+                    
+                    <div className="flex items-center transform">
 
 
 
 
-                      {/* for now chat is disabled */}
+                        {/* for now chat is disabled */}
 
-                    {/* <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                      {/* <span className="relative hover:z-10">
+                        <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                        onClick={()=>{
+                          set_show_chat(!show_chat)
+                        }}>
+                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                            <span>
+                            <Chat/>
+                            </span>
+                          </span>
+                        </button>
+                      </span> */}
+
+
+                      <span className="relative hover:z-10">
+                      <button type="button" title="Edit in Full-Screen" className="dark:ring-1 dark:ring-slate-500 dark:bg-gray-700  dark:border-slate-500 ml-2 mr-2 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                       onClick={()=>{
-                        set_show_chat(!show_chat)
+                        set_editor_full_screen(!editor_full_screen)
                       }}>
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                           <Chat/>
+                          <span className=" flex items-center justify-center mx-auto space-x-2 select-none">
+                              <Fullscreen/>
                           </span>
-                        </span>
-                      </button>
-                    </span> */}
-
-
-                    <span className="relative hover:z-10">
-                    <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                    onClick={()=>{
-                      set_editor_full_screen(!editor_full_screen)
-                    }}>
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <Fullscreen/>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                    <span className="relative hover:z-10">
-                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                          onClick={()=>{
-                                set_editor_full_screen(false)
-                                setTemplateData(null)
-                                dispatch(_template_id_(null))
-                                WholeTemplateApi()
-                            }}
-                          >
-                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                          <span>
-                            <Template_Editor/>
-                          </span>
-                        </span>
-                      </button>
-                    </span>
-                  </div>
-                </div>
-
-                {/* ========top button======= */}
-
-
-                {/* ==============share======================= */}
-                <div className="flex items-center justify-end px-3 py-0.5 space-x-2 flex-1">
-                  {/* ===============share button===================== */}
-                  <button
-                    className="bg-[#23334b] w-[70px] h-8 text-white rounded-r-md font-helv"
-                    onClick={()=>{
-                      setSharePopUpModal(true)
-                    }}
-                    >
-                      share
-                      </button>
-                    <div className="pr-2 text-sm text-gray-400">{NOW_LENGTH_OF_WORD}</div>
-                    {/* ===============share button===================== */}
-                    <div className="relative inline-block text-left">
-
-                    {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
-                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        <span className="-mx-1.5">
-                          <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M10.29,2.61c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.18-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Zm0,5.39c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.19-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Zm0,5.39c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.19-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Z" fill="currentColor" fillRule="evenodd"></path>
-                          </svg>
-                        </span>
+                        </button>
                       </span>
-                    </button> */}
-
-                  </div>
-                </div>
-
-                {SharePopUpModal
-                ?
-                <>
-                  <div
-                      className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                    >
-                      <div className="relative my-6">
-                    <div
-                      className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                    >
-                      <div className="relative  w-auto my-6 mx-auto max-w-3xl">
-                        {/*content*/}
-                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                          {/*header*/}
-                          <div class="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                            <h3 class="text-lg font-semibold">Share a Document</h3>
-                            <button class="p-2 hover:bg-gray-100 rounded-full hover:cursor-pointer"
+                      <span className="relative hover:z-10">
+                        <button type="button" title="Load Template" className="dark:ring-1 dark:ring-slate-500 dark:bg-gray-700  dark:border-slate-500 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                             onClick={()=>{
-                              setSharePopUpModal(false)
-                            }}>
-                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                  <path d="M21.45,21.44L2.55,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
-                                  <path d="M2.55,21.44L21.45,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
-                                </svg>
-                            </button>
-                          </div>
-                          {/*body*/}
-                          <div>
+                                  set_editor_full_screen(false)
+                                  setTemplateData(null)
+                                  dispatch(_template_id_(null))
+                                  WholeTemplateApi()
+                              }}
+                            >
+                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                              <Template_Editor/>
+                          </span>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
 
-                      {/* ==================the message ============= */}
-                        <div className="m-auto p-8">
-                            <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
-                              <div>
-                              </div>
-                              {/* ============emails============== */}
-                              <div className="flex flex-col">
-                                  <div>
-                                    {emails.map((enteredEmail, index) => (
-                                      <span key={index} className="bg-gray-300 p-1 m-1 rounded w-[700px]">
-                                        {enteredEmail}
-                                        <button
-                                          className="ml-3 font-bold text-[12px]"
-                                          onClick={() => handleRemoveEmail(index)}
-                                        >
-                                          X
-                                        </button>
-                                      </span>
-                                    ))}
-                                  <input
-                                    type="email"
-                                    placeholder="Enter email"
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                    onKeyDown={handleEmailKeyDown}
-                                    className="border border-gray-300 p-2 rounded mt-2 w-[600px]"
-                                  />
-                                </div>
-                                <div className="mt-2">
-                                  {emails &&
-                                    <>
-                                      {emails.length>0
-                                      ?
-                                      <>
-                                      {send_loading
-                                      ?
-                                      <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                          onClick={()=>{
-                                          }}>
-                                            Sending ...
-                                          </button>
-                                      :
-                                        <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                          onClick={()=>{
-                                            send_invitation()
-                                          }}>
-                                            Send invite
-                                          </button>
+                  {/* ========top button======= */}
 
-                                      }
-                                        </>
-                                      :
-                                        <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
-                                          disabled
-                                        >
-                                          Send invite
-                                        </button>
-                                    }
-                                    </>
-                                    }
-                                </div>
-                              </div>
 
-                              {/* ============emails============== */}
+                  {/* ==============share======================= */}
+                  <div className="flex items-center justify-end px-3 py-0.5 space-x-2 flex-1">
+                    {/* ===============share button===================== */}
+                    <button
+                      className="bg-[#23334b] w-[70px] h-8 text-white rounded-r-md font-helv"
+                      onClick={()=>{
+                        setSharePopUpModal(true)
+                      }}
+                      >
+                        share
+                        </button>
+                      <div className="pr-2 text-sm text-gray-400">{NOW_LENGTH_OF_WORD}</div>
+                      {/* ===============share button===================== */}
+                      <div className="relative inline-block text-left">
+
+                      {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1" id="headlessui-menu-button-:r1:" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">
+                        <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                          <span className="-mx-1.5">
+                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                              <path d="M10.29,2.61c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.18-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Zm0,5.39c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.19-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Zm0,5.39c0-.65-.19-1.24-.61-1.67-.43-.43-1.02-.61-1.67-.61s-1.25,.19-1.67,.61c-.43,.43-.61,1.02-.61,1.67s.19,1.24,.61,1.67c.43,.43,1.02,.61,1.67,.61s1.25-.19,1.67-.61c.43-.43,.61-1.02,.61-1.67Z" fill="currentColor" fillRule="evenodd"></path>
+                            </svg>
+                          </span>
+                        </span>
+                      </button> */}
+
+                    </div>
+                  </div>
+
+                  {SharePopUpModal
+                  ?
+                  <>
+                    <div
+                        className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                      >
+                        <div className="relative my-6">
+                      <div
+                        className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                      >
+                        <div className="relative  w-auto my-6 mx-auto max-w-3xl">
+                          {/*content*/}
+                          <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            {/*header*/}
+                            <div class="dark:bg-gray-700 dark:border-slate-500 w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
+                              <h3 class="text-lg font-semibold dark:text-white">Share a Document</h3>
+                              <button class="p-2 hover:bg-gray-100 rounded-full hover:cursor-pointer"
+                              onClick={()=>{
+                                setSharePopUpModal(false)
+                              }}>
+                                  <svg  class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M21.45,21.44L2.55,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                                    <path d="M2.55,21.44L21.45,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                                  </svg>
+                              </button>
                             </div>
-                            
-                            <div class="flex flex-col  p-[30px] mt-5 w-full border-b border-gray-200 space-y-1">
-                              {/* ======================the list of users===================== */}
-                              <div class="flex flex-col w-full">
-                              <div class="w-full border-b border-gray-100 max-h-72 overflow-auto scrollbar-hide">
-                                      
-                                      {listOfUser &&
-                                          <div class="flex items-center pb-4 relative">
-                                            <div class="flex-shrink-0 w-10 h-10">
-                                                <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                                <img
-                                                    src="/default.png"
-                                                    className="w-[35px] h-[35px] rounded-full"
-                                                  />
-                                                </div>
-                                            </div>
-                                            <div class="ml-4 truncate ">
-                                                <div class="font-medium leading-5 text-sm text-gray-900 truncate" title="copy ai">
-                                                  {listOfUser[0]["first_name"]?listOfUser[0]["first_name"]:""
-                                                  + " " 
-                                                  +listOfUser[0]["last_name"]?listOfUser[0]["last_name"]:""}
-                                                </div>
-                                                <div class="leading-5 text-xs text-gray-500 truncate" >{listOfUser[0]["email"]}</div>
-                                            </div>
-                                            <div class="ml-auto text-gray-400 text-sm font-medium px-2 w-24">Creator</div>
-                                          </div>
-                                      }
+                            {/*body*/}
+                            <div>
 
-                                  <div className="h-[80px]">
-                                  {listOfUser &&
-                                  <>
-                                    {listOfUser.length>0
-                                    ?
+                        {/* ==================the message ============= */}
+                          <div className="dark:bg-gray-700 dark:border-gray-700 m-auto p-8">
+                              <div class="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
+                                <div>
+                                </div>
+                                {/* ============emails============== */}
+                                <div className="flex flex-col">
+                                    <div>
+                                      {emails.map((enteredEmail, index) => (
+                                        <span key={index} className="dark:text-black bg-gray-300 p-1 m-1 rounded w-[700px]">
+                                          {enteredEmail}
+                                          <button
+                                            className="ml-3 font-bold text-[12px]"
+                                            onClick={() => handleRemoveEmail(index)}
+                                          >
+                                            X
+                                          </button>
+                                        </span>
+                                      ))}
+                                    <input
+                                      type="email"
+                                      placeholder="Enter email"
+                                      value={email}
+                                      onChange={handleEmailChange}
+                                      onKeyDown={handleEmailKeyDown}
+                                      className="dark:text-black border border-gray-300 p-2 rounded mt-2 w-[600px]"
+                                    />
+                                  </div>
+                                  <div className="mt-2">
+                                    {emails &&
                                       <>
-                                      {ChosenWorkspaceId["admin_or_not"]==true
+                                        {emails.length>0
                                         ?
                                         <>
-                                            {/* can edit as admin */}
-                                            {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
-                                            return (
-                                                      <div class="flex items-center pb-4">
-                                                        <div class="flex-shrink-0 w-10 h-10">
-                                                            <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                                            <img
-                                                                src="/default.png"
-                                                                className="w-[35px] h-[35px] rounded-full"
-                                                              />
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="ml-4 truncate ">
-                                                            <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
-                                                            {data.first_name?data.first_name:""
-                                                            + " " 
-                                                            +data.last_name?data.last_name:""}
-                                                            </div>
-                                                            <div class="text-sm leading-5 text-xs text-gray-500 truncate" >{data.email}</div>
-                                                        </div>
-                                                        <div class="ml-auto">
-                                                                      <SelectField
-                                                                          options={[
-                                                                            { label: 'Edit', value: 'Edit' },
-                                                                            { label: 'Remove Member', value: 'Remove Member' },
-                                                                          ]}
-                                                                          defaultValue={selectedRoles[index]}
-                                                                          onSelect={(value) => handleSelectData(index, value)}
-                                                                          role_of_user="Can Edit"
-                                                                          data_index={data}
-                                                                        />
-                                                        </div>
-                                                    </div> 
-                                            )
-                                          })}
-                                        </>
+                                        {send_loading
+                                        ?
+                                        <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                            onClick={()=>{
+                                            }}>
+                                              Sending ...
+                                            </button>
                                         :
-                                          <>
-                                          {/* cannot edit as admin */}
-                                          {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
-                                            return (
-                                                      <div class="flex items-center pb-4 relative">
-                                                        <div class="flex-shrink-0 w-10 h-10">
-                                                            <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
-                                                            <img
-                                                                src="/default.png"
-                                                                className="w-[35px] h-[35px] rounded-full"
-                                                              />
-                                                            </div>
-                                                        </div>
+                                          <button className="bg-[#334977] text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                            onClick={()=>{
+                                              send_invitation()
+                                            }}>
+                                              Send invite
+                                            </button>
 
-                                                        <div class="ml-4 truncate ">
-                                                            <div class="font-medium leading-5 text-sm text-gray-900 truncate" >
-                                                            {data.first_name?data.first_name:""
-                                                            + " " 
-                                                            +data.last_name?data.last_name:""}
-                                                            </div>
-                                                            <div class="text-sm leading-5 text-xs text-gray-500 truncate" title="test@gmail.com">{data.email}</div>
-                                                        </div>
-                                                    </div> 
-                                            )
-                                          })}
+                                        }
                                           </>
+                                        :
+                                          <button className="bg-gray-400 text-white font-bold py-2 px-4 rounded-md w-[200px]"
+                                            disabled
+                                          >
+                                            Send invite
+                                          </button>
                                       }
                                       </>
-                                    :
-                                      null
-                                    }
-
-                                  </>
-                                  }
-                                    
-                                </div> 
-                                        
+                                      }
                                   </div>
-                                  
                                 </div>
 
-                              {/* ======================the list of users===================== */}
-                            </div>
-
-
-                            <div class="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
-
-                            </div>
-                                <div class="pt-6 flex">
-                                  <button class="flex items-center justify-center ring-1 ring-blue-800 text-blue-800 text-sm w-28 h-9 rounded-lg font-medium mr-1.5 transition  bg-[#334977]"
-                                  onClick={copyToClipboard}
-                                  >
-                                    <span>Copy Link</span>
-                                  </button>
-                                  <div class="ml-auto flex items-center text-gray-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-3 h-3 mr-2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                    </svg>
-                                    <p class="pr-3.5 text-sm">Make public ( {ChosenWorkspaceId["workspace_name"]} )</p>
-                                    {/* =============radio btn============== */}
-                                    <button
-                                      type="button"
-                                      className={`relative inline-flex items-center flex-shrink-0 border-2 rounded-full cursor-pointer transition-colors ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                                        isOn ? 'bg-indigo-500' : 'bg-gray-200'
-                                      } h-6 w-11`}
-                                      onClick={handleToggle}
-                                    >
-                                      <span
-                                        aria-hidden="true"
-                                        className={`pointer-events-none inline-block rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-150 ${
-                                          isOn ? 'translate-x-5' : 'translate-x-0'
-                                        } h-5 w-5`}
-                                      ></span>
-                                    </button>
-                                    {/* =============radio btn============== */}
-                                  </div>
+                                {/* ============emails============== */}
                               </div>
-                        </div>
-                      {/* ==================the message ============= */}
-
-
-                          </div>
-                          {/*footer*/}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="opacity-25 fixed inset-0 z-40 bg-black">
-                    </div>
-                    </div>
-                    </div>
-                </>
-                :
-                  null
-                }
-
-                {/* ==============share======================= */}
-
-
-              </div>
-            </div>
-
-
-            <div className="jsx-1f9b1dd4731f1fae flex flex-col-reverse md:flex-row bg:white overflow-hidden h-full">
-              
-
-                    {editor_full_screen
-                    ?
-                      null
-                    :
-                    <>
-                      <>
-                            <div className="relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
-                            <div className="inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
-
-                                {TemplateData ?(
-                                  <>
-                                  <div className="flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
-                                    
-                                    <div className="flex items-baseline sticky top-0 bg-white z-10">
-                                      <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent pl-0"
-                                      onClick={()=>{
-                                          setTemplateData(null)
-                                          dispatch(_template_id_(null))
-                                          WholeTemplateApi()
-                                          const baseUrl = window.location.href.split('?')[0];                
-                                          const newUrl = "/template_data/"+document_id+`?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
-                                          // window.location.replace(newUrl);
-                                          navigate(newUrl)
-                                      }}>
-                                          <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                            <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                                              <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-
-                                              </path>
-                                              <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-
-                                              </path>
-                                              </svg>
-                                              <span className="sr-only">
-                                                Back
-                                              </span>
-                                              </span>
-                                      </button>
-                                    </div>
+                              
+                              <div class="flex flex-col  p-[30px] mt-5 w-full space-y-1">
+                                {/* ======================the list of users===================== */}
+                                <div class="flex flex-col w-full">
+                                <div class="w-full max-h-72 overflow-auto scrollbar-hide">
                                         
-                                        <div className="flex flex-col w-full">
-                                          <div className="flex-1 sticky top-0 bg-white z-10">
-                                            <h2 className="leading-7 text-gray-900 text-[20px] font-semibold line-clamp-1">
-                                              {TemplateData[0].title}
-                                            </h2>
-                                            <p className="leading-tight text-gray-500 text-xs line-clamp-1">
-                                              {TemplateData[0].description}
-                                            </p>
-                                        <div className="pt-2">
-                                          <div className="
-                                              flex items-center transform
-                                              [&amp;_.active_button]:bg-indigo-100
-                                              [&amp;_.active_button]:text-indigo-600
-                                              [&amp;_.active_button]:ring-indigo-700
-                                              [&amp;_:not(:first-child,:last-child)_button]:!rounded-none
-                                              [&amp;_:first-child_button]:!rounded-r-none
-                                              [&amp;_:last-child_button]:!rounded-l-none
-                                            ">
-                                            <span className="active z-10 mr-3">
-                                              <button type="button" 
-                                                onClick={()=>{
-                                                  setHoverBtnColor(true)
-                                                }}
-                                                className={`${
-                                                            HoverBtnColor
-                                                              ? "bg-slate-400 "
-                                                              : " "
-                                                          } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+                                        {listOfUser &&
+                                            <div class="flex items-center pb-4 relative">
+                                              <div class="flex-shrink-0 w-10 h-10">
+                                                  <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                  <img
+                                                      src="/default.png"
+                                                      className="w-[35px] h-[35px] rounded-full"
+                                                    />
+                                                  </div>
+                                              </div>
+                                              <div class="ml-4 truncate ">
+                                                  <div class="dark:text-white font-medium leading-5 text-sm text-gray-900 truncate" title="copy ai">
+                                                    {listOfUser[0]["first_name"]?listOfUser[0]["first_name"]:""
+                                                    + " " 
+                                                    +listOfUser[0]["last_name"]?listOfUser[0]["last_name"]:""}
+                                                  </div>
+                                                  <div class="leading-5 text-xs text-gray-500 truncate" >{listOfUser[0]["email"]}</div>
+                                              </div>
+                                              <div class="ml-auto text-gray-400 text-sm font-medium px-2 w-24">Creator</div>
+                                            </div>
+                                        }
 
-                                              >
-                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                  <small className="-my-0.5">
-                                                    Inputs
-                                                  </small>
-                                                </span>
-                                              </button>
-                                            </span>
-                                            <span className="relative hover:z-10">
-                                              <button type="button" 
-                                                onClick={()=>{
-                                                  setHoverBtnColor(false)
-                                                }}
-                                                className={`${
-                                                            HoverBtnColor
-                                                              ? " "
-                                                              : " bg-slate-400 "
-                                                          } transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
-                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                  <small className="-my-0.5">
-                                                    Outputs
-                                                  </small>
-                                                </span>
-                                              </button>
-                                            </span>
-
-                                          </div>
-                                        </div>
-                                          </div>
-
-                                    
-                                    
-                                      {HoverBtnColor
+                                    <div className="h-[80px]">
+                                    {listOfUser &&
+                                    <>
+                                      {listOfUser.length>0
                                       ?
                                         <>
-                                          {/* =============Template inner value==================== */}
-                                          <div className="grow mt-2 xl:p-1 xl:pb-28 flex-1 xl:overflow-y-auto">
+                                        {ChosenWorkspaceId["admin_or_not"]==true
+                                          ?
+                                          <>
+                                              {/* can edit as admin */}
+                                              {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
+                                              return (
+                                                        <div class="flex items-center pb-4">
+                                                          <div class="flex-shrink-0 w-10 h-10">
+                                                              <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                              <img
+                                                                  src="/default.png"
+                                                                  className="w-[35px] h-[35px] rounded-full"
+                                                                />
+                                                              </div>
+                                                          </div>
+
+                                                          <div class="ml-4 truncate ">
+                                                              <div class="dark:text-white font-medium leading-5 text-sm text-gray-900 truncate" >
+                                                              {data.first_name?data.first_name:""
+                                                              + " " 
+                                                              +data.last_name?data.last_name:""}
+                                                              </div>
+                                                              <div class=" leading-5 text-xs text-gray-500 truncate" >{data.email}</div>
+                                                          </div>
+                                                          <div class="ml-auto">
+                                                                        <SelectField
+                                                                            options={[
+                                                                              { label: 'Edit', value: 'Edit' },
+                                                                              { label: 'Remove Member', value: 'Remove Member' },
+                                                                            ]}
+                                                                            defaultValue={selectedRoles[index]}
+                                                                            onSelect={(value) => handleSelectData(index, value)}
+                                                                            role_of_user="Can Edit"
+                                                                            data_index={data}
+                                                                          />
+                                                          </div>
+                                                      </div> 
+                                              )
+                                            })}
+                                          </>
+                                          :
+                                            <>
+                                            {/* cannot edit as admin */}
+                                            {listOfUser[0]["editable_by_workspace_member"].map((data,index)=>{
+                                              return (
+                                                        <div class="flex items-center pb-4 relative">
+                                                          <div class="flex-shrink-0 w-10 h-10">
+                                                              <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
+                                                              <img
+                                                                  src="/default.png"
+                                                                  className="w-[35px] h-[35px] rounded-full"
+                                                                />
+                                                              </div>
+                                                          </div>
+
+                                                          <div class="ml-4 truncate ">
+                                                              <div class="dark:text-white font-medium leading-5 text-sm text-gray-900 truncate" >
+                                                              {data.first_name?data.first_name:""
+                                                              + " " 
+                                                              +data.last_name?data.last_name:""}
+                                                              </div>
+                                                              <div class="leading-5 text-xs text-gray-500 truncate" title="test@gmail.com">{data.email}</div>
+                                                          </div>
+                                                      </div> 
+                                              )
+                                            })}
+                                            </>
+                                        }
+                                        </>
+                                      :
+                                        null
+                                      }
+
+                                    </>
+                                    }
+                                      
+                                  </div> 
                                           
-                                          <div id={document_id} className=" mb-7">
-                                          {TemplateData &&
-                                            TemplateData[0]['template_fields'].map((data, index) => {
-                                              const textLength = fieldValues[index]?.value?.length || 0;
-                                            return (
-                                              (data.component === "textarea" && (
-                                      <div className="last:mb-1 relative" key={index}>
-                                        <div className="space-y-1.5 w-full">
-                                          <label
-                                            htmlFor="form-field-productInfo"
-                                            className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                          >
-                                            <span className="flex items-center space-x-1">
-                                              <span>{data.label}</span>
-                                            </span>
-                                          </label>
-                                          <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                            <textarea
-                                              id="form-field-productInfo"
-                                              className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
-                                              maxLength={data.range_of_text}
-                                              name={data.title}
-                                              placeholder={data.placeholder}
-                                              value={
-                                                fieldValues[index]?.value ||
-                                                data.pre_define_value ||
-                                                ""
-                                              }
-                                              onChange={(event) =>
-                                                handleInputChange(event, index)
-                                              }
-                                            ></textarea>
-                                          </div>
-                                          <div className="flex items-center gap-2">
-                                            <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                              {textLength}/{data.range_of_text}
-                                            </span>
-                                          </div>
-                                        </div>
+                                    </div>
+                                    
+                                  </div>
+
+                                {/* ======================the list of users===================== */}
+                              </div>
+
+
+                              <div class="flex flex-col mb-2 mt-2 w-full  pb-4 space-y-1">
+
+                              </div>
+                                  <div class="pt-6 flex">
+                                    <button class="flex items-center justify-center ring-1 ring-blue-800 text-blue-800 text-sm w-28 h-9 rounded-lg font-medium mr-1.5 transition  bg-[#334977]"
+                                    onClick={copyToClipboard}
+                                    >
+                                      <span>Copy Link</span>
+                                    </button>
+                                    <div class="ml-auto flex items-center text-gray-700">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="w-3 h-3 mr-2">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                      </svg>
+                                      <p class="dark:text-white pr-3.5 text-sm">Make public ( {ChosenWorkspaceId["workspace_name"]} )</p>
+                                      {/* =============radio btn============== */}
+                                      <button
+                                        type="button"
+                                        className={`relative inline-flex items-center flex-shrink-0 border-2 rounded-full cursor-pointer transition-colors ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                                          isOn ? 'bg-indigo-500' : 'bg-gray-200'
+                                        } h-6 w-11`}
+                                        onClick={handleToggle}
+                                      >
+                                        <span
+                                          aria-hidden="true"
+                                          className={`pointer-events-none inline-block rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-150 ${
+                                            isOn ? 'translate-x-5' : 'translate-x-0'
+                                          } h-5 w-5`}
+                                        ></span>
+                                      </button>
+                                      {/* =============radio btn============== */}
+                                    </div>
+                                </div>
+                          </div>
+                        {/* ==================the message ============= */}
+
+
+                            </div>
+                            {/*footer*/}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="opacity-25 fixed inset-0 z-40 bg-black">
+                      </div>
+                      </div>
+                      </div>
+                  </>
+                  :
+                    null
+                  }
+
+                  {/* ==============share======================= */}
+
+
+                </div>
+              </div>
+
+
+              <div className=" flex flex-col-reverse md:flex-row bg:white overflow-hidden h-full">
+                
+
+                      {editor_full_screen
+                      ?
+                        null
+                      :
+                      <>
+                        <>
+                              <div className=" relative shadow-md z-10 bg-slate-50 max-h-[calc(100vh-4rem)] shrink-0 h-[50%] md:h-full w-full rounded-none border-r border-t md:border-t-0 border-slate-200 md:w-[400px] lg:w-[480px]">
+                              <div className="dark:bg-gray-700 inset-0 overflow-auto flex flex-col divide-y divide-slate-200 h-full">
+
+                                  {TemplateData ?(
+                                    <>
+                                    <div className=" dark:bg-gray-700  flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
+                                      
+                                      <div className="  flex items-baseline sticky top-0 bg-white z-10">
+                                        <button type="button" className="dark:bg-gray-700 transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent dark:rounded-none rounded outline-none shadow-transparent pl-0"
+                                        onClick={()=>{
+                                            setTemplateData(null)
+                                            dispatch(_template_id_(null))
+                                            WholeTemplateApi()
+                                            const baseUrl = window.location.href.split('?')[0];                
+                                            const newUrl = "/template_data/"+document_id+`?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
+                                            navigate(newUrl)
+                                        }}>
+                                          <DarkModeTemplate/>
+                                        </button>
                                       </div>
-                                    )) ||
-                                    (data.component === "text" && (
-                                      <div className="space-y-1.5 w-full" key={index}>
-                                        <label
-                                          htmlFor="form-field-productName"
-                                          className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                        >
-                                          <span className="flex items-center space-x-1">
-                                            <span>{data.label}</span>
-                                          </span>
-                                        </label>
-                                        <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                          <div className="flex items-center grow gap-2 py-1.5">
-                                            <div className="flex gap-1 grow">
-                                              <input
-                                                id="form-field-productName"
-                                                className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                          
+                                          <div className="flex flex-col w-full">
+                                            <div className=" dark:bg-gray-700 flex-1 sticky top-0 bg-white z-10">
+                                              <h2 className="dark:text-white leading-7 text-gray-900 text-[20px] font-semibold line-clamp-1">
+                                                {TemplateData[0].title}
+                                              </h2>
+                                              <p className="dark:text-white leading-tight text-gray-500 text-xs line-clamp-1">
+                                                {TemplateData[0].description}
+                                              </p>
+                                          <div className="pt-2">
+                                            <div className="flex items-center transform">
+                                              <span className="active z-10 mr-3">
+                                                <button type="button" 
+                                                  onClick={()=>{
+                                                    setHoverBtnColor(true)
+                                                  }}
+                                                  className={`${
+                                                              HoverBtnColor
+                                                                ? "bg-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                                                                : " "
+                                                            } transition-all dark:bg-gray-800 dark:text-gray-200 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}
+
+                                                >
+                                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                    <small className="-my-0.5">
+                                                      Inputs
+                                                    </small>
+                                                  </span>
+                                                </button>
+                                              </span>
+                                              <span className="relative hover:z-10">
+                                                <button type="button" 
+                                                  onClick={()=>{
+                                                    setHoverBtnColor(false)
+                                                  }}
+                                                  className={`${
+                                                              HoverBtnColor
+                                                                ? " "
+                                                                : " bg-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                                                            } transition-all dark:bg-gray-800 dark:text-gray-200 duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1`}>
+                                                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                    <small className="-my-0.5">
+                                                      Outputs
+                                                    </small>
+                                                  </span>
+                                                </button>
+                                              </span>
+
+                                            </div>
+                                          </div>
+                                            </div>
+
+                                      
+                                      
+                                        {HoverBtnColor
+                                        ?
+                                          <>
+                                            {/* =============Template inner value==================== */}
+                                            <div className="grow mt-2 xl:p-1 xl:pb-28 flex-1 xl:overflow-y-auto">
+                                            
+                                            <div id={document_id} className=" mb-7">
+                                            {TemplateData &&
+                                              TemplateData[0]['template_fields'].map((data, index) => {
+                                                const textLength = fieldValues[index]?.value?.length || 0;
+                                              return (
+                                                (data.component === "textarea" && (
+                                        <div className="last:mb-1 relative" key={index}>
+                                          <div className="space-y-1.5 w-full">
+                                            <label
+                                              htmlFor="form-field-productInfo"
+                                              className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                            >
+                                              <span className="dark:text-white flex items-center space-x-1">
+                                                {data.label}
+                                              </span>
+                                            </label>
+                                            <div className="dark:bg-gray-800 dark:text-gray-200 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                              <textarea
+                                                id="form-field-productInfo"
+                                                className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                                                 maxLength={data.range_of_text}
                                                 name={data.title}
-                                                type={data.component}
                                                 placeholder={data.placeholder}
                                                 value={
                                                   fieldValues[index]?.value ||
@@ -1422,378 +1342,443 @@ export default function EditDocuments() {
                                                 onChange={(event) =>
                                                   handleInputChange(event, index)
                                                 }
-                                              />
+                                              ></textarea>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                              <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                                {textLength}/{data.range_of_text}
+                                              </span>
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                          <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
-                                            {textLength}/{data.range_of_text}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )) ||
-                                    (data.component === "Example" && (
-                                      <>
-                                        <div>
+                                      )) ||
+                                      (data.component === "text" && (
+                                        <div className="space-y-1.5 w-full" key={index}>
                                           <label
-                                            htmlFor="form-field-productInfo"
+                                            htmlFor="form-field-productName"
                                             className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                                           >
-                                            <span className="flex items-center space-x-1">
-                                              <span>Example</span>
+                                            <span className="dark:text-white flex items-center space-x-1">
+                                              {data.label}
                                             </span>
                                           </label>
+                                          <div className="dark:bg-gray-800 dark:text-gray-200 py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                            <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                              <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
+                                                <input
+                                                  id="form-field-productName"
+                                                  className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                  maxLength={data.range_of_text}
+                                                  name={data.title}
+                                                  type={data.component}
+                                                  placeholder={data.placeholder}
+                                                  value={
+                                                    fieldValues[index]?.value ||
+                                                    data.pre_define_value ||
+                                                    ""
+                                                  }
+                                                  onChange={(event) =>
+                                                    handleInputChange(event, index)
+                                                  }
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                              {textLength}/{data.range_of_text}
+                                            </span>
+                                          </div>
                                         </div>
-                                        <div className="flex justify-between flex-col space-y-2 key={index_inner}">
-                                          {inputs.map((input, index_inner) => (
-                                            <div
-                                              className="flex justify-between flex-col space-y-2"
-                                              key={index_inner}
+                                      )) ||
+                                      (data.component === "Example" && (
+                                        <>
+                                          <div className="mt-2">
+                                            <label
+                                              htmlFor="form-field-productInfo"
+                                              className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                                             >
-                                              <div className="flex items-center justify-between space-x-2">
-                                                <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                                  {index_inner + 1}
-                                                </div>
-                                                <div className="space-y-1.5 w-full">
-                                                  <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                                    <div className="flex items-center grow gap-2 py-1.5">
-                                                      <div className="flex gap-1 grow">
-                                                        <input
-                                                          id={`example-${index_inner + 1}`}
-                                                          type="text"
-                                                          className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
-                                                          placeholder={displayText(
-                                                            index_inner
-                                                          )}
-                                                          value={input}
-                                                          onChange={(event) =>
-                                                            handleMultipleInputChange(
-                                                              event,
+                                              <span className="dark:text-white flex items-center space-x-1">
+                                                Example
+                                              </span>
+                                            </label>
+                                          </div>
+                                          <div className=" mt-2 flex justify-between flex-col space-y-2 key={index_inner}">
+                                            {inputs.map((input, index_inner) => (
+                                              <div
+                                                className="flex justify-between flex-col space-y-2"
+                                                key={index_inner}
+                                              >
+                                                <div className=" flex items-center justify-between space-x-2">
+                                                  <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                                    {index_inner + 1}
+                                                  </div>
+                                                  <div className="space-y-1.5 w-full">
+                                                    <div className="dark:bg-gray-800 dark:text-gray-200 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                                      <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                                        <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
+                                                          <input
+                                                            id={`example-${index_inner + 1}`}
+                                                            type="text"
+                                                            className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                                            placeholder={displayText(
                                                               index_inner
-                                                            )
-                                                          }
-                                                        />
+                                                            )}
+                                                            value={input}
+                                                            onChange={(event) =>
+                                                              handleMultipleInputChange(
+                                                                event,
+                                                                index_inner
+                                                              )
+                                                            }
+                                                          />
+                                                        </div>
                                                       </div>
                                                     </div>
                                                   </div>
-                                                </div>
 
-                                                {/* Delete button */}
-                                                <button
-                                                  type="button"
-                                                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                                  onClick={() =>
-                                                    handleMultipleInputDelete(index_inner)
-                                                  }
-                                                >
+                                                  {/* Delete button */}
+                                                  <button
+                                                    type="button"
+                                                    className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                    onClick={() =>
+                                                      handleMultipleInputDelete(index_inner)
+                                                    }
+                                                  >
+                                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                      <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="currentColor"
+                                                        aria-hidden="true"
+                                                        className="w-3"
+                                                      >
+                                                        <path
+                                                          fillRule="evenodd"
+                                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                          clipRule="evenodd"
+                                                        ></path>
+                                                      </svg>
+                                                    </span>
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            ))}
+
+                                            {/* + button */}
+                                            <span className="self-end">
+                                              <button
+                                                type="button"
+                                                className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                                onClick={handleAdd}
+                                              >
+                                                +
+                                              </button>
+                                            </span>
+
+                                            {/* Submit button */}
+                                            {/* <button
+                                                              type="button"
+                                                              className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                                              onClick={handleSubmit}
+                                                          >
+                                                              save
+                                                          </button> */}
+                                          </div>
+                                        </>
+                                      )) ||
+                                      (data.component === "select" && (
+                                        <>
+                                          <div>
+                                            <label
+                                              htmlFor="form-field-productInfo"
+                                              className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                            >
+                                              <span className="flex items-center space-x-1 dark:text-white">
+                                                {data.label}
+                                              </span>
+                                            </label>
+                                          </div>
+                                          <div className="dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                            
+                                            {DarkMode
+                                              ?
+                                               
+                                              <CreatableSelect
+                                                  isClearable
+                                                  isDisabled={isLoading}
+                                                  isLoading={isLoading}
+                                                  onChange ={(newValue ) => setValue(newValue)}
+                                                  onCreate Option ={handleCreate }
+                                                  options={ options }
+                                                    value={ value }
+                                                    styles={{
+                                                      control :  ( provided ) => ({ 
+                                                      ...provided, 
+                                                      backgroundColor:"black"    }),
+                                                    singleValue: (provided) =>  ({
+                                                      ...provided,
+                                                      color:"white"    }),
+                                                  }}
+                                                />
+                                                :
+                                                <CreatableSelect
+                                                  isClearable
+                                                  isDisabled={isLoading}
+                                                  isLoading={isLoading}
+                                                  onChange={(newValue) => setValue(newValue)}
+                                                  onCreateOption={handleCreate}
+                                                  options={options}
+                                                  value={value}
+                                                />
+                                                
+                                              }
+                                          </div>
+                                        </>
+                                      ))
+                                              );
+                                              })}                                 
+                                            </div>
+
+                                            </div>
+
+                                            {/* =======Generate Button=========== */}
+                                            <div className="dark:bg-gray-700 pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
+                                              <div className="dark:bg-gray-700  dark:border-slate-500 flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                                                {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
+                                                <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1">
                                                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                    <svg
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      viewBox="0 0 20 20"
-                                                      fill="currentColor"
-                                                      aria-hidden="true"
-                                                      className="w-3"
-                                                    >
-                                                      <path
-                                                        fillRule="evenodd"
-                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                      ></path>
-                                                    </svg>
+                                                    {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
+                                                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                                                  </svg> */}
+                                                    <span className="hidden @sm:inline-block text-black">Clear inputs</span>
                                                   </span>
                                                 </button>
-                                              </div>
-                                            </div>
-                                          ))}
-
-                                          {/* + button */}
-                                          <span className="self-end">
-                                            <button
-                                              type="button"
-                                              className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                              onClick={handleAdd}
-                                            >
-                                              +
-                                            </button>
-                                          </span>
-
-                                          {/* Submit button */}
-                                          {/* <button
-                                                            type="button"
-                                                            className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
-                                                            onClick={handleSubmit}
-                                                        >
-                                                            save
-                                                        </button> */}
-                                        </div>
-                                      </>
-                                    )) ||
-                                    (data.component === "select" && (
-                                      <>
-                                        <div>
-                                          <label
-                                            htmlFor="form-field-productInfo"
-                                            className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
-                                          >
-                                            <span className="flex items-center space-x-1">
-                                              <span>{data.label}</span>
-                                            </span>
-                                          </label>
-                                        </div>
-                                        <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                                          <CreatableSelect
-                                            isClearable
-                                            isDisabled={isLoading}
-                                            isLoading={isLoading}
-                                            onChange={(newValue) => setValue(newValue)}
-                                            onCreateOption={handleCreate}
-                                            options={options}
-                                            value={value}
-                                          />
-                                        </div>
-                                      </>
-                                    ))
-                                            );
-                                            })}                                 
-                                          </div>
-
-                                          </div>
-
-                                          {/* =======Generate Button=========== */}
-                                          <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                                            <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
-                                              {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
-                                              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1">
-                                                <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                  {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
-                                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                                                </svg> */}
-                                                  <span className="hidden @sm:inline-block text-black">Clear inputs</span>
-                                                </span>
-                                              </button>
-                                              <div className="flex ">
-                                                <input type="number"
-                                                  className='mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                                                  defaultValue={ContentOutputNumber}
-                                                  onChange={(e) => {
-                                                    setContentOutputNumber(e.target.value)
-                                                  }}
-                                                  max="10" min="1"
-                                                />
-                                                <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r bg-[#334977]"
-                                                    onClick={()=>{
-                                                        handleClick(document_id)
-                                                        setTemplateResponseData(null)
+                                                <div className="flex ">
+                                                  <input type="number"
+                                                    className='mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                                                    defaultValue={ContentOutputNumber}
+                                                    onChange={(e) => {
+                                                      setContentOutputNumber(e.target.value)
                                                     }}
-                                                    disabled={LoadingButton}
-                                                    >
-                                                    <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                                                      Generate
-                                                    </span>
-                                                </button>
+                                                    max="10" min="1"
+                                                  />
+                                                  <button type="submit" className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r bg-[#334977]"
+                                                      onClick={()=>{
+                                                          handleClick(document_id)
+                                                          setTemplateResponseData(null)
+                                                      }}
+                                                      disabled={LoadingButton}
+                                                      >
+                                                      <span className="flex items-center justify-center mx-auto space-x-2 select-none">
+                                                        Generate
+                                                      </span>
+                                                  </button>
 
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
 
-                                          {/* ================== */}
-                                            
-                                        </>
-                                      :
-                                          <div className="mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-black max-h-[500px] overflow-y-auto">
-                                            <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
-                                            <nav className="flex flex-grow py-1 space-x-3" aria-label="Tabs">
-                                                <button 
-                                                  className={`${
-                                                    ShowHideHistory
-                                                          ? "  "
-                                                          : " bg-gray-100 "
-                                                      } relative whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-black transition-all duration-150 hover:text-black`}
-
-                                                onClick={()=>{
-                                                  if(LeftListTemplateData==null){
-                                                    get_history(templateValue)
-                                                  }
-                                                    setShowHideHistory(false)
-                                                }}
-                                                >
-                                                <span className="relative">
-                                                  New outputs {ContentOutputNumber}
-                                                </span>
-
-                                                </button>
-                                                <button 
-                                                  className={`${
-                                                    ShowHideHistory
-                                                          ? " bg-gray-100 "
-                                                          : " "
-                                                      } relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
-
-                                                onClick={()=>{
-                                                    setShowHideHistory(true)
-                                                }}>
-                                                <span className="relative">History</span>
-                                                </button>
-                                            </nav>
-                                            <div>
-                                                <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black transition-all duration-150 hover:text-gray-600"
-                                                onClick={()=>{
-                                                    setTemplateResponseData(null)
-                                                    if(LeftListTemplateData==null){
-                                                    get_history(templateValue)
-                                                    }
-                                                }}>
-                                                <span className="relative">Clear</span>
-                                                </button>
-                                            </div>
-                                            </div>
-
-
-                                        {ShowHideHistory
-                                        ?
-                                            (history_answer
-                                            ?
-                                                (history_answer.map((data,index)=>{
-                                                    return (
-                                                        <div key={index}>
-                                                            <ResponseTemplate r_show={"false"} r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
-                                                        </div>
-                                                    )
-                                                }))
-                                            :
-                                                null
-                                            )
+                                            {/* ================== */}
+                                              
+                                          </>
                                         :
+                                            <div className="dark:bg-gray-600 mt-4 h-screen bg-[#eff2f9] font-semibold text-[17px]  text-black max-h-[500px] overflow-y-auto">
+                                              <div className="dark:bg-gray-600 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+                                              <nav className="flex flex-grow py-1 space-x-3" aria-label="Tabs">
+                                                  <button 
+                                                    className={`${
+                                                      ShowHideHistory
+                                                            ? "  "
+                                                            : " bg-gray-100 "
+                                                        } relative dark:bg-gray-800 dark:text-gray-200 whitespace-nowrap py-2 px-3 text-xs font-medium  rounded-lg text-black transition-all duration-150 hover:text-black`}
 
-                                        (TemplateResponseData
-                                            ?
-                                            TemplateResponseData.map((data,index)=>{
-                                                return (
-                                                    <div key={index}>
-                                                        <ResponseTemplate  r_show={"false"} r_time={data["created_at"]} r_data={data["content"]}/>
-                                                    </div>
-                                                )
-                                            })
-                                            :
-                                            (LoadingButton
-                                                ?
-                                                    <>
-                                                        <div className="mt-3 flex flex-col items-center justify-center">
-                                                        <div>
-                                                            <p>
-                                                            Generating content ...
-                                                            </p>
-                                                        </div>
-                                                        <div className='mt-3'>
-                                                            <BouncingDotsLoader />
-                                                        </div>
-                                                        </div>
-                                                    </>
-                                                :
-                                                    null
-                                                )
-                                        )
+                                                  onClick={()=>{
+                                                    if(LeftListTemplateData==null){
+                                                      get_history(templateValue)
+                                                    }
+                                                      setShowHideHistory(false)
+                                                  }}
+                                                  >
+                                                  <span className="relative">
+                                                    New outputs {ContentOutputNumber}
+                                                  </span>
+
+                                                  </button>
+                                                  <button 
+                                                    className={`${
+                                                      ShowHideHistory
+                                                            ? " bg-gray-100 "
+                                                            : " "
+                                                        } relative whitespace-nowrap dark:bg-gray-800 dark:text-gray-200 py-2 px-3 text-xs font-medium rounded-lg text-black transition-all duration-150 hover:text-black`}
+
+                                                  onClick={()=>{
+                                                      setShowHideHistory(true)
+                                                  }}>
+                                                  <span className="relative">History</span>
+                                                  </button>
+                                              </nav>
+                                              <div>
+                                                  <button className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black transition-all duration-150 hover:text-gray-600"
+                                                  onClick={()=>{
+                                                      setTemplateResponseData(null)
+                                                      if(LeftListTemplateData==null){
+                                                      get_history(templateValue)
+                                                      }
+                                                  }}>
+                                                  <span className=" dark:text-gray-200 relative">Clear</span>
+                                                  </button>
+                                              </div>
+                                              </div>
+
+
+                                          {ShowHideHistory
+                                          ?
+                                              (history_answer
+                                              ?
+                                                  (history_answer.map((data,index)=>{
+                                                      return (
+                                                          <div key={index}>
+                                                              <ResponseTemplate r_show={"false"} r_id={data["id"]} r_time={data["created_at"]} r_data={data["answer_response"]}/>
+                                                          </div>
+                                                      )
+                                                  }))
+                                              :
+                                                  null
+                                              )
+                                          :
+
+                                          (TemplateResponseData
+                                              ?
+                                              TemplateResponseData.map((data,index)=>{
+                                                  return (
+                                                      <div key={index}>
+                                                          <ResponseTemplate  r_show={"false"} r_time={data["created_at"]} r_data={data["content"]}/>
+                                                      </div>
+                                                  )
+                                              })
+                                              :
+                                              (LoadingButton
+                                                  ?
+                                                      <>
+                                                          <div className="mt-3 flex flex-col items-center justify-center">
+                                                          <div>
+                                                              <p>
+                                                              Generating content ...
+                                                              </p>
+                                                          </div>
+                                                          <div className='mt-3'>
+                                                              <BouncingDotsLoader />
+                                                          </div>
+                                                          </div>
+                                                      </>
+                                                  :
+                                                      null
+                                                  )
+                                          )
+                                          }
+                                          </div>
+                                          
                                         }
-                                        </div>
                                         
-                                      }
-                                      
+
+                                      </div>
 
                                     </div>
-
-                                  </div>
-                                  </>
-                                )
-                                :                    
-                                  (
-                                  WholeTemplate&& (
-                                      <WholeTemplateRender template_data={WholeTemplate}/>
+                                    </>
                                   )
-                                  )
-                                }
-                                {/* ===========Template name from apis=============== */}
+                                  :                    
+                                    (
+                                    WholeTemplate&& (
+                                        <WholeTemplateRender template_data={WholeTemplate}/>
+                                    )
+                                    )
+                                  }
+                                  {/* ===========Template name from apis=============== */}
 
-                                {page=="workflow" &&
-                                  <WorkflowSteps/>
-                                } 
-                            </div>
-                            </div>
+                                  {page=="workflow" &&
+                                    <WorkflowSteps/>
+                                  } 
+                              </div>
+                              </div>
+                        </>
+
+                      {/* } */}
+
                       </>
+                      }
 
-                    {/* } */}
+                      
 
-                    </>
-                    }
+                      {/* ===================================================== */}
 
-                    
+                      {/* ===================Left side whole template Render================================== */}
+                      {/* ===================================================== */}
+                      
 
-                    {/* ===================================================== */}
+              
 
-                    {/* ===================Left side whole template Render================================== */}
-                    {/* ===================================================== */}
-                    
+                      
 
-             
-
-                    
-
-                    {editor_full_screen
-                    ?
-                      <>
-                        {delta
-                        ?
+                      {editor_full_screen
+                      ?
                         <>
-                          <div className="jsx-1f9b1dd4731f1fae relative overflow-auto grow shrink">
-                          <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className="jsx-1f9b1dd4731f1fae min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
-                            <div className="relative bg-white border border-gray-300 flex flex-col grow">
-                          {editorData &&
-                            <div className="App p-10">
-                              <Editor data={editorData} setData={seteditorData} />
-                            </div>
-                          }
-                          </div>
-                          </div>
-                          </div>
-                          </>
-                        :   
-                          <LoaderDiv />
-                        }
-                      </>
-                    :
-                      <>
-                        {delta
-                        ?
+                          {delta
+                          ?
                           <>
-                          <div className="jsx-1f9b1dd4731f1fae relative overflow-auto grow shrink">
-                          <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className="jsx-1f9b1dd4731f1fae min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
-                            <div className="relative bg-white border border-gray-300 flex flex-col grow">
-                          {editorData &&
-                            <div className="App p-10">
-                              <Editor data={editorData} setData={seteditorData} />
+                          <div className=" relative overflow-auto grow shrink">
+                            <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className=" min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
+                              <div className="dark:bg-gray-700 relative bg-white border border-gray-300 flex flex-col grow">
+                            {editorData &&
+                              <div className="App p-10">
+                                <Editor data={editorData} setData={seteditorData} />
+                              </div>
+                            }
                             </div>
+                            </div>
+                            </div>
+                            </>
+                          :   
+                            <LoaderDiv />
                           }
-                          </div>
-                          </div>
-                          </div>
-                          </>
-                        :   
-                          <LoaderDiv />
-                        }
-                      </>
-                    }
-                    
+                        </>
+                      :
+                        <>
+                          {delta
+                          ?
+                            <>
+                            <div className=" relative overflow-auto grow shrink">
+                            <div id="editor-012fce57-54d2-4046-8789-1402c27159c4" className=" min-h-full flex flex-col relative bg-white [&amp;>div]:border-none">
+                              <div className="dark:bg-gray-700 relative bg-white border border-gray-300 flex flex-col grow">
+                            {editorData &&
+                              <div className="App p-10 dark:bg-gray-700">
+                                <Editor data={editorData} setData={seteditorData} />
+                              </div>
+                            }
+                            </div>
+                            </div>
+                            </div>
+                            </>
+                          :   
+                            <LoaderDiv />
+                          }
+                        </>
+                      }
+                      
 
 
+              </div>
             </div>
+            
           </div>
-          
+          {/* ============================== */}
         </div>
-        {/* ============================== */}
+
+        <Toaster />
+
       </div>
-
-      <Toaster />
-
-    </div>
   );
 }
+
+
+export default EditDocuments

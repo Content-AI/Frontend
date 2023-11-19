@@ -321,7 +321,7 @@ const Projects = (props) => {
                         className="flex w-[250px] cursor-pointer items-start pb-6 mr-1"
                         key={index}
                       >
-                        <div className="  bg-[#fafbfd]  shadow-lg relative top-0 flex max-w-full flex-1 items-center rounded-xl border border-purple-100  py-1 pl-2 transition-top duration-200 hover:-top-1 md:mr-6">
+                        <div className="dark:bg-gray-700 dark:text-white  dark:border-slate-500   bg-[#fafbfd]  shadow-lg relative top-0 flex max-w-full flex-1 items-center rounded-xl border border-purple-100  py-1 pl-2 transition-top duration-200 hover:-top-1 md:mr-6">
                           <div className="w-full grid grid-rows-1">
                             <div
                               className="tooltip-container  pr-4"
@@ -353,10 +353,9 @@ const Projects = (props) => {
                                 <div>
                                   <input
                                     type="text"
-                                    className="flex flex-1 p-2 outline-none max-w-full rounded-md border-none text-sm cursor-pointer focus:ring-0 group-hover:text-blue-800 min-w-full overflow-ellipsis whitespace-nowrap pr-7"
+                                    className="dark:bg-gray-700 dark:text-white flex flex-1 p-2 outline-none max-w-full rounded-md border-none text-sm cursor-pointer focus:ring-0 group-hover:text-blue-800 min-w-full overflow-ellipsis whitespace-nowrap pr-7"
                                     spellCheck="false"
                                     required=""
-                                    data-testid="project-folder-name"
                                     data-hj-allow="true"
                                     value={data.project_name}
                                     readOnly
@@ -365,7 +364,7 @@ const Projects = (props) => {
                               </div>
 
                               <div className="grid content-center w-full ml-2">
-                                <span className="font-bold text-sm text-slate-600 flex-grow bloc">
+                                <span className="dark:text-white font-bold text-sm text-slate-600 flex-grow bloc">
                                   {data.documents_data}
                                 </span>
                               </div>
@@ -376,7 +375,7 @@ const Projects = (props) => {
 
                             <div className="flex flex-1 pl-2">
                               <div className="grid content-center w-full">
-                                <span className="flex-grow block text-[12px] font-bold text-gray-500 whitespace-nowrap">
+                                <span className="dark:text-white flex-grow block text-[12px] font-bold text-gray-500 whitespace-nowrap">
                                   Created on {data.created_at}
                                 </span>
                               </div>
@@ -413,16 +412,13 @@ const Projects = (props) => {
                                 {openPopUpMiniMenu === index && (
                                   <div
                                     ref={popupRef}
-                                    className="mr-10 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100"
-                                    aria-labelledby="headlessui-menu-button-:r6e:"
-                                    id="headlessui-menu-items-:r79:"
+                                    className="dark:bg-slate-600 dark:hover:bg dark:text-gray-200 dark:border-slate-500 mr-10 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100"
                                     role="menu"
                                     tabIndex="0"
-                                    data-headlessui-state="open"
                                   >
                                     <div role="none">
                                       <button
-                                        className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100"
+                                        className="dark:hover:bg-gray-500 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100"
                                         role="none"
                                         type="button"
                                         onClick={() => {
@@ -458,7 +454,7 @@ const Projects = (props) => {
                                     </div>
                                     <div role="none">
                                       <button
-                                        className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600"
+                                        className="flex dark:hover:bg-gray-500 items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600"
                                         role="none"
                                         onClick={() => {
                                           setshowModalForDelete(true);
@@ -505,14 +501,14 @@ const Projects = (props) => {
 
                           {showModalForDelete ? (
                             <>
-                              <div className="fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm backdrop-filter bg-opacity-20">
+                              <div className="fixed inset-0 z-10 overflow-y-auto  backdrop-filter bg-opacity-10">
                                 <div
                                   className="fixed inset-0 w-full h-full"
                                   onClick={() => setshowModalForDelete(false)}
                                 ></div>
                                 <div className="flex items-center min-h-screen px-4 py-8">
-                                  <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
-                                    <div className="mt-3 sm:flex flex items-center justify-center">
+                                  <div className="dark:bg-gray-700 dark:text-gray-200 border-black relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
+                                    <div className="   mt-3 sm:flex flex items-center justify-center">
                                       {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
                                        
                                     </div> */}
@@ -552,7 +548,7 @@ const Projects = (props) => {
                                               Delete
                                             </button>
                                             <button
-                                              className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                              className="dark:text-white w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                               onClick={() => {
                                                 setshowModalForDelete(false);
                                               }}
@@ -573,21 +569,15 @@ const Projects = (props) => {
                             <>
                               <div
                                 className="fixed inset-0 z-40 overflow-y-auto"
-                                id="headlessui-dialog-:rdn:"
                                 role="dialog"
-                                aria-modal="true"
-                                data-headlessui-state="open"
                               >
-                                <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                                <div className=" flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                                   <div
-                                    className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50"
-                                    id="headlessui-dialog-overlay-:rdo:"
-                                    aria-hidden="true"
-                                    data-headlessui-state="open"
+                                    className="fixed inset-0 transition-opacity  bg-opacity-50"
                                   ></div>
-                                  <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                                  <div className="dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
                                     <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                                      <h3 className="text-lg font-semibold">
+                                      <h3 className="dark:text-white text-lg font-semibold">
                                         Rename Folder
                                       </h3>
                                     </div>
@@ -776,30 +766,28 @@ const Projects = (props) => {
           {/* <div className="fixed top-0 left-0 w-screen h-screen backdrop-blur-sm backdrop-filter bg-opacity-20 z-50"> */}
           <div className="fixed inset-0 z-40 overflow-y-auto">
             <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
+            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" 
+            ></div>
 
                 
             <div
               className="fixed inset-0 overflow-y-auto z-50"
-              id="headlessui-dialog-1749"
               role="dialog"
               aria-modal="true"
-              aria-labelledby="headlessui-dialog-title-1753"
             >
               <div className="flex min-h-screen items-center justify-center text-center sm:block sm:p-0">
                 <div
-                  className="fixed inset-0 bg-grey-500 bg-opacity-75 transition-opacity"
-                  id="headlessui-dialog-overlay-1751"
+                  className="fixed inset-0 bg-grey-600 bg-opacity-75 transition-opacity"
                   aria-hidden="true"
                 ></div>
                 <span
                   className="hidden sm:inline-block sm:h-screen sm:align-middle"
                   aria-hidden="true"
                 ></span>
-                <div className="inline-block rounded-lg bg-white align-bottom p-6 sm:p-8 shadow-xl transform text-left transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full undefined">
+
+                <div className="dark:bg-gray-700 dark:text-gray-200 inline-block rounded-lg bg-white align-bottom p-6 sm:p-8 shadow-xl transform text-left transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full undefined">
                   <button
-                    data-testid="close-modal"
-                    className="outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70"
+                    className="dark:text-white outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70"
                     tabIndex="0"
                     aria-label="Close"
                     onClick={() => {
@@ -824,7 +812,7 @@ const Projects = (props) => {
                   </button>
                   <div className="text-left">
                     <h3
-                      className="pt-8 pr-8 text-xl font-medium text-black sm:pt-0 "
+                      className="dark:text-gray-200 pt-8 pr-8 text-xl font-medium text-black sm:pt-0 "
                       id="headlessui-dialog-title-1753"
                     >
                       Create Folder
@@ -841,9 +829,8 @@ const Projects = (props) => {
                         </div>
                         <div className="w-full">
                           <input
-                            data-testid="folder-name"
                             placeholder="New Folder"
-                            className="flex flex-1 border py-2.5 px-3.5 border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm focus:border-green-700 focus:ring-0 text-grey-800"
+                            className="dark:text-black flex flex-1 border py-2.5 px-3.5 border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm focus:border-green-700 focus:ring-0 text-grey-800"
                             type="text"
                             autoComplete="off"
                             id="folder-name"
@@ -886,6 +873,9 @@ const Projects = (props) => {
                     </div>
                   </div>
                 </div>
+
+
+                
               </div>
             </div>
           </div>

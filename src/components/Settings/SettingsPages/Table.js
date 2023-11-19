@@ -18,10 +18,10 @@ const Table = (props) => {
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead>
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-black">User</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-black">Credits used</th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-black">Templates</th>
-                    {/* <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-black">projects</th> */}
+                    <th scope="col" className="dark:text-white px-6 py-3 text-left text-xs font-bold text-black">User</th>
+                    <th scope="col" className="dark:text-white px-6 py-3 text-left text-xs font-bold text-black">Credits used</th>
+                    <th scope="col" className="dark:text-white px-6 py-3 text-left text-xs font-bold text-black">Templates</th>
+                    {/* <th scope="col" className="dark:text-white px-6 py-3 text-left text-xs font-bold text-black">projects</th> */}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -30,10 +30,10 @@ const Table = (props) => {
                     {tableData.map((data,index)=>{
                       return (
                           <tr key={index}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black ">{data.name}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{data.token_generated}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{data.template_count}</td>
-                              {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{data.projects}</td>               */}
+                              <td className="dark:text-white px-6 py-4 whitespace-nowrap text-sm font-medium text-black ">{data.name}</td>
+                              <td className="dark:text-white px-6 py-4 whitespace-nowrap text-sm text-black ">{data.token_generated}</td>
+                              <td className="dark:text-white px-6 py-4 whitespace-nowrap text-sm text-black ">{data.template_count}</td>
+                              {/* <td className="dark:text-white px-6 py-4 whitespace-nowrap text-sm text-black ">{data.projects}</td>               */}
                           </tr>
                       )
                     })}

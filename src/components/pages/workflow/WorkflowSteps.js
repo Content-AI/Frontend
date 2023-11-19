@@ -10,6 +10,8 @@ import { useParams } from 'react-router-dom';
 import { _change_state_ } from '../../../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate';
 import Done from '../../Icons/Done';
 import toast, { Toaster } from 'react-hot-toast';
+// import  DarkModeTemplate from '../Template/Document/EditDocuments'
+import DarkModeTemplate from '../Template/Document/DarkModeTemplate';
 
 
 
@@ -123,7 +125,6 @@ const WorkflowSteps = () => {
 
   const handleSubmit = async (event, stepIndex,title) => {
 
-
     event.preventDefault();
     
     // let hasMissingRequiredFields = false;
@@ -133,18 +134,31 @@ const WorkflowSteps = () => {
     let hasMissingRequiredFields = false;
     try {
       let fill_data = workFlowData[0].WorkFlowTemplateId[stepIndex]["inner_fields"];
+
+      // console.log(fill_data)
     
       fill_data.forEach(field => {
+
         // Check if the field is required and if the value is empty or null
-        if (field.required && !inputValues[stepIndex]?.[field.label_title]) {
-          notifyerror(field.label_title + " is required");
-          hasMissingRequiredFields = true;
+
+        
+        if(inputValues[stepIndex]?.[field.label_title]!=undefined || title!="Tone"){
+
+          if (field.required && !inputValues[stepIndex]?.[field.label_title]) {
+  
+            notifyerror(field.label_title + " is required");
+            hasMissingRequiredFields = true;
+  
+          }
         }
+
       });
     } catch (e) {
       // hasMissingRequiredFields = true;
     }
 
+
+    // return true
 
     if (hasMissingRequiredFields) {
     } else {
@@ -189,7 +203,9 @@ const WorkflowSteps = () => {
                 const response_next_index=await postData(formDataInner,BACKEND_URL+BACK_END_API_WORKFLOW_INNER_ANSWER,TOKEN)
                 
                 if(response_next_index.status==200){
+
                   // console.log(response_next_index.data.resp_data)
+
                   try{
                     let data_title = workFlowData[0].WorkFlowTemplateId[stepIndex+1]["inner_fields"][0]["label_title"]
                     setInputValues((prevInputValues) => ({
@@ -229,11 +245,9 @@ const WorkflowSteps = () => {
   };
 
 
-
   const handleStepSubmit = (stepNo) => {
     setSubmittedSteps((prevSubmittedSteps) => [...prevSubmittedSteps, stepNo]);
   };
-
 
   const handleRandomOutputChange = (stepIndex, value) => {
     setRandomOutputs((prevRandomOutputs) => ({
@@ -245,16 +259,18 @@ const WorkflowSteps = () => {
 
   const handleNextStep = () => {
 
-
     let hasMissingRequiredFields = false;
     try {
       let fill_data = workFlowData[0].WorkFlowTemplateId[currentStep]["inner_fields"];
     
       fill_data.forEach(field => {
         // Check if the field is required and if the value is empty or null
-        if (field.required && !inputValues[currentStep]?.[field.label_title]) {
-          notifyerror(field.label_title + " is required");
-          hasMissingRequiredFields = true;
+
+        if(inputValues[currentStep]?.[field.label_title]!=undefined || field["label_title"]!="Tone"){
+          if (field.required && !inputValues[currentStep]?.[field.label_title]) {
+            notifyerror(field.label_title + " is required");
+            hasMissingRequiredFields = true;
+          }
         }
       });
     } catch (e) {
@@ -342,23 +358,18 @@ const toggleDropdown = () => {
   return (
       <div className="absolute inset-0 flex flex-row divide-x divide-slate-200 bg-white">
         <div className="h-full flex-1">
-          <div className="flex h-full flex-col overflow-y-scroll bg-slate-50">
+          <div className="dark:bg-gray-800 flex h-full flex-col overflow-y-scroll bg-slate-50">
 
             {/* <!-- ======back button==== --> */}
             <div className="flex pl-4">
-              <button type="button" className="relative rounded bg-transparent px-4 py-2 pl-0 text-center text-base font-semibold shadow-sm shadow-transparent outline-none transition-all duration-200 hover:outline-none focus:outline-none focus:ring-transparent"
+              <button type="button" className=" relative rounded bg-transparent px-4 py-2 pl-0 text-center text-base font-semibold shadow-sm shadow-transparent outline-none transition-all duration-200 hover:outline-none focus:outline-none focus:ring-transparent"
               onClick={()=>{
                       const baseUrl = window.location.href.split('?')[0];                
                       const newUrl = `${baseUrl}?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
                       window.location.replace(newUrl);
 
               }}>
-                <span className="mx-auto flex select-none items-center justify-center space-x-2">
-                  <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                    <path d="M1.14,8H14.86" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M5.71,3.43c-2,1.64-3,2.64-4.57,4.57,1.56,1.92,2.56,2.93,4.57,4.57" fill="none" stroke="#0D121C" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </span>
+                <DarkModeTemplate/>
               </button>
             </div>
             {/* <!-- ======back button==== --> */}
@@ -372,10 +383,10 @@ const toggleDropdown = () => {
 
               {/* <!-- ======provide context===== --> */}
                       {/* <div id="setup-step"  className="sticky top-16 z-40 m-auto mb-2 flex max-w-xs flex-col rounded-lg bg-white px-6 shadow-lg dark:ring-gray-700"> */}
-                      <div id="setup-step"  className="sticky top-16 z-40 m-auto mb-2 flex max-w-xs flex-col rounded-lg bg-blue-800 px-6 shadow-lg dark:ring-gray-700">
+                      <div id="setup-step"  className="dark:bg-gray-600 sticky top-16 z-40 m-auto mb-2 flex max-w-xs flex-col rounded-lg bg-blue-800 px-6 shadow-lg dark:ring-gray-700">
                       <div className="w-full py-4 text-sm transition-all duration-300 dark:text-black">
                           <div className="w-full">
-                          <div className="mb-1 flex justify-between">
+                          <div className="dark:text-gray-300 mb-1 flex justify-between">
                               <div>Provide Context Description</div>
                               <div className="ml-2 flex items-center">
                               
@@ -396,19 +407,19 @@ const toggleDropdown = () => {
 
                           <div className="w-full space-y-1.5">
                               {/* {isSwitchOn && ( */}
-                              <div className="!mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-2.5 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
+                              <div className="dark:bg-gray-800 dark:text-gray-300 !mt-0 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-2.5 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2">
                                   <textarea
                                   // className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400 h-5 overflow-hidden"
                                   value={textareaValue}
                                   onChange={handleTextareaChange}
                                   placeholder="Type something..."
                                   type="text" 
-                                  className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
+                                  className="dark:bg-gray-800 dark:text-gray-300 block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
                                   />
                               </div>
                               {/* )} */}
                               <div className="flex items-center gap-2">
-                                  <span className="ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
+                                  <span className="dark:text-gray-200 ml-auto text-xs text-gray-500 transition-[color] duration-150 ease-in-out">
                                       {textareaValue.length}/200
                                   </span>
                               </div>
@@ -464,7 +475,7 @@ const toggleDropdown = () => {
                                     :
                                     <>
                                       {/* <div className="mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:bg-gray-900 dark:text-white dark:ring-gray-600"> */}
-                                      <div className="mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:ring-green-800">
+                                      <div className="dark:bg-gray-800 dark:text-gray-300 mr-11 flex h-12 w-12 justify-center rounded-full bg-white text-blue-800 ring-2 ring-blue-800 dark:ring-green-800">
                                           <div className="self-center text-center text-2xl font-extrabold leading-4 dark:text-gray-400">
                                             {stepIndex + 1}
                                           </div>
@@ -490,12 +501,12 @@ const toggleDropdown = () => {
                                     <div className="flex-auto font-medium text-gray-500 dark:text-white">
                                     <div className="relative w-full">
 
-                                        <div className="w-full space-y-2 p-4 px-6 bg-blue-800">
+                                        <div className="dark:bg-gray-600 dark:rounded-md dark:text-gray-300 w-full space-y-2 p-4 px-6 bg-blue-800">
 
                                         <div className="mb-4 flex items-center md:flex-row md:items-center">
                                             <div className="flex flex-col">
                                             {/* <div className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300 sm:mb-1"> */}
-                                            <div className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-900 sm:mb-1">
+                                            <div className="dark:text-gray-300 text-2xl font-bold tracking-tight text-gray-900  sm:mb-1">
                                                 {step.title}
                                             </div>
                                             </div>
@@ -513,7 +524,7 @@ const toggleDropdown = () => {
                                                             className="block text-sm font-medium text-gray-900 transition-[color] duration-150 ease-in-out placeholder:text-gray-400"
                                                         >
                                                             <span className="flex items-center space-x-1">
-                                                                <span>
+                                                                <span className='dark:text-gray-300'>
                                                                     {field.label_title}
                                                                 </span>
                                                             </span>
@@ -522,14 +533,14 @@ const toggleDropdown = () => {
                                                         {field.component === 'textarea' ? (
                                                             <>
                                                             <div 
-                                                                className="flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2"
+                                                                className="dark:bg-gray-800 dark:text-gray-300 flex w-full items-center gap-2 rounded-lg bg-white px-3 py-1 outline-none ring-1 ring-gray-200 transition-all duration-150 ease-in-out focus-within:!ring-1 hover:ring-2"
                                                             >
 
                                                                 <div className="flex grow items-center gap-2 py-1.5">
                                                                     <div className="flex grow gap-1">
                                                                     <textarea 
                                                                         type="text" 
-                                                                        className="block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
+                                                                        className="dark:bg-gray-800 dark:text-gray-300 block w-full resize-none text-sm font-normal text-gray-900 outline-none placeholder:text-gray-400"
                                                                         placeholder={field.placeholder}
                                                                         value={inputValues[stepIndex]?.[field.label_title] || ''}
                                                                         onChange={(e) => handleInputChange(stepIndex, field.label_title, e.target.value)}
@@ -556,11 +567,11 @@ const toggleDropdown = () => {
                                                                     value={inputValueselect}
                                                                     onChange={handleInputChangeselect}
                                                                     onFocus={() => setIsOpenselect(false)}
-                                                                    className="w-full px-3 py-2 border text-sm font-normal rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                    className="dark:bg-gray-800 dark:text-gray-300 w-full px-3 py-2 border text-sm font-normal rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                                     placeholder="Type  Witty , Normal , Professional ...."
                                                                     />
                                                                     <button
-                                                                    className="absolute ml-[315px] px-4 h-[41px] border border-l-0  focus:outline-none"
+                                                                    className="absolute ml-[321px] px-4 h-[39px] border border-l-0  focus:outline-none"
                                                                     onClick={() => setIsOpenselect(!isOpen)}
                                                                     >
                                                                     ▼
@@ -571,7 +582,7 @@ const toggleDropdown = () => {
                                                                     {optionsselect.map((option) => (
                                                                         <div
                                                                         key={option}
-                                                                        className="px-3 py-2 cursor-pointer hover:bg-gray-100 text-black"
+                                                                        className="dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-500 px-3 py-2 cursor-pointer hover:bg-gray-100 text-black"
                                                                         onClick={() => handleOptionClickSelect(option)}
                                                                         >
                                                                         {option}
@@ -602,13 +613,13 @@ const toggleDropdown = () => {
                                 <label 
                                     className="block text-sm font-medium text-gray-900 transition-[color] duration-150 ease-in-out placeholder:text-gray-400"
                                 >
-                                    <span className="flex items-center space-x-1">Output</span>
+                                    <span className="dark:text-gray-300 flex items-center space-x-1">Output</span>
                                 </label>
                                 <div>
                                     <div className="flex grow items-center gap-2 py-1.5">
                                     <div className="flex grow gap-1">
                                         <textarea
-                                        className="text-black w-full h-[300px] px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="dark:text-gray-300 dark:bg-gray-600 text-black w-full h-[300px] px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         value={randomOutputs[stepIndex]}
                                         onChange={(e) => handleRandomOutputChange(stepIndex, e.target.value)}
                                         readOnly={(!isFirstStepSubmitted || stepIndex !== currentStep) && stepIndex !== currentStep}

@@ -61,6 +61,7 @@ import Settings from "../Settings/Settings";
 import LoadingPage from "../LoadingPage";
 import { useParams } from 'react-router-dom';
 import FavoriteDocuments from "./FavoriteDocuments";
+import DarkMode from "./DarkMode";
 
 
 const Navbar = () => {
@@ -206,9 +207,9 @@ const Navbar = () => {
             :
             <>
 
-              <div className="z-20 fixed top-0 left-0 right-0 flex items-center justify-between px-6 sm:pl-64 bg-white border-b border-border"
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-20 fixed top-0 left-0 right-0 flex items-center justify-between px-6 sm:pl-64  bg-white border-b border-border"
               >
-                <div className="sm:hidden">
+                <div className="dark:bg-black dark:text-gray-200 sm:hidden">
                   {NAV_BAR_CONDITION ? (
                     <>
                       <FaTimes
@@ -233,7 +234,7 @@ const Navbar = () => {
                 </div>
 
                 {/* ==========the large navbar============= */}
-                <div className="sm:hidden pl-4"
+                <div className="dark:bg-black dark:text-gray-200 sm:hidden pl-4"
                 >
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
@@ -241,7 +242,7 @@ const Navbar = () => {
                   />
                 </div>
 
-                <div className="lg:flex items-center gap-10 ml-auto hidden h-[74px]">
+                <div className="dark:bg-black dark:text-gray-200 lg:flex items-center gap-10 ml-auto hidden h-[74px]">
 
                   {subscriptions_details &&
                     <>
@@ -263,7 +264,9 @@ const Navbar = () => {
                     </>
                   }
 
+                <DarkMode/>
                 </div>
+
 
               </div>
 
@@ -271,9 +274,9 @@ const Navbar = () => {
 
               {/* ==========the large navbar============= */}
 
-              <div className="z-20 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900 border-r border-border">
-                <div className="flex items-center h-[74px] border-b border-border">
-                  <div className="pl-4">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-20 hidden sm:block fixed top-0 left-0 h-full w-64 bg-blue-900  border-r border-border">
+                <div className="dark:bg-black dark:text-gray-200 flex items-center h-[74px] dark:border-slate-500 border-b border-border">
+                  <div className="dark:bg-black dark:text-gray-200 pl-4">
                     <img
                       src="https://static.vecteezy.com/system/resources/previews/009/182/285/non_2x/tmp-letter-logo-design-with-polygon-shape-tmp-polygon-and-cube-shape-logo-design-tmp-hexagon-logo-template-white-and-black-colors-tmp-monogram-business-and-real-estate-logo-vector.jpg"
                       className="w-[50px] h-[50px] rounded-full"
@@ -281,10 +284,10 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col">
+                <div className="dark:bg-black dark:text-gray-200 flex flex-col">
 
 
-                  <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
+                  <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
 
                     {navURL.map((items, index) => {
                       const { title, link, offset } = items;
@@ -297,7 +300,7 @@ const Navbar = () => {
                             to={link}
                             onClick={() => handleLinkClick(title)}
                             className={clsx("flex items-center p-1", {
-                              "font-bold text-blue bg-blue/10 rounded-lg":
+                              "font-bold text-blue bg-blue/10 rounded-lg dark:bg-black dark:text-gray-200":
                                 activeLink === title,
                               "mb-6": navURL.length - 1 !== index,
                             })}
@@ -317,22 +320,29 @@ const Navbar = () => {
                     })}
 
                       {/* ====favorite ===== */}
-                      <nav className="flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
-                        <div className="flex">
+                      <nav className="dark:bg-black dark:text-gray-200 flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
+                        <div className="dark:bg-black dark:text-gray-200 flex">
                           <div>
-                          {/* className="w-6 h-6 text-[14px] capitalize font-semibold ml-2 mt-2" */}
-                          <svg className="w-5 h-5 text-[14px] capitalize font-semibold ml-2 mt-[10px]" xmlns="http://www.w3.org/2000/svg" xmlnsSlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" enableBackground="new 0 0 100 100" xmlSpace="preserve">
+
+                        
+                          <svg className=" w-5 h-5 text-[14px] capitalize font-semibold ml-2 mt-[10px]" xmlns="http://www.w3.org/2000/svg" 
+                          xmlnsSlink="http://www.w3.org/1999/xlink" 
+                          version="1.1" x="0px" y="0px" 
+                          viewBox="0 0 100 125" 
+                          enableBackground="new 0 0 100 100" 
+                          xmlSpace="preserve">
                             <g>
-                                <path fill="none" d="M58.48,38.832l-8.48-17.182L41.52,38.832c-0.656,1.328-1.922,2.248-3.388,2.462L19.17,44.049l13.722,13.375   c1.06,1.034,1.544,2.523,1.294,3.983l-3.239,18.884l16.959-8.917c1.311-0.689,2.878-0.689,4.189,0l16.959,8.917l-3.238-18.885   c-0.25-1.459,0.233-2.949,1.294-3.982L80.83,44.049l-18.962-2.755C60.403,41.08,59.135,40.16,58.48,38.832z"/>
+                                <path fill="#343330" d="M58.48,38.832l-8.48-17.182L41.52,38.832c-0.656,1.328-1.922,2.248-3.388,2.462L19.17,44.049l13.722,13.375   c1.06,1.034,1.544,2.523,1.294,3.983l-3.239,18.884l16.959-8.917c1.311-0.689,2.878-0.689,4.189,0l16.959,8.917l-3.238-18.885   c-0.25-1.459,0.233-2.949,1.294-3.982L80.83,44.049l-18.962-2.755C60.403,41.08,59.135,40.16,58.48,38.832z"/>
                                 <path d="M94.779,39.517c-0.529-1.629-1.937-2.817-3.633-3.063l-25.643-3.727L54.036,9.491c-0.758-1.536-2.322-2.508-4.035-2.508   s-3.277,0.972-4.035,2.508L34.497,32.727L8.853,36.454C7.158,36.7,5.75,37.887,5.22,39.517c-0.529,1.629-0.088,3.417,1.139,4.613   l18.556,18.088l-4.38,25.539c-0.29,1.688,0.405,3.395,1.79,4.402c0.784,0.57,1.713,0.86,2.646,0.86   c0.716,0,1.435-0.171,2.094-0.517l22.936-12.059l22.935,12.059c1.518,0.798,3.353,0.664,4.739-0.343   c1.386-1.006,2.08-2.713,1.79-4.401l-4.38-25.54l18.556-18.088C94.867,42.934,95.309,41.145,94.779,39.517z M67.11,57.424   c-1.061,1.034-1.544,2.523-1.294,3.982l3.238,18.885l-16.959-8.917c-1.311-0.689-2.878-0.689-4.189,0l-16.959,8.917l3.239-18.884   c0.25-1.46-0.234-2.95-1.294-3.983L19.17,44.049l18.962-2.755c1.466-0.214,2.733-1.134,3.388-2.462l8.481-17.182l8.48,17.182   c0.655,1.328,1.922,2.248,3.388,2.462l18.962,2.755L67.11,57.424z"/>
                             </g>
                           </svg>
+
                           </div>
-                          <div className="text-[14px] capitalize font-semibold mt-2">
+                          <div className="dark:bg-black dark:text-gray-200 text-[14px] capitalize font-semibold mt-2">
                             Favorites
                           </div>
                         </div>
-                              <div className="space-y-2">
+                              <div className="dark:bg-black dark:text-gray-200 space-y-2">
                                 <FavoriteDocuments TOKEN={TOKEN}/>
                               </div>
                         </nav>
@@ -344,8 +354,8 @@ const Navbar = () => {
                 </div>
                 
 
-                <div className="fixed bottom-0 w-64 p-4 bg-gray-100">
-                  <div className="relative">
+                <div className="dark:bg-black dark:text-gray-200 fixed bottom-0 w-64 p-4 bg-gray-100 ">
+                  <div className="dark:bg-black dark:text-gray-200 relative">
                     {isHovered && (
                       <div
                         className="absolute bottom-full left-0 w-60 bg-white border border-border rounded"
@@ -354,7 +364,7 @@ const Navbar = () => {
                             "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
                         }}
                       >
-                        <div className="absolute top-2 right-2 w-6 h-6">
+                        <div className="dark:bg-black dark:text-gray-200 absolute top-2 right-2 w-6 h-6">
                           <AiOutlineCloseCircle
                             onClick={() => {
                               setHovered(!isHovered);
@@ -363,15 +373,15 @@ const Navbar = () => {
                           />
                         </div>
 
-                        <div className="flex flex-col justify-center ">
-                          <div className="py-4 px-2">
+                        <div className="dark:bg-black dark:text-gray-200 flex flex-col justify-center ">
+                          <div className="dark:bg-black dark:text-gray-200 py-4 px-2">
 
                             {/* =================workspace==================== */}
-                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
+                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
                             onClick={()=>{
                               navigate("/change-work-space")
                             }}>
-                              <div className="mr-2">
+                              <div className=" mr-2">
                               <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" x="0px" y="0px">
                                 <g dataName="Layer 27">
                                     <path d="M47,24H30V23a3,3,0,0,0-3-3H21a3,3,0,0,0-3,3v1H11a1,1,0,0,0,0-2H10V19a.965.965,0,0,0-.182-.542,1,1,0,0,0-.108-.168,1.2,1.2,0,0,0-.122-.078A.983.983,0,0,0,9,18H4V12H14v6H13a1,1,0,0,0,0,2h2a1,1,0,0,0,1-1V11a1,1,0,0,0-1-1H3a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1H8v2H7a1,1,0,0,0,0,2H1a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H2V47a1,1,0,0,0,2,0V30H15a1,1,0,0,0,0-2H2V26H18v1a3,3,0,0,0,3,3h2v4H19a3,3,0,0,0,0,6h4v3.586l-2.707,2.707a1,1,0,1,0,1.414,1.414L24,45.414l2.293,2.293a1,1,0,0,0,1.414-1.414L25,43.586V40h4a3,3,0,0,0,0-6H25V30h2a3,3,0,0,0,3-3V26H46v2H33a1,1,0,0,0,0,2h1V47a1,1,0,0,0,1,1H45a1,1,0,0,0,1-1V30h1a1,1,0,0,0,1-1V25A1,1,0,0,0,47,24ZM30,37a1,1,0,0,1-1,1H19a1,1,0,0,1,0-2H29A1,1,0,0,1,30,37ZM28,27a1,1,0,0,1-1,1H21a1,1,0,0,1-1-1V23a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1ZM44,40H36V36h8Zm-8,6V42h8v4Zm8-12H36V30h8Z"/>
@@ -391,8 +401,8 @@ const Navbar = () => {
                                 setHovered(!isHovered);
                               }}
                             >
-                              <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                <div className="mr-2">
+                              <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                <div className="dark:bg-black dark:text-gray-200 mr-2">
                                   <MdSettings size={18} />
                                 </div>
                                 <div>
@@ -400,8 +410,8 @@ const Navbar = () => {
                                 </div>
                               </div>
                             </Link>
-                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                              <div className="mr-2">
+                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                 <MdHelp size={18} />
                               </div>
                               <div>
@@ -411,16 +421,8 @@ const Navbar = () => {
                               </Link> 
                             </div>
                             </div>
-                            {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                              <div className="mr-2">
-                                <MdSearch size={18} />
-                              </div>
-                              <div>
-                                <p className="text-sm font-helv">Search</p>
-                              </div>
-                            </div> */}
-                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                              <div className="mr-2">
+                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                 <FaTrash size={18} />
                               </div>
                               <div>
@@ -448,7 +450,7 @@ const Navbar = () => {
                                   activeLink === "logout" ? "text-blue-500" : ""
                                 }`}
                               >
-                                <div className="mr-2">
+                                <div className="dark:bg-black dark:text-gray-200 mr-2">
                                   <MdLogout size={18} />
                                 </div>
                                 <div>
@@ -462,16 +464,16 @@ const Navbar = () => {
                     )}
                   </div>
 
-                  <div className="flex flex-col bg-gray-100">
+                  <div className="dark:bg-black dark:text-gray-200 flex flex-col bg-gray-100">
                     {!isHovered && (
                       <>
                         {subscriptions_details
                         ?
                           <>
-                          <div className="mb-4">
+                          <div className="dark:bg-black dark:text-gray-200 mb-4">
                           {subscriptions_details.user.trail_ends
                           ?
-                            <div className="flex text-base justify-items-start items-center">
+                            <div className="dark:bg-black dark:text-gray-200 flex text-base justify-items-start items-center">
                               <div>
                                   <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                     <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
@@ -481,7 +483,7 @@ const Navbar = () => {
                               <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
                             </div>
                           :
-                            <div className="flex text-base justify-items-start items-center">
+                            <div className="dark:bg-black dark:text-gray-200 flex text-base justify-items-start items-center">
                                 <div>
                                     <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                       <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
@@ -491,10 +493,9 @@ const Navbar = () => {
                                 <span className="text-sm pl-2 mb-2">Your current plans</span>
                               </div>
                           }
-                            <div className="mb-3">
+                            <div className="dark:bg-black dark:text-gray-200 mb-3">
                             <button
                               onClick={() => {
-                                // console.log("pricing")
                                 setShowpricingPopUpModal(true)
                               }}
                               className="text-[25px] transition-all duration-200 relative shadow-sm outline-none hover:outline-none  mb-2  flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-[#334977]  w-full h-[30px] px-2"
@@ -511,13 +512,13 @@ const Navbar = () => {
                         }
                       </>
                     )}
-                    <div className="bg-gray-100">
+                    <div className="dark:bg-black dark:text-gray-200 ">
                       <Button
                         sx={{ textTransform: "none" }}
                         onClick={() => {
                           setHovered(!isHovered);
                         }}
-                        className="flex items-center"
+                        className="flex items-center "
                       >
                         {PROFILE_DATA ? (
                           PROFILE_DATA.profile_pic ? (
@@ -540,8 +541,8 @@ const Navbar = () => {
                             className="w-[40px] h-[40px] rounded-full"
                           />
                         )}
-                        <div className="text-left ml-2 w-full">
-                          <p className="text-xs font-sans font-bold text-black">
+                        <div className=" dark:text-white text-left ml-2 w-full">
+                          <p className="text-xs font-sans font-bold text-black dark:text-white">
                             {ChosenWorkspaceId &&
                               <>
                                 {ChosenWorkspaceId["workspace_name"]}
@@ -555,7 +556,7 @@ const Navbar = () => {
                                 null
                               :
                                 <>
-                                  <p className="text-[10px] font-sans font-bold text-black">
+                                  <p className="text-[10px] font-sans dark:text-white font-bold text-black">
                                     Free plan
                                   </p>
                                 </>
@@ -605,12 +606,12 @@ const Navbar = () => {
                     <div
                       ref={divRef}
                       className={`${NAV_BAR_CONDITION ? "" : "-translate-x-full"
-                        } fixed left-0 top-0 w-64 h-full shadow-2xl bg-white transform z-[100] duration-500 mt-[40px]`}
+                        } fixed left-0 top-0 w-64 h-full shadow-2xl dark:bg-black  bg-white transform z-[100] duration-500 mt-[40px]`}
                       style={{ overflowY: 'hidden' }}
                     >
                    
-                      <div className="flex flex-col">
-                              <div className="flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
+                      <div className="dark:bg-black dark:text-gray-200 flex flex-col">
+                              <div className="dark:bg-black dark:text-gray-200 flex flex-col ml-2 my-2 p-2 h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none">
 
                                 {navURL.map((items, index) => {
                                   const { title, link, offset } = items;
@@ -647,8 +648,8 @@ const Navbar = () => {
 
                                   {/* ====favorite ===== */}
 
-                                  <nav className="flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
-                                    <div className="flex">
+                                  <nav className="dark:bg-black dark:text-gray-200 dark:border-slate-500 flex-grow mt-3 space-x-4 overflow-x-auto border-t  bg-gray-50">
+                                    <div className="dark:bg-black dark:text-gray-200 flex">
                                       <div>
                                         <svg className="w-6 h-6 text-[14px] capitalize font-semibold ml-2 mt-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" x="0px" y="0px">
                                           <path d="m51.5766791,13.4525611c.2421875,0,.4848633-.0874023.6772461-.2646484l2.2060547-2.0327148c.40625-.3740234.4321289-1.0068359.0576172-1.4130859s-1.0068359-.4335938-1.4130859-.0576172l-2.2060547,2.0327148c-.6763916.5797729-.1963501,1.7676392.6782227,1.7353516Z"/>
@@ -660,11 +661,11 @@ const Navbar = () => {
                                           <path d="m9.937519,29.9081275c-1.3264771.020813-1.315918,1.9783936.000061,2,1.3143921-.0223999,1.314209-1.9778442-.000061-2Z"/>
                                         </svg>
                                       </div>
-                                      <div className="text-[14px] capitalize font-semibold mt-2">
+                                      <div className="dark:bg-black dark:text-gray-200 text-[14px] capitalize font-semibold mt-2">
                                         Favorites
                                       </div>
                                     </div>
-                                          <div className="space-y-2">
+                                          <div className="dark:bg-black dark:text-gray-200 space-y-2">
                                             <FavoriteDocuments TOKEN={TOKEN}/>
                                           </div>
                                     </nav>
@@ -673,8 +674,8 @@ const Navbar = () => {
 
 
                                   {/* ====== Profile ======== */}
-                                  <div className="fixed bottom-0 w-64 p-2 mb-2 mr-3 bg-white ">
-                                  <div className="relative">
+                                  <div className="dark:bg-black dark:text-gray-200 fixed bottom-0 w-64 p-2 mb-2 mr-3 bg-white ">
+                                  <div className="dark:bg-black dark:text-gray-200 relative">
 
                                   {isHovered && (
 
@@ -685,7 +686,7 @@ const Navbar = () => {
                                             "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
                                         }}
                                       >
-                                          <div className="absolute top-2 right-2 w-6 h-6">
+                                          <div className="dark:bg-black dark:text-gray-200 absolute top-2 right-2 w-6 h-6">
                                           <AiOutlineCloseCircle
                                             onClick={() => {
                                               setHovered(!isHovered);
@@ -694,16 +695,16 @@ const Navbar = () => {
                                           />
                                         </div>
 
-                                        <div className="flex flex-col justify-center ">
-                                          <div className="py-4 px-2">
+                                        <div className="dark:bg-black dark:text-gray-200 flex flex-col justify-center ">
+                                          <div className="dark:bg-black dark:text-gray-200 py-4 px-2">
 
                                             {/* =================workspace==================== */}
-                                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
+                                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer"
                                             onClick={()=>{
                                               dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                                               navigate("/change-work-space")
                                             }}>
-                                              <div className="mr-2">
+                                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                               <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 60" x="0px" y="0px">
                                                 <g dataName="Layer 27">
                                                     <path d="M47,24H30V23a3,3,0,0,0-3-3H21a3,3,0,0,0-3,3v1H11a1,1,0,0,0,0-2H10V19a.965.965,0,0,0-.182-.542,1,1,0,0,0-.108-.168,1.2,1.2,0,0,0-.122-.078A.983.983,0,0,0,9,18H4V12H14v6H13a1,1,0,0,0,0,2h2a1,1,0,0,0,1-1V11a1,1,0,0,0-1-1H3a1,1,0,0,0-1,1v8a1,1,0,0,0,1,1H8v2H7a1,1,0,0,0,0,2H1a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H2V47a1,1,0,0,0,2,0V30H15a1,1,0,0,0,0-2H2V26H18v1a3,3,0,0,0,3,3h2v4H19a3,3,0,0,0,0,6h4v3.586l-2.707,2.707a1,1,0,1,0,1.414,1.414L24,45.414l2.293,2.293a1,1,0,0,0,1.414-1.414L25,43.586V40h4a3,3,0,0,0,0-6H25V30h2a3,3,0,0,0,3-3V26H46v2H33a1,1,0,0,0,0,2h1V47a1,1,0,0,0,1,1H45a1,1,0,0,0,1-1V30h1a1,1,0,0,0,1-1V25A1,1,0,0,0,47,24ZM30,37a1,1,0,0,1-1,1H19a1,1,0,0,1,0-2H29A1,1,0,0,1,30,37ZM28,27a1,1,0,0,1-1,1H21a1,1,0,0,1-1-1V23a1,1,0,0,1,1-1h6a1,1,0,0,1,1,1ZM44,40H36V36h8Zm-8,6V42h8v4Zm8-12H36V30h8Z"/>
@@ -724,8 +725,8 @@ const Navbar = () => {
                                                 dispatch(_hide_nav_(!NAV_BAR_CONDITION))
                                               }}
                                             >
-                                              <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                                <div className="mr-2">
+                                              <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                                <div className="dark:bg-black dark:text-gray-200 mr-2">
                                                   <MdSettings size={18} />
                                                 </div>
                                                 <div>
@@ -733,8 +734,8 @@ const Navbar = () => {
                                                 </div>
                                               </div>
                                             </Link>
-                                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                              <div className="mr-2">
+                                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                                 <MdHelp size={18} />
                                               </div>
                                               <div>
@@ -744,16 +745,16 @@ const Navbar = () => {
                                               </Link> 
                                             </div>
                                             </div>
-                                            {/* <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                              <div className="mr-2">
+                                            {/* <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                                 <MdSearch size={18} />
                                               </div>
                                               <div>
                                                 <p className="text-sm font-helv">Search</p>
                                               </div>
                                             </div> */}
-                                            <div className="py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
-                                              <div className="mr-2">
+                                            <div className="dark:bg-black dark:text-gray-200 py-2 px-3 flex items-center duration-300 hover:text-blue-500 cursor-pointer">
+                                              <div className="dark:bg-black dark:text-gray-200 mr-2">
                                                 <FaTrash size={18} />
                                               </div>
                                               <div>
@@ -782,7 +783,7 @@ const Navbar = () => {
                                                   activeLink === "logout" ? "text-blue-500" : ""
                                                 }`}
                                               >
-                                                <div className="mr-2">
+                                                <div className="dark:bg-black dark:text-gray-200 mr-2">
                                                   <MdLogout size={18} />
                                                 </div>
                                                 <div>
@@ -799,16 +800,16 @@ const Navbar = () => {
 
                                   </div>
 
-                                  <div className="flex flex-col bg-white">
+                                  <div className="dark:bg-black dark:text-gray-200 flex flex-col bg-white">
                                     {!isHovered && (
                                       <>
                                         {subscriptions_details
                                         ?
                                           <>
-                                          <div className="mb-2">
+                                          <div className="dark:bg-black dark:text-gray-200 mb-2">
                                           {subscriptions_details.user.trail_ends
                                           ?
-                                            <div className="flex text-base justify-items-start items-center">
+                                            <div className="dark:bg-black dark:text-gray-200 flex text-base justify-items-start items-center">
                                               <div>
                                                   <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                                     <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
@@ -818,7 +819,7 @@ const Navbar = () => {
                                               <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
                                             </div>
                                           :
-                                            <div className="flex text-base justify-items-start items-center">
+                                            <div className="dark:bg-black dark:text-gray-200 flex text-base justify-items-start items-center">
                                                 <div>
                                                     <svg className="w-4 h-4 mb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                                       <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
@@ -828,7 +829,7 @@ const Navbar = () => {
                                                 <span className="text-sm pl-2 mb-2">Your current plans</span>
                                               </div>
                                           }
-                                            <div className="">
+                                            <div className="dark:bg-black dark:text-gray-200 ">
                                             <button
                                               onClick={() => {
                                                 // console.log("pricing")
@@ -849,7 +850,7 @@ const Navbar = () => {
                                         }
                                       </>
                                     )}
-                                    <div className="bg-white mb-6    w-full">
+                                    <div className="dark:bg-black dark:text-gray-200 bg-white mb-6    w-full">
                                       <Button
                                         sx={{ textTransform: "none" }}
                                         onClick={() => {
@@ -878,8 +879,8 @@ const Navbar = () => {
                                             className="w-[40px] h-[40px] rounded-full"
                                           />
                                         )}
-                                        <div className="text-left ml-2 w-full">
-                                          <p className="text-xs font-sans font-bold text-black">
+                                        <div className="dark:bg-black dark:text-gray-200 text-left ml-2 w-full">
+                                          <p className="text-xs dark:text-white font-sans font-bold text-black">
                                             {ChosenWorkspaceId &&
                                               <>
                                                 {ChosenWorkspaceId["workspace_name"]}
@@ -893,7 +894,7 @@ const Navbar = () => {
                                                 null
                                               :
                                                 <>
-                                                  <p className="text-[10px] font-sans font-bold text-black">
+                                                  <p className="dark:text-white text-[10px] font-sans font-bold text-black">
                                                     Free plan
                                                   </p>
                                                 </>
@@ -953,23 +954,23 @@ const Navbar = () => {
               <div
                 className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
               >
-                <div className="relative my-6">
+                <div className="dark:bg-gray-600 dark:text-gray-200 relative my-6">
                   <div
-                    className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                    className="justify-center  items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                   >
-                    <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                      <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                        <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <div className="dark:bg-gray-600 dark:text-gray-200 relative w-auto my-6 mx-auto max-w-3xl">
+                      <div className="dark:bg-gray-600 dark:text-gray-200 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                        <div className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                           <h3 className="text-3xl font-semibold">
-                            <div className="mb-4">
-                              <div className="flex text-base justify-items-start items-center">
+                            <div className="dark:bg-gray-600 dark:text-gray-200 mb-4">
+                              <div className="dark:bg-gray-600 dark:text-gray-200 flex text-base justify-items-start items-center">
                                 <div>
                                   <svg className="w-5 h-5 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                     <path d="M14.25,4.77c.44,.96,.67,2.01,.67,3.08,0,1.56-.5,3.08-1.41,4.34-.92,1.26-2.21,2.2-3.7,2.68-1.48,.48-3.08,.48-4.57,0-1.48-.48-2.78-1.42-3.69-2.69S.14,9.4,.14,7.84c0-1.56,.5-3.08,1.41-4.34,.92-1.26,2.21-2.2,3.7-2.68,.45-.15,.93,.1,1.08,.55,.15,.45-.1,.93-.55,1.08-1.14,.37-2.13,1.09-2.84,2.06-.7,.97-1.08,2.14-1.09,3.33,0,1.2,.38,2.37,1.08,3.34,.7,.97,1.7,1.69,2.84,2.06,1.14,.37,2.37,.37,3.51,0,1.14-.37,2.13-1.09,2.84-2.06s1.08-2.14,1.09-3.34c0-.77-.15-1.52-.45-2.22l-1.42,.82c-.19,.11-.43,.1-.61-.03-.18-.13-.27-.34-.24-.56,.23-1.4,.44-2.17,.92-3.45,.1-.25,.36-.4,.62-.36,1.35,.22,2.12,.42,3.45,.92,.21,.08,.35,.27,.37,.49,.02,.22-.09,.43-.28,.54l-1.32,.76Z" fill="#76A9FA" fillRule="evenodd"></path>
                                     <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                   </svg>
                                 </div>
-                                <span className="text-lg pl-2">
+                                <span className="dark:bg-gray-600 dark:text-gray-200 text-lg pl-2">
                                 {subscriptions_details &&
                                   <>
                                     {
@@ -987,26 +988,28 @@ const Navbar = () => {
                           </h3>
                         </div>
                         <div>
+
+                        
                           {/* ==================the message ============= */}
-                          <div className="w-[90%] m-auto p-8">
-                            <div className="flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
+                          <div className="dark:bg-gray-600 dark:text-gray-200 w-[90%] m-auto p-8">
+                            <div className="dark:bg-gray-600 dark:text-gray-200 flex text-base mb-2 mt-2 justify-items-start items-center space-x-2">
                               <div>
                                 <svg className="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" x="0px" y="0px"><g data-name="01"><path d="M18.81,4.83a3.08,3.08,0,0,0-5.63,0L3.73,23.77a3.82,3.82,0,0,0,.16,3.69A3.13,3.13,0,0,0,6.54,29H25.46a3.13,3.13,0,0,0,2.65-1.54,3.82,3.82,0,0,0,.16-3.69Zm7.59,21.58a1.14,1.14,0,0,1-1,.59H6.54a1.14,1.14,0,0,1-1-.59,1.81,1.81,0,0,1-.07-1.75L15,5.72a1.09,1.09,0,0,1,2,0l9.46,18.94A1.81,1.81,0,0,1,26.41,26.41ZM16,20a3,3,0,1,0,3,3A3,3,0,0,0,16,20Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,16,24Zm-2.1-6.88a2.12,2.12,0,0,0,4.2,0l.76-4.81A2.12,2.12,0,0,0,16.75,10h-1.5a2.12,2.12,0,0,0-1.58.71,2.14,2.14,0,0,0-.52,1.69ZM15.25,12h1.5l.12.08-.76,4.81c0,.12-.21.17-.24,0l-.75-4.77-1,.16Z" /></g></svg>
                               </div>
-                              <p className="text-sm font-normal text-gray-900">
+                              <p className="text-sm font-normal text-gray-400">
                                 You are currently subscribed to the {subscriptions_details.plan} plan,
                                 which provides you with unlimited word access. Once your trial period concludes,
                                 you will be automatically charged the specified amount for one {subscriptions_details.user.subscription_type} continued usage of the tool.
                               </p>
                             </div>
-                            <div className="flex flex-col mb-5 mt-5 w-full border-b border-gray-200 pb-4 space-y-1">
-                              <div className="text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
-                              <div className="flex flex-row justify-between">
-                                <div className="text-gray-900">{subscriptions_details.user.plan}</div>
+                            <div className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 flex flex-col mb-5 mt-5 w-full border-b border-gray-200 pb-4 space-y-1">
+                              <div className="dark:bg-gray-600 dark:text-gray-200 text-gray-600 text-xs font-semibold uppercase"> subsciption type</div>
+                              <div className="dark:bg-gray-600 dark:text-gray-200 flex flex-row justify-between">
+                                <div className="dark:bg-gray-600 dark:text-gray-200 text-gray-900">{subscriptions_details.user.plan}</div>
 
                                 {subscriptions_details.user.plan == "starter" && subscriptions_details.user.subscription_type == "monthly"
                                   ?
-                                  <div className="text-sm text-gray-600">
+                                  <div className="dark:bg-gray-600 dark:text-gray-200 text-sm text-gray-600">
                                     ${subscriptions_details.charge_description.monthly_starter}
                                     /month
                                   </div>
@@ -1015,7 +1018,7 @@ const Navbar = () => {
                                 }
                                 {subscriptions_details.user.plan == "starter" && subscriptions_details.user.subscription_type == "annually"
                                   ?
-                                  <div className="text-sm text-gray-600">
+                                  <div className="dark:bg-gray-600 dark:text-gray-200 text-sm text-gray-600">
                                     ${subscriptions_details.charge_description.annaully_starter}
                                     /year
                                   </div>
@@ -1024,7 +1027,7 @@ const Navbar = () => {
                                 }
                                 {subscriptions_details.user.plan == "premium" && subscriptions_details.user.subscription_type == "monthly"
                                   ?
-                                  <div className="text-sm text-gray-600">
+                                  <div className="dark:bg-gray-600 dark:text-gray-200 text-sm text-gray-600">
                                     ${subscriptions_details.charge_description.monthly_premium_mode}
                                     /month
                                   </div>
@@ -1033,7 +1036,7 @@ const Navbar = () => {
                                 }
                                 {subscriptions_details.user.plan == "premium" && subscriptions_details.user.subscription_type == "annually"
                                   ?
-                                  <div className="text-sm text-gray-600">
+                                  <div className="dark:bg-gray-600 dark:text-gray-200 text-sm text-gray-600">
                                     ${subscriptions_details.charge_description.annaully_premium_mode}
                                     /year
                                   </div>
@@ -1044,10 +1047,10 @@ const Navbar = () => {
 
                               </div>
                             </div>
-                            <div className="flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
-                              <div className="flex flex-row justify-between">
+                            <div className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 flex flex-col mb-2 mt-2 w-full border-b border-gray-200 pb-4 space-y-1">
+                              <div className="dark:bg-gray-600 dark:text-gray-200 flex flex-row justify-between">
                                 <span className="text-xl font-bold text-gray-900 w-3/5">Plan total</span>
-                                <div className="flex flex-col items-end md:flex-row space-x-2"><span className="text-lg text-green-600 font-bold">$
+                                <div className="dark:bg-gray-600 dark:text-gray-200 flex flex-col items-end md:flex-row space-x-2"><span className="text-lg text-green-600 font-bold">$
                                   {subscriptions_details.user.plan == "starter" && subscriptions_details.user.subscription_type == "monthly"
                                     ?
                                     subscriptions_details.charge_description.monthly_starter
@@ -1080,7 +1083,7 @@ const Navbar = () => {
 
                         </div>
                         {/*footer*/}
-                        <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <div className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                           <button
                             className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
@@ -1102,7 +1105,7 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="opacity-25 fixed inset-0 z-40 bg-black">
+                  <div className="dark:bg-black dark:text-gray-200 opacity-25 fixed inset-0 z-40 bg-black">
                   </div>
                 </div>
               </div>

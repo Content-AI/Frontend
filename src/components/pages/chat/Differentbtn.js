@@ -145,21 +145,8 @@ const Differentbtn = (props) => {
         :
         <span className="block pb-3">
         <div data-exclude-from-screenshot="true" className="flex w-full items-center justify-end pt-0 !mt-0 @md:!mt-0">
-            {/* <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Hide from Jasper">
-                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                    <span className="flex items-center justify-center">
-                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M8,10.29c1.26,0,2.29-1.02,2.29-2.29s-1.02-2.29-2.29-2.29-2.29,1.02-2.29,2.29,1.02,2.29,2.29,2.29Z" fill="transparent"></path>
-                          <path d="M15.14,8c0,1.2-3.2,5.43-7.14,5.43S.86,9.2,.86,8,4.06,2.57,8,2.57s7.14,4.23,7.14,5.43Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"></path>
-                          <path d="M8,10.29c1.26,0,2.29-1.02,2.29-2.29s-1.02-2.29-2.29-2.29-2.29,1.02-2.29,2.29,1.02,2.29,2.29,2.29Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                        </svg>
-                    </span>
-                  </span>
-              </button>
-            </span> */}
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Upvote Message"
+              <button type="button" className="dark:bg-black  dark:text-white transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Upvote Message"
               onClick={()=>{
                 notifylikeordislike("Thank you for feedback")
               }}>
@@ -175,7 +162,7 @@ const Differentbtn = (props) => {
               </button>
             </span>
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Downvote Message"
+              <button type="button" className="dark:bg-black  dark:text-white transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Downvote Message"
               onClick={()=>{
                 notifylikeordislike("Thank you for feedback")
               }}>
@@ -192,7 +179,7 @@ const Differentbtn = (props) => {
             </span>
             
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message"
+              <button type="button" className="dark:bg-black  dark:text-white tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Retry Message"
               onClick={()=>{
                 ask_question_in_repeat()
               }}>
@@ -211,7 +198,7 @@ const Differentbtn = (props) => {
             </span>
 
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Copy Message"
+              <button type="button" className="dark:bg-black  dark:text-white tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Copy Message"
               onClick={handleCopyClick}
               >
                   <span className="flex items-center justify-center mx-auto space-x-2 select-none">
@@ -226,20 +213,8 @@ const Differentbtn = (props) => {
                   <span className="tooltip-text">Copy</span>
               </button>
             </span>
-
-            {/* <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Add Message to Knowledge Base">
-                  <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                    <span className="flex items-center justify-center">
-                        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                          <path d="M13.33,14.18c-.04,.53-.68,.78-1.06,.41l-3.48-3.29c-.44-.42-1.13-.42-1.57,0l-3.48,3.29c-.39,.37-1.03,.12-1.06-.41-.26-3.62-.27-7.24-.05-10.86,.07-1.19,1.06-2.1,2.25-2.1h6.26c1.19,0,2.18,.91,2.25,2.1,.21,3.62,.2,7.24-.05,10.86Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                        </svg>
-                    </span>
-                  </span>
-              </button>
-            </span> */}
             <span className="block -mx-0.5 @md:m-0 flex-shrink-none">
-              <button type="button" className=" tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Open in Document"
+              <button type="button" className="dark:bg-black  dark:text-white tooltip-container transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-3 py-1.5 text-sm text-center bg-transparent focus:ring-transparent rounded outline-none shadow-transparent" aria-label="Open in Document"
                onClick={()=>{
                     console.log("doc")
                                 dispatch(_load_screen_(true))
