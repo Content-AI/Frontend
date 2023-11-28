@@ -9,9 +9,16 @@ import EditBrandVoice from './EditBrandVoice';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 const Brandvoice = (props) => {
 
   const navigate = useNavigate()
+
+
+  useEffect(() => {
+    setDocumentTitle("Brand Voice");
+  }, []);
 
   const [showAddVoiceModal,setshowAddVoiceModal]=useState(false)
   const [BrandVoiceData,setBrandVoiceData]=useState(null)

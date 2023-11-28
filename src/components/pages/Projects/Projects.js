@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { _save_folder_data_ } from "../../../features/FolderData";
 
 import { useLocation } from "react-router-dom";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 const cardData = [
   {
@@ -31,6 +32,10 @@ const cardData = [
 const Projects = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setDocumentTitle("Project");
+}, []);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

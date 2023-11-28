@@ -11,6 +11,8 @@ import LoadingPage from '../../LoadingPage';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLocation } from "react-router-dom";
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 import { Link } from "react-router-dom";
 import { _delete_token_ } from '../../../features/AuthenticationToken';
 import { _save_survey_ } from "../../../features/ThreeSteps";
@@ -23,6 +25,7 @@ import ChangeWorkSpace from '../../pages/ChangeWorkSpace';
 import TooltipInfo from '../../Icons/TooltipInfo';
 import Trailing from '../../Icons/Trailing';
 import ActivePlan from '../../Icons/ActivePlan';
+
 
 
 const ISwitch = styled((props) => (
@@ -81,6 +84,11 @@ const Subscription = (props) => {
     const navigate = useNavigate()
     const location = useLocation();
     const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        setDocumentTitle("Subscription Page");
+  }, []);
 
 
     let subscriptions_details = useSelector(

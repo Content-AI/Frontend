@@ -19,6 +19,7 @@ import './style.css'
 import ListDocIconFirst from "../../../Icons/ListDocIconFirst";
 import ListIconSecond from "../../../Icons/ListIconSecond";
 
+import { setDocumentTitle } from '../../../NavBar/DynamicTitle';
 
 const ListOfDocument = (props) => {
 
@@ -27,6 +28,23 @@ const ListOfDocument = (props) => {
   const navigate = useNavigate();
   const popupRef = useRef(null);
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+
+    if(props.SHOW=="trash"){
+      setDocumentTitle("Trash Added");
+    }
+
+    if(props.SHOW=="active"){
+      setDocumentTitle("Recently Added");
+    }
+
+    if(props.DASHBOARD==true){
+      setDocumentTitle("Dashboard");
+    }
+
+  });
 
 
   const [ListOrGrid, setListOrGrid] = useState(true);
@@ -919,7 +937,11 @@ const ListOfDocument = (props) => {
                                 <td className=" dark:text-gray-400  max-w-[10rem] truncate text-ellipsis whitespace-nowrap py-4 pr-3 text-sm text-gray-700"
                                   title={"open " + data.title}
                                   onClick={() => {
-                                    navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
+
+                                    if(props.SHOW=="active"){
+                                      navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
+                                  }
+
                                   }}
                                 >{(data.title).slice(0,25)+".."}</td>
 
@@ -927,7 +949,9 @@ const ListOfDocument = (props) => {
                                 <td className=" dark:text-gray-400  hidden max-w-[6rem] truncate text-ellipsis text-left text-xs font-semibold uppercase text-gray-700 sm:table-cell"
                                   title={"open " + data.title}
                                   onClick={() => {
-                                    navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
+                                    if(props.SHOW=="active"){
+                                      navigate(`/template_data/${data.id}?template_editing=edit_by_user&template_used=redirect_from_doc_page`)
+                                    }
                                   }}>me</td>
 
 

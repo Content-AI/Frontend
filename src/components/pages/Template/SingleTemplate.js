@@ -33,6 +33,7 @@ import { _save_details_ } from "../../../features/Subscriptions";
 import TooltipInfo from "../../Icons/TooltipInfo";
 
 import SelectOptionsTemplate from "./SelectOptionsTemplate/SelectOptions";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 const SingleTemplate = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
@@ -80,6 +81,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
 
   let DarkMode = useSelector((state)=>state.SetDarkMode.DarkMode)
+
+  useEffect(() => {
+    setDocumentTitle("Template");
+  }, []);
 
 
   const { template_id } = useParams();
@@ -653,38 +658,44 @@ useEffect(()=>{
                                 </span>
                               </label>
                             </div>
-                            <div className="dark:bg-gray-800 dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                            {DarkMode
+                            {DarkMode==true
                             ?
-                              <CreatableSelect
-                                isClearable
-                                isDisabled={isLoading}
-                                isLoading={isLoading}
-                                onChange ={(newValue ) => setValue(newValue)}
-                                onCreate Option ={handleCreate }
-                                options={ options }
-                                  value={ value }
-                                  styles={{
-                                    control :  ( provided ) => ({ 
-                                    ...provided, 
-                                    backgroundColor:"#1f2937"}),
-                                  singleValue: (provided) =>  ({
-                                    ...provided,
-                                    color:"white"}),
-                                }}
-                              />
+                            <>
+                                <div className="dark:bg-gray-800 dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                    <CreatableSelect
+                                      isClearable
+                                      isDisabled={isLoading}
+                                      isLoading={isLoading}
+                                      onChange ={(newValue ) => setValue(newValue)}
+                                      onCreate Option ={handleCreate }
+                                      options={ options }
+                                        value={ value }
+                                        styles={{
+                                          control :  ( provided ) => ({ 
+                                          ...provided, 
+                                          backgroundColor:"#1f2937"}),
+                                        singleValue: (provided) =>  ({
+                                          ...provided,
+                                          color:"white"}),
+                                      }}
+                                    />
+                                  </div>
+                              </>
                               :
-                               <CreatableSelect
-                                isClearable
-                                isDisabled={isLoading}
-                                isLoading={isLoading}
-                                onChange={(newValue) => setValue(newValue)}
-                                onCreateOption={handleCreate}
-                                options={options}
-                                value={value}
-                              />
+                              <>
+                              <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                <CreatableSelect
+                                  isClearable
+                                  isDisabled={isLoading}
+                                  isLoading={isLoading}
+                                  onChange={(newValue) => setValue(newValue)}
+                                  onCreateOption={handleCreate}
+                                  options={options}
+                                  value={value}
+                                />
+                              </div>
+                              </>
                             }
-                            </div>
                           </>
                         ))
                       );

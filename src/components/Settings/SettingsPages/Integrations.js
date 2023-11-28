@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Settings from '../Settings'
 
 import { styled } from "@mui/material/styles";
@@ -7,6 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import toast, { Toaster } from "react-hot-toast";
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 import ApiKeyInput from "../../pages/Template/ApiKeyInput";
 
@@ -67,6 +68,10 @@ const Integrations = () => {
   const [isCheckedSEO, setIsCheckedSEO] = useState(false);
   const [isCheckedPlagarism,setisCheckedPlagarism] = useState(false);
   const [isCheckedLanguage,setisCheckedLanguage] = useState(false);
+
+  useEffect(() => {
+    setDocumentTitle("Integrations Page");
+}, []);
 
   const handleCheckboxChangeSEO = (event) => {
     setIsCheckedSEO(event.target.checked);

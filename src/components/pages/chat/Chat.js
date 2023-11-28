@@ -9,6 +9,7 @@ import {
   patchData,
   deleteData,
 } from "../../../apis/apiService";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 import {
   BACKEND_URL,
   BACK_END_API_CHAT_DATA,
@@ -113,13 +114,16 @@ const Chat = ({ AUTH_TOKEN }) => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setDocumentTitle("Chat With AI");
+}, []);
+
   const chatContainerRef = useRef(null);
   const chatLoadingRef = useRef(null);
 
   const divRef = useRef(null);
 
   let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
-
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
@@ -916,23 +920,77 @@ const Chat = ({ AUTH_TOKEN }) => {
 
   // The mic start and stop listening 
 
-  const [listening, setListening] = useState(false);
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  // const [listening, setListening] = useState(false);
+  // const { transcript, resetTranscript } = useSpeechRecognition();
 
-  const startListening = () => {
-    SpeechRecognition.startListening();
-    setListening(true);
-    setChatText(transcript)
+  // const startListening = () => {
+  //   SpeechRecognition.startListening();
+  //   setListening(true);
+  //   setChatText(transcript)
+  // };
+
+  // const stopListening = () => {
+  //   SpeechRecognition.stopListening();
+  //   setListening(false);
+  // };
+
+  // useEffect(()=>{
+  //   if(listening){
+  //     setChatText(transcript)
+  //   }
+  // })
+
+
+  const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+const mic = new SpeechRecognition();
+
+mic.continuous = true;
+mic.interimResults = true;
+mic.lang = "en-US";
+
+
+
+const [isListening, setIsListening] = useState(false);
+const [note, setNote] = useState(null);
+
+useEffect(() => {
+  if(isListening==false){
+    setNote("")
+    mic.stop()
+  }
+  if(isListening==true){
+    handleListen();
+  }
+},[isListening]);
+
+const handleListen = () => {
+  if (isListening) {
+    mic.start();
+  } else {
+    mic.stop();
+    // mic.onend = () => {
+    //   console.log("Stopped Mic on Click");
+    // };
+  }
+  mic.onresult = (event) => {
+    const transcript = Array.from(event.results)
+      .map((result) => result[0])
+      .map((result) => result.transcript)
+      .join("");
+    setNote(transcript);
+    mic.onerror = (event) => {
+      console.log(event.error);
+    };
   };
+};
 
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
-    setListening(false);
-  };
+useEffect(()=>{
+  if(isListening){
+    setChatText(note)
+  }
+})
 
-  useEffect(()=>{
-    if(listening){setChatText(transcript)}
-  })
 
 
 
@@ -1080,9 +1138,16 @@ const Chat = ({ AUTH_TOKEN }) => {
 
     try {
 
-      if (!response.ok) {
-        notifyerror("Check Your Network")
+      if(response.status==400){
+        notifyerror("upgrade your plan")
       }
+      if(response.status==500){
+        notifyerror("upgrade your plan")
+      }
+
+      // if (!response.ok) {
+      //   notifyerror("Check Your Network")
+      // }
 
       const reader = response.body.getReader();
       let answer_response = ""
@@ -1592,11 +1657,19 @@ const Chat = ({ AUTH_TOKEN }) => {
 
                         <div className="absolute bottom-9 mb-[70px] right-[-9px]  w-6 h-6 mr-[40px]">
                             <button
-                              onClick={listening ? stopListening : startListening}
+                              // onClick={listening ? stopListening : startListening}
+                              onClick={() => {
+                                if(isListening==true){
+                                  setIsListening(false)
+                                }else{
+                                  setIsListening(true)
+                                }
+                                    // setIsListening((prevState) => !prevState)
+                                  }}
                               className="dark:bg-black dark:text-gray-200 dark:border-slate-500 p-3 h-[50px] w-[50px] bg-slate-200 rounded-full"
                             >
-                                    {
-                                    listening 
+                                {
+                                    isListening
                                     ?
                                       <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
                                     :

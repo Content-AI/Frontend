@@ -8,9 +8,18 @@ import toast, { Toaster } from 'react-hot-toast';
 import { CSSTransition } from 'react-transition-group';
 import './CancelSubs.css'
 import './AlreadyCancel.css'
+import Profile from './Profile';
+import DateConverter from './DateConverter';
+
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 
 const Billing = (props) => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setDocumentTitle("Billings Page");
+}, []);
 
   const [showInvoice,setshowInvoice]=useState(false)
   const [showBillsData,setshowBillsData]=useState(false)
@@ -22,6 +31,9 @@ const Billing = (props) => {
 
   let list_token_generated_by_user = useSelector(
     (state) => state.SetListTokenGeneratedByUser.ListTokenGeneratedByUser
+  );
+  let PROFILE_DATA = useSelector(
+    (state) => state.SetFullProfile.Fullprofile
   );
 
   
@@ -222,6 +234,7 @@ function calculateBackgroundColor(total) {
   }
 }
 
+
   return (
     <>
       {/* <Settings/> */}
@@ -236,10 +249,28 @@ function calculateBackgroundColor(total) {
                     <div className="sm:col-span-6">
                         <p className="mb-4 mt-2 font-semibold text-sm font-helv text-slate-500 text-grey-500 sm:col-span-6 ">
                         Your account was created on.
-                        <span className='font-semibold'> Jul 27, 2023</span>
+                        <span className='font-semibold ml-1'>
+                        {PROFILE_DATA &&
+                          <DateConverter 
+                            inputDate={PROFILE_DATA.created_at}
+                          />
+                        }
+                        </span>
                         </p>
                         <p className="text-sm font-semibold font-helv text-grey-500 sm:col-span-6 text-slate-500">
-                        You are currently on the monthly
+                        You are currently on the
+                         <span className='ml-1'>
+                        {SubscriptionsData &&
+                          <>
+                            {SubscriptionsData.user.status
+                            ?
+                              SubscriptionsData.user.plan + " " +  SubscriptionsData.user.subscription_type
+                            :
+                              "sdf"
+                            }
+                            </>
+                        }
+                        </span>
                         <strong> Free Plan</strong> 
                         </p>
                     </div>

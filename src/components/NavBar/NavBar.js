@@ -84,9 +84,11 @@ const Navbar = () => {
   let NAV_BAR_CONDITION = useSelector(
     (state) => state.SetHideShowNavBarGlobalState.HideShowNavBarGlobalState
   );
+  
   let subscriptions_details = useSelector(
     (state) => state.SetSubscriptionsData.SubscriptionsData
   );
+
   let TOKEN = useSelector(
     (state) => state.SetAuthenticationToken.AuthenticationToken
   );
@@ -97,6 +99,14 @@ const Navbar = () => {
     (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
   );
 
+
+  // check the time is negative 
+  // useEffect(()=>{
+  //   if(subscriptions_details!=null){
+  //     if(subscriptions_details.user.trail_ends<=0){
+  //     navigate("/settings/subscription_plan?message=upgrade")
+  //   }}
+  // },[subscriptions_details])
 
 
   const handleLinkClick = (link) => {
@@ -480,7 +490,17 @@ const Navbar = () => {
                                     <path d="M7.79,8.83c.31-.13,.51-.44,.51-.78l.02-2.55c0-.47-.38-.86-.85-.86-.47,0-.86,.38-.87,.85l-.02,2-1.09,.48c-.43,.19-.63,.69-.44,1.13,.19,.43,.69,.63,1.13,.44l1.6-.7Z" fill="#1C64F2" fillRule="evenodd"></path>
                                   </svg>
                               </div>
-                              <span className="text-sm pl-2 mb-2">Free trial ends in {subscriptions_details.user.trail_ends}</span>
+
+                              <span className="text-sm pl-2 mb-2">
+                              {parseInt(subscriptions_details.user.trail_ends)<=0
+                              ?
+                                "Plan Ended"
+                              :
+
+                                "Free trial ends in " + subscriptions_details.user.trail_ends
+                              }
+                              </span>
+
                             </div>
                           :
                             <div className="dark:bg-black dark:text-gray-200 flex text-base justify-items-start items-center">

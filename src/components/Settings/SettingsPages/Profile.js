@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { _save_user_profile } from '../../../features/Fullprofile';
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 import { BACK_END_API_PROFILE_UPDATE,BACKEND_URL } from '../../../apis/urls';
 import { patchData } from '../../../apis/apiService';
 import Settings from '../Settings';
@@ -25,6 +27,10 @@ const Profile = () => {
     
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [loadingdata, setloadingdata] = useState(false);
+
+    useEffect(() => {
+        setDocumentTitle("Profile Page");
+  }, []);
     
     let TOKEN = useSelector(
         (state) => state.SetAuthenticationToken.AuthenticationToken
@@ -105,6 +111,7 @@ const Profile = () => {
                                 setfirstName(e.target.value)
                             }}
                             autoComplete="off"
+                            placeholder='First Name character must be 3 to 10 long'
                             className="dark:text-gray-300 dark:bg-gray-800  block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
@@ -123,6 +130,7 @@ const Profile = () => {
                             onChange={(e)=>{
                                 setlastName(e.target.value)
                             }}
+                            placeholder='Last Name  must be 3 to 10 long'
                             autoComplete="off"
                             className="dark:text-gray-300 dark:bg-gray-800 block w-[400px] px-4 py-2 mt-2 text-black bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />

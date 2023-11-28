@@ -26,9 +26,9 @@ const ChangeWorkSpace = () => {
 
 
   const handleClickOutside = (event) => {
-    if (divRef.current && !divRef.current.contains(event.target)) {
-      navigate("/")
-    }
+    // if (divRef.current && !divRef.current.contains(event.target)) {
+    //   navigate("/")
+    // }
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const ChangeWorkSpace = () => {
     <>
         <div  className="fixed inset-0 z-40 overflow-y-auto">
                 <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
-                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" id="headlessui-dialog-overlay-:r28:" aria-hidden="true" data-headlessui-state="open"></div>
+                    <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" ></div>
                     <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px] md:w-[640px] opacity-100 translate-y-0 sm:scale-100">
                         <div ref={divRef}  className="dark:bg-gray-600 dark:text-gray-200 dark:border-slate-500 flex flex-col p-6">
                         {/* ====================close switch workspace================ */}
@@ -90,8 +90,8 @@ const ChangeWorkSpace = () => {
                                 window.location.replace('/')
                             }}>
                                 <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path d="M21.45,21.44L2.55,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
-                                    <path d="M2.55,21.44L21.45,2.56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                                    <path d="M21.45,21.44L2.55,2.56" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2"></path>
+                                    <path d="M2.55,21.44L21.45,2.56" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2"></path>
                                 </svg>
                             </button>
                             </div>

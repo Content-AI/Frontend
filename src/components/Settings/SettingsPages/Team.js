@@ -20,12 +20,18 @@ import AddMoreSeat from './Modal/AddMoreSeat';
 import { NavIcons, SealCheck } from "../../Icons";
 
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 
 const Team = () => {
   const navigate = useNavigate()
   const divRef = useRef(null);
 
   const [progressValue, setProgressValue] = useState(2);
+
+  useEffect(() => {
+    setDocumentTitle("Team Page");
+}, []);
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);

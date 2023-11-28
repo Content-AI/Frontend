@@ -18,6 +18,7 @@ import { fetchData, postData,fileFormData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
@@ -48,6 +49,10 @@ import Progressbar from "./Progressbar";
 const RecapBuilder = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setDocumentTitle("Recap Builder");
+  });
 
   const [selectedTab, setSelectedTab] = useState("url"); // Track the selected tab
   const [ShowHideHistory, setShowHideHistory] = useState(false);

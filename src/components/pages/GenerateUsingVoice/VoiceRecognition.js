@@ -32,9 +32,15 @@ import ResponseTemplate from "../Template/ResponseTemplate";
 import CreatableSelect from "react-select/creatable";
 import { NavIcons, SealCheck } from "../../Icons";
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 
 const VoiceRecognition = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setDocumentTitle("Transcribe speech");
+  });
 
   const [selectedTab, setSelectedTab] = useState("url"); // Track the selected tab
   const [ShowHideHistory, setShowHideHistory] = useState(false);
@@ -123,18 +129,69 @@ const VoiceRecognition = ({ AUTH_TOKEN }) => {
   const notifysucces = (message) => toast.success(message);
 
 
-  const [listening, setListening] = useState(false);
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  // const [listening, setListening] = useState(false);
+  // const { transcript, resetTranscript } = useSpeechRecognition();
 
-  const startListening = () => {
-    SpeechRecognition.startListening();
-    setListening(true);
-  };
+  // const startListening = () => {
+  //   SpeechRecognition.startListening();
+  //   setListening(true);
+  // };
 
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
-    setListening(false);
+  // const stopListening = () => {
+  //   SpeechRecognition.stopListening();
+  //   setListening(false);
+  // };
+
+
+
+  const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+const mic = new SpeechRecognition();
+
+mic.continuous = true;
+mic.interimResults = true;
+mic.lang = "en-US";
+
+
+
+const [isListening, setIsListening] = useState(false);
+const [note, setNote] = useState(null);
+
+useEffect(() => {
+  if(isListening==false){
+    setNote("")
+    mic.stop()
+  }
+  if(isListening==true){
+    handleListen();
+  }
+},[isListening]);
+
+const handleListen = () => {
+  console.log(isListening)
+  if (isListening) {
+    mic.start();
+  } else {
+    mic.stop();
+  }
+  mic.onresult = (event) => {
+    const transcript = Array.from(event.results)
+      .map((result) => result[0])
+      .map((result) => result.transcript)
+      .join("");
+    setNote(transcript);
+    mic.onerror = (event) => {
+      console.log(event.error);
+    };
   };
+};
+
+useEffect(()=>{
+  if(isListening){
+    setstatement_of_user(note)
+  }
+})
+
 
 
 // =======generate image=========
@@ -184,9 +241,9 @@ const get_summarize = async() =>{
   }
 
   
-  useEffect(()=>{
-    if(listening){setstatement_of_user(transcript)}
-  })
+  // useEffect(()=>{
+  //   if(listening){setstatement_of_user(transcript)}
+  // })
 
 
   return (
@@ -241,8 +298,16 @@ const get_summarize = async() =>{
                             </div>
                             <div className="flex mt-4">
                                 <button
-                                    onClick={listening ? stopListening : startListening}
-                                    className={listening ?
+                                    onClick={() => {
+                                      if(isListening==true){
+                                        setIsListening(false)
+                                      }else{
+                                        setIsListening(true)
+                                      }
+                                          // setIsListening((prevState) => !prevState)
+                                        }}
+                                    // onClick={listening ? stopListening : startListening}
+                                    className={isListening ?
                                         "mr-3 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-red-500"
                                     :
                                     "dark:text-white mr-3 transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-blue-500"
@@ -250,7 +315,7 @@ const get_summarize = async() =>{
                                     
                                 >
                                     {
-                                        listening 
+                                      isListening 
                                         ? 
                                           <BsFillMicMuteFill className="h-[23px] w-[23px]"/>
                                         :
@@ -282,7 +347,8 @@ const get_summarize = async() =>{
                                     value={statement_of_user}
                                     maxLength="100"
                                     onChange={(event) => {
-                                        if(listening){
+                                        // if(listening){
+                                        if(isListening){
                                             notifyerror("Stop the microphone ..")
                                             return ;
                                         }

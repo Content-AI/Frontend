@@ -10,7 +10,8 @@ import {
 } from "../../features/LoadingScreenMessage";
 import { _load_screen_ } from "../../features/LoadingScreen";
 
-import Select from 'react-select';
+// import Select from 'react-select';
+import { setDocumentTitle } from '../NavBar/DynamicTitle';
 
 import {
     _save_folder_id_
@@ -34,6 +35,10 @@ const CreateNewContent = (props) => {
     const handleGoBack = () => {
         navigate(-1);
     };
+
+    useEffect(() => {
+      setDocumentTitle("Create New Content");
+    }, []);
 
     let ChosenWorkspaceId = useSelector(
       (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId

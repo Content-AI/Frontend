@@ -53,14 +53,13 @@ const GoogleOneTap = () => {
         script.defer=true;
         script.onload=(data)=>{
             window.google.accounts.id.initialize({
-                client_id:
-                "65857693177-41t814nhrml22jptcfdrcqveumamp8al.apps.googleusercontent.com",
+                client_id:"65857693177-41t814nhrml22jptcfdrcqveumamp8al.apps.googleusercontent.com",
                 callback:(response)=>{
                     // console.log(response)
                     try{
                       set_token_of_gmail(response.credential)
                     }catch(e){
-                        notifyerr("Try loggin in different account")
+                        notifyerr("Try logging in different account")
                     }
 
                 }

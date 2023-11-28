@@ -5,6 +5,7 @@ import { fetchData } from "../../apis/apiService";
 import { useSelector, useDispatch } from "react-redux";
 
 import CardDoc from "../Card/CardDoc";
+import { setDocumentTitle } from '../NavBar/DynamicTitle';
 
 import CkCheck from "../Icons/CkCheck";
 import ThreeDots from "../Icons/ThreeDots";
@@ -82,6 +83,10 @@ const imp_manaully = [
 ]
 
 const Home = ({AUTH_TOKEN}) => {
+
+  useEffect(() => {
+    setDocumentTitle("Dashboard");
+}, []);
 
   const navigate = useNavigate()
   const [imp_template,set_imp_template]=useState(null)

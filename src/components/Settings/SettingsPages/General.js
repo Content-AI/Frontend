@@ -1,7 +1,14 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import Settings from '../Settings'
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 const General = () => {
+
+
+    useEffect(() => {
+        setDocumentTitle("General Page");
+    }, []);
+    
   return (
     <>
       {/* <Settings/> */}

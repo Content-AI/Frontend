@@ -6,11 +6,18 @@ import {fetchData,postData} from "../../../apis/apiService"
 import toast, { Toaster } from "react-hot-toast";
 
 
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
+
 function CompanyRegistrationForm(props) {
     
   const navigate = useNavigate();
 
   const [submitting_form,setsubmitting_form]=useState(false)
+
+        
+    useEffect(() => {
+        setDocumentTitle("Company Registration Page");
+    }, []);
 
 
   const notifyerror = (message) => toast.error(message);

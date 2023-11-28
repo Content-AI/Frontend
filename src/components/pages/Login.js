@@ -45,6 +45,9 @@ import GoogleOneTap from './LoginUpdate/GoogleOneTap';
 import { useLocation } from "react-router-dom";
 import LinkedInSignUp from './LoginUpdate/LinkedInSignUp';
 
+import { setDocumentTitle } from '../NavBar/DynamicTitle';
+
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -63,15 +66,15 @@ export default function Login() {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
-    
 
+      useEffect(() => {
+            setDocumentTitle("Login Page");
+        }, []);
 
     const searchParams = new URLSearchParams(location.search);
     const subscription_type = searchParams.get('subscription_type');
     const plan = searchParams.get('plan');
     const invitation_code = searchParams.get('invitation_code');
-
-
 
 
     const [open, setOpen] = React.useState(false);
@@ -239,7 +242,7 @@ export default function Login() {
             { time: 4000, message: "Validating account" },
             { time: 6000, message: "Validating Workspace" },
             { time: 8000, message: "Sending Token" },
-            { time: 9000, message: "Finalizing" }
+            { time: 9000, message: "Wait For Validation ......." }
             ];
         
             timers.forEach(({ time, message }) => {

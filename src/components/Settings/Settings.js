@@ -3,6 +3,7 @@ import { Transition } from '@headlessui/react';
 
 import { FaArrowRight,FaArrowLeft,FaTimes,FaBars } from "react-icons/fa";
 
+import { setDocumentTitle } from '../NavBar/DynamicTitle';
 
 import { Link } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -25,6 +26,8 @@ const Settings = (props) => {
   const personal_settings = ['Profile'];
 
   const location = useLocation();
+
+
     
 
   const [activeLink, setActiveLink] = useState('');

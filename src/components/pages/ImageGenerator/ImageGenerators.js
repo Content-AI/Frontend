@@ -24,7 +24,7 @@ import TooltipInfo from "../../Icons/TooltipInfo";
 import ResponseTemplate from "../Template/ResponseTemplate";
 import SelectOptionsTemplate from "../Template/SelectOptionsTemplate/SelectOptions";
 
-
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import { Carousel } from "react-responsive-carousel";
@@ -36,6 +36,11 @@ import Downloadicon from "../../Icons/Downloadicon";
 const ImageGenerators = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    setDocumentTitle("Generate Image");
+  });
 
   let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState,useRef } from "react";
 
 // import QuillWrapper from './quillcomponent'
 // import Editor from './EditorWithUseQuill';
+import { setDocumentTitle } from '../../../NavBar/DynamicTitle';
 
 import { useParams } from 'react-router-dom';
 
@@ -48,6 +49,10 @@ function EditDocuments() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const ref = useRef();
+
+  useEffect(() => {
+    setDocumentTitle("Editor Page");
+  }, []);
 
   let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
 
@@ -1056,7 +1061,7 @@ function EditDocuments() {
                                               <div class="flex-shrink-0 w-10 h-10">
                                                   <div class="text-base w-10 h-10 rounded-full font-bold text-white flex items-center justify-center" >
                                                   <img
-                                                      src="/default.png"
+                                                      src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/default.png"
                                                       className="w-[35px] h-[35px] rounded-full"
                                                     />
                                                   </div>
