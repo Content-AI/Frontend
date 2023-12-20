@@ -8,7 +8,7 @@ const Fullscreen = () => {
 
   return (
     <>
-    {DarkMode
+    {DarkMode==true
     ?
       <svg className='w-5 h-5 ' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125"  xmlSpace="preserve">
       <g fill='white'>

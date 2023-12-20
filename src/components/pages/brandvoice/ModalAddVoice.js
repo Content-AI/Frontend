@@ -274,60 +274,60 @@ const handleUploadFile = async () => {
                 }
 
 
-                <div className="md:flex justify-around mb-3">
+                <div className="md:flex justify-around">
                 {showInitialsetup ? (
-  <>
-    <button
-      className="flex-1 border dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 bg-gray-50 rounded-2xl cursor-pointer mr-3"
-      onClick={() => {
-        setshowInitialsetup(false);
-        setshowTextUrl(true);
-      }}
-    >
-      <div className=" py-6 text-center">
-        <div className="flex justify-center dark:text-white">
-          <UrlIcon />
-        </div>
-        <h3 className="dark:text-white font-medium">Using Urls</h3>
-        <p className="dark:text-white text-gray-600 text-xs">copy and paste url</p>
-      </div>
-    </button>
+                      <>
+                        <button
+                          className="flex-1 border mb-1 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 bg-gray-50 rounded-2xl cursor-pointer mr-3"
+                          onClick={() => {
+                            setshowInitialsetup(false);
+                            setshowTextUrl(true);
+                          }}
+                        >
+                          <div className=" py-6 text-center">
+                            <div className="flex justify-center dark:text-white">
+                              <UrlIcon />
+                            </div>
+                            <h3 className="dark:text-white font-medium">Using Urls</h3>
+                            <p className="dark:text-white text-gray-600 text-xs">copy and paste url</p>
+                          </div>
+                        </button>
 
-    <button
-      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
-      onClick={() => {
-        setshowInitialsetup(false);
-        setanalyzingdata(false);
-        setfile_upload_form(true);
-      }}
-    >
-      <div className="py-6 text-center">
-        <div className="flex justify-center">
-          <FileIcon />
-        </div>
-        <h3 className="font-medium dark:text-white">From File</h3>
-        <p className="text-gray-600 text-xs dark:text-white">Upload Your File we will analyze the tone</p>
-      </div>
-    </button>
+                        <button
+                          className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
+                          onClick={() => {
+                            setshowInitialsetup(false);
+                            setanalyzingdata(false);
+                            setfile_upload_form(true);
+                          }}
+                        >
+                          <div className="py-6 text-center">
+                            <div className="flex justify-center">
+                              <FileIcon />
+                            </div>
+                            <h3 className="font-medium dark:text-white">From File</h3>
+                            <p className="text-gray-600 text-xs dark:text-white">Upload Your File we will analyze the tone</p>
+                          </div>
+                        </button>
 
-    <button
-      className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
-      onClick={() => {
-        setshowInitialsetup(false);
-        setanalyzingdata(false);
-        setshowTextInputBox(true);
-      }}
-    >
-      <div className="py-6 text-center">
-        <div className="flex justify-center">
-          <FileTextUrl />
-        </div>
-        <h3 className="font-medium dark:text-white">From text</h3>
-        <p className="text-gray-600 text-xs dark:text-white">Write or copy and paste text</p>
-      </div>
-    </button>
-  </>
-) : null}
+                        <button
+                          className="flex-1 border bg-gray-50 rounded-2xl cursor-pointer mr-3 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500"
+                          onClick={() => {
+                            setshowInitialsetup(false);
+                            setanalyzingdata(false);
+                            setshowTextInputBox(true);
+                          }}
+                        >
+                          <div className="py-6 text-center">
+                            <div className="flex justify-center">
+                              <FileTextUrl />
+                            </div>
+                            <h3 className="font-medium dark:text-white">From text</h3>
+                            <p className="text-gray-600 text-xs dark:text-white">Write or copy and paste text</p>
+                          </div>
+                        </button>
+                      </>
+                    ) : null}
 
                 
                     {/* =========pdf data======================= */}
@@ -463,8 +463,8 @@ const handleUploadFile = async () => {
                     {showTextUrl
                     ?
                     <>
-                        <div className="space-y-1.5 w-full p-6">
-                            <div className="space-y-1.5 w-[60%] m-auto">
+                        <div className="space-y-1.5 w-full pb-2">
+                            <div className="space-y-1.5 w-[80%] m-auto">
                             <div className="flex justify-between">
                                 <h1 className="dark:text-white text-base font-semibold pb-2">Tone Name</h1>
                             </div>

@@ -899,6 +899,7 @@ function EditDocuments() {
 
 
                       <span className="relative hover:z-10">
+
                       <button type="button" title="Edit in Full-Screen" className="dark:ring-1 dark:ring-slate-500 dark:bg-gray-700  dark:border-slate-500 ml-2 mr-2 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
                       onClick={()=>{
                         set_editor_full_screen(!editor_full_screen)
@@ -907,6 +908,7 @@ function EditDocuments() {
                               <Fullscreen/>
                           </span>
                         </button>
+                        
                       </span>
                       <span className="relative hover:z-10">
                         <button type="button" title="Load Template" className="dark:ring-1 dark:ring-slate-500 dark:bg-gray-700  dark:border-slate-500 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
@@ -1243,25 +1245,37 @@ function EditDocuments() {
                                     <>
                                     <div className=" dark:bg-gray-700  flex flex-row items-start justify-between pl-4 pr-3 py-3 sticky top-0 z-50 border-b border-slate-200 w-full bg-white">
                                       
-                                      <div className="  flex items-baseline sticky top-0 bg-white z-10">
-                                        <button type="button" className="dark:bg-gray-700 transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent dark:rounded-none rounded outline-none shadow-transparent pl-0"
-                                        onClick={()=>{
-                                            setTemplateData(null)
-                                            dispatch(_template_id_(null))
-                                            WholeTemplateApi()
-                                            const baseUrl = window.location.href.split('?')[0];                
-                                            const newUrl = "/template_data/"+document_id+`?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
-                                            navigate(newUrl)
-                                        }}>
-                                          <DarkModeTemplate/>
-                                        </button>
+                                      <div 
+                                        className="flex items-baseline sticky top-0 bg-white z-10"
+                                      >
                                       </div>
                                           
                                           <div className="flex flex-col w-full">
                                             <div className=" dark:bg-gray-700 flex-1 sticky top-0 bg-white z-10">
-                                              <h2 className="dark:text-white leading-7 text-gray-900 text-[20px] font-semibold line-clamp-1">
-                                                {TemplateData[0].title}
-                                              </h2>
+
+
+                                            <div className="flex items-center">
+                                                <button
+                                                  type="button"
+                                                  className="dark:bg-gray-700 transition-all duration-200 relative font-semibold shadow-sm hover:outline-none focus:outline-none px-4 py-2 text-base text-center bg-transparent focus:ring-transparent dark:rounded-none rounded outline-none shadow-transparent pl-0"
+                                                  onClick={() => {
+                                                    setTemplateData(null);
+                                                    dispatch(_template_id_(null));
+                                                    WholeTemplateApi();
+                                                    const baseUrl = window.location.href.split('?')[0];
+                                                    const newUrl = `/template_data/${document_id}?template_editing=edit_by_user&content=chat_content&redirect=from_workflow_page`;
+                                                    navigate(newUrl);
+                                                  }}
+                                                >
+                                                  <DarkModeTemplate />
+                                                </button>
+                                                <h2 className="dark:text-white leading-7 text-gray-900 text-[15px] font-semibold line-clamp-1">
+                                                  {TemplateData[0].title}
+                                                </h2>
+                                              </div>
+
+
+
                                               <p className="dark:text-white leading-tight text-gray-500 text-xs line-clamp-1">
                                                 {TemplateData[0].description}
                                               </p>

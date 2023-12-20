@@ -8,7 +8,6 @@ const CardDoc = (props) => {
 
   return (
     <div
-      // className="dark:hover:bg-gray-700  dark:border-slate-500 card flex flex-col md:flex-row p-4 md:p-6 min-h-[144px] border border-border rounded-xl hover:bg-slate-100 cursor-pointer transition-all duration-300"
       className="dark:bg-slate-700 dark:hover:bg-gray-600 hover:bg-gray-100  dark:border-slate-500 card flex flex-col md:flex-row p-4 md:p-6 min-h-[144px] border border-border rounded-xl  cursor-pointer transition-all duration-300"
       onClick={() => {
         navigate(`/template/${props.id}?custom=normal_user`);

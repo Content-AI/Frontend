@@ -120,12 +120,13 @@ useEffect(()=>{
   return (
     <div className="pl-6">
 
-      <h1 className="dark:text-gray-500 text-2xl font-bold mb-6 p-8">Dashboard</h1>
+      {/* <h1 className="dark:text-gray-500 text-2xl font-bold mb-6 p-8">Dashboard</h1> */}
+      <h1 className="dark:text-gray-500 text-2xl font-bold">Dashboard</h1>
 
-      <div className="max-w-[843px] mx-auto mt-10 mb-12">
+      <div className="max-w-[843px] mx-auto mt-8 mb-12">
       
         <div className="mb-6">
-          <h1 className="text-[40px] font-bold dark:text-gray-500">Welcome to Jyra AI</h1>
+          <h1 className="text-[30px] font-bold dark:text-gray-500">Welcome to Jyra AI</h1>
           <p className="text-sm dark:text-gray-500">
             Follow these steps to get started and earn free credits as you go.
           </p>
@@ -308,8 +309,8 @@ useEffect(()=>{
 
 
       
-      <div className="mt-12 pl-8">
-        <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
+    <div className="mt-12 p-9">
+        <h3 className="text-md font-bold mb-6 ml-2">New tools to help you create</h3>
         
         <div>
 

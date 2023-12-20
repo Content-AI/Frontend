@@ -46,28 +46,28 @@ const GoogleOneTap = () => {
       (state) => state.SetLoadingScreen.LoadingScreen
     );
 
-    useEffect(()=>{
-        const script=document.createElement("script");
-        script.src="https://accounts.google.com/gsi/client";
-        script.async=true;
-        script.defer=true;
-        script.onload=(data)=>{
-            window.google.accounts.id.initialize({
-                client_id:"65857693177-41t814nhrml22jptcfdrcqveumamp8al.apps.googleusercontent.com",
-                callback:(response)=>{
-                    // console.log(response)
-                    try{
-                      set_token_of_gmail(response.credential)
-                    }catch(e){
-                        notifyerr("Try logging in different account")
-                    }
-
-                }
-            });
-            window.google.accounts.id.prompt();
-        };
-        document.body.appendChild(script)
-    },[])
+    useEffect(() => {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = (data) => {
+          window.google.accounts.id.initialize({
+              client_id: "65857693177-41t814nhrml22jptcfdrcqveumamp8al.apps.googleusercontent.com",
+              callback: (response) => {
+                  try {
+                      set_token_of_gmail(response.credential);
+                  } catch (e) {
+                      notifyerr("Try logging in a different account");
+                  }
+              },
+              prompt_parent_domain: "app.uffai.com",
+          });
+          window.google.accounts.id.prompt();
+      };
+      document.body.appendChild(script);
+  }, []);
+  
 
 
     

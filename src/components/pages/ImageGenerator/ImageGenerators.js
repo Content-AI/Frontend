@@ -380,18 +380,29 @@ const [imageUrls, setImageUrls] = useState([]);
               </div>
 
               <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 lg:w-1/2 items-center justify-center max-h-full bg-white font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
-                    
+                    <button
+                      className="dark:bg-gray-700 dark:text-gray-200  relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg "
+                      onClick={() => {
+                      }}
+                    >
+                    </button>
+                    <button
+                      className="dark:bg-gray-700 dark:text-gray-200 relative whitespace-nowrap py-2 px-3 text-xs font-medium rounded-lg "
+                      onClick={() => {
+                      }}
+                    >
+                    </button>
                   </nav>
                   <div>
                     <button
-                      className=" relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black-400 transition-all duration-150 hover:text-gray-600"
+                      className="relative whitespace-nowrap px-3 py-2 text-xs font-medium leading-4 text-black-400 transition-all duration-150 hover:text-gray-600"
                       onClick={() => {
-                        setImageUrls([])
+                        setImageUrls([]);
                       }}
                     >
                       <span className="relative">Clear</span>
