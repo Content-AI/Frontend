@@ -1,5 +1,6 @@
 import React, {useRef, useState } from 'react';
 import RenderHtml from './RenderHtml'
+import RenderHtmlData from './RenderHtmlData'
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -33,9 +34,13 @@ import LoadingPage from '../../LoadingPage';
 import { BACKEND_URL,BACK_END_API_DOCUMENTS } from '../../../apis/urls';
 import { postData } from '../../../apis/apiService';
 
+
+
 const ResponseTemplate = (prop) => {
 
-    // console.log(prop)
+    // console.log("prop : ",prop)
+    // prop.r_custome=="user"
+
 
     const textRef = useRef(null);
     let navigate = useNavigate();
@@ -59,6 +64,10 @@ const ResponseTemplate = (prop) => {
         (state) => state.SetCopiedText.CopiedText
       );
 
+    let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );
+
     const handleCopyClick = () => {
       const textToCopy = textRef.current.innerText;
       navigator.clipboard.writeText(textToCopy);
@@ -78,17 +87,28 @@ const ResponseTemplate = (prop) => {
           secondary: '#FFFAEE',
         },
       });
+      const notifymessage = (message) =>
+      toast(message, {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
 
       const createDocumentForUser = async() =>{
         let formData = {}
         if(ProjectOrFolderIdChoosen){
             formData = {
                 document_content:prop.r_data,
-                project_id:ProjectOrFolderIdChoosen
+                project_id:ProjectOrFolderIdChoosen,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
         }else{
             formData = {
                 document_content:prop.r_data,
+                workspace_id:ChosenWorkspaceId["Workspace_Id"]
             }
 
         }
@@ -98,7 +118,7 @@ const ResponseTemplate = (prop) => {
             if(resp.status==201){
                 dispatch(_load_screen_(false))
                 dispatch(_message_(""))
-                navigate(`/template_data/${resp.data["id"]}?template_editing=edit_by_user&template=${template_id}`)
+                navigate(`/template_data/${resp.data["id"]}?template_editing=edit_by_user&template=${template_id}&custome=${prop.r_custome}`)
 
             }else{
                 notifyerror("something went wrong refresh page")
@@ -111,31 +131,18 @@ const ResponseTemplate = (prop) => {
     
   return (
     <>
-        <div className="px-6 py-3 border-b border-gray-200 group cursor-pointer bg-green-50 hover:bg-green-300/5">
+        <div className="dark:bg-gray-700 dark:text-white px-6 py-3 border-b border-gray-200 group cursor-pointer bg-green-50 hover:bg-green-300/5 ">
         {loading_page
         ?
             <LoadingPage message={"Creating Document"}/>
         :
             <>
                 <div className="flex items-center space-x-2">
-                <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 group-hover:opacity-100 hover:ring-1 hover:ring-gray-200 hover:bg-white hover:text-yellow-500">
-                        <svg title="Copy" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8,1.33c.18,0,.34,.1,.43,.27l1.86,3.76,3.98,.68c.18,.03,.32,.16,.38,.34,.06,.18,.01,.38-.11,.51l-2.83,3.02,.61,4.18c.03,.19-.05,.37-.19,.48-.15,.11-.34,.13-.5,.04l-3.61-1.89-3.6,1.89c-.16,.09-.35,.07-.5-.04-.15-.11-.22-.3-.19-.48l.61-4.18L1.47,6.89c-.13-.13-.17-.33-.11-.51,.06-.18,.2-.31,.38-.34l3.99-.68,1.85-3.76c.08-.17,.25-.27,.43-.27Z" fill="none" fillRule="evenodd" stroke="currentColor" strokeWidth="1">   
-                            </path>
-                        </svg>
-                </button>
-
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path d="M13.33,14.18c-.04,.53-.68,.78-1.06,.41l-3.48-3.29c-.44-.42-1.13-.42-1.57,0l-3.48,3.29c-.39,.37-1.03,.12-1.06-.41-.26-3.62-.27-7.24-.05-10.86,.07-1.19,1.06-2.1,2.25-2.1h6.26c1.19,0,2.18,.91,2.25,2.1,.21,3.62,.2,7.24-.05,10.86Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
-                    </svg>
-                    </button>
-
                    {/* ============================ */}
                    
                     <button
                         onClick={handleCopyClick}
-                    className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    className=" p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20  group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white dark:hover:bg-gray-400 dark:bg-black">
                         {/* <div className="tooltip" title="Copy"> */}
                         <div className="tooltip-container">
                             <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
@@ -152,7 +159,7 @@ const ResponseTemplate = (prop) => {
 
                     {prop?.r_show
                     ?
-                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20  group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white dark:hover:bg-gray-400 dark:bg-black"
                             onClick={()=>{
                                 // const formattedData = COPIED_TEXT.replace(/\n/g, '<br>');
                                 dispatch(setText(COPIED_TEXT))
@@ -169,7 +176,7 @@ const ResponseTemplate = (prop) => {
                             </div>
                         </button>
                     :
-                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white"
+                        <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20  group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white dark:hover:bg-gray-400 dark:bg-black"
                             onClick={()=>{
                                 dispatch(_load_screen_(true))
                                 dispatch(_message_("Creating Document"))
@@ -186,7 +193,11 @@ const ResponseTemplate = (prop) => {
                         </button>
                     }
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20  group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white dark:hover:bg-gray-400 dark:bg-black"
+                    onClick={()=>{
+                        notifymessage("Thank you for feedback")
+                    }}
+                    >
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                         <path d="M4.7,12.94h-.7V6.4L7.45,1.49c.28-.4,.73-.63,1.22-.63,.9,0,1.6,.8,1.48,1.7l-.26,1.86h2.27c.99,0,2.98,.99,2.98,2.98s-2,6.54-4.12,6.54c-2.78,0-5.17-.66-6.33-.99Z" fill="transparent"></path>
                         <path d="M4.7,12.94h-.7V6.4L7.45,1.49c.28-.4,.73-.63,1.22-.63,.9,0,1.6,.8,1.48,1.7l-.26,1.86h2.27c.99,0,2.98,.99,2.98,2.98s-2,6.54-4.12,6.54c-2.78,0-5.17-.66-6.33-.99Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -194,7 +205,10 @@ const ResponseTemplate = (prop) => {
                     </svg>
                     </button>
 
-                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20 hover:bg-gray-100 group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white">
+                    <button className="p-2 leading-4 text-gray-400 transition duration-150 group-hover:bg-white rounded-md opacity-20  group-hover:opacity-100 hover:text-gray-600 hover:ring-1 hover:ring-gray-200 hover:bg-white dark:hover:bg-gray-400 dark:bg-black"
+                    onClick={()=>{
+                        notifymessage("Thank you for feedback")
+                    }}>
                     <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                         <path d="M4.7,2.63h-.7v6.54l3.45,4.91c.28,.4,.73,.63,1.22,.63,.9,0,1.6-.8,1.48-1.7l-.26-1.86h2.27c.99,0,2.98-.99,2.98-2.98S13.14,1.64,11.03,1.64c-2.79,0-5.17,.66-6.33,.99Z" fill="transparent"></path>
                         <path d="M4.7,2.63h-.7v6.54l3.45,4.91c.28,.4,.73,.63,1.22,.63,.9,0,1.6-.8,1.48-1.7l-.26-1.86h2.27c.99,0,2.98-.99,2.98-2.98S13.14,1.64,11.03,1.64c-2.79,0-5.17,.66-6.33,.99Z" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -206,13 +220,13 @@ const ResponseTemplate = (prop) => {
                     </div>
                 </div>
                 <div ref={textRef} className="w-full mt-2 mb-3 text-base font-medium leading-7 text-gray-800 whitespace-pre-wrap pre">
-                    <RenderHtml
+                    <RenderHtmlData
                         htmldata={prop.r_data}
                     />
                 </div>
             </>
         }
-        <Toaster/>
+        {/* <Toaster/> */}
         </div>
     </>
   )

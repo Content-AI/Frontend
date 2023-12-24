@@ -8,7 +8,10 @@ import {
   BACK_END_API_INNER_TEMPLATE,
   BACK_END_API_RESPONSE,
   BACK_END_API_SELECT_FIELD,
+  BACK_END_API_GET_CUSTOM_TEMPLATE,
+  BACK_END_API_EXAMPLE_VALUE,
 } from "../../../apis/urls";
+import { NavIcons, SealCheck } from "../../Icons";
 import { fetchData, postData } from "../../../apis/apiService";
 import { IoMdArrowBack } from "react-icons/io";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -25,18 +28,22 @@ import RenderTemplate from "./RenderTemplate";
 import BouncingDotsLoader from "../../BouncingDotsLoader";
 import axios from "axios";
 import ResponseTemplate from "./ResponseTemplate";
+import { useSelector, useDispatch } from "react-redux";
+import { _save_details_ } from "../../../features/Subscriptions";
+import TooltipInfo from "../../Icons/TooltipInfo";
 
-// import ReactMarkdown from 'react-markdown'
-// import rehypeKatex from 'rehype-katex'
-
-// import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
-// import remarkGfm from 'remark-gfm';
-// import remarkMath from 'remark-math';
+import SelectOptionsTemplate from "./SelectOptionsTemplate/SelectOptions";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 const SingleTemplate = ({ AUTH_TOKEN }) => {
   const navigate = useNavigate();
-  const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
+  const dispatch = useDispatch();
+
+  let upgrade_plan={restrict_user: true, customer_stripe_id: 'null', email: 'null', subscription_type: 'null', status: 'trial'}
+
+
   const [TemplateData, setTemplateData] = useState(null);
+  const [TemplateDataInputFields, setTemplateDataInputFields] = useState([]);
   const [TemplateResponseData, setTemplateResponseData] = useState(null);
 
   const [ProjectId, setProjectId] = useState(null);
@@ -49,15 +56,18 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   const [Outputlanguage, setOutputlanguage] = useState([]);
   const [OutputlanguageChoice, setOutputlanguageChoice] = useState("English");
 
-  const [inputs, setInputs] = useState([]);
+  // const [inputs, setInputs] = useState([]);
+  const [inputs, setInputs] = useState([{ key: "", value: "" }]);
+
+
+
   const [multipleInputForms, setMultipleInputForms] = useState({});
 
   const [ShowHideHistory, setShowHideHistory] = useState(false);
 
   const [history_answer, set_history_answer] = useState(null);
 
-  const [range_of_text_from_browser, setrange_of_text_from_browser] =
-    useState(0);
+  const [range_of_text_from_browser, setrange_of_text_from_browser] = useState(0);
 
   const [ContentOutputNumber, setContentOutputNumber] = useState(2);
 
@@ -65,10 +75,33 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const location = useLocation();
 
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );
+
+
+  let DarkMode = useSelector((state)=>state.SetDarkMode.DarkMode)
+
+  useEffect(() => {
+    setDocumentTitle("Template");
+  }, []);
+
+
   const { template_id } = useParams();
+
+  const searchParams = new URLSearchParams(location.search);
+  const custom = searchParams.get('custom');
+
+  // console.log("custom : ",custom)
 
   const notifyerror = (message) => toast.error(message);
   const notifysucces = (message) => toast.success(message);
+
+
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+
 
   const [renderKey, setRenderKey] = useState(0);
 
@@ -76,15 +109,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([
-    { value: "nice", label: "nice" },
-    { value: "fancy", label: "fancy" },
-    { value: "relaxed", label: "relaxed" },
-    { value: "skilled", label: "skilled" },
-    { value: "confident", label: "confident" },
-    { value: "daring", label: "daring" },
-    { value: "funny", label: "funny" },
-    { value: "persuasive", label: "persuasive" },
-    { value: "empathetic", label: "empathetic" },
+    { value: "nice", label: "Nice" },
+    { value: "fancy", label: "Fancy" },
+    { value: "relaxed", label: "Relaxed" },
+    { value: "skilled", label: "Skilled" },
+    { value: "confident", label: "Confident" },
+    { value: "daring", label: "Daring" },
+    { value: "funny", label: "Funny" },
+    { value: "persuasive", label: "Persuasive" },
+    { value: "empathetic", label: "Empathetic" },
   ]);
   const [value, setValue] = useState(null);
 
@@ -113,24 +146,27 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     if (resp.status === 200) {
       setTemplateData(resp.data);
     } else {
-      navigate("/template");
+      navigate("/templates");
     }
   };
 
   useEffect(() => {
-    get_inner_template_data(
-      BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id,
-      AUTH_TOKEN
-    );
+    if(custom=="user"){
+      get_inner_template_data(
+        BACKEND_URL + BACK_END_API_GET_CUSTOM_TEMPLATE+ template_id,
+        AUTH_TOKEN
+      );
+    }else{
+      get_inner_template_data(
+        BACKEND_URL + BACK_END_API_INNER_TEMPLATE + template_id,
+        AUTH_TOKEN
+      );
+    }
   }, []);
 
-  // useEffect(()=>{
-  //     console.log(TemplateData)
-  // },[TemplateData])
+
 
   const handleClick = async (id_of_template) => {
-    // console.log(TemplateData[0]["title"])
-    // return true
     const divElement = document.getElementById(id_of_template);
     const inputElements = divElement.getElementsByTagName("input");
     const textareaElements = divElement.getElementsByTagName("textarea");
@@ -143,19 +179,21 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     }, {});
     let isFormDataValid = true;
     formData["language"] =
-      "Generate whole text in " + OutputlanguageChoice + " Language";
+    "Generate whole text in " + OutputlanguageChoice + " Language";
     formData["output_results"] = ContentOutputNumber.toString();
     formData["generate"] = TemplateData[0]["title"];
-
+    formData["ids"] = TemplateData[0]["id"];
+    formData["workspace_id"] = ChosenWorkspaceId["Workspace_Id"];
+    
     const keyToCheck = /^(?!.*[Tt]one)(?!.*features).*$/;
-
+    
     // return true
     for (const [key, value] of Object.entries(formData)) {
-      if (value === "") {
+      if (key === "") {
         delete formData[key];
       }
     }
-
+  
     Object.entries(formData).forEach(([key, value_d]) => {
       if (key.match(keyToCheck)) {
         // Case-sensitive match
@@ -166,18 +204,30 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       }
     });
 
-    if (inputs.length > 0) {
-      formData["inputs"] = inputs;
-    }
+    // if (inputs.length > 0) {
+    //   formData["inputs"] = inputs;
+    // }
 
-    Object.entries(formData).forEach(([key, value__d]) => {
-      const trimmedValue__d = value__d.trim();
-      if (trimmedValue__d === "") {
-        delete formData[key]; // Remove the key from formData
-      }
-    });
+    // Object.entries(formData).forEach(([key, value__d]) => {
+    //   const trimmedValue__d = value__d.trim();
+    //   if (trimmedValue__d === "") {
+    //     delete formData[key]; // Remove the key from formData
+    //   }
+    // });
+
     if (value != null) {
       formData["tone"] = value.value;
+    }
+
+    const key_feature = inputs;
+    if (
+      key_feature.length === 1 &&
+      key_feature[0].key === "" &&
+      key_feature[0].value === ""
+    ) {} else {
+      if(Object.keys(key_feature).length != 0){
+        formData["key_feature"] = key_feature;
+      }
     }
 
     if (isFormDataValid) {
@@ -188,10 +238,16 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         AUTH_TOKEN
       );
       if (res_of_template.status == 200) {
-        // console.log(res_of_template.data)
+        if(res_of_template.data.data[0]["content"]=="upgrade your plan"){
+          navigate("/settings/subscription_plan?message=upgrade")
+        }
+        if(res_of_template.data.data[0]["content"]=="To use Premium you need to upgrade your plan"){
+          notifysucces(res_of_template.data.data[0]["content"])
+        }
         setTemplateResponseData(res_of_template.data.data);
         setProjectId(res_of_template.data.project_id);
         setLoadingButton(false);
+
       } else {
         notifyerror("Try again");
         setLoadingButton(false);
@@ -204,10 +260,14 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
   //     console.log(ProjectId);
   //   }, [ProjectId]);
 
-  const get_history = async () => {
-    const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY, AUTH_TOKEN);
-    if ((resp.status = 200)) {
-      set_history_answer(resp.data);
+  const get_history = async (template_id) => {
+    if(template_id!=null){
+      if(ChosenWorkspaceId!=null){
+        const resp = await fetchData(BACKEND_URL + BACK_API_HISTORY+"/"+template_id+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"], AUTH_TOKEN);
+        if ((resp.status = 200)) {
+          set_history_answer(resp.data);
+        }
+    }
     }
   };
 
@@ -221,11 +281,11 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
         if (TemplateData[0]["template_fields"].length > 0) {
           // console.log("good")
         } else {
-          navigate("/template");
+          navigate("/templates");
         }
       }
     }
-    get_history();
+    get_history(template_id);
   }, [TemplateData]);
 
   // useEffect(()=>{
@@ -251,10 +311,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     get_language();
   }, []);
 
-  const handleMultipleInputChange = (event, index) => {
-    const { value } = event.target;
+  const handleMultipleInputChange = (event, index, key) => {
     const newInputs = [...inputs];
-    newInputs[index] = value;
+    newInputs[index] = { key, value: event.target.value };
     setInputs(newInputs);
   };
 
@@ -282,6 +341,10 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
       return "Tell us second key word";
     } else if (index === 2) {
       return "One last word";
+    } else if (index === 3) {
+      return "isn't that enough";
+    } else if (index === 4) {
+      return "ok that's quite heck of feature";
     } else {
       return "...";
     }
@@ -331,26 +394,56 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
     save_select_fields(options[0]["value"]);
   }, [options]);
 
+
+
+// =======Get the example value============
+
+const get_example_value_api = async() =>{
+  const resp = await fetchData(BACKEND_URL+BACK_END_API_EXAMPLE_VALUE+template_id,AUTH_TOKEN)
+  if(resp.status==200){
+    setInputs(resp.data)
+  }
+}
+
+useEffect(()=>{
+  if(custom=='user'){
+    get_example_value_api()  
+  }
+},[])
+
+
+
+
   return (
     <>
       <div className="relative lg:-m-6">
-        <button
-          onClick={() => {
-            navigate("/template");
-          }}
-          className="z-20 fixed top-7 left-[280px] w-8 h-8 flex items-center justify-center text-black font-bold rounded"
-        >
-          <IoMdArrowBack />
-        </button>
+
         {TemplateData && (
           <>
-            <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)]">
+            <div className="flex flex-col lg:flex-row lg:max-h-[calc(100vh-75px)] bg-white">
+
+
+
               <div className="lg:w-1/2 flex flex-col max-h-full bg-blue-900">
-                <div className="z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+
+                 
+
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 z-10 sticky top-[74px] flex px-6 py-4 bg-white border-b border-border">
+                  
                   <div className="w-10 h-10">
+
+                    <button
+                        onClick={() => {
+                          navigate("/templates");
+                        }}
+                        className="z-20 top-9 dark:bg-black dark:text-gray-200 left-[280px] w-8 h-8 flex bg-white items-center justify-center text-black font-bold rounded"
+                      >
+                        <IoMdArrowBack />
+                      </button>
+
                     <img
                       className="w-full h-full object-contain"
-                      src={BACKEND_URL + TemplateData[0].icon}
+                      src={TemplateData[0].icon}
                     />
                   </div>
                   <div className="flex-1 pl-6">
@@ -361,7 +454,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                   </div>
                 </div>
 
-                <div className="grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 grow p-3 xl:p-6 xl:pb-28 flex-1 space-y-6 xl:overflow-y-auto">
                   <div id={TemplateData[0]["id"]}>
                     {TemplateData[0]["template_fields"].map((data, index) => {
                       const textLength = fieldValues[index]?.value?.length || 0;
@@ -372,16 +465,16 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                             <div className="space-y-1.5 w-full">
                               <label
                                 htmlFor="form-field-productInfo"
-                                className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
+                                className=" text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
-                                <span className="flex items-center space-x-1">
+                                <span className="flex items-center space-x-1 dark:text-white ">
                                   <span>{data.label}</span>
                                 </span>
                               </label>
-                              <div className="py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                              <div className="dark:bg-gray-800 dark:text-gray-200 py-2.5 relative gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
                                 <textarea
                                   id="form-field-productInfo"
-                                  className="block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
+                                  className="dark:bg-gray-800 dark:text-gray-200 block w-full h-[300px] text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto"
                                   maxLength={data.range_of_text}
                                   name={data.title}
                                   placeholder={data.placeholder}
@@ -409,16 +502,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                               htmlFor="form-field-productName"
                               className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                             >
-                              <span className="flex items-center space-x-1">
+                              <span className="flex items-center space-x-1 dark:text-white">
                                 <span>{data.label}</span>
                               </span>
                             </label>
-                            <div className="py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                              <div className="flex items-center grow gap-2 py-1.5">
-                                <div className="flex gap-1 grow">
+                            <div className="dark:bg-gray-800 dark:text-gray-200 py-1 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                              <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
                                   <input
-                                    id="form-field-productName"
-                                    className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                    className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                     maxLength={data.range_of_text}
                                     name={data.title}
                                     type={data.component}
@@ -444,44 +536,58 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                         )) ||
                         (data.component === "Example" && (
                           <>
-                            <div>
+                            <div className="mt-3">
                               <label
                                 htmlFor="form-field-productInfo"
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
                                 <span className="flex items-center space-x-1">
-                                  <span>Example</span>
+                                  <span className="dark:text-gray-300">Example</span>
                                 </span>
                               </label>
                             </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner}">
+                            <div className=" flex justify-between flex-col space-y-2 key={index_inner}">
                               {inputs.map((input, index_inner) => (
                                 <div
-                                  className="flex justify-between flex-col space-y-2"
+                                  className=" flex justify-between flex-col space-y-2"
                                   key={index_inner}
                                 >
-                                  <div className="flex items-center justify-between space-x-2">
-                                    <div className="bg-gray-300/20 text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                  <div className=" flex items-center justify-between space-x-2">
+                                    <div className="bg-gray-300/20 dark:text-white text-gray-500 font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                       {index_inner + 1}
                                     </div>
-                                    <div className="space-y-1.5 w-full">
-                                      <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                        <div className="flex items-center grow gap-2 py-1.5">
-                                          <div className="flex gap-1 grow">
+                                    <div className="dark:bg-gray-800 dark:text-gray-200 space-y-1.5 w-full">
+                                      <div className="dark:bg-gray-800 dark:text-gray-200 py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                        <div className="dark:bg-gray-800 dark:text-gray-200 flex items-center grow gap-2 py-1.5">
+                                          <div className="dark:bg-gray-800 dark:text-gray-200 flex gap-1 grow">
                                             <input
                                               id={`example-${index_inner + 1}`}
                                               type="text"
-                                              className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                              className="dark:bg-gray-800 dark:text-gray-200 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
                                               placeholder={displayText(
                                                 index_inner
                                               )}
-                                              value={input}
+                                              value={input.value}
                                               onChange={(event) =>
                                                 handleMultipleInputChange(
                                                   event,
-                                                  index_inner
+                                                  index_inner,
+                                                  `key_${index_inner + 1}`
                                                 )
                                               }
+                                              // id={`example-${index_inner + 1}`}
+                                              // type="text"
+                                              // className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none"
+                                              // placeholder={displayText(
+                                              //   index_inner
+                                              // )}
+                                              // value={input.value}
+                                              // onChange={(event) =>
+                                              //   handleMultipleInputChange(
+                                              //     event,
+                                              //     index_inner
+                                              //   )
+                                              // }
                                             />
                                           </div>
                                         </div>
@@ -491,7 +597,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                     {/* Delete button */}
                                     <button
                                       type="button"
-                                      className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
+                                      className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-700 selectionRing active:bg-gray-100 active:text-gray-700"
                                       onClick={() =>
                                         handleMultipleInputDelete(index_inner)
                                       }
@@ -515,13 +621,15 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                   </div>
                                 </div>
                               ))}
+      
 
                               {/* + button */}
                               <span className="self-end">
                                 <button
                                   type="button"
-                                  className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
-                                  onClick={handleAdd}
+                                  className="dark:bg-gray-800 dark:text-gray-200 transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"
+                                  // onClick={handleAdd}
+                                  onClick={() => setInputs([...inputs, { key: "", value: "" }])}
                                 >
                                   +
                                 </button>
@@ -546,21 +654,48 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                                 className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out"
                               >
                                 <span className="flex items-center space-x-1">
-                                  <span>{data.label}</span>
+                                  <span className="text-white">{data.label}</span>
                                 </span>
                               </label>
                             </div>
-                            <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
-                              <CreatableSelect
-                                isClearable
-                                isDisabled={isLoading}
-                                isLoading={isLoading}
-                                onChange={(newValue) => setValue(newValue)}
-                                onCreateOption={handleCreate}
-                                options={options}
-                                value={value}
-                              />
-                            </div>
+                            {DarkMode==true
+                            ?
+                            <>
+                                <div className="dark:bg-gray-800 dark:text-black flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                    <CreatableSelect
+                                      isClearable
+                                      isDisabled={isLoading}
+                                      isLoading={isLoading}
+                                      onChange ={(newValue ) => setValue(newValue)}
+                                      onCreate Option ={handleCreate }
+                                      options={ options }
+                                        value={ value }
+                                        styles={{
+                                          control :  ( provided ) => ({ 
+                                          ...provided, 
+                                          backgroundColor:"#1f2937"}),
+                                        singleValue: (provided) =>  ({
+                                          ...provided,
+                                          color:"white"}),
+                                      }}
+                                    />
+                                  </div>
+                              </>
+                              :
+                              <>
+                              <div className="flex justify-between flex-col space-y-2 key={index_inner} mt-3">
+                                <CreatableSelect
+                                  isClearable
+                                  isDisabled={isLoading}
+                                  isLoading={isLoading}
+                                  onChange={(newValue) => setValue(newValue)}
+                                  onCreateOption={handleCreate}
+                                  options={options}
+                                  value={value}
+                                />
+                              </div>
+                              </>
+                            }
                           </>
                         ))
                       );
@@ -573,23 +708,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                         <span className="md:whitespace-nowrap">
                           Language options
                         </span>{" "}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          aria-hidden="true"
-                          role="button"
-                          className="w-4 text-gray-500 ml-2 flex-shrink-0"
-                          aria-expanded="false"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          ></path>
-                        </svg>
+                        <TooltipInfo
+                            text="Create content in your chosen language efficiently and effectively for your needs." 
+                          />
                       </h3>
                     </div>
                     <div className="flex items-end justify-between gap-2">
@@ -630,19 +751,70 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                  {custom=="user"
+                  ?
+                      null
+                  :
+                  <>
+                  {subscriptions_details &&
+                  <>
+                  {subscriptions_details.user.status=='trial'
+                  ?
+                    <div className="flex justify-center items-center">
+                      <button
+                        type="submit"
+                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
+                        id="generateBtn1"
+                        title="Upgrade plan to save custom template"
+                        onClick={()=>{
+                          navigate("/settings/subscription_plan")
+                        }}
 
+                      >
+                      <span className="flex space-x-2 select-none">
+                        <SealCheck classes="w-6 h-6 mr-2" />
+                            Upgrade to Pro
+                        </span>
+                      </button>
+                    </div>
+                  :
+                  <>
+                      <div className="flex justify-center">
+                        <button type="button"
+                          className="text-slate-500  font-semibold hover:text-slate-900 dark:hover:text-slate-300"
+                        onClick={()=>{
+                          navigate("/custome_template/"+TemplateData[0].id+"?action=create_template&new=true")
+                        }}>
+                          Save this  template as custom
+                        </button>
+                        {subscriptions_details.user.plan=='premium'
+                        ?
+                          <div className="mt-2">
+                            <TooltipInfo text="Your plan can create 10 templates" />
+                          </div>
+                        :
+                          <div className="mt-2">
+                            <TooltipInfo text="Your plan can create 20 templates" />
+                          </div>
+                        }
+                      </div>
+                    </>
+
+                  }
+                  </>
+                  }
+                  </>
+                  }
+                </div>
+                 
                 <div className="pointer-events-none xl:bottom-0 xl:sticky xl:w-full xl:left-0 xl:z-20 @container">
-                  <div className="flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
+                  <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 flex flex-row items-center justify-between p-3 border-b border-gray-200 pointer-events-auto bg-gray-50 xl:bg-white xl:border-t xl:border-0 xl:border-gray-200 xl:py-3 xl:px-6">
                     {/* <button type="button" className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-2 active:ring-1"> */}
                     <button
                       type="button"
                       className="transition-all duration-200 relative font-semibold shadow-sm outline-none hover:outline-none focus:outline-none rounded-md px-3 py-1.5 text-sm  hover:ring-2 active:ring-1"
                     >
                       <span className="flex items-center justify-center mx-auto space-x-2 select-none">
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 opacity-50 -mx-1 @md:mx-0">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                                </svg> */}
                         <span className="hidden @sm:inline-block text-black">
                           Clear inputs
                         </span>
@@ -651,18 +823,20 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                     <div className="flex ">
                       <input
                         type="number"
-                        // className="form-inputs formInput max-w-[80px] mr-3"
                         className="mr-2 w-[70px] border border-gray-300 rounded-md py-2 px-4 pr-2 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         defaultValue={ContentOutputNumber}
                         onChange={(e) => {
+                          if(ContentOutputNumber>10){
+                            return true
+                          }
                           setContentOutputNumber(e.target.value);
                         }}
-                        max="10"
-                        min="1"
+                        max={10}
+                        min={1}
                       />
                       <button
                         type="submit"
-                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm hover:from-purple-500 hover:to-blue-500 selectionRing active:from-purple-700 active:to-blue-700"
+                        className="w-[200px] transition-all duration-200 relative font-semibold outline-none hover:outline-none focus:outline-none rounded-lg px-4 py-2 text-base text-white bg-gradient-to-r  shadow-sm bg-[#334977]"
                         id="generateBtn1"
                         onClick={() => {
                           handleClick(TemplateData[0]["id"]);
@@ -701,16 +875,16 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                 </div>
               </div>
 
-              <div className="lg:w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
-                <div className="sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 lg:w-1/2 items-center justify-center max-h-full bg-[#eff2f9] font-semibold text-[17px] text-black border-l border-gray-300 overflow-y-auto">
+                <div className="dark:bg-black dark:text-gray-200 dark:border-slate-500 sticky top-0 flex items-center px-3 bg-white border-b border-gray-200">
                   <nav
                     className="flex flex-grow py-1 space-x-3"
                     aria-label="Tabs"
                   >
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-gray-200  relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        get_history();
+                        get_history(template_id);
                         setShowHideHistory(false);
                         // setTemplateResponseData(null)
                       }}
@@ -720,9 +894,9 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                       </span>
                     </button>
                     <button
-                      className="relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
+                      className="dark:bg-gray-700 dark:text-gray-200 relative whitespace-nowrap py-2 px-3 text-xs font-medium bg-gray-100 rounded-lg text-black transition-all duration-150 hover:text-black"
                       onClick={() => {
-                        get_history();
+                        get_history(template_id);
                         setShowHideHistory(true);
                         // setTemplateResponseData(null)
                       }}
@@ -751,6 +925,7 @@ const SingleTemplate = ({ AUTH_TOKEN }) => {
                             r_id={data["id"]}
                             r_time={data["created_at"]}
                             r_data={data["answer_response"]}
+                            r_custome={custom=="user"?"user":"normal_user"}
                           />
                         </div>
                       );

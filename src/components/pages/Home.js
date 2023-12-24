@@ -1,9 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import clsx from "clsx";
+import { BACKEND_URL ,BACK_END_API_TEMPLATE_IMP} from "../../apis/urls";
+import { fetchData } from "../../apis/apiService";
+import { useSelector, useDispatch } from "react-redux";
 
 import CardDoc from "../Card/CardDoc";
+import { setDocumentTitle } from '../NavBar/DynamicTitle';
 
 import CkCheck from "../Icons/CkCheck";
+import ThreeDots from "../Icons/ThreeDots";
+import { useNavigate } from "react-router-dom";
+import DocumentsIcons from '../Icons/DocumentsIcons'
+import ListOfDocument from "./Template/Document/ListOfDocument";
+import Workflow from "../Icons/Workflow";
+import TemplateIcon from "../Icons/TemplateIcon";
+
+
+import toast, { Toaster } from 'react-hot-toast';
+import { Premium } from "./ImageGenerator/Premium";
+
 
 const buttonTags = [
   "All",
@@ -20,109 +35,123 @@ const buttonTags = [
   "Social Media",
 ];
 
-const cardData = [
-  {
-    title: "Documents",
-    description:
-      "Let Jasper help you write longer articles from start to finish.",
-    icon: "FileDoc.svg",
-    isPremium: true,
-  },
-  {
-    title: "Content Summarizer",
-    description: "Get the key bullet points from a piece of content.",
-    icon: "FileDoc.svg",
-    isPremium: true,
-  },
-  {
-    title: "AIDA Framework",
-    description:
-      "Use the oldest marketing framework in the world. Attention, Interest, Desire, Action.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Commands",
-    description: "Tell Jasper excatly what to write with a command",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Company Bio",
-    description: "Tell your company’s story with a captivating bio",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Content Improver",
-    description:
-      "Take a piece of content and rewrite it to make it more interesting, creative, and engaging.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Email Subject Lines",
-    description:
-      "Let Jasper help you write longer articles from start to finish.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "One Shot Blog Post",
-    description: "Get the key bullet points from a piece of content.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Paragraph Generator",
-    description:
-      "Use the oldest marketing framework in the world. Attention, Interest, Desire, Action.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "PAS Framework",
-    description:
-      "Let Jasper help you write longer articles from start to finish.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Photo Post Captions",
-    description: "Get the key bullet points from a piece of content.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-  {
-    title: "Product Description",
-    description:
-      "Use the oldest marketing framework in the world. Attention, Interest, Desire, Action.",
-    icon: "FileDoc.svg",
-    isPremium: false,
-  },
-];
 
-const Home = () => {
+const imp_manaully = [
+  {
+    title: "WorkFlow",
+    description:
+      "Generate WorkFlow to Create Content.",
+    icon: "WorkFlow",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/workflow.png",
+    isPremium: true,
+    link:"/workflow"
+  },
+  {
+    title: "Recap Builder",
+    description:
+      "Transform your audio visual content into concise and insightful summaries.",
+    icon: "ReacapBuildericon",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.26.05+AM.png",
+    isPremium: false,
+    link:"/recap_builder"
+  },{
+    title: "Transcribe speech",
+    description:
+    "Turn speech into text with ease for accurate content.",
+    icon: "Transcribe",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Transcribe+speech.png",
+    isPremium: true,
+    link:"/transcribe-speech"
+  },
+  // {
+  //   title: "One Shot Blog Post",
+  //   description:
+  //     "Get the key bullet points from a piece of content.",
+  //   icon: "Shot",
+  //   img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/1_T3DPBTv.png",
+  //   isPremium: false,
+  // },
+  {
+    title: "Art",
+    description:
+      "Express your creativity through the power of art.",
+    icon: "Art",
+    img:"https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/icons/Screenshot+2023-10-04+at+10.32.29+AM.png",
+    isPremium: true,
+    link:"/art"
+  }
+]
+
+const Home = ({AUTH_TOKEN}) => {
+
+  useEffect(() => {
+    setDocumentTitle("Dashboard");
+}, []);
+
+  const navigate = useNavigate()
+  const [imp_template,set_imp_template]=useState(null)
+
+
+  const notifyerror = (message) => toast.error(message);
+  const notifysucces = (message) => toast.success(message);
+
+  let subscriptions_details = useSelector(
+    (state) => state.SetSubscriptionsData.SubscriptionsData
+  );
+
+
+
+  const get_template = async(url,token) =>{
+    const response_data = await fetchData(url,token)
+    if(response_data.status==200){
+      set_imp_template(response_data.data)
+    }else{
+      // navigate("/logout")
+    }
+  }
+
+
+useEffect(()=>{
+  if(AUTH_TOKEN!=null){
+    get_template(BACKEND_URL+BACK_END_API_TEMPLATE_IMP,AUTH_TOKEN)
+  }
+},[])
+
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="max-w-[843px] mx-auto mt-24 mb-12">
+    <div className="pl-6">
+
+      {/* <h1 className="dark:text-gray-500 text-2xl font-bold mb-6 p-8">Dashboard</h1> */}
+      <h1 className="dark:text-gray-500 text-2xl font-bold">Dashboard</h1>
+
+      <div className="max-w-[843px] mx-auto mt-8 mb-12">
+      
         <div className="mb-6">
-          <h1 className="text-[40px] font-bold">Welcome to Jasper</h1>
-          <p className="text-sm">
+          <h1 className="text-[30px] font-bold dark:text-gray-500">Welcome to Jyra AI</h1>
+          <p className="text-sm dark:text-gray-500">
             Follow these steps to get started and earn free credits as you go.
           </p>
         </div>
-        <table className="table w-full table-auto border border-border">
-          <thead className="p-6 border-b border-border">
+        <table className="table w-full table-auto border border-border dark:border-slate-600">
+          <thead className="p-6 border-b border-border dark:border-slate-600">
             <tr>
-              <th className="text-left p-6">Getting Started</th>
-              <th className="text-right p-6">1500 credits available</th>
+              <th className="text-left p-6 dark:text-gray-500">Getting Started</th>
+              {subscriptions_details &&
+                <>
+                  {subscriptions_details.user.status=="trial"
+                  ?
+                    <th className="text-right p-6">
+                      2000 free credits available
+                    </th>
+                  :
+                    null
+                  }
+                </>
+              }
             </tr>
           </thead>
           <tbody className="[&_td]:px-6 [&_td]:py-2 [&_tr:first-child_td]:pt-6 [&_tr:last-child_td]:pb-6 [&_td:last-child]:text-right">
             <tr>
-              <td className="">Create an account</td>
+              <td className="dark:text-gray-500">Create an account</td>
               <td className="">
                 <div className="inline-block">
                   <CkCheck />
@@ -130,10 +159,14 @@ const Home = () => {
               </td>
             </tr>
             <tr>
-              <td className="px-6 py-4">Generate your first blog post</td>
+              <td className="px-6 py-4 dark:text-gray-500">Generate your first blog post</td>
               <td className="px-6 py-4 text-right">
-                <button className="inline-flex items-center justify-center text-white bg-blue px-3 py-1.5 gap-x-2 rounded-md">
-                  <span>Try it</span>
+                <button 
+                  onClick={()=>{
+                    notifysucces("Coming soon")
+                  }}
+                className="inline-flex items-center justify-center text-white bg-[#304572] px-3 py-1.5 gap-x-2 rounded-md">
+                  <span  className="dark:text-gray-500">Try it</span>
                   <svg
                     width="14"
                     height="14"
@@ -160,7 +193,11 @@ const Home = () => {
             <tr>
               <td>Watch introduction video</td>
               <td>
-                <button className="inline-flex items-center justify-center text-white bg-blue px-3 py-1.5 gap-x-2 rounded-md">
+                <button 
+                onClick={()=>{
+                    notifysucces("Coming soon")
+                  }}
+                className="inline-flex items-center justify-center text-white bg-[#304572]  px-3 py-1.5 gap-x-2 rounded-md">
                   <span>Play Video</span>
                   <svg
                     width="14"
@@ -182,132 +219,120 @@ const Home = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-12 mb-12">
-        <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="flex flex-col">
-            <div className="grid grid-cols-2 gap-6 w-full bg-gray-lightbg border border-border p-6 rounded-lg overflow-hidden">
-              <div className="flex flex-col gap-y-4">
-                <div className="titlewrap flex gap-x-3">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      d="M21.7309 17.5623C22.2599 16.4871 22.5235 15.3008 22.4997 14.1028C22.4759 12.9047 22.1654 11.7298 21.5942 10.6765C21.023 9.6231 20.2077 8.72193 19.2166 8.04843C18.2255 7.37493 17.0875 6.94871 15.8978 6.80545C15.5032 5.8857 14.9286 5.05421 14.2077 4.35998C13.4868 3.66575 12.6343 3.12282 11.7003 2.76318C10.7664 2.40354 9.76987 2.23446 8.76955 2.26591C7.76923 2.29736 6.78532 2.5287 5.87579 2.94629C4.96626 3.36389 4.14951 3.9593 3.47366 4.69744C2.79781 5.43558 2.27653 6.30153 1.94053 7.24425C1.60453 8.18698 1.46061 9.18742 1.51724 10.1866C1.57388 11.1858 1.82993 12.1636 2.2703 13.0623L1.55217 15.5767C1.48809 15.8016 1.48529 16.0396 1.54404 16.266C1.6028 16.4924 1.72099 16.699 1.88638 16.8644C2.05176 17.0298 2.25834 17.148 2.48473 17.2067C2.71113 17.2655 2.94911 17.2627 3.17405 17.1986L5.68842 16.4805C6.44715 16.853 7.26329 17.0948 8.10249 17.1958C8.50251 18.133 9.08933 18.9788 9.82713 19.6817C10.5649 20.3846 11.4382 20.9298 12.3937 21.284C13.3492 21.6381 14.3668 21.7939 15.3845 21.7417C16.4022 21.6895 17.3986 21.4305 18.3128 20.9805L20.8272 21.6986C21.0521 21.7627 21.2901 21.7655 21.5165 21.7067C21.7429 21.648 21.9495 21.5298 22.1148 21.3644C22.2802 21.199 22.3984 20.9924 22.4572 20.766C22.5159 20.5396 22.5131 20.3016 22.4491 20.0767L21.7309 17.5623ZM20.2066 17.688L20.9144 20.1639L18.4384 19.4561C18.2498 19.403 18.0479 19.4259 17.8759 19.5198C16.4934 20.272 14.8708 20.4514 13.3574 20.0194C11.8439 19.5873 10.5606 18.5785 9.78342 17.2098C10.8104 17.1029 11.8042 16.7848 12.7025 16.2757C13.6007 15.7665 14.3841 15.0771 15.0034 14.2509C15.6226 13.4247 16.0645 12.4794 16.3011 11.4744C16.5378 10.4693 16.5642 9.4262 16.3787 8.41045C17.2774 8.62225 18.1151 9.03861 18.8266 9.62711C19.5381 10.2156 20.1042 10.9604 20.4807 11.8034C20.8573 12.6465 21.0342 13.565 20.9977 14.4876C20.9612 15.4102 20.7123 16.312 20.2703 17.1226C20.1756 17.2954 20.1527 17.4985 20.2066 17.688Z"
-                      fill="#36464E"
-                    />
-                  </svg>
-                  <h4 className="text-md font-bold">Chat</h4>
-                  <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                    Boss Mode
-                  </span>
+
+    <div>
+
+      <ListOfDocument
+          DASHBOARD={true}
+          SHOW={"active"}
+          AUTH_TOKEN={AUTH_TOKEN}
+          search_bar={"off"}
+          ShowDashboard="true"
+          slice_data='4'
+      />
+
+    </div>
+
+
+    <div className="mt-12 mb-12 p-9">
+
+        {/* <div className="grid grid-cols-2 gap-4 "> */}
+
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
+
+
+          {imp_manaully.map((data,index)=>{
+            return (
+
+                <div className=" flex flex-col cursor-pointer " title={data["title"]}>
+                  
+                    <div className="dark:bg-slate-700 dark:hover:bg-gray-600 hover:bg-gray-100 dark:border-slate-500 border border-border p-6 rounded-lg ">
+
+                      <div className="flex">
+                      <div>
+                        <div className="flex">
+                          <div>
+                            <img src={data["img"]} alt={data["title"]} className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="dark:text-gray-500 text-md font-bold ml-4">{data["title"]}</p>
+                          </div>
+                        </div>
+
+                        <div>
+                            <p className="text-sm min-h-[62px] mt-8">
+                              {data["description"]}
+                            </p>
+                         </div>
+
+
+                         {subscriptions_details &&
+                            <>
+                              {subscriptions_details.user.status=="trial" && data["isPremium"]==true
+                              ?
+                                <button className="text-white w-[100px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                                onClick={()=>{
+                                  navigate("/settings/subscription_plan")
+                                }}>
+                                  Upgrade
+                                </button>
+                              :
+                                <button className="text-white dark:text-gray-300 w-[150px] h-[36px] cursor-pointer inline-flex items-center justify-center text-sm font-bold bg-[#334977] border border-border rounded-md overflow-hidden"
+                                    onClick={()=>{
+                                      navigate(data["link"])
+                                    }}>
+                                      {data["title"]}
+                                </button>
+                              }
+
+                            </>
+                            }
+                   </div>
+                      <div className="rounded-s-xl rounded-e-xl mb-3">
+                        <img
+                          src="https://aiprojectfilestorage.s3.ap-southeast-2.amazonaws.com/frontend-images/card--placeholder.svg"
+                          alt=""
+                          className="w-full h-full dark:opacity-60"
+                        />
+                      </div>
+                   </div>
+
+                   </div>
                 </div>
-                <p className="text-sm min-h-[62px]">
-                  Generate ideas, images, and content by chatting directly with
-                  Jasper.
-                </p>
-                <div className="button-wrap">
-                  <button className="inline-flex text-sm font-bold px-2 py-1 bg-gray-lightbg border border-border rounded-md overflow-hidden">
-                    Upgrade
-                  </button>
-                </div>
-              </div>
-              <div className="-mb-6 shadow-customv2 rounded-s-xl rounded-e-xl">
-                <img
-                  src="card--placeholder.svg"
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="grid grid-cols-2 gap-6 w-full bg-gray-lightbg border border-border p-6 rounded-lg overflow-hidden">
-              <div className="flex flex-col gap-y-4">
-                <div className="titlewrap flex gap-x-3">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M18 3C16.8954 3 16 3.89543 16 5C16 6.10457 16.8954 7 18 7C19.1046 7 20 6.10457 20 5C20 3.89543 19.1046 3 18 3ZM14 5C14 2.79086 15.7909 1 18 1C20.2091 1 22 2.79086 22 5C22 7.20914 20.2091 9 18 9C15.7909 9 14 7.20914 14 5Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M6 10C4.89543 10 4 10.8954 4 12C4 13.1046 4.89543 14 6 14C7.10457 14 8 13.1046 8 12C8 10.8954 7.10457 10 6 10ZM2 12C2 9.79086 3.79086 8 6 8C8.20914 8 10 9.79086 10 12C10 14.2091 8.20914 16 6 16C3.79086 16 2 14.2091 2 12Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M18 17C16.8954 17 16 17.8954 16 19C16 20.1046 16.8954 21 18 21C19.1046 21 20 20.1046 20 19C20 17.8954 19.1046 17 18 17ZM14 19C14 16.7909 15.7909 15 18 15C20.2091 15 22 16.7909 22 19C22 21.2091 20.2091 23 18 23C15.7909 23 14 21.2091 14 19Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M7.726 13.0065C8.00406 12.5293 8.61631 12.3679 9.09348 12.6459L15.9235 16.6259C16.4007 16.904 16.5621 17.5162 16.284 17.9934C16.006 18.4706 15.3937 18.632 14.9165 18.3539L8.08653 14.3739C7.60935 14.0959 7.44794 13.4836 7.726 13.0065Z"
-                      fill="#36464E"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M16.2737 6.0059C16.5521 6.4829 16.391 7.09525 15.914 7.37362L9.09403 11.3536C8.61703 11.632 8.00469 11.471 7.72632 10.994C7.44795 10.517 7.60898 9.90461 8.08598 9.62624L14.906 5.64624C15.383 5.36787 15.9953 5.5289 16.2737 6.0059Z"
-                      fill="#36464E"
-                    />
-                  </svg>
-                  <h4 className="text-md font-bold">Workflows</h4>
-                  <span className="text-xs px-2 py-1 text-green bg-green/10 border border-green rounded-xl">
-                    Boss Mode
-                  </span>
-                </div>
-                <p className="text-sm min-h-[62px]">
-                  Create blog posts, social media campaigns, email campaigns,
-                  and rewrite content.
-                </p>
-                <div className="button-wrap">
-                  <button className="inline-flex text-sm font-bold px-2 py-1 bg-gray-lightbg border border-border rounded-md overflow-hidden">
-                    Upgrade
-                  </button>
-                </div>
-              </div>
-              <div className="-mb-6 shadow-customv2">
-                <img
-                  src="card--placeholder.svg"
-                  alt=""
-                  className="w-full h-full"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+            )
+          })}
+
       </div>
-      <div className="mt-12">
-        <h3 className="text-md font-bold mb-6">New tools to help you create</h3>
+
+    </div>
+      
+
+
+      
+    <div className="mt-12 p-9">
+        <h3 className="text-md font-bold mb-6 ml-2">New tools to help you create</h3>
+        
         <div>
-          <div className="cardwrap grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
-            {cardData.map((items, index) => {
-              return (
-                <>
-                  {index < 3 && <CardDoc {...items} key={"carddoc_" + index} />}
-                </>
-              );
-            })}
+
+        <div className="cardwrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-5">
+          {imp_template &&
+            <>
+              {imp_template.map((items, index) => {
+                return (
+                  <>
+                    {index < 3 && <CardDoc {...items} key={"carddoc_" + index} />}
+                  </>
+                );
+              })}
+            </>
+          }
           </div>
+
+
         </div>
       </div>
+
+      
     </div>
   );
 };

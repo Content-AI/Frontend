@@ -8,11 +8,15 @@ import StepOptions from "./StepOptions";
 import Button from "@mui/material/Button";
 
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 import clsx from "clsx";
 
 const FirstStep = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+
   const [isSelected, setIsSelected] = useState(false);
   const [showModal, setShowModal] = React.useState(true);
 
@@ -22,6 +26,11 @@ const FirstStep = () => {
     setIsSelected(!isSelected);
   };
 
+  const searchParams = new URLSearchParams(location.search);
+  const subscription_type = searchParams.get('subscription_type');
+  const plan = searchParams.get('plan');
+  const invitation_code = searchParams.get('invitation_code');
+  
   const localOptions = [
     "Business Owner",
     "Marketer - at a company",
@@ -53,7 +62,7 @@ const FirstStep = () => {
               <div className="my-7">
                 <Dots steps="first" />
               </div>
-              <h3 className="text-sm font-bold mb-5">
+              <h3 className="text-sm font-bold mb-5 text-black dark:text-black">
                 What best describes your role?
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -70,14 +79,35 @@ const FirstStep = () => {
                   sx={{ textTransform: "none" }}
                   onClick={() => {
                     // navigate("/second_step")
-                    navigate(
-                      "/second_step?survey_data_second=by-for-user-clarification",
-                      {
-                        state: {
-                          first_answer: data,
-                        },
-                      }
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+
+                        navigate(
+                          `/second_step?survey_data_second=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`,
+                          {
+                            state: {
+                              first_answer: data,
+                            },
+                          }
+                      );
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                        navigate(
+                          `/second_step?survey_data_second=by-for-user-clarification&invitation_code=${invitation_code}`,
+                          {
+                            state: {
+                              first_answer: data,
+                            },
+                          }
+                      );
+                    }else{
+                      navigate(
+                        "/second_step?survey_data_second=by-for-user-clarification",
+                        {
+                          state: {
+                            first_answer: data,
+                          },
+                        }
                     );
+                    }
                   }}
                 >
                   Next
@@ -87,14 +117,43 @@ const FirstStep = () => {
                 <button
                   onClick={() => {
                     // navigate("/second_step")
+                    // navigate(
+                    //   "/second_step?survey_data_second=by-for-user-clarification",
+                    //   {
+                    //     state: {
+                    //       first_answer: data,
+                    //     },
+                    //   }
+                    // );
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+
                     navigate(
-                      "/second_step?survey_data_second=by-for-user-clarification",
+                      `/second_step?survey_data_second=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`,
                       {
                         state: {
                           first_answer: data,
                         },
                       }
                     );
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                        navigate(
+                          `/second_step?survey_data_second=by-for-user-clarification&invitation_code=${invitation_code}`,
+                          {
+                            state: {
+                              first_answer: data,
+                            },
+                          }
+                      );
+                    }else{
+                    navigate(
+                    "/second_step?survey_data_second=by-for-user-clarification",
+                    {
+                      state: {
+                        first_answer: data,
+                      },
+                    }
+                    );
+                    }
                   }}
                   type="button"
                   className="text-blue-700 text-sm"

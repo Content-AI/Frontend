@@ -13,6 +13,16 @@ import LengthOfEditorWord from '../features/LengthOfEditorWord'
 import ProjectOrFolderIdChoosen from '../features/ProjectOrFolderIdChoosen'
 import DocumentsData from '../features/DocumentsData'
 import FolderData from '../features/FolderData'
+import RepeatQuestionInChat from '../features/RepeatQuestionInChat'
+import Subscriptions from '../features/Subscriptions'
+import SubscriptionsData from '../features/SubscriptionsData'
+import ListTokenGeneratedByUser from '../features/ListTokenGeneratedByUser'
+import WorkspaceId from '../features/WorkspaceId'
+import ChosenWorkspaceId from '../features/ChosenWorkspaceId'
+import Favorite from '../features/Favorite'
+import TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate from '../features/TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate'
+
+import DarkMode from '../features/DarkMode'
 
 export const store = configureStore({
     reducer: {
@@ -30,6 +40,15 @@ export const store = configureStore({
         SetProjectOrFolderIdChoosen:ProjectOrFolderIdChoosen,
         SetDocumentsData:DocumentsData,
         SetFolderData:FolderData,
+        SetRepeatQuestionInChat:RepeatQuestionInChat,
+        SetSubscriptions:Subscriptions,
+        SetSubscriptionsData:SubscriptionsData,
+        SetListTokenGeneratedByUser:ListTokenGeneratedByUser,
+        SetWorkspaceId:WorkspaceId,
+        SetChosenWorkspaceId:ChosenWorkspaceId,
+        SetFavorite:Favorite,
+        SetTriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate:TriggerSwitchForCallingAPIsOfDocumentDoingWorkFlowAfterGenerate,
+        SetDarkMode:DarkMode,
     }
 })
 

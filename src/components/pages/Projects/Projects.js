@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { _save_folder_data_ } from "../../../features/FolderData";
 
 import { useLocation } from "react-router-dom";
+import { setDocumentTitle } from '../../NavBar/DynamicTitle';
 
 const cardData = [
   {
@@ -31,6 +32,10 @@ const cardData = [
 const Projects = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setDocumentTitle("Project");
+}, []);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -56,15 +61,21 @@ const Projects = (props) => {
   let DocumentsData = useSelector(
     (state) => state.SetDocumentsData.DocumentsData
   );
+  let ChosenWorkspaceId = useSelector(
+    (state) => state.SetChosenWorkspaceId.ChosenWorkspaceId
+    );	
+
 
   const get_folder_of_user = async () => {
-    const resp = await fetchData(
-      BACKEND_URL + BACK_END_API_PROJECTS,
-      props.AUTH_TOKEN
-    );
-    if ((resp.status = 200)) {
-      setFolderOfUser(resp.data);
-      dispatch(_save_folder_data_(resp.data));
+    if(ChosenWorkspaceId!=null){
+      const resp = await fetchData(
+        BACKEND_URL + BACK_END_API_PROJECTS+"?workspace_id="+ChosenWorkspaceId["Workspace_Id"],
+        props.AUTH_TOKEN
+      );
+      if ((resp.status = 200)) {
+        setFolderOfUser(resp.data);
+        dispatch(_save_folder_data_(resp.data));
+      }
     }
   };
 
@@ -124,6 +135,7 @@ const Projects = (props) => {
   const create_folder = async () => {
     let formData = {
       project_name: folderName,
+      workspace_id:ChosenWorkspaceId["Workspace_Id"]
     };
     const resp = await postData(
       formData,
@@ -190,7 +202,7 @@ const Projects = (props) => {
         <div>
           <div className="cardwrap grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-5">
             <div
-              className="flex flex-col items-center justify-center text-white bg-blue min-h-[144px] rounded-xl cursor-pointer hover:border hover:shadow-lg focus:ring-gray-400 focus:shadow-xl duration-150  hover:ring-gray-300 hover:ring-2"
+              className="flex flex-col items-center justify-center bg-[#334977] text-white min-h-[144px] rounded-xl cursor-pointer hover:border hover:shadow-lg focus:ring-gray-400 focus:shadow-xl duration-150  hover:ring-gray-300 hover:ring-2"
               onClick={() => {
                 navigate("/create_new_content");
               }}
@@ -230,7 +242,7 @@ const Projects = (props) => {
           <div className="flex items-center gap-4 ml-auto">
             <div className="selectopt relative w-40">
               <button
-                className="flex items-center text-sm leading-none font-bold bg-white px-3 py-2 gap-2 border border-border rounded-md"
+                className="flex items-center text-sm leading-none font-bold bg-[#334977] text-white px-3 py-2 gap-2 border border-border rounded-md"
                 onClick={() => {
                   setPopUpModelToCreateFolder(true);
                 }}
@@ -242,25 +254,25 @@ const Projects = (props) => {
                     viewBox="0 0 14 14"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-full h-full"
+                    className="w-full h-full "
                   >
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M2.33398 2.33317C2.17927 2.33317 2.0309 2.39463 1.92151 2.50402C1.81211 2.61342 1.75065 2.76179 1.75065 2.9165V11.0832C1.75065 11.2379 1.81211 11.3863 1.92151 11.4956C2.0309 11.605 2.17928 11.6665 2.33398 11.6665H11.6673C11.822 11.6665 11.9704 11.605 12.0798 11.4956C12.1892 11.3863 12.2507 11.2379 12.2507 11.0832V4.6665C12.2507 4.51179 12.1892 4.36342 12.0798 4.25402C11.9704 4.14463 11.822 4.08317 11.6673 4.08317H6.41732C6.22228 4.08317 6.04014 3.98569 5.93196 3.82341L4.93846 2.33317H2.33398ZM1.09655 1.67907C1.42474 1.35088 1.86986 1.1665 2.33398 1.1665H5.25065C5.44569 1.1665 5.62783 1.26398 5.73601 1.42626L6.72951 2.9165H11.6673C12.1314 2.9165 12.5766 3.10088 12.9048 3.42907C13.2329 3.75726 13.4173 4.20237 13.4173 4.6665V11.0832C13.4173 11.5473 13.2329 11.9924 12.9048 12.3206C12.5766 12.6488 12.1314 12.8332 11.6673 12.8332H2.33398C1.86986 12.8332 1.42474 12.6488 1.09655 12.3206C0.768359 11.9924 0.583984 11.5473 0.583984 11.0832V2.9165C0.583984 2.45238 0.768359 2.00726 1.09655 1.67907Z"
-                      fill="black"
+                      fill="white"
                     />
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M6.99935 5.8335C7.32152 5.8335 7.58268 6.09466 7.58268 6.41683V9.91683C7.58268 10.239 7.32152 10.5002 6.99935 10.5002C6.67718 10.5002 6.41602 10.239 6.41602 9.91683V6.41683C6.41602 6.09466 6.67718 5.8335 6.99935 5.8335Z"
-                      fill="black"
+                      fill="white"
                     />
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M4.66602 8.16683C4.66602 7.84466 4.92718 7.5835 5.24935 7.5835H8.74935C9.07151 7.5835 9.33268 7.84466 9.33268 8.16683C9.33268 8.489 9.07151 8.75016 8.74935 8.75016H5.24935C4.92718 8.75016 4.66602 8.489 4.66602 8.16683Z"
-                      fill="black"
+                      fill="white"
                     />
                   </svg>
                 </span>
@@ -314,7 +326,7 @@ const Projects = (props) => {
                         className="flex w-[250px] cursor-pointer items-start pb-6 mr-1"
                         key={index}
                       >
-                        <div className="  bg-[#fafbfd]  shadow-lg relative top-0 flex max-w-full flex-1 items-center rounded-xl border border-purple-100  py-1 pl-2 transition-top duration-200 hover:-top-1 md:mr-6">
+                        <div className="dark:bg-gray-700 dark:text-white  dark:border-slate-500   bg-[#fafbfd]  shadow-lg relative top-0 flex max-w-full flex-1 items-center rounded-xl border border-purple-100  py-1 pl-2 transition-top duration-200 hover:-top-1 md:mr-6">
                           <div className="w-full grid grid-rows-1">
                             <div
                               className="tooltip-container  pr-4"
@@ -346,10 +358,9 @@ const Projects = (props) => {
                                 <div>
                                   <input
                                     type="text"
-                                    className="flex flex-1 p-2 outline-none max-w-full rounded-md border-none text-sm cursor-pointer focus:ring-0 group-hover:text-blue-800 min-w-full overflow-ellipsis whitespace-nowrap pr-7"
+                                    className="dark:bg-gray-700 dark:text-white flex flex-1 p-2 outline-none max-w-full rounded-md border-none text-sm cursor-pointer focus:ring-0 group-hover:text-blue-800 min-w-full overflow-ellipsis whitespace-nowrap pr-7"
                                     spellCheck="false"
                                     required=""
-                                    data-testid="project-folder-name"
                                     data-hj-allow="true"
                                     value={data.project_name}
                                     readOnly
@@ -358,7 +369,7 @@ const Projects = (props) => {
                               </div>
 
                               <div className="grid content-center w-full ml-2">
-                                <span className="font-bold text-sm text-slate-600 flex-grow bloc">
+                                <span className="dark:text-white font-bold text-sm text-slate-600 flex-grow bloc">
                                   {data.documents_data}
                                 </span>
                               </div>
@@ -369,7 +380,7 @@ const Projects = (props) => {
 
                             <div className="flex flex-1 pl-2">
                               <div className="grid content-center w-full">
-                                <span className="flex-grow block text-sm text-gray-500 whitespace-nowrap">
+                                <span className="dark:text-white flex-grow block text-[12px] font-bold text-gray-500 whitespace-nowrap">
                                   Created on {data.created_at}
                                 </span>
                               </div>
@@ -406,16 +417,13 @@ const Projects = (props) => {
                                 {openPopUpMiniMenu === index && (
                                   <div
                                     ref={popupRef}
-                                    className="mr-10 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100"
-                                    aria-labelledby="headlessui-menu-button-:r6e:"
-                                    id="headlessui-menu-items-:r79:"
+                                    className="dark:bg-slate-600 dark:hover:bg dark:text-gray-200 dark:border-slate-500 mr-10 z-20 absolute right-0 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white text-gray-600 text-sm font-medium shadow-md border border-gray-200 focus:outline-none transform opacity-100 scale-100"
                                     role="menu"
                                     tabIndex="0"
-                                    data-headlessui-state="open"
                                   >
                                     <div role="none">
                                       <button
-                                        className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100"
+                                        className="dark:hover:bg-gray-500 flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100"
                                         role="none"
                                         type="button"
                                         onClick={() => {
@@ -451,7 +459,7 @@ const Projects = (props) => {
                                     </div>
                                     <div role="none">
                                       <button
-                                        className="flex items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600"
+                                        className="flex dark:hover:bg-gray-500 items-center px-3.5 py-2.5 hover:bg-gray-100 w-full text-sm space-x-3 active:bg-blue-100 text-red-600"
                                         role="none"
                                         onClick={() => {
                                           setshowModalForDelete(true);
@@ -498,14 +506,14 @@ const Projects = (props) => {
 
                           {showModalForDelete ? (
                             <>
-                              <div className="fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm backdrop-filter bg-opacity-20">
+                              <div className="fixed inset-0 z-10 overflow-y-auto  backdrop-filter bg-opacity-10">
                                 <div
                                   className="fixed inset-0 w-full h-full"
                                   onClick={() => setshowModalForDelete(false)}
                                 ></div>
                                 <div className="flex items-center min-h-screen px-4 py-8">
-                                  <div className="relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
-                                    <div className="mt-3 sm:flex flex items-center justify-center">
+                                  <div className="dark:bg-gray-700 dark:text-gray-200 border-black relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg">
+                                    <div className="   mt-3 sm:flex flex items-center justify-center">
                                       {/* <div className="flex items-center justify-center flex-none w-12 h-12 mx-auto bg-red-100 rounded-full">
                                        
                                     </div> */}
@@ -545,7 +553,7 @@ const Projects = (props) => {
                                               Delete
                                             </button>
                                             <button
-                                              className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
+                                              className="dark:text-white w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                               onClick={() => {
                                                 setshowModalForDelete(false);
                                               }}
@@ -566,21 +574,15 @@ const Projects = (props) => {
                             <>
                               <div
                                 className="fixed inset-0 z-40 overflow-y-auto"
-                                id="headlessui-dialog-:rdn:"
                                 role="dialog"
-                                aria-modal="true"
-                                data-headlessui-state="open"
                               >
-                                <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+                                <div className=" flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
                                   <div
-                                    className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50"
-                                    id="headlessui-dialog-overlay-:rdo:"
-                                    aria-hidden="true"
-                                    data-headlessui-state="open"
+                                    className="fixed inset-0 transition-opacity  bg-opacity-50"
                                   ></div>
-                                  <div className="relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
+                                  <div className="dark:bg-gray-700 dark:text-gray-200 dark:border-slate-500 relative h-full bg-white text-gray-900 rounded-md shadow-xl align-top sm:align-middle w-full sm:w-[416px]">
                                     <div className="w-full text-left flex justify-between items-center p-6 text-gray-900  border-b border-gray-200">
-                                      <h3 className="text-lg font-semibold">
+                                      <h3 className="dark:text-white text-lg font-semibold">
                                         Rename Folder
                                       </h3>
                                     </div>
@@ -766,28 +768,31 @@ const Projects = (props) => {
 
       {PopUpModelToCreateFolder ? (
         <>
-          <div className="fixed top-0 left-0 w-screen h-screen backdrop-blur backdrop-filter bg-opacity-30 z-50">
+          {/* <div className="fixed top-0 left-0 w-screen h-screen backdrop-blur-sm backdrop-filter bg-opacity-20 z-50"> */}
+          <div className="fixed inset-0 z-40 overflow-y-auto">
+            <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20">
+            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 opacity-100" 
+            ></div>
+
+                
             <div
               className="fixed inset-0 overflow-y-auto z-50"
-              id="headlessui-dialog-1749"
               role="dialog"
               aria-modal="true"
-              aria-labelledby="headlessui-dialog-title-1753"
             >
               <div className="flex min-h-screen items-center justify-center text-center sm:block sm:p-0">
                 <div
-                  className="fixed inset-0 bg-grey-500 bg-opacity-75 transition-opacity"
-                  id="headlessui-dialog-overlay-1751"
+                  className="fixed inset-0 bg-grey-600 bg-opacity-75 transition-opacity"
                   aria-hidden="true"
                 ></div>
                 <span
                   className="hidden sm:inline-block sm:h-screen sm:align-middle"
                   aria-hidden="true"
                 ></span>
-                <div className="inline-block rounded-lg bg-white align-bottom p-6 sm:p-8 shadow-xl transform text-left transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full undefined">
+
+                <div className="dark:bg-gray-700 dark:text-gray-200 inline-block rounded-lg bg-white align-bottom p-6 sm:p-8 shadow-xl transform text-left transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full undefined">
                   <button
-                    data-testid="close-modal"
-                    className="outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70"
+                    className="dark:text-white outline-none absolute top-0 right-0 z-10 p-8 ring-0 hover:opacity-70"
                     tabIndex="0"
                     aria-label="Close"
                     onClick={() => {
@@ -812,7 +817,7 @@ const Projects = (props) => {
                   </button>
                   <div className="text-left">
                     <h3
-                      className="pt-8 pr-8 text-xl font-medium text-black sm:pt-0 "
+                      className="dark:text-gray-200 pt-8 pr-8 text-xl font-medium text-black sm:pt-0 "
                       id="headlessui-dialog-title-1753"
                     >
                       Create Folder
@@ -822,16 +827,15 @@ const Projects = (props) => {
                         <div className="mb-3 flex flex-1 flex-col justify-between lg:flex-row">
                           <label
                             htmlFor="folder-name"
-                            className="text-sm font-bold text-grey-700 !font-light w-100"
+                            className="text-sm  text-grey-700 !font-light w-100"
                           >
                             Folder Name
                           </label>
                         </div>
                         <div className="w-full">
                           <input
-                            data-testid="folder-name"
                             placeholder="New Folder"
-                            className="flex flex-1 border py-2.5 px-3.5 border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm focus:border-green-700 focus:ring-0 text-grey-800"
+                            className="dark:text-black flex flex-1 border py-2.5 px-3.5 border-purple-100 focus:outline-none w-full resize-none rounded placeholder-grey-400 shadow-sm focus:border-green-700 focus:ring-0 text-grey-800"
                             type="text"
                             autoComplete="off"
                             id="folder-name"
@@ -844,7 +848,7 @@ const Projects = (props) => {
                       <div className="flex flex-col items-center justify-center align-middle">
                         <button
                           tabIndex="0"
-                          className="focus:outline-none flex select-none items-center rounded py-3 text-xs font-medium ring-offset-2 focus:ring-2 bg-purple-800 text-white my-4 h-10 w-40 justify-center"
+                          className="bg-[#334977] text-white focus:outline-none flex select-none items-center rounded py-3 text-[15px] font-medium ring-offset-2 focus:ring- my-4 h-10 w-40 justify-center"
                           onClick={() => {
                             create_folder();
                           }}
@@ -874,8 +878,12 @@ const Projects = (props) => {
                     </div>
                   </div>
                 </div>
+
+
+                
               </div>
             </div>
+          </div>
           </div>
         </>
       ) : null}

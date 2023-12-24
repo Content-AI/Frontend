@@ -18,6 +18,9 @@ const EditBrandVoice = (props) => {
     
     const [text, setText] = useState('');
     const [titletext, settitletext] = useState('');
+    const [content_summarize_resp,setcontent_summarize_resp] = useState('');
+    const [intial_len,setintial_len] = useState(0);
+    const [intial_len_title_len,setintial_len_title_len] = useState(0);
     const [textlen, settextlen] = useState(0);
     const [titlelen, settitlelen] = useState(0);
 
@@ -51,6 +54,10 @@ const EditBrandVoice = (props) => {
         if(resp.status==200){
             setbrandData(resp.data)
             settitletext(resp.data.brand_voice)
+            setintial_len_title_len(resp.data.brand_voice.length)
+            setcontent_summarize_resp(resp.data.content_summarize)
+            setintial_len(resp.data.content_summarize.length)
+            setText(resp.data.content_summarize)
             setids(resp.data.id)
         }
     }
@@ -63,11 +70,26 @@ const EditBrandVoice = (props) => {
 
     const _update_document_data = async () => {
         let data = []
-        if(text.length<=0){
+        if(intial_len_title_len!=titlelen && intial_len==text.length){
             data={
                 brand_voice:titletext
             }
-        }else{  
+
+            const resp = await patchData(data, BACKEND_URL + BACK_END_API_BRAND_VOICE + ids + "/", props.AUTH_TOKEN)
+            if (resp.status == 201) {
+                notifysucces("Brand Name Title change")
+            } else {
+                notifyerror("something went wrong")
+            }
+            return true
+        } else if (intial_len_title_len==titlelen && intial_len!=text.length) { 
+            data={
+                content:text
+            }
+        }else if(intial_len_title_len==titlelen && intial_len==text.length){
+            notifyerror("change something to update")
+            return true
+        }else{
             data={
                 brand_voice:titletext,
                 content:text
@@ -84,8 +106,9 @@ const EditBrandVoice = (props) => {
             sethidebtn(true)
             setresponse(resp.data)
         } else {
-          notifyerror("something went wrong")
+            notifyerror("something went wrong")
         }
+        setanalyzingdata(false)
       }
 
       
@@ -93,13 +116,13 @@ const EditBrandVoice = (props) => {
   return (
     <>
  
-            <div className="flex flex-col bg-gray-50 p-3">
-                <div className="border border-gray-200 bg-white rounded-2xl mb-8 p-6 h-auto">
+            <div className="dark:bg-gray-800 dark:text-gray-300 flex flex-col bg-gray-50 p-3">
+                <div className="dark:bg-gray-700 border border-gray-200 bg-white rounded-2xl mb-8 p-6 h-auto">
                 <div className="flex justify-between">
                         <h2 className="font-semibold text-lg">Incorporate your content to enable AI to emulate your unique writing style.</h2>
                 
                     </div>
-                    <p className="text-gray-600 text-sm pb-3">AI, can deduce your brand's voice from your website, text, or document. Choose one of the methods below to input your brand content into Jasper.</p>
+                    <p className="dark:text-gray-300 text-gray-600 text-sm pb-3">AI, can deduce your brand's voice from your website, text, or document. Choose one of the methods below to input your brand content into Jasper.</p>
                     {response &&
                     <>
                         <div className="flex items-center justify-center flex-col m-4 p-3">
@@ -110,7 +133,12 @@ const EditBrandVoice = (props) => {
                     {analyzingdata
                 ?
                     <>
-                        <div className="flex items-center justify-center flex-col">
+                    <div className="flex flex-col items-center justify-center h-full">
+                        <div className="spinner mb-4"></div>
+                        <p className="text-blue-500 font-semibold">Analyzing Tone</p>
+                        <p className="text-gray-500 text-sm">Please wait...</p>
+                    </div>
+                        {/* <div className="flex items-center justify-center flex-col">
                         <div className="w-12 h-12 animate-spin">
                             <svg className="w-full h-full text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <svg className='w-24 h-24' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" xmlSpace="preserve">
@@ -119,7 +147,7 @@ const EditBrandVoice = (props) => {
                             </svg>
                             </div>
                             <p className='text-[20px] font-semibold'>Analyzing Tone ....</p>
-                        </div>                        
+                        </div>                         */}
                     </>
                 :
                 null
@@ -130,15 +158,18 @@ const EditBrandVoice = (props) => {
                 ?
                     <>
                         <div className="space-y-1.5 w-full">
+                            {/* <h1 class="text-base font-semibold">Modify your tone</h1> */}
                             <div className="flex justify-between">
                                 <h1 className="text-base font-semibold pb-2">Name this voice</h1>
                             </div>
-                            <div className="space-y-1.5 w-full">
+                            <div className="dark:bg-gray-800 space-y-1.5 w-full">
                                 <label htmlFor="name" className="sr-only"><span className="flex items-center space-x-1"><span>Make it easier to know which tone you're using when writing</span></span></label>
-                                <div className="py-1 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                                    <div className="flex items-center grow gap-2 py-1.5">
-                                    <div className="flex gap-1 grow">
-                                        <input id="name" type="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" placeholder="e.g. My Brand voice for Blog, article" name="name"
+                                <div className="py-1 dark:bg-gray-800 !mt-0 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                                    <div className="dark:bg-gray-800 flex items-center grow gap-2 py-1.5">
+                                    <div className="dark:bg-gray-800 flex gap-1 grow">
+                                        <input id="name" type="text" 
+                                        className="dark:bg-gray-800 dark:text-gray-300 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none" 
+                                        placeholder="e.g. My Brand voice for Blog, article" name="name"
                                         value={titletext}
                                         onChange={handleTexttitleChange}
                                         />
@@ -149,10 +180,21 @@ const EditBrandVoice = (props) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div>
+                            {/* <div className="block text-sm font-normal text-gray-500 pt-3">Make it easy to know which voice you're using when writing.</div> */}
+
+                            {/* =================the content_summarize==================== */}
+                            <div class="flex justify-between">
+                            </div>
+                                <div class="block text-sm font-normal text-gray-600 mt-4 dark:text-gray-300">The AI model has acquired insights regarding your voice based on the provided content.
+                            </div>
+                                {/* <div class="mb-2 py-4 font-semibold text-gray-600 text-sm">
+                                {content_summarize_resp}
+                            </div> */}
+                                
+                            {/* =================the content_summarize==================== */}
                                 <label htmlFor="text" className="text-sm font-medium block text-gray-900 placeholder:text-gray-400 transition-[color] duration-150 ease-in-out">
                                     <span className="flex items-center space-x-1">
-                                    <span>Rewrite your Brand Voice </span>
+                                    <span className='dark:text-gray-300'>Rewrite your Brand Voice </span>
                                     <span aria-expanded="false">
                                         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                                             <path d="M13.29,1.94C11.89,.77,9.92,.21,8,.21S4.11,.77,2.71,1.94C1.13,3.26,.33,5.38,.22,7.49c-.11,2.11,.46,4.32,1.76,5.84,1.42,1.67,3.76,2.46,6.02,2.46s4.6-.79,6.02-2.46c1.3-1.52,1.87-3.73,1.76-5.84-.11-2.11-.91-4.23-2.49-5.55Z" fill="#9CA3AF" fillRule="evenodd"></path>
@@ -161,10 +203,13 @@ const EditBrandVoice = (props) => {
                                     </span>
                                     </span>
                                 </label>
-                        <div className="py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
-                            <textarea id="text" className="block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto" placeholder="Write or paste in any content written in your brand voice..." rows="5" name="text" 
-                            value={text}
-                            onChange={handleTextareaChange}
+                        <div className="dark:text-gray-300 dark:bg-gray-800 py-2.5 flex items-center gap-2 bg-white w-full px-3 rounded-lg ring-1 hover:ring-2 transition-all duration-150 ease-in-out ring-gray-200 outline-none focus-within:!ring-1">
+                            <textarea 
+                                id="text" 
+                                className="dark:text-gray-300 dark:bg-gray-800 block w-full text-gray-900 placeholder:text-gray-400 text-sm font-normal resize-none outline-none max-h-64 overflow-y-auto" 
+                                placeholder="Write or paste in any content written in your brand voice..." rows="5" name="text" 
+                                value={text}
+                                onChange={handleTextareaChange}
                             >
                             </textarea>
                         </div>
@@ -179,7 +224,7 @@ const EditBrandVoice = (props) => {
 
                     
                 </div>
-                <div className="font-normal text-gray-700 text-xs pb-6">Ownership or permission for content submission to AI is required. Utilizing our website to infringe upon others' rights constitutes a breach of our <a target="_blank" href="/">Terms of Service</a></div>
+                <div className="font-normal text-gray-700 text-xs pb-6 dark:text-gray-300">Ownership or permission for content submission to AI is required. Utilizing our website to infringe upon others' rights constitutes a breach of our <a target="_blank" href="/">Terms of Service</a></div>
                 </div>
                 <div className="flex justify-end items-center">
                 {hidebtn

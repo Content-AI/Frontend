@@ -18,6 +18,12 @@ const SecondStep = () => {
 
   // console.log(location.state)
 
+  const searchParams = new URLSearchParams(location.search);
+  const subscription_type = searchParams.get('subscription_type');
+  const plan = searchParams.get('plan');
+  const invitation_code = searchParams.get('invitation_code');
+  
+
   const [isSelected, setIsSelected] = useState(false);
   const [data, setData] = useState("");
   const [datatext, setDatatext] = useState("");
@@ -64,7 +70,7 @@ const SecondStep = () => {
               <div className="my-7">
                 <Dots steps="second" />
               </div>
-              <h3 className="text-sm font-bold mb-5">
+              <h3 className="text-sm font-bold mb-5 text-black dark:text-black">
                 What do you need to make?
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -81,9 +87,15 @@ const SecondStep = () => {
                 <button
                   className="flex items-center gap-3 font-normal text-blue text-sm"
                   onClick={() => {
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+                      navigate(`/first_step?survey_data_first=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`);
+                  }else if(invitation_code!=null && invitation_code!=undefined){
+                      navigate(`/first_step?survey_data_first=by-for-user-clarification&invitation_code=${invitation_code}`);
+                    }else{
                     navigate(
                       "/first_step?survey_data_first=by-for-user-clarification"
                     );
+                  }
                   }}
                 >
                   <span className="w-5 h-5">
@@ -110,6 +122,30 @@ const SecondStep = () => {
                   sx={{ textTransform: "none" }}
                   onClick={() => {
                     // navigate("/second_step")
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+                    navigate(
+                      `/third_step?survey_data_third=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`,
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                    }
+                    else if(invitation_code!=null && invitation_code!=undefined){
+                      navigate(
+                      `/third_step?survey_data_third=by-for-user-clarification&invitation_code=${invitation_code}`,
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                    }
+                    else{
+
                     navigate(
                       "/third_step?survey_data_third=by-for-user-clarification",
                       {
@@ -119,6 +155,7 @@ const SecondStep = () => {
                         },
                       }
                     );
+                    }
                   }}
                 >
                   Next
@@ -129,6 +166,37 @@ const SecondStep = () => {
                 <button
                   onClick={() => {
                     // navigate("/second_step")
+                    // navigate(
+                    //   "/third_step?survey_data_third=by-for-user-clarification",
+                    //   {
+                    //     state: {
+                    //       first_answer: location.state?.first_answer,
+                    //       second_answer: data,
+                    //     },
+                    //   }
+                    // );
+                    if(subscription_type!=null && subscription_type!=undefined && plan!=null && plan!=undefined){
+                    navigate(
+                      `/third_step?survey_data_third=by-for-user-clarification&subscription_type=${subscription_type}&plan=${plan}`,
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                    }else if(invitation_code!=null && invitation_code!=undefined){
+                      navigate(
+                      `/third_step?survey_data_third=by-for-user-clarification&invitation_code=${invitation_code}`,
+                      {
+                        state: {
+                          first_answer: location.state?.first_answer,
+                          second_answer: data,
+                        },
+                      }
+                    );
+                    }else{
+
                     navigate(
                       "/third_step?survey_data_third=by-for-user-clarification",
                       {
@@ -138,6 +206,7 @@ const SecondStep = () => {
                         },
                       }
                     );
+                    }
                   }}
                   type="button"
                   className="text-blue-700 text-sm"

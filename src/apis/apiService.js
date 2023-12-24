@@ -50,6 +50,22 @@ export const fetchData = async (url,ACCESS_TOKEN) => {
     return err
   }
 };
+export const HitUrl = async (url) => {
+  try{
+    const res = await axios.get(url)
+    return res
+  }catch(err){
+    return err
+  }
+};
+export const fetchDataEx = async (url) => {
+  try{
+    const res = await axios.get(url)
+    return res
+  }catch(err){
+    return err
+  }
+};
 
 export const deleteData = async (url,ACCESS_TOKEN) => {
 
@@ -63,4 +79,18 @@ export const deleteData = async (url,ACCESS_TOKEN) => {
   }catch(err){
     return "error"
   }
+};
+
+export const fileFormData = async (formData,url,ACCESS_TOKEN) => {
+    try{
+      const res = axios.post(url, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${ACCESS_TOKEN}`
+              }
+            })
+        return res
+      }catch(e){
+        return "error"
+      }
 };
